@@ -1,6 +1,8 @@
 # create-issue-branch
 
-> A GitHub App built with [Probot](https://github.com/probot/probot) that Creates a new branch after assigning an issue
+[![BCH compliance](https://bettercodehub.com/edge/badge/robvanderleek/create-issue-branch?branch=master)](https://bettercodehub.com/)
+
+> A GitHub App built with [Probot](https://github.com/probot/probot) that creates a new branch after assigning an issue
 
 ## Setup
 
