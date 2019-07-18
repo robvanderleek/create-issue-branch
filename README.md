@@ -1,4 +1,4 @@
-![Logo](static/logo.png)
+![Logo](static/logo.png | width=300))
 
 # create-issue-branch
 
