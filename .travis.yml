@@ -1,4 +1,4 @@
-language: nodejs
+language: node_js
 
 after_success:
     - test "$TRAVIS_BRANCH" = "master" && "$TRAVIS_PULL_REQUEST" = "false" && \
