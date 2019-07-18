@@ -1,3 +1,5 @@
+![Logo](static/logo.png)
+
 # create-issue-branch
 
 [![BCH compliance](https://bettercodehub.com/edge/badge/robvanderleek/create-issue-branch?branch=master)](https://bettercodehub.com/)
