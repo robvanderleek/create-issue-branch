@@ -1,0 +1,5 @@
+language: nodejs
+
+after_success:
+    - test "$TRAVIS_BRANCH" = "master" && "$TRAVIS_PULL_REQUEST" = "false" && \
+      sh .travis/deploy_heroku.sh
