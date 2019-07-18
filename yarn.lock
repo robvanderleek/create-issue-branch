@@ -131,6 +131,11 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
+"@chadfawcett/probot-serverless-now@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@chadfawcett/probot-serverless-now/-/probot-serverless-now-1.0.0.tgz#5044ad72343cf8a946a8415596526106ce10b872"
+  integrity sha512-n69PzPtDIyG124x1IVpWOBay3YN3xz3JbnDg8g/m8yNet7eNXgYwbvEe8FUdc9SOKd/0jyW4sj5ikGIyyuaCqw==
+
 "@cnakazawa/watch@^1.0.3":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.3.tgz#099139eaec7ebf07a27c1786a3ff64f39464d2ef"
