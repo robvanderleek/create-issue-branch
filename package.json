@@ -13,8 +13,9 @@
     "probot-app"
   ],
   "scripts": {
+    "now-start": "NODE_ENV=production npm start",
     "dev": "nodemon",
-    "start": "probot run ./index.js",
+    "start": "probot run ./probot.js",
     "lint": "standard --fix",
     "test": "jest && standard",
     "test:watch": "jest --watch --notify --notifyMode=change --coverage"

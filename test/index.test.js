@@ -1,5 +1,5 @@
 const nock = require('nock')
-const myProbotApp = require('..')
+const myProbotApp = require('../probot')
 const { Probot } = require('probot')
 const payload = require('./fixtures/issues.opened')
 const issueCreatedBody = { body: 'Thanks for opening this issue!' }
