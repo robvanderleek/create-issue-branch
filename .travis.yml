@@ -1,15 +1,15 @@
 language: node_js
 cache:
   directories:
-    - $HOME/.npm
-
+  - "$HOME/.npm"
 node_js:
-  - lts/*
-
+- lts/*
 notifications:
   email:
     on_success: never
-
-after_success:
-- test "$TRAVIS_BRANCH" = "master" && test "$TRAVIS_PULL_REQUEST" = "false" &&
-  sh .travis/deploy_heroku.sh
+deploy:
+  provider: heroku
+  api_key:
+    secure: YjaWA9iUhQ0j6u1N91/fctTLktV5aujUgzSiT1kuDteHAPmGMrUvwLPX3HI3bkjzXBLWZWLU10VLMKc7k6oMrdR2dxBp57tiVTtHokiHjkhDA/VVXzd/oFyJG1tD552ZUSVRvdYi8arfHk2vWbWelOKt6BUnNYMvUdm0UeCnOIF3tFCjuw73icY4eTG8OfALS0mQXOFHtDpXXDX6QuclUj4FDTayY/UPWdOkqbc/dENZSyoapo1zLx4zsWiX9pfRhNgQb3+7TzOc94Tg8qTXRQFQ3CFs19QIVL2V0mGwdBA4EGeW9aJarcC2vqseRL+eo1pQfeOlsC3AYU6A4GklLiyAH5UQhE7auxC93IzgrM7LX3JSp/L0tHMwf2Og176Fhs23C/VVZSeonJHnbwxFh6/6xuMGzzvYZ9hfkWD/d+Q45D0MuJesWXdVvLYiXvogdFIJtlU0tJPdK+k4tifIsr2faAosjONPcZk3jBAhIQIi9PtGa3McENgrBRrT2mnKScoroSZV78ZRTDxl1xZtpYyalRVQanmX4MYCgk0pzeewUBGf+L5efgRkGjZveQIDw6LF3/IClpUQycil6l32pBc+MXIG7Z2NLlDlMxXYzSne4K8ckzSLSEWnwioP72xD5OPkI6V0jwi4D8gv+pq6hcU+xDCe+N548tdmOmzZxiY=
+  app: secret-brook-77867
+  on: master
