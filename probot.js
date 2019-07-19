@@ -16,6 +16,7 @@ module.exports = app => {
       app.log(`Branch created: ${branchName}`)
     }
   })
+
 }
 
 function getRepoOwner (context) {

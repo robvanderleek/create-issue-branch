@@ -1,4 +1,6 @@
 node_modules/
 .idea/
 .env
+.env.production
+.env.test
 .private-key.pem
