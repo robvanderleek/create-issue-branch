@@ -14,6 +14,7 @@ module.exports = app => {
       const sha = await getDefaultBranchHeadSha(ctx, owner, repo)
       await createBranch(ctx, owner, repo, branchName, sha)
       app.log(`Branch created: ${branchName}`)
+      // commentOnIssue(ctx, owner, repo, issueNumber, branchName)
     }
   })
 }
@@ -52,16 +53,17 @@ async function branchExists (ctx, owner, repo, branchName) {
 async function getDefaultBranchHeadSha (ctx, owner, repo) {
   const defaultBranch = getDefaultBranch(ctx)
   const res = await ctx.github.gitdata.getRef({
-    'owner': owner, 'repo': repo, ref: `heads/${defaultBranch}`
+    owner: owner, repo: repo, ref: `heads/${defaultBranch}`
   })
   const ref = res.data.object
   return ref.sha
 }
 
 async function createBranch (ctx, owner, repo, branchName, sha) {
-  await ctx.github.gitdata.createRef({
+  const res = await ctx.github.gitdata.createRef({
     'owner': owner, 'repo': repo, 'ref': `refs/heads/${branchName}`, 'sha': sha
   })
+  return res
 }
 
 function getBranchNameFromIssue (number, title) {
@@ -71,5 +73,13 @@ function getBranchNameFromIssue (number, title) {
   }
   return `issue-${number}-${branchTitle}`
 }
+
+// async function commentOnIssue (ctx, owner, repo, issueNumber, branchName) {
+//   const body = `Created a branch for this ticket: ` +
+//     `[${branchName}](https://github.com/${owner}/${repo}/tree/${branchName})`
+//   await ctx.github.issues.createComment({
+//     owner: owner, repo: repo, number: issueNumber, body: body
+//   })
+// }
 
 module.exports.getBranchNameFromIssue = getBranchNameFromIssue
