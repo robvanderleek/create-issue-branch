@@ -83,4 +83,3 @@ function getBranchNameFromIssue (number, title) {
 // }
 
 module.exports.getBranchNameFromIssue = getBranchNameFromIssue
-
