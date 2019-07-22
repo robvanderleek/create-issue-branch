@@ -19,7 +19,7 @@ The typical workflow is:
 
  2. The issue is assigned
  3. When the issue is assigned this app will create a new issue branch
-    (`issue-15-Fix_nasty_bug` for the example issue)
+    (for the example issue this branch will be called `issue-15-Fix_nasty_bug`)
 
 If the issue is re-assigned no new branch will be created.
 
@@ -30,16 +30,6 @@ You can install the app directly from [*this page*](https://github.com/apps/crea
 ## Feedback, suggestions and bug reports
 
 Please create an issue here: https://github.com/robvanderleek/create-issue-branch/issues
-
-## Setup
-
-```sh
-# Install dependencies
-npm install
-
-# Run the bot
-npm start
-```
 
 ## Contributing
 
