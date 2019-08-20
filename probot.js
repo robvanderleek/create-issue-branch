@@ -7,7 +7,7 @@ module.exports = app => {
     const repo = getRepoName(ctx)
     const issueNumber = getIssueNumber(ctx)
     const issueTitle = getIssueTitle(ctx)
-    const branchName = getBranchNameFromIssue(issueNumber, issueTitle)
+    const branchName = await getBranchNameFromIssue(ctx, issueNumber, issueTitle)
     if (await branchExists(ctx, owner, repo, branchName)) {
       app.log('Branch already exists')
     } else {
@@ -66,7 +66,18 @@ async function createBranch (ctx, owner, repo, branchName, sha) {
   return res
 }
 
-function getBranchNameFromIssue (number, title) {
+async function getBranchNameFromIssue (ctx, number, title) {
+  const config = await ctx.config('issue-branch.yml', { branchName: 'full' })
+  if (config.branchName === 'tiny') {
+    return `i${number}`
+  } else if (config.branchName === 'short') {
+    return `issue-${number}`
+  } else {
+    return getFullBranchNameFromIssue(number, title)
+  }
+}
+
+function getFullBranchNameFromIssue (number, title) {
   let branchTitle = title.replace(/[\W]+/g, '_')
   if (branchTitle.endsWith('_')) {
     branchTitle = branchTitle.slice(0, -1)
@@ -82,4 +93,5 @@ function getBranchNameFromIssue (number, title) {
 //   })
 // }
 
+module.exports.getFullBranchNameFromIssue = getFullBranchNameFromIssue
 module.exports.getBranchNameFromIssue = getBranchNameFromIssue
