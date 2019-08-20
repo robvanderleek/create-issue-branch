@@ -23,6 +23,29 @@ The typical workflow is:
 
 If the issue is re-assigned no new branch will be created.
 
+
+## Configuration
+
+Branch names are generated from the issue, there are 3 flavours:
+
+ 1. `tiny` => an `i` followed by the issue number, for example: `i15`
+ 2. `short` => the word `issue` followed by the issue number, for example:
+    `issue-15`
+ 3. `full` => the word issue followed by the issue number followed by the
+    issue title, for example: `issue-15-Fix_nasty_bug`
+    
+The default is `full`, other types can be configured by placing a YAML file in your repository at the location: `.github/issue-branch.yml` with the content:
+
+```
+branchName: tiny
+```
+
+or
+
+```
+branchName: short
+```
+
 ## Installation
 
 You can install the app directly from [*this page*](https://github.com/apps/create-issue-branch)
