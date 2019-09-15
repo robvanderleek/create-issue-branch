@@ -3,6 +3,7 @@ module.exports = app => {
 
   app.on('issues.assigned', async ctx => {
     app.log('Issue was assigned')
+    app.log(ctx.payload.issue)
     const owner = getRepoOwner(ctx)
     const repo = getRepoName(ctx)
     const issueNumber = getIssueNumber(ctx)
@@ -19,24 +20,24 @@ module.exports = app => {
   })
 }
 
-function getRepoOwner (context) {
-  return context.payload.repository.owner.login
+function getRepoOwner (ctx) {
+  return ctx.payload.repository.owner.login
 }
 
-function getRepoName (context) {
-  return context.payload.repository.name
+function getRepoName (ctx) {
+  return ctx.payload.repository.name
 }
 
-function getIssueNumber (context) {
-  return context.payload.issue.number
+function getIssueNumber (ctx) {
+  return ctx.payload.issue.number
 }
 
-function getIssueTitle (context) {
-  return context.payload.issue.title
+function getIssueTitle (ctx) {
+  return ctx.payload.issue.title
 }
 
-function getDefaultBranch (context) {
-  return context.payload.repository.default_branch
+function getDefaultBranch (ctx) {
+  return ctx.payload.repository.default_branch
 }
 
 async function branchExists (ctx, owner, repo, branchName) {
