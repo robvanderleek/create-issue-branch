@@ -26,6 +26,12 @@ If the issue is re-assigned no new branch will be created.
 
 ## Configuration
 
+This app does not require a configuration. However, if you want to override 
+the default behaviour you can do so by placing a YAML file in your repository 
+at the location: `.github/issue-branch.yml` with the overrides.
+
+### Generated branch names
+
 Branch names are generated from the issue, there are 3 flavours:
 
  1. `tiny` => an `i` followed by the issue number, for example: `i15`
@@ -34,7 +40,7 @@ Branch names are generated from the issue, there are 3 flavours:
  3. `full` => the word issue followed by the issue number followed by the
     issue title, for example: `issue-15-Fix_nasty_bug`
     
-The default is `full`, other types can be configured by placing a YAML file in your repository at the location: `.github/issue-branch.yml` with the content:
+The default is `full`, other types can be configured in the YAML like this:
 
 ```
 branchName: tiny
@@ -45,6 +51,30 @@ or
 ```
 branchName: short
 ```
+
+### Select source branches based on issue label
+
+You can override the source branch (by default the "default branch" of the
+repository is used) based on the issue label.
+
+For example, if you want branches for issues with the `enhancement` label to
+have the `dev` branch as a source and branches for issues with the `bug`
+label to have the `staging` branch as a source add this to your configuration
+YAML:
+
+```
+branches:
+  - label: enhancement
+    name: dev
+  - label: bug
+    name: staging
+```
+
+When issues have multiple labels the branch of the first match (based on the 
+order in the configuration YAML will be used).
+
+If a configured branch does not exist in the repository the "default branch"
+is used.
 
 ## Installation
 

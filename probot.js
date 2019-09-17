@@ -3,7 +3,6 @@ module.exports = app => {
 
   app.on('issues.assigned', async ctx => {
     app.log('Issue was assigned')
-    app.log(ctx.payload.issue)
     const owner = getRepoOwner(ctx)
     const repo = getRepoName(ctx)
     const issueNumber = getIssueNumber(ctx)
@@ -12,10 +11,9 @@ module.exports = app => {
     if (await branchExists(ctx, owner, repo, branchName)) {
       app.log('Branch already exists')
     } else {
-      const sha = await getDefaultBranchHeadSha(ctx, owner, repo)
+      const sha = await getSourceBranchHeadSha(ctx, app)
       await createBranch(ctx, owner, repo, branchName, sha)
       app.log(`Branch created: ${branchName}`)
-      // commentOnIssue(ctx, owner, repo, issueNumber, branchName)
     }
   })
 }
@@ -40,6 +38,10 @@ function getDefaultBranch (ctx) {
   return ctx.payload.repository.default_branch
 }
 
+function getIssueLabels (ctx) {
+  return ctx.payload.issue.labels.map(l => l.name)
+}
+
 async function branchExists (ctx, owner, repo, branchName) {
   try {
     await ctx.github.gitdata.getRef({
@@ -51,13 +53,36 @@ async function branchExists (ctx, owner, repo, branchName) {
   }
 }
 
-async function getDefaultBranchHeadSha (ctx, owner, repo) {
-  const defaultBranch = getDefaultBranch(ctx)
-  const res = await ctx.github.gitdata.getRef({
-    owner: owner, repo: repo, ref: `heads/${defaultBranch}`
-  })
-  const ref = res.data.object
-  return ref.sha
+async function getSourceBranchHeadSha (ctx, app) {
+  const config = await ctx.config('issue-branch.yml', { branches: [] })
+  const issueLabels = getIssueLabels(ctx)
+  let result
+  for (const branchMapping of config.branches) {
+    if (issueLabels.includes(branchMapping.label)) {
+      result = await getBranchHeadSha(ctx, branchMapping.name)
+      if (result) {
+        app.log(`Source branch: ${branchMapping.name}`)
+      }
+    }
+  }
+  if (!result) {
+    const defaultBranch = getDefaultBranch(ctx)
+    app.log(`Source branch: ${defaultBranch}`)
+    result = await getBranchHeadSha(ctx, defaultBranch)
+  }
+  return result
+}
+
+async function getBranchHeadSha (ctx, branch) {
+  try {
+    const res = await ctx.github.gitdata.getRef({
+      owner: getRepoOwner(ctx), repo: getRepoName(ctx), ref: `heads/${branch}`
+    })
+    const ref = res.data.object
+    return ref.sha
+  } catch (e) {
+    return undefined
+  }
 }
 
 async function createBranch (ctx, owner, repo, branchName, sha) {
@@ -85,14 +110,6 @@ function getFullBranchNameFromIssue (number, title) {
   }
   return `issue-${number}-${branchTitle}`
 }
-
-// async function commentOnIssue (ctx, owner, repo, issueNumber, branchName) {
-//   const body = `Created a branch for this ticket: ` +
-//     `[${branchName}](https://github.com/${owner}/${repo}/tree/${branchName})`
-//   await ctx.github.issues.createComment({
-//     owner: owner, repo: repo, number: issueNumber, body: body
-//   })
-// }
 
 module.exports.getFullBranchNameFromIssue = getFullBranchNameFromIssue
 module.exports.getBranchNameFromIssue = getBranchNameFromIssue

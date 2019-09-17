@@ -13,7 +13,22 @@ beforeEach(() => {
 
   app.app = () => 'test'
   nock.cleanAll()
+  jest.setTimeout(10000)
+  nockAccessToken()
 })
+
+function issueAssignedWithLabelPayload () {
+  const issueCopy = JSON.parse(JSON.stringify(issueAssignedPayload))
+  issueCopy.issue.labels.push({
+    'id': 1456956805,
+    'node_id': 'MDU6TGFiZWwxNDU2OTU2ODA1',
+    'url': 'https://api.github.com/repos/robvanderleek/create-issue-branch/labels/enhancement',
+    'name': 'enhancement',
+    'color': 'a2eeef',
+    'default': true
+  })
+  return issueCopy
+}
 
 function nockAccessToken () {
   nock('https://api.github.com')
@@ -23,14 +38,17 @@ function nockAccessToken () {
 
 function nockEmptyConfig () {
   nock('https://api.github.com')
+    .persist()
     .get('/repos/robvanderleek/create-issue-branch/contents/.github/issue-branch.yml')
     .reply(404)
 }
 
-function nockConfig (base64Yaml) {
+function nockConfig (yamlConfig) {
+  const encoding = 'base64'
   nock('https://api.github.com')
+    .persist()
     .get('/repos/robvanderleek/create-issue-branch/contents/.github/issue-branch.yml')
-    .reply(200, { content: base64Yaml, encoding: 'base64' })
+    .reply(200, { content: Buffer.from(yamlConfig).toString(encoding), encoding: encoding })
 }
 
 function nockExistingBranch (name, sha) {
@@ -40,7 +58,6 @@ function nockExistingBranch (name, sha) {
 }
 
 test('creates a branch when an issue is assigned', async () => {
-  nockAccessToken()
   nockExistingBranch('master', 123456789)
   nockEmptyConfig()
   let createEndpointCalled = false
@@ -58,7 +75,6 @@ test('creates a branch when an issue is assigned', async () => {
 })
 
 test('do not create a branch when it already exists', async () => {
-  nockAccessToken()
   nockExistingBranch('issue-1-Test_issue', 987654321)
   nockEmptyConfig()
   let createEndpointCalled = false
@@ -76,9 +92,8 @@ test('do not create a branch when it already exists', async () => {
 })
 
 test('create short branch when configured that way', async () => {
-  nockAccessToken()
   nockExistingBranch('master', 123456789)
-  nockConfig('YnJhbmNoTmFtZTogc2hvcnQK') // echo "branchName: short" | base64
+  nockConfig('branchName: short')
   let createEndpointCalled = false
   let branchRef = ''
 
@@ -94,6 +109,69 @@ test('create short branch when configured that way', async () => {
 
   expect(createEndpointCalled).toBeTruthy()
   expect(branchRef).toBe('refs/heads/issue-1')
+})
+
+test('source branch is default branch by, well, default', async () => {
+  nockExistingBranch('master', '123456789')
+  nockExistingBranch('dev', 'abcde1234')
+  nockEmptyConfig()
+  let sourceSha = ''
+
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/git/refs', (body) => {
+      sourceSha = body.sha
+      return true
+    })
+    .reply(200)
+
+  await probot.receive({ name: 'issues', payload: issueAssignedPayload })
+
+  expect(sourceSha).toBe('123456789')
+})
+
+test('source branch can be configured based on issue label', async () => {
+  nockExistingBranch('master', '123456789')
+  nockExistingBranch('dev', 'abcde1234')
+  const ymlConfig = `branches:
+  - label: enhancement
+    name: dev
+  - label: bug
+    name: master`
+  nockConfig(ymlConfig)
+  let sourceSha = ''
+
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/git/refs', (body) => {
+      sourceSha = body.sha
+      return true
+    })
+    .reply(200)
+
+  await probot.receive({ name: 'issues', payload: issueAssignedWithLabelPayload() })
+
+  expect(sourceSha).toBe('abcde1234')
+})
+
+test('if configured source branch does not exist use default branch', async () => {
+  nockExistingBranch('master', '123456789')
+  const ymlConfig = `branches:
+  - label: enhancement
+    name: dev
+  - label: bug
+    name: master`
+  nockConfig(ymlConfig)
+  let sourceSha = ''
+
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/git/refs', (body) => {
+      sourceSha = body.sha
+      return true
+    })
+    .reply(200)
+
+  await probot.receive({ name: 'issues', payload: issueAssignedWithLabelPayload() })
+
+  expect(sourceSha).toBe('123456789')
 })
 
 test('get full branch name from issue title', () => {

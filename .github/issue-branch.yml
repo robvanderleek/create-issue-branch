@@ -1,1 +1,7 @@
 branchName: short
+
+branches:
+  - label: enhancement
+    name: dev
+  - label: bug
+    name: master
