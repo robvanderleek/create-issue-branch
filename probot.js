@@ -63,6 +63,7 @@ async function getSourceBranchHeadSha (ctx, app) {
       if (result) {
         app.log(`Source branch: ${branchMapping.name}`)
       }
+      break
     }
   }
   if (!result) {

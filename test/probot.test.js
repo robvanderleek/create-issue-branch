@@ -17,8 +17,29 @@ beforeEach(() => {
   nockAccessToken()
 })
 
-function issueAssignedWithLabelPayload () {
+function issueAssignedWithSingleLabelPayload () {
   const issueCopy = JSON.parse(JSON.stringify(issueAssignedPayload))
+  issueCopy.issue.labels.push({
+    'id': 1456956805,
+    'node_id': 'MDU6TGFiZWwxNDU2OTU2ODA1',
+    'url': 'https://api.github.com/repos/robvanderleek/create-issue-branch/labels/enhancement',
+    'name': 'enhancement',
+    'color': 'a2eeef',
+    'default': true
+  })
+  return issueCopy
+}
+
+function issueAssignedWithMultipleLabelsPayload () {
+  const issueCopy = JSON.parse(JSON.stringify(issueAssignedPayload))
+  issueCopy.issue.labels.push({
+    'id': 1456956799,
+    'node_id': 'MDU6TGFiZWwxNDU2OTU2Nzk5',
+    'url': 'https://api.github.com/repos/robvanderleek/create-issue-branch/labels/bug',
+    'name': 'bug',
+    'color': 'd73a4a',
+    'default': true
+  })
   issueCopy.issue.labels.push({
     'id': 1456956805,
     'node_id': 'MDU6TGFiZWwxNDU2OTU2ODA1',
@@ -147,7 +168,7 @@ test('source branch can be configured based on issue label', async () => {
     })
     .reply(200)
 
-  await probot.receive({ name: 'issues', payload: issueAssignedWithLabelPayload() })
+  await probot.receive({ name: 'issues', payload: issueAssignedWithSingleLabelPayload() })
 
   expect(sourceSha).toBe('abcde1234')
 })
@@ -169,9 +190,32 @@ test('if configured source branch does not exist use default branch', async () =
     })
     .reply(200)
 
-  await probot.receive({ name: 'issues', payload: issueAssignedWithLabelPayload() })
+  await probot.receive({ name: 'issues', payload: issueAssignedWithSingleLabelPayload() })
 
   expect(sourceSha).toBe('123456789')
+})
+
+test('if multiple issue labels match configuration use first match', async () => {
+  nockExistingBranch('master', '123456789')
+  nockExistingBranch('dev', 'abcde1234')
+  const ymlConfig = `branches:
+  - label: enhancement
+    name: dev
+  - label: bug
+    name: master`
+  nockConfig(ymlConfig)
+  let sourceSha = ''
+
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/git/refs', (body) => {
+      sourceSha = body.sha
+      return true
+    })
+    .reply(200)
+
+  await probot.receive({ name: 'issues', payload: issueAssignedWithMultipleLabelsPayload() })
+
+  expect(sourceSha).toBe('abcde1234')
 })
 
 test('get full branch name from issue title', () => {
