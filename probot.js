@@ -5,13 +5,12 @@ module.exports = app => {
     app.log('Issue was assigned')
     const owner = getRepoOwner(ctx)
     const repo = getRepoName(ctx)
-    const issueNumber = getIssueNumber(ctx)
-    const issueTitle = getIssueTitle(ctx)
-    const branchName = await getBranchNameFromIssue(ctx, issueNumber, issueTitle)
+    const config = await ctx.config('issue-branch.yml', {})
+    const branchName = await getBranchNameFromIssue(ctx, config)
     if (await branchExists(ctx, owner, repo, branchName)) {
       app.log('Branch already exists')
     } else {
-      const sha = await getSourceBranchHeadSha(ctx, app)
+      const sha = await getSourceBranchHeadSha(ctx, config, app.log)
       await createBranch(ctx, owner, repo, branchName, sha)
       app.log(`Branch created: ${branchName}`)
     }
@@ -53,22 +52,18 @@ async function branchExists (ctx, owner, repo, branchName) {
   }
 }
 
-async function getSourceBranchHeadSha (ctx, app) {
-  const config = await ctx.config('issue-branch.yml', { branches: [] })
-  const issueLabels = getIssueLabels(ctx)
+async function getSourceBranchHeadSha (ctx, config, log) {
+  const branchConfig = getIssueBranchConfig(ctx, config)
   let result
-  for (const branchMapping of config.branches) {
-    if (issueLabels.includes(branchMapping.label)) {
-      result = await getBranchHeadSha(ctx, branchMapping.name)
-      if (result) {
-        app.log(`Source branch: ${branchMapping.name}`)
-      }
-      break
+  if (branchConfig && branchConfig.name) {
+    result = await getBranchHeadSha(ctx, branchConfig.name)
+    if (result) {
+      log(`Source branch: ${branchConfig.name}`)
     }
   }
   if (!result) {
     const defaultBranch = getDefaultBranch(ctx)
-    app.log(`Source branch: ${defaultBranch}`)
+    log(`Source branch: ${defaultBranch}`)
     result = await getBranchHeadSha(ctx, defaultBranch)
   }
   return result
@@ -93,15 +88,39 @@ async function createBranch (ctx, owner, repo, branchName, sha) {
   return res
 }
 
-async function getBranchNameFromIssue (ctx, number, title) {
-  const config = await ctx.config('issue-branch.yml', { branchName: 'full' })
-  if (config.branchName === 'tiny') {
-    return `i${number}`
-  } else if (config.branchName === 'short') {
-    return `issue-${number}`
-  } else {
-    return getFullBranchNameFromIssue(number, title)
+function getIssueBranchConfig (ctx, config) {
+  if (config.branches) {
+    const issueLabels = getIssueLabels(ctx)
+    for (const branchConfiguration of config.branches) {
+      if (issueLabels.includes(branchConfiguration.label)) {
+        return branchConfiguration
+      }
+    }
   }
+  return undefined
+}
+
+function getIssueBranchPrefix (ctx, config) {
+  let result = ''
+  const branchConfig = getIssueBranchConfig(ctx, config)
+  if (branchConfig && branchConfig.prefix) {
+    result = branchConfig.prefix
+  }
+  return interpolate(result, ctx.payload)
+}
+
+async function getBranchNameFromIssue (ctx, config) {
+  const number = getIssueNumber(ctx)
+  const title = getIssueTitle(ctx)
+  let result
+  if (config.branchName && config.branchName === 'tiny') {
+    result = `i${number}`
+  } else if (config.branchName && config.branchName === 'short') {
+    result = `issue-${number}`
+  } else {
+    result = getFullBranchNameFromIssue(number, title)
+  }
+  return getIssueBranchPrefix(ctx, config) + result
 }
 
 function getFullBranchNameFromIssue (number, title) {
@@ -112,5 +131,16 @@ function getFullBranchNameFromIssue (number, title) {
   return `issue-${number}-${branchTitle}`
 }
 
+function interpolate (s, obj) {
+  return s.replace(/[$]{([^}]+)}/g, function (_, path) {
+    const properties = path.split('.')
+    return properties.reduce((prev, curr) => prev && prev[curr], obj)
+  })
+}
+
+// For unit-tests
 module.exports.getFullBranchNameFromIssue = getFullBranchNameFromIssue
 module.exports.getBranchNameFromIssue = getBranchNameFromIssue
+module.exports.getIssueBranchConfig = getIssueBranchConfig
+module.exports.getIssueBranchPrefix = getIssueBranchPrefix
+module.exports.interpolate = interpolate

@@ -224,12 +224,77 @@ test('get full branch name from issue title', () => {
 })
 
 test('get branch name from issue', async () => {
-  let ctx = { config: () => ({ branchName: 'tiny' }) }
-  expect(await myProbotApp.getBranchNameFromIssue(ctx, 12, 'Hello world')).toBe('i12')
+  let ctx = { payload: { issue: { number: 12, title: 'Hello world' } } }
+  let config = { branchName: 'tiny' }
+  expect(await myProbotApp.getBranchNameFromIssue(ctx, config)).toBe('i12')
 
-  ctx = { config: () => ({ branchName: 'short' }) }
-  expect(await myProbotApp.getBranchNameFromIssue(ctx, 12, 'Hello world')).toBe('issue-12')
+  config = { branchName: 'short' }
+  expect(await myProbotApp.getBranchNameFromIssue(ctx, config)).toBe('issue-12')
 
-  ctx = { config: () => ({ branchName: 'full' }) }
-  expect(await myProbotApp.getBranchNameFromIssue(ctx, 12, 'Hello world')).toBe('issue-12-Hello_world')
+  config = { branchName: 'full' }
+  expect(await myProbotApp.getBranchNameFromIssue(ctx, config)).toBe('issue-12-Hello_world')
+})
+
+test('get branch configuration for issue', () => {
+  const ctx = { payload: { issue: { labels: [{ name: 'enhancement' }] } } }
+  const config = { branches: [{ label: 'enhancement', prefix: 'feature/' }] }
+  const branchConfig = myProbotApp.getIssueBranchConfig(ctx, config)
+  expect(branchConfig).toBeDefined()
+  expect(branchConfig.prefix).toBe('feature/')
+})
+
+test('issue has no branch configuration', () => {
+  const ctx = { payload: { issue: { labels: [{ name: 'bug' }] } } }
+  const config = { branches: [{ label: 'enhancement', prefix: 'feature/' }] }
+  const branchConfig = myProbotApp.getIssueBranchConfig(ctx, config)
+  expect(branchConfig).toBeUndefined()
+})
+
+test('get issue branch prefix', () => {
+  const ctx = { payload: { issue: { labels: [{ name: 'enhancement' }] } } }
+  const config = { branches: [{ label: 'enhancement', prefix: 'feature/' }] }
+  const prefix = myProbotApp.getIssueBranchPrefix(ctx, config)
+  expect(prefix).toBe('feature/')
+})
+
+test('get issue branch prefix for issue that has no branch configuration', () => {
+  const ctx = { payload: { issue: { labels: [{ name: 'bug' }] } } }
+  const config = { branches: [{ label: 'enhancement', prefix: 'feature/' }] }
+  const prefix = myProbotApp.getIssueBranchPrefix(ctx, config)
+  expect(prefix).toBe('')
+})
+
+test('interpolate string with object field expression', () => {
+  const o = { hello: 'world' }
+  // eslint-disable-next-line no-template-curly-in-string
+  const result = myProbotApp.interpolate('hello ${hello}', o)
+  expect(result).toBe('hello world')
+})
+
+test('interpolate string with nested object field expression', () => {
+  const o = { outer: { inner: 'world' } }
+  // eslint-disable-next-line no-template-curly-in-string
+  const result = myProbotApp.interpolate('hello ${outer.inner}', o)
+  expect(result).toBe('hello world')
+})
+
+test('interpolate string with undefined object field expression', () => {
+  const o = { outer: { inner: 'world' } }
+  // eslint-disable-next-line no-template-curly-in-string
+  const result = myProbotApp.interpolate('hello ${inner.outer}', o)
+  expect(result).toBe('hello undefined')
+})
+
+test('interpolate string with issue assigned payload', () => {
+  // eslint-disable-next-line no-template-curly-in-string
+  const result = myProbotApp.interpolate('Creator ${issue.user.login}, repo: ${repository.name}', issueAssignedPayload)
+  expect(result).toBe('Creator robvanderleek, repo: create-issue-branch')
+})
+
+test('get issue branch prefix with context expression interpolation', () => {
+  const ctx = { payload: { issue: { labels: [{ name: 'enhancement' }], user: { login: 'robvanderleek' } } } }
+  // eslint-disable-next-line no-template-curly-in-string
+  const config = { branches: [{ label: 'enhancement', prefix: 'feature/${issue.user.login}/' }] }
+  const prefix = myProbotApp.getIssueBranchPrefix(ctx, config)
+  expect(prefix).toBe('feature/robvanderleek/')
 })
