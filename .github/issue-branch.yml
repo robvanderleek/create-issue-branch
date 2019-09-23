@@ -3,5 +3,7 @@ branchName: short
 branches:
   - label: enhancement
     name: dev
+    prefix: feature/
   - label: bug
     name: master
+    prefix: bugfix/
