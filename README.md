@@ -59,7 +59,7 @@ repository is used) based on the issue label.
 
 For example, if you want branches for issues with the `enhancement` label to
 have the `dev` branch as a source and branches for issues with the `bug`
-label to have the `staging` branch as a source add this to your configuration
+label to have the `staging` branch as a source, add this to your configuration
 YAML:
 
 ```
@@ -75,6 +75,34 @@ order in the configuration YAML will be used).
 
 If a configured branch does not exist in the repository the "default branch"
 is used.
+
+### Branch name prefixes based on issue label
+
+Branch name can be prefixed based on the label of an issue.
+
+For example, if you want branches for issues with the `enhancement` label to
+have the `feature/` prefix and branches for issues with the `bug` lavel to 
+have the `bugfix/` prefix, add this to your configuration YAML:
+
+```
+branches:
+  - label: enhancement
+    prefix: feature/
+  - label: bug
+    prefix: bugfix/
+```
+
+You can use `${...}` placeholders in the prefix to substitute fields from the
+GitHub issue assignment JSON object. For an example of such a JSON object
+see [test/fixtures/issue.assigned.json](test/fixtures/issue.assigned.json).  
+For example, if you want the GitHub login name of the user that created
+the issue in the branch prefix, add this to your configuration YAML:
+
+```
+branches:
+  - label: enhancement
+    prefix: feature/${issue.user.login}/
+```
 
 ## Installation
 

@@ -298,3 +298,9 @@ test('get issue branch prefix with context expression interpolation', () => {
   const prefix = myProbotApp.getIssueBranchPrefix(ctx, config)
   expect(prefix).toBe('feature/robvanderleek/')
 })
+
+test('get branch name from issue with only branch prefix configured', async () => {
+  let ctx = { payload: { issue: { number: 12, title: 'Hello world', labels: [{ name: 'enhancement' }] } } }
+  let config = { branchName: 'short', branches: [{ label: 'enhancement', prefix: 'feature/' }] }
+  expect(await myProbotApp.getBranchNameFromIssue(ctx, config)).toBe('feature/issue-12')
+})
