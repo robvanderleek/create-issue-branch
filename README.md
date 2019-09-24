@@ -78,10 +78,10 @@ is used.
 
 ### Branch name prefixes based on issue label
 
-Branch name can be prefixed based on the label of an issue.
+Branch names can be prefixed based on the label of an issue.
 
 For example, if you want branches for issues with the `enhancement` label to
-have the `feature/` prefix and branches for issues with the `bug` lavel to 
+have the `feature/` prefix and branches for issues with the `bug` label to 
 have the `bugfix/` prefix, add this to your configuration YAML:
 
 ```
@@ -93,9 +93,7 @@ branches:
 ```
 
 You can use `${...}` placeholders in the prefix to substitute fields from the
-GitHub issue assignment JSON object. For an example of such a JSON object
-see [test/fixtures/issue.assigned.json](test/fixtures/issue.assigned.json).  
-For example, if you want the GitHub login name of the user that created
+GitHub issue assignment JSON object. For example, if you want the GitHub login name of the user that created
 the issue in the branch prefix, add this to your configuration YAML:
 
 ```
@@ -103,6 +101,10 @@ branches:
   - label: enhancement
     prefix: feature/${issue.user.login}/
 ```
+
+Check 
+[test/fixtures/issues.assigned.json](test/fixtures/issues.assigned.json) for
+all possible placeholder names.
 
 ## Installation
 
