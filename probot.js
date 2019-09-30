@@ -3,7 +3,6 @@ module.exports = app => {
 
   app.on('issues.assigned', async ctx => {
     app.log('Issue was assigned')
-    app.log(ctx.payload.issue)
     const owner = getRepoOwner(ctx)
     const repo = getRepoName(ctx)
     const issueNumber = getIssueNumber(ctx)
