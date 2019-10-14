@@ -43,7 +43,7 @@ function getIssueLabels (ctx) {
 async function branchExists (ctx, owner, repo, branchName) {
   try {
     await ctx.github.gitdata.getRef({
-      'owner': owner, 'repo': repo, ref: `heads/${branchName}`
+      owner: owner, repo: repo, ref: `heads/${branchName}`
     })
     return true
   } catch (err) {
@@ -83,7 +83,7 @@ async function getBranchHeadSha (ctx, branch) {
 async function createBranch (ctx, owner, repo, branchName, sha, log) {
   try {
     const res = await ctx.github.gitdata.createRef({
-      'owner': owner, 'repo': repo, 'ref': `refs/heads/${branchName}`, 'sha': sha
+      owner: owner, repo: repo, ref: `refs/heads/${branchName}`, sha: sha
     })
     log(`Branch created: ${branchName}`)
     return res

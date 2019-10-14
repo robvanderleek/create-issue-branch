@@ -20,12 +20,12 @@ beforeEach(() => {
 function issueAssignedWithSingleLabelPayload () {
   const issueCopy = JSON.parse(JSON.stringify(issueAssignedPayload))
   issueCopy.issue.labels.push({
-    'id': 1456956805,
-    'node_id': 'MDU6TGFiZWwxNDU2OTU2ODA1',
-    'url': 'https://api.github.com/repos/robvanderleek/create-issue-branch/labels/enhancement',
-    'name': 'enhancement',
-    'color': 'a2eeef',
-    'default': true
+    id: 1456956805,
+    node_id: 'MDU6TGFiZWwxNDU2OTU2ODA1',
+    url: 'https://api.github.com/repos/robvanderleek/create-issue-branch/labels/enhancement',
+    name: 'enhancement',
+    color: 'a2eeef',
+    default: true
   })
   return issueCopy
 }
@@ -33,20 +33,20 @@ function issueAssignedWithSingleLabelPayload () {
 function issueAssignedWithMultipleLabelsPayload () {
   const issueCopy = JSON.parse(JSON.stringify(issueAssignedPayload))
   issueCopy.issue.labels.push({
-    'id': 1456956799,
-    'node_id': 'MDU6TGFiZWwxNDU2OTU2Nzk5',
-    'url': 'https://api.github.com/repos/robvanderleek/create-issue-branch/labels/bug',
-    'name': 'bug',
-    'color': 'd73a4a',
-    'default': true
+    id: 1456956799,
+    node_id: 'MDU6TGFiZWwxNDU2OTU2Nzk5',
+    url: 'https://api.github.com/repos/robvanderleek/create-issue-branch/labels/bug',
+    name: 'bug',
+    color: 'd73a4a',
+    default: true
   })
   issueCopy.issue.labels.push({
-    'id': 1456956805,
-    'node_id': 'MDU6TGFiZWwxNDU2OTU2ODA1',
-    'url': 'https://api.github.com/repos/robvanderleek/create-issue-branch/labels/enhancement',
-    'name': 'enhancement',
-    'color': 'a2eeef',
-    'default': true
+    id: 1456956805,
+    node_id: 'MDU6TGFiZWwxNDU2OTU2ODA1',
+    url: 'https://api.github.com/repos/robvanderleek/create-issue-branch/labels/enhancement',
+    name: 'enhancement',
+    color: 'a2eeef',
+    default: true
   })
   return issueCopy
 }
@@ -224,7 +224,7 @@ test('get full branch name from issue title', () => {
 })
 
 test('get branch name from issue', async () => {
-  let ctx = { payload: { issue: { number: 12, title: 'Hello world' } } }
+  const ctx = { payload: { issue: { number: 12, title: 'Hello world' } } }
   let config = { branchName: 'tiny' }
   expect(await myProbotApp.getBranchNameFromIssue(ctx, config)).toBe('i12')
 
@@ -300,8 +300,8 @@ test('get issue branch prefix with context expression interpolation', () => {
 })
 
 test('get branch name from issue with only branch prefix configured', async () => {
-  let ctx = { payload: { issue: { number: 12, title: 'Hello world', labels: [{ name: 'enhancement' }] } } }
-  let config = { branchName: 'short', branches: [{ label: 'enhancement', prefix: 'feature/' }] }
+  const ctx = { payload: { issue: { number: 12, title: 'Hello world', labels: [{ name: 'enhancement' }] } } }
+  const config = { branchName: 'short', branches: [{ label: 'enhancement', prefix: 'feature/' }] }
   expect(await myProbotApp.getBranchNameFromIssue(ctx, config)).toBe('feature/issue-12')
 })
 
