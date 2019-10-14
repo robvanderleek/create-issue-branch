@@ -304,3 +304,21 @@ test('get branch name from issue with only branch prefix configured', async () =
   let config = { branchName: 'short', branches: [{ label: 'enhancement', prefix: 'feature/' }] }
   expect(await myProbotApp.getBranchNameFromIssue(ctx, config)).toBe('feature/issue-12')
 })
+
+test('handle branch already exist', async () => {
+  const ctx = {
+    github: {
+      gitdata: {
+        createRef: () => {
+          const error = { message: 'Oops, branch already exists' }
+          throw error
+        }
+      }
+    }
+  }
+  const log = { warn: jest.fn() }
+
+  await myProbotApp.createBranch(ctx, 'robvanderleek', 'create-issue-branch', 'issue-1', '1234abcd', log)
+
+  expect(log.warn).toBeCalled()
+})

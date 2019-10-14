@@ -11,8 +11,7 @@ module.exports = app => {
       app.log('Branch already exists')
     } else {
       const sha = await getSourceBranchHeadSha(ctx, config, app.log)
-      await createBranch(ctx, owner, repo, branchName, sha)
-      app.log(`Branch created: ${branchName}`)
+      await createBranch(ctx, owner, repo, branchName, sha, app.log)
     }
   })
 }
@@ -81,11 +80,16 @@ async function getBranchHeadSha (ctx, branch) {
   }
 }
 
-async function createBranch (ctx, owner, repo, branchName, sha) {
-  const res = await ctx.github.gitdata.createRef({
-    'owner': owner, 'repo': repo, 'ref': `refs/heads/${branchName}`, 'sha': sha
-  })
-  return res
+async function createBranch (ctx, owner, repo, branchName, sha, log) {
+  try {
+    const res = await ctx.github.gitdata.createRef({
+      'owner': owner, 'repo': repo, 'ref': `refs/heads/${branchName}`, 'sha': sha
+    })
+    log(`Branch created: ${branchName}`)
+    return res
+  } catch (e) {
+    log.warn(`Could not create branch (${e.message})`)
+  }
 }
 
 function getIssueBranchConfig (ctx, config) {
@@ -143,4 +147,5 @@ module.exports.getFullBranchNameFromIssue = getFullBranchNameFromIssue
 module.exports.getBranchNameFromIssue = getBranchNameFromIssue
 module.exports.getIssueBranchConfig = getIssueBranchConfig
 module.exports.getIssueBranchPrefix = getIssueBranchPrefix
+module.exports.createBranch = createBranch
 module.exports.interpolate = interpolate
