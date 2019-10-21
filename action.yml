@@ -1,0 +1,5 @@
+name: 'Create Issue Branch'
+description: 'GitHub action that creates a new branch after assigning an issue.'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
