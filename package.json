@@ -17,12 +17,15 @@
     "start": "probot run ./probot.js",
     "lint": "standard --fix",
     "test": "jest && standard",
-    "test:watch": "jest --watch --notify --notifyMode=change --coverage"
+    "test:watch": "jest --watch --notify --notifyMode=change --coverage",
+    "dist": "ncc build action.js"
   },
   "dependencies": {
-    "probot": "^7.3.1"
+    "probot": "^7.3.1",
+    "probot-actions-adapter": "^1.0.2"
   },
   "devDependencies": {
+    "@zeit/ncc": "^0.20.5",
     "jest": "^24.9.0",
     "nock": "^11.4.0",
     "nodemon": "^1.19.3",
