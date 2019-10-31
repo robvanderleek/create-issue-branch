@@ -21,7 +21,7 @@
     "dist": "ncc build action.js"
   },
   "dependencies": {
-    "probot": "^7.3.1",
+    "probot": "^9.6.1",
     "probot-actions-adapter": "^1.0.2"
   },
   "devDependencies": {
