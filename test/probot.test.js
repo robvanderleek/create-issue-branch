@@ -10,8 +10,10 @@ let probot
 beforeEach(() => {
   probot = new Probot({})
   const app = probot.load(myProbotApp)
-
-  app.app = () => 'test'
+  app.app = {
+    getInstallationAccessToken: (option) => Promise.resolve('test')
+  }
+  // app.app = () => 'test'
   nock.cleanAll()
   jest.setTimeout(10000)
   nockAccessToken()
@@ -62,6 +64,8 @@ function nockEmptyConfig () {
     .persist()
     .get('/repos/robvanderleek/create-issue-branch/contents/.github/issue-branch.yml')
     .reply(404)
+    .get('/repos/robvanderleek/.github/contents/.github/issue-branch.yml')
+    .reply(404)
 }
 
 function nockConfig (yamlConfig) {
@@ -78,7 +82,14 @@ function nockExistingBranch (name, sha) {
     .reply(200, { object: { sha: sha } })
 }
 
+function nockNonExistingBranch (name) {
+  nock('https://api.github.com')
+    .get(`/repos/robvanderleek/create-issue-branch/git/refs/heads/${name}`)
+    .reply(404)
+}
+
 test('creates a branch when an issue is assigned', async () => {
+  nockNonExistingBranch('issue-1-Test_issue')
   nockExistingBranch('master', 123456789)
   nockEmptyConfig()
   let createEndpointCalled = false
@@ -113,6 +124,7 @@ test('do not create a branch when it already exists', async () => {
 })
 
 test('create short branch when configured that way', async () => {
+  nockNonExistingBranch('issue-1')
   nockExistingBranch('master', 123456789)
   nockConfig('branchName: short')
   let createEndpointCalled = false
@@ -133,6 +145,7 @@ test('create short branch when configured that way', async () => {
 })
 
 test('source branch is default branch by, well, default', async () => {
+  nockNonExistingBranch('issue-1-Test_issue')
   nockExistingBranch('master', '123456789')
   nockExistingBranch('dev', 'abcde1234')
   nockEmptyConfig()
@@ -151,6 +164,7 @@ test('source branch is default branch by, well, default', async () => {
 })
 
 test('source branch can be configured based on issue label', async () => {
+  nockNonExistingBranch('issue-1-Test_issue')
   nockExistingBranch('master', '123456789')
   nockExistingBranch('dev', 'abcde1234')
   const ymlConfig = `branches:
@@ -174,6 +188,8 @@ test('source branch can be configured based on issue label', async () => {
 })
 
 test('if configured source branch does not exist use default branch', async () => {
+  nockNonExistingBranch('issue-1-Test_issue')
+  nockNonExistingBranch('dev')
   nockExistingBranch('master', '123456789')
   const ymlConfig = `branches:
   - label: enhancement
@@ -196,6 +212,7 @@ test('if configured source branch does not exist use default branch', async () =
 })
 
 test('if multiple issue labels match configuration use first match', async () => {
+  nockNonExistingBranch('issue-1-Test_issue')
   nockExistingBranch('master', '123456789')
   nockExistingBranch('dev', 'abcde1234')
   const ymlConfig = `branches:
