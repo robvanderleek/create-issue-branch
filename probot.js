@@ -1,5 +1,14 @@
+const Raven = require('raven')
+
 module.exports = app => {
   app.log('App was loaded')
+
+  if (process.env.NODE_ENV) {
+    app.log('Setting up Sentry.io logging...')
+    Raven.config(process.env.SENTRY_DSN).install()
+  } else {
+    app.log('Skipping Sentry.io setup')
+  }
 
   app.on('issues.assigned', async ctx => {
     app.log('Issue was assigned')
