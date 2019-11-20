@@ -1,7 +1,8 @@
 name: 'Create Issue Branch'
 description: 'GitHub action that creates a new branch after assigning an issue.'
-icon: activity
-color: blue
+branding:
+  icon: 'activity'
+  color: 'blue'
 runs:
   using: 'node12'
   main: 'dist/index.js'
