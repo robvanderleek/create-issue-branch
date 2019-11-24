@@ -216,7 +216,7 @@ test('source branch based on catch-all fallthrough', async () => {
   const ymlConfig = `branches:
   - label: bug
     name: bug
-  - label: *
+  - label: '*'
     name: issues`
   nockConfig(ymlConfig)
   let sourceSha = ''
