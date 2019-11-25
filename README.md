@@ -1,14 +1,14 @@
 # Create Issue Branch
 
+![Logo](static/logo.png)
+
 [![BCH compliance](https://bettercodehub.com/edge/badge/robvanderleek/create-issue-branch?branch=master)](https://bettercodehub.com/)
 [![Build Status](https://travis-ci.com/robvanderleek/create-issue-branch.svg?branch=master)](https://travis-ci.com/robvanderleek/create-issue-branch)
 [![Dependabot](https://badgen.net/badge/Dependabot/enabled/green?icon=dependabot)](https://dependabot.com/)
 
-![Logo](static/logo.png)
+A GitHub App built with [Probot](https://github.com/probot/probot) that creates a new branch after assigning an issue.
 
-A GitHub App built with [Probot](https://github.com/probot/probot) that creates a new branch after assigning an issue
-
-Built in response to this feature reuest issue: https://github.com/isaacs/github/issues/1125
+Built in response to this feature request issue: https://github.com/isaacs/github/issues/1125
 
 # Installation
 
@@ -33,7 +33,7 @@ This app does not require a configuration. However, if you want to override
 the default behaviour you can do so by placing a YAML file in your repository 
 at the location: `.github/issue-branch.yml` with the overrides.
 
-### Branch names
+## Branch names
 
 Branch names are generated from the issue, there are 3 flavours:
 
