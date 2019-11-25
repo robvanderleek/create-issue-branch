@@ -89,7 +89,7 @@ function nockNonExistingBranch (name) {
 
 test('creates a branch when an issue is assigned', async () => {
   nockNonExistingBranch('issue-1-Test_issue')
-  nockExistingBranch('master', 123456789)
+  nockExistingBranch('master', 12345678)
   nockEmptyConfig()
   let createEndpointCalled = false
 
@@ -106,7 +106,7 @@ test('creates a branch when an issue is assigned', async () => {
 })
 
 test('do not create a branch when it already exists', async () => {
-  nockExistingBranch('issue-1-Test_issue', 987654321)
+  nockExistingBranch('issue-1-Test_issue', 87654321)
   nockEmptyConfig()
   let createEndpointCalled = false
 
@@ -124,7 +124,7 @@ test('do not create a branch when it already exists', async () => {
 
 test('create short branch when configured that way', async () => {
   nockNonExistingBranch('issue-1')
-  nockExistingBranch('master', 123456789)
+  nockExistingBranch('master', 12345678)
   nockConfig('branchName: short')
   let createEndpointCalled = false
   let branchRef = ''
@@ -145,8 +145,8 @@ test('create short branch when configured that way', async () => {
 
 test('source branch is default branch by, well, default', async () => {
   nockNonExistingBranch('issue-1-Test_issue')
-  nockExistingBranch('master', '123456789')
-  nockExistingBranch('dev', 'abcde1234')
+  nockExistingBranch('master', '12345678')
+  nockExistingBranch('dev', 'abcd1234')
   nockEmptyConfig()
   let sourceSha = ''
 
@@ -159,13 +159,13 @@ test('source branch is default branch by, well, default', async () => {
 
   await probot.receive({ name: 'issues', payload: issueAssignedPayload })
 
-  expect(sourceSha).toBe('123456789')
+  expect(sourceSha).toBe('12345678')
 })
 
 test('source branch can be configured based on issue label', async () => {
   nockNonExistingBranch('issue-1-Test_issue')
-  nockExistingBranch('master', '123456789')
-  nockExistingBranch('dev', 'abcde1234')
+  nockExistingBranch('master', '12345678')
+  nockExistingBranch('dev', 'abcd1234')
   const ymlConfig = `branches:
   - label: enhancement
     name: dev
@@ -183,13 +183,13 @@ test('source branch can be configured based on issue label', async () => {
 
   await probot.receive({ name: 'issues', payload: issueAssignedWithEnhancementLabelPayload() })
 
-  expect(sourceSha).toBe('abcde1234')
+  expect(sourceSha).toBe('abcd1234')
 })
 
 test('source branch can be configured based on issue label with wildcard pattern', async () => {
   nockNonExistingBranch('issue-1-Test_issue')
-  nockExistingBranch('master', '123456789')
-  nockExistingBranch('dev', 'abcde1234')
+  nockExistingBranch('master', '12345678')
+  nockExistingBranch('dev', 'abcd1234')
   const ymlConfig = `branches:
   - label: ?nhance*
     name: dev`
@@ -205,14 +205,14 @@ test('source branch can be configured based on issue label with wildcard pattern
 
   await probot.receive({ name: 'issues', payload: issueAssignedWithEnhancementLabelPayload() })
 
-  expect(sourceSha).toBe('abcde1234')
+  expect(sourceSha).toBe('abcd1234')
 })
 
 test('source branch based on catch-all fallthrough', async () => {
   nockNonExistingBranch('issue-1-Test_issue')
-  nockExistingBranch('master', '123456789')
-  nockExistingBranch('bug', 'abcde1234')
-  nockExistingBranch('issues', 'fghij5678')
+  nockExistingBranch('master', '12345678')
+  nockExistingBranch('bug', 'abcd1234')
+  nockExistingBranch('issues', 'fghi5678')
   const ymlConfig = `branches:
   - label: bug
     name: bug
@@ -228,15 +228,40 @@ test('source branch based on catch-all fallthrough', async () => {
     })
     .reply(200)
 
+  await probot.receive({ name: 'issues', payload: issueAssignedPayload })
+
+  expect(sourceSha).toBe('fghi5678')
+})
+
+test('source branch based on label where configuration contains catch-all fallthrough', async () => {
+  nockNonExistingBranch('issue-1-Test_issue')
+  nockExistingBranch('master', '12345678')
+  nockExistingBranch('enhancement', 'abcd1234')
+  nockExistingBranch('issues', 'fghi5678')
+  const ymlConfig = `branches:
+  - label: enhancement
+    name: enhancement
+  - label: '*'
+    name: issues`
+  nockConfig(ymlConfig)
+  let sourceSha = ''
+
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/git/refs', (body) => {
+      sourceSha = body.sha
+      return true
+    })
+    .reply(200)
+
   await probot.receive({ name: 'issues', payload: issueAssignedWithEnhancementLabelPayload() })
 
-  expect(sourceSha).toBe('fghij5678')
+  expect(sourceSha).toBe('abcd1234')
 })
 
 test('if configured source branch does not exist use default branch', async () => {
   nockNonExistingBranch('issue-1-Test_issue')
   nockNonExistingBranch('dev')
-  nockExistingBranch('master', '123456789')
+  nockExistingBranch('master', '12345678')
   const ymlConfig = `branches:
   - label: enhancement
     name: dev
@@ -254,13 +279,13 @@ test('if configured source branch does not exist use default branch', async () =
 
   await probot.receive({ name: 'issues', payload: issueAssignedWithEnhancementLabelPayload() })
 
-  expect(sourceSha).toBe('123456789')
+  expect(sourceSha).toBe('12345678')
 })
 
 test('if multiple issue labels match configuration use first match', async () => {
   nockNonExistingBranch('issue-1-Test_issue')
-  nockExistingBranch('master', '123456789')
-  nockExistingBranch('dev', 'abcde1234')
+  nockExistingBranch('master', '12345678')
+  nockExistingBranch('dev', 'abcd1234')
   const ymlConfig = `branches:
   - label: enhancement
     name: dev
@@ -278,13 +303,13 @@ test('if multiple issue labels match configuration use first match', async () =>
 
   await probot.receive({ name: 'issues', payload: issueAssignedWithBugAndEnhancementLabelsPayload() })
 
-  expect(sourceSha).toBe('abcde1234')
+  expect(sourceSha).toBe('abcd1234')
 })
 
 test('configuration with label branch and prefix', async () => {
   nockNonExistingBranch('feature/issue-1-Test_issue')
-  nockExistingBranch('master', '123456789')
-  nockExistingBranch('dev', 'abcde1234')
+  nockExistingBranch('master', '12345678')
+  nockExistingBranch('dev', 'abcd1234')
   const ymlConfig = `branches:
   - label: enhancement
     name: dev
@@ -303,7 +328,7 @@ test('configuration with label branch and prefix', async () => {
 
   await probot.receive({ name: 'issues', payload: issueAssignedWithBugAndEnhancementLabelsPayload() })
 
-  expect(sourceSha).toBe('abcde1234')
+  expect(sourceSha).toBe('abcd1234')
   expect(targetRef).toBe('refs/heads/feature/issue-1-Test_issue')
 })
 

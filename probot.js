@@ -46,7 +46,12 @@ function getDefaultBranch (ctx) {
 }
 
 function getIssueLabels (ctx) {
-  return ctx.payload.issue.labels.map(l => l.name)
+  const labels = ctx.payload.issue.labels.map(l => l.name)
+  if (labels.length === 0) {
+    return ['']
+  } else {
+    return labels
+  }
 }
 
 async function branchExists (ctx, owner, repo, branchName) {
