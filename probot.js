@@ -3,7 +3,7 @@ const Raven = require('raven')
 module.exports = app => {
   app.log('App was loaded')
 
-  if (process.env.NODE_ENV) {
+  if (process.env.SENTRY_DSN) {
     app.log('Setting up Sentry.io logging...')
     Raven.config(process.env.SENTRY_DSN).install()
   } else {
@@ -46,7 +46,12 @@ function getDefaultBranch (ctx) {
 }
 
 function getIssueLabels (ctx) {
-  return ctx.payload.issue.labels.map(l => l.name)
+  const labels = ctx.payload.issue.labels.map(l => l.name)
+  if (labels.length === 0) {
+    return ['']
+  } else {
+    return labels
+  }
 }
 
 async function branchExists (ctx, owner, repo, branchName) {
@@ -105,7 +110,7 @@ function getIssueBranchConfig (ctx, config) {
   if (config.branches) {
     const issueLabels = getIssueLabels(ctx)
     for (const branchConfiguration of config.branches) {
-      if (issueLabels.includes(branchConfiguration.label)) {
+      if (issueLabels.some(l => wildcardMatch(branchConfiguration.label, l))) {
         return branchConfiguration
       }
     }
@@ -151,10 +156,16 @@ function interpolate (s, obj) {
   })
 }
 
+function wildcardMatch (pattern, s) {
+  const regExp = new RegExp('^' + pattern.replace(/\*/g, '.*').replace(/\?/g, '.') + '$')
+  return regExp.test(s)
+}
+
 // For unit-tests
-module.exports.getFullBranchNameFromIssue = getFullBranchNameFromIssue
 module.exports.getBranchNameFromIssue = getBranchNameFromIssue
 module.exports.getIssueBranchConfig = getIssueBranchConfig
 module.exports.getIssueBranchPrefix = getIssueBranchPrefix
 module.exports.createBranch = createBranch
+module.exports.getFullBranchNameFromIssue = getFullBranchNameFromIssue
 module.exports.interpolate = interpolate
+module.exports.wildcardMatch = wildcardMatch

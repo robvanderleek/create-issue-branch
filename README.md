@@ -1,17 +1,20 @@
-![Logo](static/logo.png)
+# Create Issue Branch
 
-# create-issue-branch
+![Logo](static/logo.png)
 
 [![BCH compliance](https://bettercodehub.com/edge/badge/robvanderleek/create-issue-branch?branch=master)](https://bettercodehub.com/)
 [![Build Status](https://travis-ci.com/robvanderleek/create-issue-branch.svg?branch=master)](https://travis-ci.com/robvanderleek/create-issue-branch)
 [![Dependabot](https://badgen.net/badge/Dependabot/enabled/green?icon=dependabot)](https://dependabot.com/)
 
-> A GitHub App built with [Probot](https://github.com/probot/probot) that creates a new branch after assigning an issue
+A GitHub App built with [Probot](https://github.com/probot/probot) that creates a new branch after assigning an issue.
 
-Built in response to this feature reuest issue:
-https://github.com/isaacs/github/issues/1125
+Built in response to this feature request issue: https://github.com/isaacs/github/issues/1125
 
-## What does this app do?
+# Installation
+
+You can install the app directly from [*this page*](https://github.com/apps/create-issue-branch)
+
+# Usage
 
 The typical workflow is:
  1. An issue is created, for example: Issue 15: Fix nasty bug!
@@ -24,14 +27,13 @@ The typical workflow is:
 
 If the issue is re-assigned no new branch will be created.
 
-
-## Configuration
+# Configuration
 
 This app does not require a configuration. However, if you want to override 
 the default behaviour you can do so by placing a YAML file in your repository 
 at the location: `.github/issue-branch.yml` with the overrides.
 
-### Generated branch names
+## Branch names
 
 Branch names are generated from the issue, there are 3 flavours:
 
@@ -43,17 +45,17 @@ Branch names are generated from the issue, there are 3 flavours:
     
 The default is `full`, other types can be configured in the YAML like this:
 
-```
+```yaml
 branchName: tiny
 ```
 
 or
 
-```
+```yaml
 branchName: short
 ```
 
-### Select source branches based on issue label
+## Source branch based on issue label
 
 You can override the source branch (by default the "default branch" of the
 repository is used) based on the issue label.
@@ -63,7 +65,7 @@ have the `dev` branch as a source and branches for issues with the `bug`
 label to have the `staging` branch as a source, add this to your configuration
 YAML:
 
-```
+```yaml
 branches:
   - label: enhancement
     name: dev
@@ -77,7 +79,7 @@ order in the configuration YAML will be used).
 If a configured branch does not exist in the repository the "default branch"
 is used.
 
-### Branch name prefixes based on issue label
+## Branch name prefix based on issue label
 
 Branch names can be prefixed based on the label of an issue.
 
@@ -85,7 +87,7 @@ For example, if you want branches for issues with the `enhancement` label to
 have the `feature/` prefix and branches for issues with the `bug` label to 
 have the `bugfix/` prefix, add this to your configuration YAML:
 
-```
+```yaml
 branches:
   - label: enhancement
     prefix: feature/
@@ -97,7 +99,7 @@ You can use `${...}` placeholders in the prefix to substitute fields from the
 GitHub issue assignment JSON object. For example, if you want the GitHub login name of the user that created
 the issue in the branch prefix, add this to your configuration YAML:
 
-```
+```yaml
 branches:
   - label: enhancement
     prefix: feature/${issue.user.login}/
@@ -107,20 +109,36 @@ Check
 [test/fixtures/issues.assigned.json](test/fixtures/issues.assigned.json) for
 all possible placeholder names.
 
-## Installation
+## Matching labels with wildcards
 
-You can install the app directly from [*this page*](https://github.com/apps/create-issue-branch)
+Wildcard characters '?' (matches any single character) and '*' (matches any sequence of characters, 
+including the empty sequence) can be used in the label field.
 
-## Feedback, suggestions and bug reports
+For example, to set the default/fallback prefix `issues/` for issues that do not have the `enhancement`  or `bug`
+label, use this configuration:
+
+```yaml
+branches:
+  - label: enhancement
+    prefix: feature/
+  - label: bug
+    prefix: bugfix/
+  - label: '*'
+    prefix: issues/
+```
+
+*Remember to put quotes around a single asterisk ('\*') in YAML*
+
+# Feedback, suggestions and bug reports
 
 Please create an issue here: https://github.com/robvanderleek/create-issue-branch/issues
 
-## Contributing
+# Contributing
 
 If you have suggestions for how create-issue-branch could be improved, or want to report a bug, open an issue! We'd love all and any contributions.
 
 For more, check out the [Contributing Guide](CONTRIBUTING.md).
 
-## License
+# License
 
 [ISC](LICENSE) © 2019 Rob van der Leek <robvanderleek@gmail.com> (https://twitter.com/robvanderleek)
