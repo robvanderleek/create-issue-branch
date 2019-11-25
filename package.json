@@ -30,7 +30,7 @@
     "@zeit/ncc": "^0.20.5",
     "jest": "^24.9.0",
     "nock": "^11.7.0",
-    "nodemon": "^2.0.0",
+    "nodemon": "^2.0.1",
     "smee-client": "^1.0.2",
     "standard": "^14.3.1"
   },
