@@ -1,9 +1,0 @@
-branchName: short
-
-branches:
-  - label: enhancement
-    name: dev
-    prefix: feature/${issue.user.login}/
-  - label: bug
-    name: master
-    prefix: bugfix/
