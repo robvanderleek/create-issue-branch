@@ -12,7 +12,26 @@ Built in response to this feature request issue: https://github.com/isaacs/githu
 
 # Installation
 
-You can install the app directly from [*this page*](https://github.com/apps/create-issue-branch)
+## GitHub App
+
+You can install the app for a repository from [*this page*](https://github.com/apps/create-issue-branch)
+
+## GitHub Action
+
+Add this to your workflow YAML configuration:
+
+```yaml
+on:
+    issues:
+        types: [assigned]
+
+jobs:
+    create_issue_branch_job:
+        runs-on: ubuntu-latest
+        steps:
+        - name: Create Issue Branch
+          uses: robvanderleek/create-issue-branch@master
+```
 
 # Usage
 
@@ -32,6 +51,10 @@ If the issue is re-assigned no new branch will be created.
 This app does not require a configuration. However, if you want to override 
 the default behaviour you can do so by placing a YAML file in your repository 
 at the location: `.github/issue-branch.yml` with the overrides.
+
+Organization/user wide configuration is also supported by putting the YAML file `.github/issue-branch.yml`
+in a repository called `.github`. So, if your organization/username is `acme`, the full path becomes:
+`https://github.com/acme/.github/blob/master/.github/issue-branch.yml`. 
 
 ## Branch names
 
