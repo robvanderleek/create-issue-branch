@@ -427,22 +427,40 @@ test('get branch name from issue with only branch prefix configured', async () =
   expect(await myProbotApp.getBranchNameFromIssue(ctx, config)).toBe('feature/issue-12')
 })
 
-test('handle branch already exist', async () => {
+test('handle branch already exist, log message to info level', async () => {
   const ctx = {
     github: {
       gitdata: {
         createRef: () => {
-          const error = { message: 'Oops, branch already exists' }
+          const error = { message: 'Reference already exists' }
           throw error
         }
       }
     }
   }
-  const log = { warn: jest.fn() }
+  const log = { info: jest.fn() }
 
   await myProbotApp.createBranch(ctx, 'robvanderleek', 'create-issue-branch', 'issue-1', '1234abcd', log)
 
-  expect(log.warn).toBeCalled()
+  expect(log.info).toBeCalled()
+})
+
+test('log branch create errors with error level', async () => {
+  const ctx = {
+    github: {
+      gitdata: {
+        createRef: () => {
+          const error = { message: 'Oops, something is wrong' }
+          throw error
+        }
+      }
+    }
+  }
+  const log = { error: jest.fn() }
+
+  await myProbotApp.createBranch(ctx, 'robvanderleek', 'create-issue-branch', 'issue-1', '1234abcd', log)
+
+  expect(log.error).toBeCalled()
 })
 
 test('wildcard matching', () => {

@@ -102,7 +102,11 @@ async function createBranch (ctx, owner, repo, branchName, sha, log) {
     log(`Branch created: ${branchName}`)
     return res
   } catch (e) {
-    log.warn(`Could not create branch (${e.message})`)
+    if (e.message === 'Reference already exists') {
+      log.info('Could not create branch as it already exists')
+    } else {
+      log.error(`Could not create branch (${e.message})`)
+    }
   }
 }
 
