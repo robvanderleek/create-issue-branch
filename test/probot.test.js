@@ -7,6 +7,11 @@ nock.disableNetConnect()
 
 let probot
 
+beforeAll(() => {
+  const logRequest = (r) => console.log(`No match: ${r.path}, method: ${r.method}, host: ${r.options.host}`)
+  nock.emitter.on('no match', req => { logRequest(req) })
+})
+
 beforeEach(() => {
   probot = new Probot({})
   const app = probot.load(myProbotApp)
@@ -330,6 +335,29 @@ test('configuration with label branch and prefix', async () => {
 
   expect(sourceSha).toBe('abcd1234')
   expect(targetRef).toBe('refs/heads/feature/issue-1-Test_issue')
+})
+
+test('configuration with label field missing', async () => {
+  const ymlConfig = `branches:
+  - name: dev
+    prefix: feature/`
+  nockConfig(ymlConfig)
+
+  nock('https://api.github.com')
+    .get('/search/issues')
+    .query(true)
+    .reply(200, { items: [] })
+
+  let issueTitle = ''
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/issues', body => {
+      issueTitle = body.title
+      return true
+    })
+    .reply(200)
+
+  await probot.receive({ name: 'issues', payload: issueAssignedWithBugAndEnhancementLabelsPayload() })
+  expect(issueTitle).toBe('Error in Create Issue Branch app configuration')
 })
 
 test('get full branch name from issue title', () => {

@@ -1,4 +1,5 @@
 const Raven = require('raven')
+const Config = require('./config')
 
 module.exports = app => {
   app.log('App was loaded')
@@ -12,15 +13,17 @@ module.exports = app => {
 
   app.on('issues.assigned', async ctx => {
     app.log('Issue was assigned')
-    const owner = getRepoOwner(ctx)
-    const repo = getRepoName(ctx)
-    const config = await ctx.config('issue-branch.yml', {})
-    const branchName = await getBranchNameFromIssue(ctx, config)
-    if (await branchExists(ctx, owner, repo, branchName)) {
-      app.log('Branch already exists')
-    } else {
-      const sha = await getSourceBranchHeadSha(ctx, config, app.log)
-      await createBranch(ctx, owner, repo, branchName, sha, app.log)
+    const config = await Config.load(ctx)
+    if (config) {
+      const owner = getRepoOwner(ctx)
+      const repo = getRepoName(ctx)
+      const branchName = await getBranchNameFromIssue(ctx, config)
+      if (await branchExists(ctx, owner, repo, branchName)) {
+        app.log('Branch already exists')
+      } else {
+        const sha = await getSourceBranchHeadSha(ctx, config, app.log)
+        await createBranch(ctx, owner, repo, branchName, sha, app.log)
+      }
     }
   })
 }
