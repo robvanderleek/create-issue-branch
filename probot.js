@@ -113,6 +113,29 @@ async function createBranch (ctx, owner, repo, branchName, sha, log) {
   }
 }
 
+async function getBranchNameFromIssue (ctx, config) {
+  const number = getIssueNumber(ctx)
+  const title = getIssueTitle(ctx)
+  let result
+  if (config.branchName && config.branchName === 'tiny') {
+    result = `i${number}`
+  } else if (config.branchName && config.branchName === 'short') {
+    result = `issue-${number}`
+  } else {
+    result = `issue-${number}-${makeHumanSafe(title)}`
+  }
+  return makeGitSafe(getIssueBranchPrefix(ctx, config)) + result
+}
+
+function getIssueBranchPrefix (ctx, config) {
+  let result = ''
+  const branchConfig = getIssueBranchConfig(ctx, config)
+  if (branchConfig && branchConfig.prefix) {
+    result = branchConfig.prefix
+  }
+  return interpolate(result, ctx.payload)
+}
+
 function getIssueBranchConfig (ctx, config) {
   if (config.branches) {
     const issueLabels = getIssueLabels(ctx)
@@ -125,35 +148,28 @@ function getIssueBranchConfig (ctx, config) {
   return undefined
 }
 
-function getIssueBranchPrefix (ctx, config) {
-  let result = ''
-  const branchConfig = getIssueBranchConfig(ctx, config)
-  if (branchConfig && branchConfig.prefix) {
-    result = branchConfig.prefix
+function makeHumanSafe (s) {
+  let result = s.replace(/[\W]+/g, '_')
+  if (result.endsWith('_')) {
+    result = result.slice(0, -1)
   }
-  return interpolate(result, ctx.payload)
+  return trim(result, '_')
 }
 
-async function getBranchNameFromIssue (ctx, config) {
-  const number = getIssueNumber(ctx)
-  const title = getIssueTitle(ctx)
-  let result
-  if (config.branchName && config.branchName === 'tiny') {
-    result = `i${number}`
-  } else if (config.branchName && config.branchName === 'short') {
-    result = `issue-${number}`
-  } else {
-    result = getFullBranchNameFromIssue(number, title)
+function makeGitSafe (s) {
+  let result = s.replace(/[\s]+/g, '_')
+  if (result.endsWith('_')) {
+    result = result.slice(0, -1)
   }
-  return getIssueBranchPrefix(ctx, config) + result
+  return trim(result, '_')
 }
 
-function getFullBranchNameFromIssue (number, title) {
-  let branchTitle = title.replace(/[\W]+/g, '_')
-  if (branchTitle.endsWith('_')) {
-    branchTitle = branchTitle.slice(0, -1)
-  }
-  return `issue-${number}-${branchTitle}`
+function trim (str, ch) {
+  let start = 0
+  let end = str.length
+  while (start < end && str[start] === ch) ++start
+  while (end > start && str[end - 1] === ch) --end
+  return (start > 0 || end < str.length) ? str.substring(start, end) : str
 }
 
 function interpolate (s, obj) {
@@ -173,6 +189,7 @@ module.exports.getBranchNameFromIssue = getBranchNameFromIssue
 module.exports.getIssueBranchConfig = getIssueBranchConfig
 module.exports.getIssueBranchPrefix = getIssueBranchPrefix
 module.exports.createBranch = createBranch
-module.exports.getFullBranchNameFromIssue = getFullBranchNameFromIssue
+module.exports.makeGitSafe = makeGitSafe
+module.exports.makeHumanSafe = makeHumanSafe
 module.exports.interpolate = interpolate
 module.exports.wildcardMatch = wildcardMatch

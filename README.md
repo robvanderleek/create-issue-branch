@@ -57,6 +57,10 @@ Organization/user wide configuration is also supported by putting the YAML file 
 in a repository called `.github`. So, if your organization/username is `acme`, the full path becomes:
 `https://github.com/acme/.github/blob/master/.github/issue-branch.yml`. 
 
+If the app has a problem with your configuration YAML (e.g.: invalid content) it will create an issue 
+with the title "Error in Create Issue Branch app configuration" in the repo. Subsequent runs with an 
+invalid configuration will not create new issues, only one stays open. 
+
 ## Branch names
 
 Branch names are generated from the issue, there are 3 flavours:
