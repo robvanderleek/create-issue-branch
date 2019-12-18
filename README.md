@@ -5,7 +5,7 @@
 [![BCH compliance](https://bettercodehub.com/edge/badge/robvanderleek/create-issue-branch?branch=master)](https://bettercodehub.com/)
 [![Build Status](https://travis-ci.com/robvanderleek/create-issue-branch.svg?branch=master)](https://travis-ci.com/robvanderleek/create-issue-branch)
 [![Dependabot](https://badgen.net/badge/Dependabot/enabled/green?icon=dependabot)](https://dependabot.com/)
-[![Sentry](https://img.shields.io/badge/monitoring-sentry-green)](https://sentry.io)
+[![Sentry](https://img.shields.io/badge/sentry-enabled-green)](https://sentry.io)
 
 A GitHub App built with [Probot](https://github.com/probot/probot) that creates a new branch after assigning an issue.
 

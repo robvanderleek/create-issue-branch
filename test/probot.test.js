@@ -361,10 +361,6 @@ test('configuration with label field missing', async () => {
 })
 
 test('get full branch name from issue title', () => {
-  expect(myProbotApp.makeHumanSafe('Hello world')).toBe('Hello_world')
-  expect(myProbotApp.makeHumanSafe('Test issue...')).toBe('Test_issue')
-  expect(myProbotApp.makeHumanSafe('-_- Hello -_-')).toBe('Hello')
-
   expect(myProbotApp.makeGitSafe('feature/bug')).toBe('feature/bug')
   expect(myProbotApp.makeGitSafe('  feature/this is a bug ')).toBe('feature/this_is_a_bug')
   expect(myProbotApp.makeGitSafe('feature_bug')).toBe('feature_bug')
@@ -386,6 +382,12 @@ test('get branch name from issue', async () => {
 
   config = { branches: [{ label: 'bug', prefix: 'Some bugs here/' }] }
   expect(await myProbotApp.getBranchNameFromIssue(ctx, config)).toBe('Some_bugs_here/issue-12-Hello_world')
+
+  config = { branches: [{ label: 'bug', prefix: 'feature-2019-12-17T10:16:25Z' }] }
+  expect(await myProbotApp.getBranchNameFromIssue(ctx, config)).toBe('feature-2019-12-17T10_16_25Zissue-12-Hello_world')
+
+  config = { branches: [{ label: 'bug', prefix: 'feature\\' }] }
+  expect(await myProbotApp.getBranchNameFromIssue(ctx, config)).toBe('feature_issue-12-Hello_world')
 })
 
 test('get branch configuration for issue', () => {

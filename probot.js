@@ -122,9 +122,9 @@ async function getBranchNameFromIssue (ctx, config) {
   } else if (config.branchName && config.branchName === 'short') {
     result = `issue-${number}`
   } else {
-    result = `issue-${number}-${makeHumanSafe(title)}`
+    result = `issue-${number}-${title}`
   }
-  return makeGitSafe(getIssueBranchPrefix(ctx, config)) + result
+  return makeGitSafe(getIssueBranchPrefix(ctx, config) + result)
 }
 
 function getIssueBranchPrefix (ctx, config) {
@@ -148,16 +148,8 @@ function getIssueBranchConfig (ctx, config) {
   return undefined
 }
 
-function makeHumanSafe (s) {
-  let result = s.replace(/[\W]+/g, '_')
-  if (result.endsWith('_')) {
-    result = result.slice(0, -1)
-  }
-  return trim(result, '_')
-}
-
 function makeGitSafe (s) {
-  let result = s.replace(/[\s]+/g, '_')
+  let result = s.replace(/(?![-/])[\W]+/g, '_')
   if (result.endsWith('_')) {
     result = result.slice(0, -1)
   }
@@ -190,6 +182,5 @@ module.exports.getIssueBranchConfig = getIssueBranchConfig
 module.exports.getIssueBranchPrefix = getIssueBranchPrefix
 module.exports.createBranch = createBranch
 module.exports.makeGitSafe = makeGitSafe
-module.exports.makeHumanSafe = makeHumanSafe
 module.exports.interpolate = interpolate
 module.exports.wildcardMatch = wildcardMatch
