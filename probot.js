@@ -109,7 +109,7 @@ async function createBranch (ctx, owner, repo, branchName, sha, log) {
     })
     log(`Branch created: ${branchName}`)
     if (isProduction()) {
-      pushMetric()
+      pushMetric(log)
     }
     return res
   } catch (e) {
@@ -121,8 +121,7 @@ async function createBranch (ctx, owner, repo, branchName, sha, log) {
   }
 }
 
-function pushMetric () {
-  console.log('pushing metric to cloudwatch')
+function pushMetric (log) {
   const namespace = process.env.CLOUDWATCH_NAMESPACE ? process.env.CLOUDWATCH_NAMESPACE : 'create_issue_branch_staging'
   const metric = {
     MetricData: [{
@@ -131,12 +130,11 @@ function pushMetric () {
     Namespace: namespace
   }
   const cloudwatch = new AWS.CloudWatch()
-  cloudwatch.putMetricData(metric, (err, data) => {
+  cloudwatch.putMetricData(metric, (err) => {
     if (err) {
-      console.log(err, err.stack)
+      log.error('Could not push metric to CloudWatch: ' + err)
     } else {
-      console.log('success!')
-      console.log(data)
+      log.info('Pushed metric to CloudWatch')
     }
   })
 }
