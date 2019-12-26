@@ -1,5 +1,6 @@
 const Raven = require('raven')
 const Config = require('./config')
+const AWS = require('aws-sdk')
 
 module.exports = app => {
   app.log('App was loaded')
@@ -26,6 +27,10 @@ module.exports = app => {
       }
     }
   })
+}
+
+function isProduction () {
+  return process.env.NODE_ENV === 'production'
 }
 
 function getRepoOwner (ctx) {
@@ -103,6 +108,9 @@ async function createBranch (ctx, owner, repo, branchName, sha, log) {
       owner: owner, repo: repo, ref: `refs/heads/${branchName}`, sha: sha
     })
     log(`Branch created: ${branchName}`)
+    if (isProduction()) {
+      pushMetric()
+    }
     return res
   } catch (e) {
     if (e.message === 'Reference already exists') {
@@ -111,6 +119,26 @@ async function createBranch (ctx, owner, repo, branchName, sha, log) {
       log.error(`Could not create branch (${e.message})`)
     }
   }
+}
+
+function pushMetric () {
+  console.log('pushing metric to cloudwatch')
+  const namespace = process.env.CLOUDWATCH_NAMESPACE ? process.env.CLOUDWATCH_NAMESPACE : 'create_issue_branch_staging'
+  const metric = {
+    MetricData: [{
+      MetricName: 'branch_created', Unit: 'Count', Value: 1
+    }], //
+    Namespace: namespace
+  }
+  const cloudwatch = new AWS.CloudWatch()
+  cloudwatch.putMetricData(metric, (err, data) => {
+    if (err) {
+      console.log(err, err.stack)
+    } else {
+      console.log('success!')
+      console.log(data)
+    }
+  })
 }
 
 async function getBranchNameFromIssue (ctx, config) {
