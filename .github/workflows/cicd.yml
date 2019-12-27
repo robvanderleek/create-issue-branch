@@ -18,8 +18,13 @@ jobs:
     - run: yarn install
     - run: yarn test
     - run: yarn run lint
-    - name: Deploy to Heroku
+    - name: Deploy master to Heroku
       env:
         HEROKU_AUTH_TOKEN: ${{ secrets.HEROKU_AUTH_TOKEN }}
       if: github.ref == 'refs/heads/master' && job.status == 'success'
       run: git push https://heroku:$HEROKU_AUTH_TOKEN@git.heroku.com/create-issue-branch.git origin/master:master
+    - name: Deploy staging to Heroku
+      env:
+        HEROKU_AUTH_TOKEN: ${{ secrets.HEROKU_AUTH_TOKEN }}
+      if: github.ref == 'refs/heads/staging' && job.status == 'success'
+      run: git push https://heroku:$HEROKU_AUTH_TOKEN@git.heroku.com/create-issue-branch-staging.git origin/master:staging
