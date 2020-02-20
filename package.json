@@ -28,7 +28,7 @@
     "raven": "^2.6.4"
   },
   "devDependencies": {
-    "@zeit/ncc": "^0.20.5",
+    "@zeit/ncc": "^0.21.1",
     "jest": "^25.1.0",
     "nock": "^11.8.2",
     "nodemon": "^2.0.2",
