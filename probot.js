@@ -15,22 +15,41 @@ module.exports = app => {
   app.on('issues.assigned', async ctx => {
     app.log('Issue was assigned')
     const config = await Config.load(ctx)
-    if (config) {
-      const owner = getRepoOwner(ctx)
-      const repo = getRepoName(ctx)
-      const branchName = await getBranchNameFromIssue(ctx, config)
-      if (await branchExists(ctx, owner, repo, branchName)) {
-        app.log('Branch already exists')
-      } else {
-        const sha = await getSourceBranchHeadSha(ctx, config, app.log)
-        await createBranch(ctx, owner, repo, branchName, sha, app.log)
+    if (config && isModeAuto(config)) {
+      await createIssueBranch(app, ctx, config)
+    }
+  })
+  app.on('issue_comment.created', async ctx => {
+    if (isChatOpsCommand(ctx.payload.comment.body)) {
+      app.log('ChatOps command received')
+      const config = await Config.load(ctx)
+      if (config && isModeChatOps(config)) {
+        await createIssueBranch(app, ctx, config)
       }
     }
   })
 }
 
+async function createIssueBranch (app, ctx, config) {
+  const owner = getRepoOwner(ctx)
+  const repo = getRepoName(ctx)
+  const branchName = await getBranchNameFromIssue(ctx, config)
+  if (await branchExists(ctx, owner, repo, branchName)) {
+    await addComment(ctx, config, 'Branch already exists')
+  } else {
+    const sha = await getSourceBranchHeadSha(ctx, config, app.log)
+    await createBranch(ctx, owner, repo, branchName, sha, app.log)
+    app.log(`Branch created: ${branchName}`)
+    await addComment(ctx, config, `Branch [${branchName}](${getRepoUrl(ctx)}/tree/${branchName}) created!`)
+  }
+}
+
 function isProduction () {
   return process.env.NODE_ENV === 'production'
+}
+
+function isChatOpsCommand (s) {
+  return ['/create-issue-branch', '/cib'].includes(s.trim().toLowerCase())
 }
 
 function getRepoOwner (ctx) {
@@ -39,6 +58,10 @@ function getRepoOwner (ctx) {
 
 function getRepoName (ctx) {
   return ctx.payload.repository.name
+}
+
+function getRepoUrl (ctx) {
+  return ctx.payload.repository.html_url
 }
 
 function getIssueNumber (ctx) {
@@ -51,6 +74,13 @@ function getIssueTitle (ctx) {
 
 function getDefaultBranch (ctx) {
   return ctx.payload.repository.default_branch
+}
+
+async function addComment (ctx, config, comment) {
+  if (!isSilent(config)) {
+    const params = ctx.issue({ body: comment })
+    await ctx.github.issues.createComment(params)
+  }
 }
 
 function getIssueLabels (ctx) {
@@ -107,7 +137,6 @@ async function createBranch (ctx, owner, repo, branchName, sha, log) {
     const res = await ctx.github.gitdata.createRef({
       owner: owner, repo: repo, ref: `refs/heads/${branchName}`, sha: sha
     })
-    log(`Branch created: ${branchName}`)
     if (isProduction()) {
       pushMetric(log)
     }
@@ -137,6 +166,23 @@ function pushMetric (log) {
       log.info('Pushed metric to CloudWatch')
     }
   })
+}
+
+function isModeAuto (config) {
+  return !isModeChatOps(config)
+}
+
+function isModeChatOps (config) {
+  return (config.mode && config.mode === 'chatops')
+}
+
+function isSilent (config) {
+  if (config.silent) {
+    return config.silent === true
+  } else if (isModeChatOps(config)) {
+    return false
+  }
+  return true
 }
 
 async function getBranchNameFromIssue (ctx, config) {
@@ -203,6 +249,7 @@ function wildcardMatch (pattern, s) {
 }
 
 // For unit-tests
+module.exports.isChatOpsCommand = isChatOpsCommand
 module.exports.getBranchNameFromIssue = getBranchNameFromIssue
 module.exports.getIssueBranchConfig = getIssueBranchConfig
 module.exports.getIssueBranchPrefix = getIssueBranchPrefix

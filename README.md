@@ -8,17 +8,24 @@
 [![Dependabot](https://badgen.net/badge/Dependabot/enabled/green?icon=dependabot)](https://dependabot.com/)
 [![Sentry](https://img.shields.io/badge/sentry-enabled-green)](https://sentry.io)
 
-A GitHub App built with [Probot](https://github.com/probot/probot) that creates a new branch after assigning an issue.
+A GitHub App/Action that automates the creation of issue branches (either automatically after assigning an issue or after commenting on an issue with a ChatOps command: `/create-issue-branch` or `/cib`).
 
 Built in response to this feature request issue: https://github.com/isaacs/github/issues/1125
 
 # Installation
 
-## GitHub App
+There are two options to run this app as part of your development workflow:
 
-You can install the app for a repository from [*this page*](https://github.com/apps/create-issue-branch)
+1. [Install](https://github.com/apps/create-issue-branch) it as an *app* for your organization/account/repository
+2. Run it as an *action* in your GitHub action YAML configuration
 
-## GitHub Action
+Option 1 is easiest if you're developing on GitHub.com, option 2 gives you full control how and when the app runs in your development workflow.
+
+## Option 1. Install the GitHub App
+
+You can install the app for your organization/account/repository from [*this page*](https://github.com/apps/create-issue-branch)
+
+## Option 2. Configure GitHub Action
 
 Add this to your workflow YAML configuration:
 
@@ -26,6 +33,8 @@ Add this to your workflow YAML configuration:
 on:
     issues:
         types: [assigned]
+    issue_comment:
+        types: [created]
 
 jobs:
     create_issue_branch_job:
@@ -33,20 +42,32 @@ jobs:
         steps:
         - name: Create Issue Branch
           uses: robvanderleek/create-issue-branch@master
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 # Usage
 
-The typical workflow is:
+In "auto" mode the workflow is:
+
  1. An issue is created, for example: Issue 15: Fix nasty bug!
 
  *some time may pass*
 
  2. The issue is assigned
  3. When the issue is assigned this app will create a new issue branch
-    (for the example issue this branch will be called `issue-15-Fix_nasty_bug`)
+    (for the example issue this branch will be called `issue-15-Fix_nasty_bug`.) If the issue is re-assigned no new branch will be created.
 
-If the issue is re-assigned no new branch will be created.
+In "chatops" mode the workflow is:
+
+ 1. An issue is created, for example: Issue 15: Fix nasty bug!
+
+ *some time may pass*
+
+ 2. A developer that wants to work on this issue gives the ChatOps command `/cib` as a comment on the issue
+ 3. This app will create a new issue branch
+    (for the example issue this branch will be called `issue-15-Fix_nasty_bug`.)
+    By default the app notifies creation is completed with a comment on the issue. If the branch already exists no new branch will be created.
 
 # Configuration
 
@@ -54,13 +75,35 @@ This app does not require a configuration. However, if you want to override
 the default behaviour you can do so by placing a YAML file in your repository 
 at the location: `.github/issue-branch.yml` with the overrides.
 
-Organization/user wide configuration is also supported by putting the YAML file `.github/issue-branch.yml`
-in a repository called `.github`. So, if your organization/username is `acme`, the full path becomes:
-`https://github.com/acme/.github/blob/master/.github/issue-branch.yml`. 
-
 If the app has a problem with your configuration YAML (e.g.: invalid content) it will create an issue 
 with the title "Error in Create Issue Branch app configuration" in the repo. Subsequent runs with an 
 invalid configuration will not create new issues, only one stays open. 
+
+## Organization/User wide configuration
+
+Organization/user wide configuration prevents a configuration in every individual repo and is supported by putting the YAML file `.github/issue-branch.yml`
+in a repository called `.github`. So, if your organization/username is `acme`, the full path becomes:
+`https://github.com/acme/.github/blob/master/.github/issue-branch.yml`. 
+
+## Mode: auto or chatops
+
+The default mode is "auto", meaning a new issue branch is created after an issue is assigned.
+
+You can change the mode to "chatops", meaning a new issue branch is created after commenting on an issue with `/create-issue-branch` or `/cib`, by puuting the following line in your `issue-branch.yml`:
+
+```yaml
+mode: chatops
+```
+
+## Silent or chatty
+
+By default in mode "Auto" this app is silent. By default in mode "ChatOps" the app comments on the issue after creating a branch.
+
+You can change this default behaviour by putting the following line in your `issue-branch.yml`:
+
+```yaml
+silent: true # or false
+```
 
 ## Branch names
 

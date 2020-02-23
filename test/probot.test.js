@@ -2,6 +2,7 @@ const nock = require('nock')
 const myProbotApp = require('../probot')
 const { Probot } = require('probot')
 const issueAssignedPayload = require('./fixtures/issues.assigned')
+const commentCreatedPayload = require('./fixtures/issue_comment.created')
 
 nock.disableNetConnect()
 
@@ -504,6 +505,69 @@ test('log branch create errors with error level', async () => {
   expect(log.error).toBeCalled()
 })
 
+test('creates a branch when a chatops command is given', async () => {
+  nockNonExistingBranch('issue-1-Test_issue')
+  nockExistingBranch('master', 12345678)
+  nockConfig('mode: chatops')
+  let createEndpointCalled = false
+  let body = ''
+
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/git/refs', () => {
+      createEndpointCalled = true
+      return true
+    })
+    .reply(200)
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/issues/1/comments', (data) => {
+      body = data.body
+      return true
+    })
+    .reply(200)
+
+  await probot.receive({ name: 'issue_comment', payload: commentCreatedPayload })
+
+  expect(createEndpointCalled).toBeTruthy()
+  expect(body).toBe(
+    'Branch [issue-1-Test_issue](https://github.com/robvanderleek/create-issue-branch/tree/issue-1-Test_issue) created!')
+})
+
+test('do nothing when a chatops command is given and mode is not chatops', async () => {
+  nockNonExistingBranch('issue-1-Test_issue')
+  nockExistingBranch('master', 12345678)
+  nockConfig('mode: auto')
+  let createEndpointCalled = false
+
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/git/refs', () => {
+      createEndpointCalled = true
+      return true
+    })
+    .reply(200)
+
+  await probot.receive({ name: 'issue_comment', payload: commentCreatedPayload })
+
+  expect(createEndpointCalled).toBeFalsy()
+})
+
+test('creates a branch when a chatops command is given, no comment', async () => {
+  nockNonExistingBranch('issue-1-Test_issue')
+  nockExistingBranch('master', 12345678)
+  nockConfig('mode: chatops\nsilent: true')
+  let createEndpointCalled = false
+
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/git/refs', () => {
+      createEndpointCalled = true
+      return true
+    })
+    .reply(200)
+
+  await probot.receive({ name: 'issue_comment', payload: commentCreatedPayload })
+
+  expect(createEndpointCalled).toBeTruthy()
+})
+
 test('wildcard matching', () => {
   expect(myProbotApp.wildcardMatch('aap*', 'aap')).toBeTruthy()
   expect(myProbotApp.wildcardMatch('aap*', 'aapnoot')).toBeTruthy()
@@ -514,4 +578,18 @@ test('wildcard matching', () => {
   expect(myProbotApp.wildcardMatch('aap', 'aapnoot')).toBeFalsy()
   expect(myProbotApp.wildcardMatch('noot', 'aapnoot')).toBeFalsy()
   expect(myProbotApp.wildcardMatch('aap', 'Aap')).toBeFalsy()
+})
+
+test('is ChatOps command', () => {
+  expect(myProbotApp.isChatOpsCommand('/create-issue-branch')).toBeTruthy()
+  expect(myProbotApp.isChatOpsCommand('/Create-Issue-Branch')).toBeTruthy()
+  expect(myProbotApp.isChatOpsCommand('/create-issue-branch  ')).toBeTruthy()
+  expect(myProbotApp.isChatOpsCommand('  /create-issue-branch  ')).toBeTruthy()
+  expect(myProbotApp.isChatOpsCommand('/cib')).toBeTruthy()
+
+  expect(myProbotApp.isChatOpsCommand('/create-branch  ')).toBeFalsy()
+  expect(myProbotApp.isChatOpsCommand(' /cb')).toBeFalsy()
+  expect(myProbotApp.isChatOpsCommand(' / cb')).toBeFalsy()
+  expect(myProbotApp.isChatOpsCommand('/createbranch')).toBeFalsy()
+  expect(myProbotApp.isChatOpsCommand('/create-issue')).toBeFalsy()
 })
