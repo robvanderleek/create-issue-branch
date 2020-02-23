@@ -48,7 +48,9 @@ jobs:
 
 # Usage
 
-In "auto" mode the workflow is:
+This app can support your development workflow in two ways (modes): auto and chatops.
+
+In "auto" mode the typical development workflow is:
 
  1. An issue is created, for example: Issue 15: Fix nasty bug!
 
@@ -56,9 +58,9 @@ In "auto" mode the workflow is:
 
  2. The issue is assigned
  3. When the issue is assigned this app will create a new issue branch
-    (for the example issue this branch will be called `issue-15-Fix_nasty_bug`.) If the issue is re-assigned no new branch will be created.
+    (for the example issue this branch will be called `issue-15-Fix_nasty_bug`)
 
-In "chatops" mode the workflow is:
+In "chatops" mode the typical development workflow is:
 
  1. An issue is created, for example: Issue 15: Fix nasty bug!
 
@@ -66,8 +68,8 @@ In "chatops" mode the workflow is:
 
  2. A developer that wants to work on this issue gives the ChatOps command `/cib` as a comment on the issue
  3. This app will create a new issue branch
-    (for the example issue this branch will be called `issue-15-Fix_nasty_bug`.)
-    By default the app notifies creation is completed with a comment on the issue. If the branch already exists no new branch will be created.
+    (for the example issue this branch will be called `issue-15-Fix_nasty_bug`)
+    By default the app notifies creation is completed with a comment on the issue.
 
 # Configuration
 
