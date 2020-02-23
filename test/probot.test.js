@@ -585,10 +585,10 @@ test('is ChatOps command', () => {
   expect(myProbotApp.isChatOpsCommand('/Create-Issue-Branch')).toBeTruthy()
   expect(myProbotApp.isChatOpsCommand('/create-issue-branch  ')).toBeTruthy()
   expect(myProbotApp.isChatOpsCommand('  /create-issue-branch  ')).toBeTruthy()
-  expect(myProbotApp.isChatOpsCommand('/create-branch  ')).toBeTruthy()
   expect(myProbotApp.isChatOpsCommand('/cib')).toBeTruthy()
-  expect(myProbotApp.isChatOpsCommand(' /cb')).toBeTruthy()
 
+  expect(myProbotApp.isChatOpsCommand('/create-branch  ')).toBeFalsy()
+  expect(myProbotApp.isChatOpsCommand(' /cb')).toBeFalsy()
   expect(myProbotApp.isChatOpsCommand(' / cb')).toBeFalsy()
   expect(myProbotApp.isChatOpsCommand('/createbranch')).toBeFalsy()
   expect(myProbotApp.isChatOpsCommand('/create-issue')).toBeFalsy()

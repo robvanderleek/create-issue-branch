@@ -49,7 +49,7 @@ function isProduction () {
 }
 
 function isChatOpsCommand (s) {
-  return ['/create-issue-branch', '/create-branch', '/cib', '/cb'].includes(s.trim().toLowerCase())
+  return ['/create-issue-branch', '/cib'].includes(s.trim().toLowerCase())
 }
 
 function getRepoOwner (ctx) {
@@ -177,8 +177,8 @@ function isModeChatOps (config) {
 }
 
 function isSilent (config) {
-  if (config.silent && config.silent === true) {
-    return true
+  if (config.silent) {
+    return config.silent === true
   } else if (isModeChatOps(config)) {
     return false
   }
