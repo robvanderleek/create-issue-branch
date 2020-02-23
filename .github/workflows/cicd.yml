@@ -18,6 +18,7 @@ jobs:
     - run: yarn install
     - run: yarn test
     - run: yarn run lint
+    - run: yarn dist
     - name: Deploy master to Heroku
       env:
         HEROKU_AUTH_TOKEN: ${{ secrets.HEROKU_AUTH_TOKEN }}
@@ -28,3 +29,15 @@ jobs:
         HEROKU_AUTH_TOKEN: ${{ secrets.HEROKU_AUTH_TOKEN }}
       run: git push https://heroku:$HEROKU_AUTH_TOKEN@git.heroku.com/create-issue-branch-staging.git origin/staging:master
       if: github.ref == 'refs/heads/staging' && job.status == 'success'
+    - name: Commit GitHub Action distribution
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add dist/index.js
+        git commit -m "Build by GitHub Actions"
+      if: github.ref == 'refs/heads/master' && job.status == 'success'
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+      if: github.ref == 'refs/heads/master' && job.status == 'success'
