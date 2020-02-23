@@ -8,7 +8,7 @@
 [![Dependabot](https://badgen.net/badge/Dependabot/enabled/green?icon=dependabot)](https://dependabot.com/)
 [![Sentry](https://img.shields.io/badge/sentry-enabled-green)](https://sentry.io)
 
-A GitHub App/Action that automates the creation of issue branches (either automatically after assigning an issue or commenting on an issue with a ChatOps command: `/create-issue-branch` or `/cib`).
+A GitHub App/Action that automates the creation of issue branches (either automatically after assigning an issue or after commenting on an issue with a ChatOps command: `/create-issue-branch` or `/cib`).
 
 Built in response to this feature request issue: https://github.com/isaacs/github/issues/1125
 
@@ -16,14 +16,14 @@ Built in response to this feature request issue: https://github.com/isaacs/githu
 
 There are two options to run this app as part of your development workflow:
 
-1. [Install]((https://github.com/apps/create-issue-branch)) it as an *app* for your organization/account/repo
+1. [Install](https://github.com/apps/create-issue-branch) it as an *app* for your organization/account/repository
 2. Run it as an *action* in your GitHub action YAML configuration
 
 Option 1 is easiest if you're developing on GitHub.com, option 2 gives you full control how and when the app runs in your development workflow.
 
 ## Option 1. Install the GitHub App
 
-You can install the app for a repository from [*this page*](https://github.com/apps/create-issue-branch)
+You can install the app for your organization/account/repository from [*this page*](https://github.com/apps/create-issue-branch)
 
 ## Option 2. Configure GitHub Action
 
@@ -33,7 +33,7 @@ Add this to your workflow YAML configuration:
 on:
     issues:
         types: [assigned]
-	 issue_comment:
+    issue_comment:
         types: [created]
 
 jobs:
@@ -42,11 +42,13 @@ jobs:
         steps:
         - name: Create Issue Branch
           uses: robvanderleek/create-issue-branch@master
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 # Usage
 
-The typical workflow is:
+In "auto" mode the workflow is:
 
  1. An issue is created, for example: Issue 15: Fix nasty bug!
 
@@ -54,11 +56,9 @@ The typical workflow is:
 
  2. The issue is assigned
  3. When the issue is assigned this app will create a new issue branch
-    (for the example issue this branch will be called `issue-15-Fix_nasty_bug`)
+    (for the example issue this branch will be called `issue-15-Fix_nasty_bug`.) If the issue is re-assigned no new branch will be created.
 
-If the issue is re-assigned no new branch will be created.
-
-*Or:*
+In "chatops" mode the workflow is:
 
  1. An issue is created, for example: Issue 15: Fix nasty bug!
 
@@ -66,10 +66,8 @@ If the issue is re-assigned no new branch will be created.
 
  2. A developer that wants to work on this issue gives the ChatOps command `/cib` as a comment on the issue
  3. This app will create a new issue branch
-    (for the example issue this branch will be called `issue-15-Fix_nasty_bug`)
-    By default the app notifies creation is completed with a comment on the issue
-
-If the branch already exists no new branch will be created.
+    (for the example issue this branch will be called `issue-15-Fix_nasty_bug`.)
+    By default the app notifies creation is completed with a comment on the issue. If the branch already exists no new branch will be created.
 
 # Configuration
 
