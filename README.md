@@ -38,6 +38,7 @@ jobs:
 # Usage
 
 The typical workflow is:
+
  1. An issue is created, for example: Issue 15: Fix nasty bug!
 
  *some time may pass*

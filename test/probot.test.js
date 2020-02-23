@@ -532,6 +532,24 @@ test('creates a branch when a chatops command is given', async () => {
     'Branch [issue-1-Test_issue](https://github.com/robvanderleek/create-issue-branch/tree/issue-1-Test_issue) created!')
 })
 
+test('do nothing when a chatops command is given and mode is not chatops', async () => {
+  nockNonExistingBranch('issue-1-Test_issue')
+  nockExistingBranch('master', 12345678)
+  nockConfig('mode: auto')
+  let createEndpointCalled = false
+
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/git/refs', () => {
+      createEndpointCalled = true
+      return true
+    })
+    .reply(200)
+
+  await probot.receive({ name: 'issue_comment', payload: commentCreatedPayload })
+
+  expect(createEndpointCalled).toBeFalsy()
+})
+
 test('creates a branch when a chatops command is given, no comment', async () => {
   nockNonExistingBranch('issue-1-Test_issue')
   nockExistingBranch('master', 12345678)
