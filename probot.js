@@ -1,4 +1,4 @@
-const Raven = require('raven')
+const Sentry = require('@sentry/node')
 const Config = require('./config')
 const AWS = require('aws-sdk')
 
@@ -7,7 +7,7 @@ module.exports = app => {
 
   if (process.env.SENTRY_DSN) {
     app.log('Setting up Sentry.io logging...')
-    Raven.config(process.env.SENTRY_DSN).install()
+    Sentry.init({ dsn: process.env.SENTRY_DSN })
   } else {
     app.log('Skipping Sentry.io setup')
   }
