@@ -149,6 +149,48 @@ test('create short branch when configured that way', async () => {
   expect(branchRef).toBe('refs/heads/issue-1')
 })
 
+test('create branch with issue replacement when configured', async () => {
+  nockNonExistingBranch('foo-1-Test_issue')
+  nockExistingBranch('master', 12345678)
+  nockConfig('issueReplacement: foo')
+  let createEndpointCalled = false
+  let branchRef = ''
+
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/git/refs', (body) => {
+      branchRef = body.ref
+      createEndpointCalled = true
+      return true
+    })
+    .reply(200)
+
+  await probot.receive({ name: 'issues', payload: issueAssignedPayload })
+
+  expect(createEndpointCalled).toBeTruthy()
+  expect(branchRef).toBe('refs/heads/foo-1-Test_issue')
+})
+
+test('create short branch with issue replacement when configured', async () => {
+  nockNonExistingBranch('foo-1')
+  nockExistingBranch('master', 12345678)
+  nockConfig('issueReplacement: foo\nbranchName: short')
+  let createEndpointCalled = false
+  let branchRef = ''
+
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/git/refs', (body) => {
+      branchRef = body.ref
+      createEndpointCalled = true
+      return true
+    })
+    .reply(200)
+
+  await probot.receive({ name: 'issues', payload: issueAssignedPayload })
+
+  expect(createEndpointCalled).toBeTruthy()
+  expect(branchRef).toBe('refs/heads/foo-1')
+})
+
 test('source branch is default branch by, well, default', async () => {
   nockNonExistingBranch('issue-1-Test_issue')
   nockExistingBranch('master', '12345678')

@@ -189,7 +189,12 @@ async function getBranchNameFromIssue (ctx, config) {
   const number = getIssueNumber(ctx)
   const title = getIssueTitle(ctx)
   let result
-  if (config.branchName && config.branchName === 'tiny') {
+
+  if (config.issueReplacement) {
+    const base = `${config.issueReplacement}-${number}`
+    result = (config.branchName && config.branchName === 'short')
+      ? base : `${base}-${title}`
+  } else if (config.branchName && config.branchName === 'tiny') {
     result = `i${number}`
   } else if (config.branchName && config.branchName === 'short') {
     result = `issue-${number}`
