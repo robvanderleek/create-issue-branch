@@ -77,7 +77,8 @@ function getDefaultBranch (ctx) {
 }
 
 async function addComment (ctx, config, comment) {
-  if (!isSilent(config)) {
+  const silent = isSilent(config)
+  if (!silent) {
     const params = ctx.issue({ body: comment })
     await ctx.github.issues.createComment(params)
   }
@@ -177,7 +178,7 @@ function isModeChatOps (config) {
 }
 
 function isSilent (config) {
-  if (config.silent) {
+  if ('silent' in config) {
     return config.silent === true
   } else if (isModeChatOps(config)) {
     return false
