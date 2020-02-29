@@ -1,4 +1,4 @@
-const Raven = require('raven')
+const Sentry = require('@sentry/node')
 const Config = require('./config')
 const AWS = require('aws-sdk')
 
@@ -7,7 +7,7 @@ module.exports = app => {
 
   if (process.env.SENTRY_DSN) {
     app.log('Setting up Sentry.io logging...')
-    Raven.config(process.env.SENTRY_DSN).install()
+    Sentry.init({ dsn: process.env.SENTRY_DSN })
   } else {
     app.log('Skipping Sentry.io setup')
   }
@@ -77,7 +77,8 @@ function getDefaultBranch (ctx) {
 }
 
 async function addComment (ctx, config, comment) {
-  if (!isSilent(config)) {
+  const silent = isSilent(config)
+  if (!silent) {
     const params = ctx.issue({ body: comment })
     await ctx.github.issues.createComment(params)
   }
@@ -177,7 +178,7 @@ function isModeChatOps (config) {
 }
 
 function isSilent (config) {
-  if (config.silent) {
+  if ('silent' in config) {
     return config.silent === true
   } else if (isModeChatOps(config)) {
     return false
@@ -201,7 +202,7 @@ async function getBranchNameFromIssue (ctx, config) {
   } else {
     result = `issue-${number}-${title}`
   }
-  return makeGitSafe(getIssueBranchPrefix(ctx, config) + result)
+  return makeGitSafe(getIssueBranchPrefix(ctx, config), true) + makeGitSafe(result)
 }
 
 function getIssueBranchPrefix (ctx, config) {
@@ -225,12 +226,10 @@ function getIssueBranchConfig (ctx, config) {
   return undefined
 }
 
-function makeGitSafe (s) {
-  let result = s.replace(/(?![-/])[\W]+/g, '_')
-  if (result.endsWith('_')) {
-    result = result.slice(0, -1)
-  }
-  return trim(result, '_')
+function makeGitSafe (s, isPrefix = false) {
+  const regexp = isPrefix ? /(?![-/])[\W]+/g : /(?![-])[\W]+/g
+  const result = trim(s, ' ').replace(regexp, '_')
+  return isPrefix ? result : trim(result, '_')
 }
 
 function trim (str, ch) {
