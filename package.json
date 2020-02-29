@@ -21,11 +21,11 @@
     "dist": "ncc build action.js"
   },
   "dependencies": {
+    "@sentry/node": "^5.13.1",
     "aws-sdk": "^2.624.0",
     "bunyan-sentry-stream": "^1.2.1",
     "probot": "^9.9.4",
-    "probot-actions-adapter": "^1.0.2",
-    "raven": "^2.6.4"
+    "probot-actions-adapter": "^1.0.2"
   },
   "devDependencies": {
     "@zeit/ncc": "^0.21.1",
