@@ -362,9 +362,11 @@ test('configuration with label field missing', async () => {
 })
 
 test('get full branch name from issue title', () => {
-  expect(myProbotApp.makeGitSafe('feature/bug')).toBe('feature/bug')
-  expect(myProbotApp.makeGitSafe('  feature/this is a bug ')).toBe('feature/this_is_a_bug')
+  expect(myProbotApp.makeGitSafe('feature/bug', true)).toBe('feature/bug')
+  expect(myProbotApp.makeGitSafe('  feature/this is a bug ', true)).toBe('feature/this_is_a_bug')
   expect(myProbotApp.makeGitSafe('feature_bug')).toBe('feature_bug')
+  expect(myProbotApp.makeGitSafe('hello/ world', true)).toBe('hello/_world')
+  expect(myProbotApp.makeGitSafe('Issue name with slash/')).toBe('Issue_name_with_slash')
 })
 
 test('get branch name from issue', async () => {

@@ -196,7 +196,7 @@ async function getBranchNameFromIssue (ctx, config) {
   } else {
     result = `issue-${number}-${title}`
   }
-  return makeGitSafe(getIssueBranchPrefix(ctx, config) + result)
+  return makeGitSafe(getIssueBranchPrefix(ctx, config), true) + makeGitSafe(result)
 }
 
 function getIssueBranchPrefix (ctx, config) {
@@ -220,12 +220,10 @@ function getIssueBranchConfig (ctx, config) {
   return undefined
 }
 
-function makeGitSafe (s) {
-  let result = s.replace(/(?![-/])[\W]+/g, '_')
-  if (result.endsWith('_')) {
-    result = result.slice(0, -1)
-  }
-  return trim(result, '_')
+function makeGitSafe (s, isPrefix = false) {
+  const regexp = isPrefix ? /(?![-/])[\W]+/g : /(?![-])[\W]+/g
+  const result = trim(s, ' ').replace(regexp, '_')
+  return isPrefix ? result : trim(result, '_')
 }
 
 function trim (str, ch) {
