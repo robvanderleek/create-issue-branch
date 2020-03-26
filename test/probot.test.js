@@ -361,6 +361,29 @@ test('configuration with label field missing', async () => {
   expect(issueTitle).toBe('Error in Create Issue Branch app configuration')
 })
 
+test('configuration with invalid YAML', async () => {
+  const ymlConfig = `branches:
+  - label: Type: Feature
+    prefix: feature/`
+  nockConfig(ymlConfig)
+
+  nock('https://api.github.com')
+    .get('/search/issues')
+    .query(true)
+    .reply(200, { items: [] })
+
+  let issueTitle = ''
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/issues', body => {
+      issueTitle = body.title
+      return true
+    })
+    .reply(200)
+
+  await probot.receive({ name: 'issues', payload: issueAssignedWithBugAndEnhancementLabelsPayload() })
+  expect(issueTitle).toBe('Error in Create Issue Branch app configuration')
+})
+
 test('get full branch name from issue title', () => {
   expect(myProbotApp.makeGitSafe('feature/bug', true)).toBe('feature/bug')
   expect(myProbotApp.makeGitSafe('  feature/this is a bug ', true)).toBe('feature/this_is_a_bug')

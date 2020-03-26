@@ -37,16 +37,21 @@ async function handleError (ctx, err) {
 }
 
 async function load (ctx) {
-  const result = await ctx.config('issue-branch.yml', {})
-  if (result.branches) {
-    for (const branchConfiguration of result.branches) {
-      if (!branchConfiguration.label) {
-        await handleError(ctx, `Branch configuration is missing label: ${JSON.stringify(branchConfiguration)}`)
-        return undefined
+  try {
+    const result = await ctx.config('issue-branch.yml', {})
+    if (result.branches) {
+      for (const branchConfiguration of result.branches) {
+        if (!branchConfiguration.label) {
+          await handleError(ctx, `Branch configuration is missing label: ${JSON.stringify(branchConfiguration)}`)
+          return undefined
+        }
       }
     }
+    return result
+  } catch (e) {
+    await handleError(ctx, `Exception while parsing configuration YAML: ${e.message}`)
+    return undefined
   }
-  return result
 }
 
 module.exports.load = load
