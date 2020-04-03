@@ -15,7 +15,7 @@ module.exports = app => {
   app.on('issues.assigned', async ctx => {
     app.log('Issue was assigned')
     const config = await Config.load(ctx)
-    if (config && isModeAuto(config)) {
+    if (config && Config.isModeAuto(config)) {
       await createIssueBranch(app, ctx, config)
     }
   })
@@ -23,10 +23,14 @@ module.exports = app => {
     if (isChatOpsCommand(ctx.payload.comment.body)) {
       app.log('ChatOps command received')
       const config = await Config.load(ctx)
-      if (config && isModeChatOps(config)) {
+      if (config && Config.isModeChatOps(config)) {
         await createIssueBranch(app, ctx, config)
       }
     }
+  })
+  app.on('pull_request.closed', async ctx => {
+    console.log('Received pull request closed event!')
+    console.log(ctx.payload)
   })
 }
 
@@ -169,18 +173,10 @@ function pushMetric (log) {
   })
 }
 
-function isModeAuto (config) {
-  return !isModeChatOps(config)
-}
-
-function isModeChatOps (config) {
-  return (config.mode && config.mode === 'chatops')
-}
-
 function isSilent (config) {
   if ('silent' in config) {
     return config.silent === true
-  } else if (isModeChatOps(config)) {
+  } else if (Config.isModeChatOps(config)) {
     return false
   }
   return true

@@ -49,4 +49,14 @@ async function load (ctx) {
   return result
 }
 
+function isModeAuto (config) {
+  return !isModeChatOps(config)
+}
+
+function isModeChatOps (config) {
+  return (config.mode && config.mode === 'chatops')
+}
+
 module.exports.load = load
+module.exports.isModeAuto = isModeAuto
+module.exports.isModeChatOps = isModeChatOps
