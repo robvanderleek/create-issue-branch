@@ -30,7 +30,14 @@ module.exports = app => {
   })
   app.on('pull_request.closed', async ctx => {
     console.log('Received pull request closed event!')
-    console.log(ctx.payload)
+    const owner = getRepoOwner(ctx)
+    const repo = getRepoName(ctx)
+    const branchName = ctx.head.ref
+    const issueNumber = getIssueNumberFromBranchName(branchName)
+    const issueForBranch = await ctx.github.issues.get({ owner: owner, repo: repo, issue_number: issueNumber })
+    if (issueForBranch) {
+      await ctx.github.issues.update({ owner: owner, repo: repo, issue_number: issueNumber, state: 'closed' })
+    }
   })
 }
 
@@ -196,6 +203,10 @@ async function getBranchNameFromIssue (ctx, config) {
   return makeGitSafe(getIssueBranchPrefix(ctx, config), true) + makeGitSafe(result)
 }
 
+function getIssueNumberFromBranchName (branchName) {
+
+}
+
 function getIssueBranchPrefix (ctx, config) {
   let result = ''
   const branchConfig = getIssueBranchConfig(ctx, config)
@@ -246,6 +257,7 @@ function wildcardMatch (pattern, s) {
 // For unit-tests
 module.exports.isChatOpsCommand = isChatOpsCommand
 module.exports.getBranchNameFromIssue = getBranchNameFromIssue
+module.exports.getIssueNumberFromBranchName = getIssueNumberFromBranchName
 module.exports.getIssueBranchConfig = getIssueBranchConfig
 module.exports.getIssueBranchPrefix = getIssueBranchPrefix
 module.exports.createBranch = createBranch
