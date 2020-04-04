@@ -190,10 +190,16 @@ async function getBranchNameFromIssue (ctx, config) {
   const number = getIssueNumber(ctx)
   const title = getIssueTitle(ctx)
   let result
-  if (config.branchName && config.branchName === 'tiny') {
-    result = `i${number}`
-  } else if (config.branchName && config.branchName === 'short') {
-    result = `issue-${number}`
+  if (config.branchName) {
+    if (config.branchName === 'tiny') {
+      result = `i${number}`
+    } else if (config.branchName === 'short') {
+      result = `issue-${number}`
+    } else if (config.branchName === 'full') {
+      result = `issue-${number}-${title}`
+    } else {
+      result = interpolate(config.branchName, ctx.payload)
+    }
   } else {
     result = `issue-${number}-${title}`
   }
