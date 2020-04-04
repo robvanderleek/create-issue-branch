@@ -593,6 +593,72 @@ test('creates a branch when a chatops command is given, no comment', async () =>
   expect(createEndpointCalled).toBeTruthy()
 })
 
+test('create branch with custom issue name', async () => {
+  nockNonExistingBranch('foo-1-Test_issue')
+  nockExistingBranch('master', 12345678)
+  // eslint-disable-next-line no-template-curly-in-string
+  nockConfig('branchName: \'foo-${issue.number}-${issue.title}\'')
+  let createEndpointCalled = false
+  let branchRef = ''
+
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/git/refs', (body) => {
+      branchRef = body.ref
+      createEndpointCalled = true
+      return true
+    })
+    .reply(200)
+
+  await probot.receive({ name: 'issues', payload: issueAssignedPayload })
+
+  expect(createEndpointCalled).toBeTruthy()
+  expect(branchRef).toBe('refs/heads/foo-1-Test_issue')
+})
+
+test('create branch with custom short issue name', async () => {
+  nockNonExistingBranch('foo-1')
+  nockExistingBranch('master', 12345678)
+  // eslint-disable-next-line no-template-curly-in-string
+  nockConfig('branchName: \'foo-${issue.number}\'')
+  let createEndpointCalled = false
+  let branchRef = ''
+
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/git/refs', (body) => {
+      branchRef = body.ref
+      createEndpointCalled = true
+      return true
+    })
+    .reply(200)
+
+  await probot.receive({ name: 'issues', payload: issueAssignedPayload })
+
+  expect(createEndpointCalled).toBeTruthy()
+  expect(branchRef).toBe('refs/heads/foo-1')
+})
+
+test('create branch with GitLab-like issue name', async () => {
+  nockNonExistingBranch('1-Test_issue')
+  nockExistingBranch('master', 12345678)
+  // eslint-disable-next-line no-template-curly-in-string
+  nockConfig('branchName: \'${issue.number}-${issue.title}\'')
+  let createEndpointCalled = false
+  let branchRef = ''
+
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/git/refs', (body) => {
+      branchRef = body.ref
+      createEndpointCalled = true
+      return true
+    })
+    .reply(200)
+
+  await probot.receive({ name: 'issues', payload: issueAssignedPayload })
+
+  expect(createEndpointCalled).toBeTruthy()
+  expect(branchRef).toBe('refs/heads/1-Test_issue')
+})
+
 test('wildcard matching', () => {
   expect(myProbotApp.wildcardMatch('aap*', 'aap')).toBeTruthy()
   expect(myProbotApp.wildcardMatch('aap*', 'aapnoot')).toBeTruthy()
