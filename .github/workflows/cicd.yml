@@ -27,7 +27,7 @@ jobs:
     - name: Deploy branches to Heroku staging environment
       env:
         HEROKU_AUTH_TOKEN: ${{ secrets.HEROKU_AUTH_TOKEN }}
-      run: git push https://heroku:$HEROKU_AUTH_TOKEN@git.heroku.com/create-issue-branch-staging.git origin/staging:master
+      run: git push https://heroku:$HEROKU_AUTH_TOKEN@git.heroku.com/create-issue-branch-staging.git origin/${GITHUB_REF##*/}:master
       if: github.ref != 'refs/heads/master' && job.status == 'success'
     - name: Commit GitHub Action distribution
       run: |
