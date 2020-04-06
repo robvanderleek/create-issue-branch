@@ -361,6 +361,29 @@ test('configuration with label field missing', async () => {
   expect(issueTitle).toBe('Error in Create Issue Branch app configuration')
 })
 
+test('configuration with invalid YAML', async () => {
+  const ymlConfig = `branches:
+  - label: Type: Feature
+    prefix: feature/`
+  nockConfig(ymlConfig)
+
+  nock('https://api.github.com')
+    .get('/search/issues')
+    .query(true)
+    .reply(200, { items: [] })
+
+  let issueTitle = ''
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/issues', body => {
+      issueTitle = body.title
+      return true
+    })
+    .reply(200)
+
+  await probot.receive({ name: 'issues', payload: issueAssignedWithBugAndEnhancementLabelsPayload() })
+  expect(issueTitle).toBe('Error in Create Issue Branch app configuration')
+})
+
 test('get full branch name from issue title', () => {
   expect(myProbotApp.makeGitSafe('feature/bug', true)).toBe('feature/bug')
   expect(myProbotApp.makeGitSafe('  feature/this is a bug ', true)).toBe('feature/this_is_a_bug')
@@ -568,6 +591,72 @@ test('creates a branch when a chatops command is given, no comment', async () =>
   await probot.receive({ name: 'issue_comment', payload: commentCreatedPayload })
 
   expect(createEndpointCalled).toBeTruthy()
+})
+
+test('create branch with custom issue name', async () => {
+  nockNonExistingBranch('foo-1-Test_issue')
+  nockExistingBranch('master', 12345678)
+  // eslint-disable-next-line no-template-curly-in-string
+  nockConfig('branchName: \'foo-${issue.number}-${issue.title}\'')
+  let createEndpointCalled = false
+  let branchRef = ''
+
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/git/refs', (body) => {
+      branchRef = body.ref
+      createEndpointCalled = true
+      return true
+    })
+    .reply(200)
+
+  await probot.receive({ name: 'issues', payload: issueAssignedPayload })
+
+  expect(createEndpointCalled).toBeTruthy()
+  expect(branchRef).toBe('refs/heads/foo-1-Test_issue')
+})
+
+test('create branch with custom short issue name', async () => {
+  nockNonExistingBranch('foo-1')
+  nockExistingBranch('master', 12345678)
+  // eslint-disable-next-line no-template-curly-in-string
+  nockConfig('branchName: \'foo-${issue.number}\'')
+  let createEndpointCalled = false
+  let branchRef = ''
+
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/git/refs', (body) => {
+      branchRef = body.ref
+      createEndpointCalled = true
+      return true
+    })
+    .reply(200)
+
+  await probot.receive({ name: 'issues', payload: issueAssignedPayload })
+
+  expect(createEndpointCalled).toBeTruthy()
+  expect(branchRef).toBe('refs/heads/foo-1')
+})
+
+test('create branch with GitLab-like issue name', async () => {
+  nockNonExistingBranch('1-Test_issue')
+  nockExistingBranch('master', 12345678)
+  // eslint-disable-next-line no-template-curly-in-string
+  nockConfig('branchName: \'${issue.number}-${issue.title}\'')
+  let createEndpointCalled = false
+  let branchRef = ''
+
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/git/refs', (body) => {
+      branchRef = body.ref
+      createEndpointCalled = true
+      return true
+    })
+    .reply(200)
+
+  await probot.receive({ name: 'issues', payload: issueAssignedPayload })
+
+  expect(createEndpointCalled).toBeTruthy()
+  expect(branchRef).toBe('refs/heads/1-Test_issue')
 })
 
 test('wildcard matching', () => {

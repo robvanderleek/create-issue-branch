@@ -19,16 +19,16 @@ jobs:
     - run: yarn test
     - run: yarn run lint
     - run: yarn dist
-    - name: Deploy master to Heroku
+    - name: Deploy master to Heroku production environment
       env:
         HEROKU_AUTH_TOKEN: ${{ secrets.HEROKU_AUTH_TOKEN }}
       run: git push https://heroku:$HEROKU_AUTH_TOKEN@git.heroku.com/create-issue-branch.git origin/master:master
       if: github.ref == 'refs/heads/master' && job.status == 'success'
-    - name: Deploy staging to Heroku
+    - name: Deploy branches to Heroku staging environment
       env:
         HEROKU_AUTH_TOKEN: ${{ secrets.HEROKU_AUTH_TOKEN }}
-      run: git push https://heroku:$HEROKU_AUTH_TOKEN@git.heroku.com/create-issue-branch-staging.git origin/staging:master
-      if: github.ref == 'refs/heads/staging' && job.status == 'success'
+      run: git push https://heroku:$HEROKU_AUTH_TOKEN@git.heroku.com/create-issue-branch-staging.git origin/${GITHUB_REF##*/}:master
+      if: github.ref != 'refs/heads/master' && job.status == 'success' && (! startsWith(github.ref, 'refs/heads/dependabot/'))
     - name: Commit GitHub Action distribution
       run: |
         git config --local user.email "action@github.com"

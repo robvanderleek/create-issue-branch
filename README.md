@@ -109,7 +109,10 @@ silent: true # or false
 
 ## Branch names
 
-Branch names are generated from the issue, there are 3 flavours:
+Branch names are generated from the issue, there are 3 built-in flavours or it can 
+be customized.
+
+The 3 built-in flavours are:
 
  1. `tiny` => an `i` followed by the issue number, for example: `i15`
  2. `short` => the word `issue` followed by the issue number, for example:
@@ -128,6 +131,22 @@ or
 ```yaml
 branchName: short
 ```
+
+To customize branch names you can give `branchName` a string value where `${...}`
+placeholders are substituted with fields from the GitHub issue assignment JSON 
+object.
+
+For example, if you would like to have your branch names contain only the issue 
+number and title (similar to the GitLab branch naming convention), confgure it like
+this:
+
+```yaml
+branchName: '${issue.number}-${issue.title}'
+```
+
+See 
+[test/fixtures/issues.assigned.json](test/fixtures/issues.assigned.json) for
+all possible placeholder names.
 
 ## Source branch based on issue label
 
@@ -179,7 +198,7 @@ branches:
     prefix: feature/${issue.user.login}/
 ```
 
-Check 
+See 
 [test/fixtures/issues.assigned.json](test/fixtures/issues.assigned.json) for
 all possible placeholder names.
 
@@ -216,3 +235,4 @@ For more, check out the [Contributing Guide](CONTRIBUTING.md).
 # License
 
 [ISC](LICENSE) © 2019 Rob van der Leek <robvanderleek@gmail.com> (https://twitter.com/robvanderleek)
+
