@@ -497,7 +497,7 @@ test('get branch name from issue with only branch prefix configured', async () =
 test('handle branch already exist, log message to info level', async () => {
   const ctx = {
     github: {
-      gitdata: {
+      git: {
         createRef: () => {
           const error = { message: 'Reference already exists' }
           throw error
@@ -515,7 +515,7 @@ test('handle branch already exist, log message to info level', async () => {
 test('log branch create errors with error level', async () => {
   const ctx = {
     github: {
-      gitdata: {
+      git: {
         createRef: () => {
           const error = { message: 'Oops, something is wrong' }
           throw error
