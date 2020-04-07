@@ -684,3 +684,9 @@ test('is ChatOps command', () => {
   expect(myProbotApp.isChatOpsCommand('/createbranch')).toBeFalsy()
   expect(myProbotApp.isChatOpsCommand('/create-issue')).toBeFalsy()
 })
+
+test('get issue number from branch name', () => {
+  expect(myProbotApp.getIssueNumberFromBranchName('i35')).toBe(35)
+  expect(myProbotApp.getIssueNumberFromBranchName('issue-35')).toBe(35)
+  expect(myProbotApp.getIssueNumberFromBranchName('issue-35-Hello_world_this_is_a_test')).toBe(35)
+})

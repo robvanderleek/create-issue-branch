@@ -30,13 +30,16 @@ module.exports = app => {
   })
   app.on('pull_request.closed', async ctx => {
     console.log('Received pull request closed event!')
-    const owner = getRepoOwner(ctx)
-    const repo = getRepoName(ctx)
-    const branchName = ctx.head.ref
-    const issueNumber = getIssueNumberFromBranchName(branchName)
-    const issueForBranch = await ctx.github.issues.get({ owner: owner, repo: repo, issue_number: issueNumber })
-    if (issueForBranch) {
-      await ctx.github.issues.update({ owner: owner, repo: repo, issue_number: issueNumber, state: 'closed' })
+    const config = await Config.load(ctx)
+    if (config && Config.autoCloseIssue(config)) {
+      const owner = getRepoOwner(ctx)
+      const repo = getRepoName(ctx)
+      const branchName = ctx.head.ref
+      const issueNumber = getIssueNumberFromBranchName(branchName)
+      const issueForBranch = await ctx.github.issues.get({ owner: owner, repo: repo, issue_number: issueNumber })
+      if (issueForBranch) {
+        await ctx.github.issues.update({ owner: owner, repo: repo, issue_number: issueNumber, state: 'closed' })
+      }
     }
   })
 }
@@ -210,7 +213,10 @@ async function getBranchNameFromIssue (ctx, config) {
 }
 
 function getIssueNumberFromBranchName (branchName) {
-
+  const matches = branchName.match(/\d+/)
+  if (matches.length === 1) {
+    return parseInt(matches[0])
+  }
 }
 
 function getIssueBranchPrefix (ctx, config) {

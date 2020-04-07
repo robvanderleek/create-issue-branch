@@ -62,6 +62,11 @@ function isModeChatOps (config) {
   return (config.mode && config.mode === 'chatops')
 }
 
+function autoCloseIssue (config) {
+  return ('autoCloseIssue' in config && config.autoCloseIssue === true)
+}
+
 module.exports.load = load
 module.exports.isModeAuto = isModeAuto
 module.exports.isModeChatOps = isModeChatOps
+module.exports.autoCloseIssue = autoCloseIssue
