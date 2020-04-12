@@ -3,6 +3,7 @@ const myProbotApp = require('../probot')
 const { Probot } = require('probot')
 const issueAssignedPayload = require('./fixtures/issues.assigned')
 const commentCreatedPayload = require('./fixtures/issue_comment.created')
+const pullRequestClosedPayload = require('./fixtures/pull_request.closed.json')
 
 nock.disableNetConnect()
 
@@ -390,6 +391,7 @@ test('get full branch name from issue title', () => {
   expect(myProbotApp.makeGitSafe('feature_bug')).toBe('feature_bug')
   expect(myProbotApp.makeGitSafe('hello/ world', true)).toBe('hello/_world')
   expect(myProbotApp.makeGitSafe('Issue name with slash/')).toBe('Issue_name_with_slash')
+  expect(myProbotApp.makeGitSafe('Also issue name/with slash')).toBe('Also_issue_name_with_slash')
 })
 
 test('get branch name from issue', async () => {
@@ -659,6 +661,46 @@ test('create branch with GitLab-like issue name', async () => {
   expect(branchRef).toBe('refs/heads/1-Test_issue')
 })
 
+test('close issue after merge', async () => {
+  nockConfig('autoCloseIssue: true')
+
+  nock('https://api.github.com')
+    .get('/repos/robvanderleek/create-issue-branch/issues/111')
+    .reply(200)
+
+  let state = ''
+  nock('https://api.github.com')
+    .patch('/repos/robvanderleek/create-issue-branch/issues/111', (body) => {
+      state = body.state
+      return true
+    })
+    .reply(200)
+
+  await probot.receive({ name: 'pull_request', payload: pullRequestClosedPayload })
+  expect(state).toBe('closed')
+})
+
+test('do not close issue after PR close (without merge)', async () => {
+  nockConfig('autoCloseIssue: true')
+
+  nock('https://api.github.com')
+    .get('/repos/robvanderleek/create-issue-branch/issues/111')
+    .reply(200)
+
+  let state = ''
+  nock('https://api.github.com')
+    .patch('/repos/robvanderleek/create-issue-branch/issues/111', (body) => {
+      state = body.state
+      return true
+    })
+    .reply(200)
+
+  const payloadCopy = JSON.parse(JSON.stringify(pullRequestClosedPayload))
+  payloadCopy.pull_request.merged = false
+  await probot.receive({ name: 'pull_request', payload: payloadCopy })
+  expect(state).toBe('')
+})
+
 test('wildcard matching', () => {
   expect(myProbotApp.wildcardMatch('aap*', 'aap')).toBeTruthy()
   expect(myProbotApp.wildcardMatch('aap*', 'aapnoot')).toBeTruthy()
@@ -686,7 +728,13 @@ test('is ChatOps command', () => {
 })
 
 test('get issue number from branch name', () => {
-  expect(myProbotApp.getIssueNumberFromBranchName('i35')).toBe(35)
-  expect(myProbotApp.getIssueNumberFromBranchName('issue-35')).toBe(35)
-  expect(myProbotApp.getIssueNumberFromBranchName('issue-35-Hello_world_this_is_a_test')).toBe(35)
+  expect(myProbotApp.getIssueNumberFromBranchName('i12')).toBe(12)
+  expect(myProbotApp.getIssueNumberFromBranchName('34-Fix_ugly_bug')).toBe(34)
+  expect(myProbotApp.getIssueNumberFromBranchName('bugfix/34-Fix_ugly_bug')).toBe(34)
+  expect(myProbotApp.getIssueNumberFromBranchName('issue-56')).toBe(56)
+  expect(myProbotApp.getIssueNumberFromBranchName('IsSuE-56')).toBe(56)
+  expect(myProbotApp.getIssueNumberFromBranchName('issue-78-Hello_world_this_is_a_test')).toBe(78)
+  expect(myProbotApp.getIssueNumberFromBranchName('some-prefix-issue-78-Add_more_unit_tests')).toBe(78)
+  expect(myProbotApp.getIssueNumberFromBranchName('feature/some-user/some-prefix-issue-78-Add_more_unit_tests'))
+    .toBe(78)
 })

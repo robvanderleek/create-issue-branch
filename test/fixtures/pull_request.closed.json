@@ -60,8 +60,8 @@
     "comments_url": "https://api.github.com/repos/robvanderleek/create-issue-branch/issues/117/comments",
     "statuses_url": "https://api.github.com/repos/robvanderleek/create-issue-branch/statuses/59a63ccd828afb5fc4739ad8d3176d5c36eaebf6",
     "head": {
-      "label": "robvanderleek:revert-111-robvanderleek-patch-1",
-      "ref": "revert-111-robvanderleek-patch-1",
+      "label": "robvanderleek:issue-111-robvanderleek-patch-1",
+      "ref": "issue-111-robvanderleek-patch-1",
       "sha": "59a63ccd828afb5fc4739ad8d3176d5c36eaebf6",
       "user": {
         "login": "robvanderleek",

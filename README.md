@@ -91,7 +91,7 @@ in a repository called `.github`. So, if your organization/username is `acme`, t
 
 The default mode is "auto", meaning a new issue branch is created after an issue is assigned.
 
-You can change the mode to "chatops", meaning a new issue branch is created after commenting on an issue with `/create-issue-branch` or `/cib`, by puuting the following line in your `issue-branch.yml`:
+You can change the mode to "chatops", meaning a new issue branch is created after commenting on an issue with `/create-issue-branch` or `/cib`, by putting the following line in your `issue-branch.yml`:
 
 ```yaml
 mode: chatops
@@ -148,6 +148,25 @@ See
 [test/fixtures/issues.assigned.json](test/fixtures/issues.assigned.json) for
 all possible placeholder names.
 
+## Automatically close issues after a pull request merge
+
+This app can close issues automatically for you when a pull request for an issue 
+branch is merged. You can enable this feature with:
+
+```yaml
+autoCloseIssue: true
+```
+
+Be aware that the app needs to be able to find the issue number in the branch name,
+otherwise this feature will not work. This feature only works if one of the following
+is true for your app configuration:
+
+- You use the default `branchName` setting
+- Your `branchName` setting is `tiny`, `short` or `full`
+- Your branch name starts with the issue number
+- Your branch name contains the string `issue-` (case insensitive) followed by the 
+  issue number, for example: `Project-A-Issue-123-Rewrite_in_Clojure`
+
 ## Source branch based on issue label
 
 You can override the source branch (by default the "default branch" of the
@@ -202,7 +221,7 @@ See
 [test/fixtures/issues.assigned.json](test/fixtures/issues.assigned.json) for
 all possible placeholder names.
 
-## Matching labels with wildcards
+### Matching labels with wildcards
 
 Wildcard characters '?' (matches any single character) and '*' (matches any sequence of characters, 
 including the empty sequence) can be used in the label field.
