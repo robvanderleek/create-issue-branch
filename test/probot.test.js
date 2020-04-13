@@ -501,8 +501,8 @@ test('handle branch already exist, log message to info level', async () => {
     github: {
       git: {
         createRef: () => {
-          const error = { message: 'Reference already exists' }
-          throw error
+          // eslint-disable-next-line no-throw-literal
+          throw { message: 'Reference already exists' }
         }
       }
     }
@@ -519,8 +519,8 @@ test('log branch create errors with error level', async () => {
     github: {
       git: {
         createRef: () => {
-          const error = { message: 'Oops, something is wrong' }
-          throw error
+          // eslint-disable-next-line no-throw-literal
+          throw { message: 'Oops, something is wrong' }
         }
       }
     }
