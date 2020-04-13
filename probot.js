@@ -15,7 +15,7 @@ module.exports = app => {
   app.on('issues.assigned', async ctx => {
     app.log('Issue was assigned')
     const config = await Config.load(ctx)
-    if (config && isModeAuto(config)) {
+    if (config && Config.isModeAuto(config)) {
       await createIssueBranch(app, ctx, config)
     }
   })
@@ -23,8 +23,25 @@ module.exports = app => {
     if (isChatOpsCommand(ctx.payload.comment.body)) {
       app.log('ChatOps command received')
       const config = await Config.load(ctx)
-      if (config && isModeChatOps(config)) {
+      if (config && Config.isModeChatOps(config)) {
         await createIssueBranch(app, ctx, config)
+      }
+    }
+  })
+  app.on('pull_request.closed', async ctx => {
+    if (ctx.payload.pull_request.merged === true) {
+      const config = await Config.load(ctx)
+      if (config && Config.autoCloseIssue(config)) {
+        const owner = getRepoOwner(ctx)
+        const repo = getRepoName(ctx)
+        const branchName = ctx.payload.pull_request.head.ref
+        const issueNumber = getIssueNumberFromBranchName(branchName)
+        if (issueNumber) {
+          const issueForBranch = await ctx.github.issues.get({ owner: owner, repo: repo, issue_number: issueNumber })
+          if (issueForBranch) {
+            await ctx.github.issues.update({ owner: owner, repo: repo, issue_number: issueNumber, state: 'closed' })
+          }
+        }
       }
     }
   })
@@ -169,18 +186,10 @@ function pushMetric (log) {
   })
 }
 
-function isModeAuto (config) {
-  return !isModeChatOps(config)
-}
-
-function isModeChatOps (config) {
-  return (config.mode && config.mode === 'chatops')
-}
-
 function isSilent (config) {
   if ('silent' in config) {
     return config.silent === true
-  } else if (isModeChatOps(config)) {
+  } else if (Config.isModeChatOps(config)) {
     return false
   }
   return true
@@ -204,6 +213,21 @@ async function getBranchNameFromIssue (ctx, config) {
     result = `issue-${number}-${title}`
   }
   return makeGitSafe(getIssueBranchPrefix(ctx, config), true) + makeGitSafe(result)
+}
+
+function getIssueNumberFromBranchName (branchName) {
+  if (branchName.includes('/')) {
+    branchName = branchName.substring(branchName.lastIndexOf('/') + 1)
+  }
+  let match = branchName.match(/^[i]?(\d+)/)
+  if (match) {
+    return parseInt(match[1])
+  }
+  match = branchName.match(/issue-(\d+)/i)
+  if (match) {
+    return parseInt(match[1])
+  }
+  return undefined
 }
 
 function getIssueBranchPrefix (ctx, config) {
@@ -256,6 +280,7 @@ function wildcardMatch (pattern, s) {
 // For unit-tests
 module.exports.isChatOpsCommand = isChatOpsCommand
 module.exports.getBranchNameFromIssue = getBranchNameFromIssue
+module.exports.getIssueNumberFromBranchName = getIssueNumberFromBranchName
 module.exports.getIssueBranchConfig = getIssueBranchConfig
 module.exports.getIssueBranchPrefix = getIssueBranchPrefix
 module.exports.createBranch = createBranch
