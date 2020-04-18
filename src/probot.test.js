@@ -1,9 +1,9 @@
 const nock = require('nock')
-const myProbotApp = require('../probot')
+const myProbotApp = require('./probot')
 const { Probot } = require('probot')
-const issueAssignedPayload = require('./fixtures/issues.assigned')
-const commentCreatedPayload = require('./fixtures/issue_comment.created')
-const pullRequestClosedPayload = require('./fixtures/pull_request.closed.json')
+const issueAssignedPayload = require('./test-fixtures/issues.assigned.json')
+const commentCreatedPayload = require('./test-fixtures/issue_comment.created.json')
+const pullRequestClosedPayload = require('./test-fixtures/pull_request.closed.json')
 
 nock.disableNetConnect()
 
@@ -385,15 +385,6 @@ test('configuration with invalid YAML', async () => {
   expect(issueTitle).toBe('Error in Create Issue Branch app configuration')
 })
 
-test('get full branch name from issue title', () => {
-  expect(myProbotApp.makeGitSafe('feature/bug', true)).toBe('feature/bug')
-  expect(myProbotApp.makeGitSafe('  feature/this is a bug ', true)).toBe('feature/this_is_a_bug')
-  expect(myProbotApp.makeGitSafe('feature_bug')).toBe('feature_bug')
-  expect(myProbotApp.makeGitSafe('hello/ world', true)).toBe('hello/_world')
-  expect(myProbotApp.makeGitSafe('Issue name with slash/')).toBe('Issue_name_with_slash')
-  expect(myProbotApp.makeGitSafe('Also issue name/with slash')).toBe('Also_issue_name_with_slash')
-})
-
 test('get branch name from issue', async () => {
   const ctx = { payload: { issue: { number: 12, title: 'Hello world', labels: [{ name: 'bug' }] } } }
   let config = { branchName: 'tiny' }
@@ -453,33 +444,6 @@ test('get issue branch prefix for issue that has no branch configuration', () =>
   const config = { branches: [{ label: 'enhancement', prefix: 'feature/' }] }
   const prefix = myProbotApp.getIssueBranchPrefix(ctx, config)
   expect(prefix).toBe('')
-})
-
-test('interpolate string with object field expression', () => {
-  const o = { hello: 'world' }
-  // eslint-disable-next-line no-template-curly-in-string
-  const result = myProbotApp.interpolate('hello ${hello}', o)
-  expect(result).toBe('hello world')
-})
-
-test('interpolate string with nested object field expression', () => {
-  const o = { outer: { inner: 'world' } }
-  // eslint-disable-next-line no-template-curly-in-string
-  const result = myProbotApp.interpolate('hello ${outer.inner}', o)
-  expect(result).toBe('hello world')
-})
-
-test('interpolate string with undefined object field expression', () => {
-  const o = { outer: { inner: 'world' } }
-  // eslint-disable-next-line no-template-curly-in-string
-  const result = myProbotApp.interpolate('hello ${inner.outer}', o)
-  expect(result).toBe('hello undefined')
-})
-
-test('interpolate string with issue assigned payload', () => {
-  // eslint-disable-next-line no-template-curly-in-string
-  const result = myProbotApp.interpolate('Creator ${issue.user.login}, repo: ${repository.name}', issueAssignedPayload)
-  expect(result).toBe('Creator robvanderleek, repo: create-issue-branch')
 })
 
 test('get issue branch prefix with context expression interpolation', () => {
@@ -699,18 +663,6 @@ test('do not close issue after PR close (without merge)', async () => {
   payloadCopy.pull_request.merged = false
   await probot.receive({ name: 'pull_request', payload: payloadCopy })
   expect(state).toBe('')
-})
-
-test('wildcard matching', () => {
-  expect(myProbotApp.wildcardMatch('aap*', 'aap')).toBeTruthy()
-  expect(myProbotApp.wildcardMatch('aap*', 'aapnoot')).toBeTruthy()
-  expect(myProbotApp.wildcardMatch('??p', 'aap')).toBeTruthy()
-  expect(myProbotApp.wildcardMatch('a??*', 'aapnoot')).toBeTruthy()
-  expect(myProbotApp.wildcardMatch('*noot', 'aapnoot')).toBeTruthy()
-
-  expect(myProbotApp.wildcardMatch('aap', 'aapnoot')).toBeFalsy()
-  expect(myProbotApp.wildcardMatch('noot', 'aapnoot')).toBeFalsy()
-  expect(myProbotApp.wildcardMatch('aap', 'Aap')).toBeFalsy()
 })
 
 test('is ChatOps command', () => {

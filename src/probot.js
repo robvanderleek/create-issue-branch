@@ -1,6 +1,7 @@
 const Sentry = require('@sentry/node')
 const Config = require('./config')
 const AWS = require('aws-sdk')
+const utils = require('./utils')
 
 module.exports = app => {
   app.log('App was loaded')
@@ -207,12 +208,12 @@ async function getBranchNameFromIssue (ctx, config) {
     } else if (config.branchName === 'full') {
       result = `issue-${number}-${title}`
     } else {
-      result = interpolate(config.branchName, ctx.payload)
+      result = utils.interpolate(config.branchName, ctx.payload)
     }
   } else {
     result = `issue-${number}-${title}`
   }
-  return makeGitSafe(getIssueBranchPrefix(ctx, config), true) + makeGitSafe(result)
+  return utils.makeGitSafe(getIssueBranchPrefix(ctx, config), true) + utils.makeGitSafe(result)
 }
 
 function getIssueNumberFromBranchName (branchName) {
@@ -236,45 +237,19 @@ function getIssueBranchPrefix (ctx, config) {
   if (branchConfig && branchConfig.prefix) {
     result = branchConfig.prefix
   }
-  return interpolate(result, ctx.payload)
+  return utils.interpolate(result, ctx.payload)
 }
 
 function getIssueBranchConfig (ctx, config) {
   if (config.branches) {
     const issueLabels = getIssueLabels(ctx)
     for (const branchConfiguration of config.branches) {
-      if (issueLabels.some(l => wildcardMatch(branchConfiguration.label, l))) {
+      if (issueLabels.some(l => utils.wildcardMatch(branchConfiguration.label, l))) {
         return branchConfiguration
       }
     }
   }
   return undefined
-}
-
-function makeGitSafe (s, isPrefix = false) {
-  const regexp = isPrefix ? /(?![-/])[\W]+/g : /(?![-])[\W]+/g
-  const result = trim(s, ' ').replace(regexp, '_')
-  return isPrefix ? result : trim(result, '_')
-}
-
-function trim (str, ch) {
-  let start = 0
-  let end = str.length
-  while (start < end && str[start] === ch) ++start
-  while (end > start && str[end - 1] === ch) --end
-  return (start > 0 || end < str.length) ? str.substring(start, end) : str
-}
-
-function interpolate (s, obj) {
-  return s.replace(/[$]{([^}]+)}/g, function (_, path) {
-    const properties = path.split('.')
-    return properties.reduce((prev, curr) => prev && prev[curr], obj)
-  })
-}
-
-function wildcardMatch (pattern, s) {
-  const regExp = new RegExp('^' + pattern.replace(/\*/g, '.*').replace(/\?/g, '.') + '$')
-  return regExp.test(s)
 }
 
 // For unit-tests
@@ -284,6 +259,3 @@ module.exports.getIssueNumberFromBranchName = getIssueNumberFromBranchName
 module.exports.getIssueBranchConfig = getIssueBranchConfig
 module.exports.getIssueBranchPrefix = getIssueBranchPrefix
 module.exports.createBranch = createBranch
-module.exports.makeGitSafe = makeGitSafe
-module.exports.interpolate = interpolate
-module.exports.wildcardMatch = wildcardMatch

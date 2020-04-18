@@ -14,11 +14,11 @@
   ],
   "scripts": {
     "dev": "nodemon",
-    "start": "probot run ./probot.js",
+    "start": "probot run src/probot.js",
     "lint": "standard --fix",
     "test": "jest && standard",
     "test:watch": "jest --watch --notify --notifyMode=change --coverage",
-    "dist": "ncc build action.js"
+    "dist": "ncc build src/action.js"
   },
   "dependencies": {
     "@sentry/node": "^5.15.4",
