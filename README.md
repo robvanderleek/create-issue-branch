@@ -162,7 +162,7 @@ branchName: '${issue.number}-${issue.title}'
 ```
 
 See 
-[test/fixtures/issues.assigned.json](test/fixtures/issues.assigned.json) for
+[test/fixtures/issues.assigned.json](src/test-fixtures/issues.assigned.json) for
 all possible placeholder names.
 
 ## Automatically close issues after a pull request merge
@@ -235,7 +235,7 @@ branches:
 ```
 
 See 
-[test/fixtures/issues.assigned.json](test/fixtures/issues.assigned.json) for
+[test/fixtures/issues.assigned.json](src/test-fixtures/issues.assigned.json) for
 all possible placeholder names.
 
 ### Matching labels with wildcards

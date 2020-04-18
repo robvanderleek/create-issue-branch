@@ -1,9 +1,9 @@
 const nock = require('nock')
-const myProbotApp = require('../probot')
+const myProbotApp = require('./probot')
 const { Probot } = require('probot')
-const issueAssignedPayload = require('./fixtures/issues.assigned')
-const commentCreatedPayload = require('./fixtures/issue_comment.created')
-const pullRequestClosedPayload = require('./fixtures/pull_request.closed.json')
+const issueAssignedPayload = require('./test-fixtures/issues.assigned.json')
+const commentCreatedPayload = require('./test-fixtures/issue_comment.created.json')
+const pullRequestClosedPayload = require('./test-fixtures/pull_request.closed.json')
 
 nock.disableNetConnect()
 
@@ -385,153 +385,6 @@ test('configuration with invalid YAML', async () => {
   expect(issueTitle).toBe('Error in Create Issue Branch app configuration')
 })
 
-test('get full branch name from issue title', () => {
-  expect(myProbotApp.makeGitSafe('feature/bug', true)).toBe('feature/bug')
-  expect(myProbotApp.makeGitSafe('  feature/this is a bug ', true)).toBe('feature/this_is_a_bug')
-  expect(myProbotApp.makeGitSafe('feature_bug')).toBe('feature_bug')
-  expect(myProbotApp.makeGitSafe('hello/ world', true)).toBe('hello/_world')
-  expect(myProbotApp.makeGitSafe('Issue name with slash/')).toBe('Issue_name_with_slash')
-  expect(myProbotApp.makeGitSafe('Also issue name/with slash')).toBe('Also_issue_name_with_slash')
-})
-
-test('get branch name from issue', async () => {
-  const ctx = { payload: { issue: { number: 12, title: 'Hello world', labels: [{ name: 'bug' }] } } }
-  let config = { branchName: 'tiny' }
-  expect(await myProbotApp.getBranchNameFromIssue(ctx, config)).toBe('i12')
-
-  config = { branchName: 'short' }
-  expect(await myProbotApp.getBranchNameFromIssue(ctx, config)).toBe('issue-12')
-
-  config = { branchName: 'full' }
-  expect(await myProbotApp.getBranchNameFromIssue(ctx, config)).toBe('issue-12-Hello_world')
-
-  config = { branches: [{ label: 'bug', prefix: 'bug/' }] }
-  expect(await myProbotApp.getBranchNameFromIssue(ctx, config)).toBe('bug/issue-12-Hello_world')
-
-  config = { branches: [{ label: 'bug', prefix: 'Some bugs here/' }] }
-  expect(await myProbotApp.getBranchNameFromIssue(ctx, config)).toBe('Some_bugs_here/issue-12-Hello_world')
-
-  config = { branches: [{ label: 'bug', prefix: 'feature-2019-12-17T10:16:25Z' }] }
-  expect(await myProbotApp.getBranchNameFromIssue(ctx, config)).toBe('feature-2019-12-17T10_16_25Zissue-12-Hello_world')
-
-  config = { branches: [{ label: 'bug', prefix: 'feature\\' }] }
-  expect(await myProbotApp.getBranchNameFromIssue(ctx, config)).toBe('feature_issue-12-Hello_world')
-})
-
-test('get branch configuration for issue', () => {
-  const ctx = { payload: { issue: { labels: [{ name: 'enhancement' }] } } }
-  const config = { branches: [{ label: 'enhancement', prefix: 'feature/' }] }
-  const branchConfig = myProbotApp.getIssueBranchConfig(ctx, config)
-  expect(branchConfig).toBeDefined()
-  expect(branchConfig.prefix).toBe('feature/')
-})
-
-test('get branch configuration for issue with all matching wildcard fallthrough', () => {
-  const ctx = { payload: { issue: { labels: [{ name: 'mylabel' }] } } }
-  const config = { branches: [{ label: 'enhancement', prefix: 'feature/' }, { label: '*', prefix: 'issues/' }] }
-  const branchConfig = myProbotApp.getIssueBranchConfig(ctx, config)
-  expect(branchConfig).toBeDefined()
-  expect(branchConfig.prefix).toBe('issues/')
-})
-
-test('issue has no branch configuration', () => {
-  const ctx = { payload: { issue: { labels: [{ name: 'bug' }] } } }
-  const config = { branches: [{ label: 'enhancement', prefix: 'feature/' }] }
-  const branchConfig = myProbotApp.getIssueBranchConfig(ctx, config)
-  expect(branchConfig).toBeUndefined()
-})
-
-test('get issue branch prefix', () => {
-  const ctx = { payload: { issue: { labels: [{ name: 'enhancement' }] } } }
-  const config = { branches: [{ label: 'enhancement', prefix: 'feature/' }] }
-  const prefix = myProbotApp.getIssueBranchPrefix(ctx, config)
-  expect(prefix).toBe('feature/')
-})
-
-test('get issue branch prefix for issue that has no branch configuration', () => {
-  const ctx = { payload: { issue: { labels: [{ name: 'bug' }] } } }
-  const config = { branches: [{ label: 'enhancement', prefix: 'feature/' }] }
-  const prefix = myProbotApp.getIssueBranchPrefix(ctx, config)
-  expect(prefix).toBe('')
-})
-
-test('interpolate string with object field expression', () => {
-  const o = { hello: 'world' }
-  // eslint-disable-next-line no-template-curly-in-string
-  const result = myProbotApp.interpolate('hello ${hello}', o)
-  expect(result).toBe('hello world')
-})
-
-test('interpolate string with nested object field expression', () => {
-  const o = { outer: { inner: 'world' } }
-  // eslint-disable-next-line no-template-curly-in-string
-  const result = myProbotApp.interpolate('hello ${outer.inner}', o)
-  expect(result).toBe('hello world')
-})
-
-test('interpolate string with undefined object field expression', () => {
-  const o = { outer: { inner: 'world' } }
-  // eslint-disable-next-line no-template-curly-in-string
-  const result = myProbotApp.interpolate('hello ${inner.outer}', o)
-  expect(result).toBe('hello undefined')
-})
-
-test('interpolate string with issue assigned payload', () => {
-  // eslint-disable-next-line no-template-curly-in-string
-  const result = myProbotApp.interpolate('Creator ${issue.user.login}, repo: ${repository.name}', issueAssignedPayload)
-  expect(result).toBe('Creator robvanderleek, repo: create-issue-branch')
-})
-
-test('get issue branch prefix with context expression interpolation', () => {
-  const ctx = { payload: { issue: { labels: [{ name: 'enhancement' }], user: { login: 'robvanderleek' } } } }
-  // eslint-disable-next-line no-template-curly-in-string
-  const config = { branches: [{ label: 'enhancement', prefix: 'feature/${issue.user.login}/' }] }
-  const prefix = myProbotApp.getIssueBranchPrefix(ctx, config)
-  expect(prefix).toBe('feature/robvanderleek/')
-})
-
-test('get branch name from issue with only branch prefix configured', async () => {
-  const ctx = { payload: { issue: { number: 12, title: 'Hello world', labels: [{ name: 'enhancement' }] } } }
-  const config = { branchName: 'short', branches: [{ label: 'enhancement', prefix: 'feature/' }] }
-  expect(await myProbotApp.getBranchNameFromIssue(ctx, config)).toBe('feature/issue-12')
-})
-
-test('handle branch already exist, log message to info level', async () => {
-  const ctx = {
-    github: {
-      git: {
-        createRef: () => {
-          // eslint-disable-next-line no-throw-literal
-          throw { message: 'Reference already exists' }
-        }
-      }
-    }
-  }
-  const log = { info: jest.fn() }
-
-  await myProbotApp.createBranch(ctx, 'robvanderleek', 'create-issue-branch', 'issue-1', '1234abcd', log)
-
-  expect(log.info).toBeCalled()
-})
-
-test('log branch create errors with error level', async () => {
-  const ctx = {
-    github: {
-      git: {
-        createRef: () => {
-          // eslint-disable-next-line no-throw-literal
-          throw { message: 'Oops, something is wrong' }
-        }
-      }
-    }
-  }
-  const log = { error: jest.fn() }
-
-  await myProbotApp.createBranch(ctx, 'robvanderleek', 'create-issue-branch', 'issue-1', '1234abcd', log)
-
-  expect(log.error).toBeCalled()
-})
-
 test('creates a branch when a chatops command is given', async () => {
   nockNonExistingBranch('issue-1-Test_issue')
   nockExistingBranch('master', 12345678)
@@ -699,42 +552,4 @@ test('do not close issue after PR close (without merge)', async () => {
   payloadCopy.pull_request.merged = false
   await probot.receive({ name: 'pull_request', payload: payloadCopy })
   expect(state).toBe('')
-})
-
-test('wildcard matching', () => {
-  expect(myProbotApp.wildcardMatch('aap*', 'aap')).toBeTruthy()
-  expect(myProbotApp.wildcardMatch('aap*', 'aapnoot')).toBeTruthy()
-  expect(myProbotApp.wildcardMatch('??p', 'aap')).toBeTruthy()
-  expect(myProbotApp.wildcardMatch('a??*', 'aapnoot')).toBeTruthy()
-  expect(myProbotApp.wildcardMatch('*noot', 'aapnoot')).toBeTruthy()
-
-  expect(myProbotApp.wildcardMatch('aap', 'aapnoot')).toBeFalsy()
-  expect(myProbotApp.wildcardMatch('noot', 'aapnoot')).toBeFalsy()
-  expect(myProbotApp.wildcardMatch('aap', 'Aap')).toBeFalsy()
-})
-
-test('is ChatOps command', () => {
-  expect(myProbotApp.isChatOpsCommand('/create-issue-branch')).toBeTruthy()
-  expect(myProbotApp.isChatOpsCommand('/Create-Issue-Branch')).toBeTruthy()
-  expect(myProbotApp.isChatOpsCommand('/create-issue-branch  ')).toBeTruthy()
-  expect(myProbotApp.isChatOpsCommand('  /create-issue-branch  ')).toBeTruthy()
-  expect(myProbotApp.isChatOpsCommand('/cib')).toBeTruthy()
-
-  expect(myProbotApp.isChatOpsCommand('/create-branch  ')).toBeFalsy()
-  expect(myProbotApp.isChatOpsCommand(' /cb')).toBeFalsy()
-  expect(myProbotApp.isChatOpsCommand(' / cb')).toBeFalsy()
-  expect(myProbotApp.isChatOpsCommand('/createbranch')).toBeFalsy()
-  expect(myProbotApp.isChatOpsCommand('/create-issue')).toBeFalsy()
-})
-
-test('get issue number from branch name', () => {
-  expect(myProbotApp.getIssueNumberFromBranchName('i12')).toBe(12)
-  expect(myProbotApp.getIssueNumberFromBranchName('34-Fix_ugly_bug')).toBe(34)
-  expect(myProbotApp.getIssueNumberFromBranchName('bugfix/34-Fix_ugly_bug')).toBe(34)
-  expect(myProbotApp.getIssueNumberFromBranchName('issue-56')).toBe(56)
-  expect(myProbotApp.getIssueNumberFromBranchName('IsSuE-56')).toBe(56)
-  expect(myProbotApp.getIssueNumberFromBranchName('issue-78-Hello_world_this_is_a_test')).toBe(78)
-  expect(myProbotApp.getIssueNumberFromBranchName('some-prefix-issue-78-Add_more_unit_tests')).toBe(78)
-  expect(myProbotApp.getIssueNumberFromBranchName('feature/some-user/some-prefix-issue-78-Add_more_unit_tests'))
-    .toBe(78)
 })
