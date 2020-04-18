@@ -1,3 +1,5 @@
+const AWS = require('aws-sdk')
+
 function makeGitSafe (s, isPrefix = false) {
   const regexp = isPrefix ? /(?![-/])[\W]+/g : /(?![-])[\W]+/g
   const result = trim(s, ' ').replace(regexp, '_')
@@ -24,6 +26,30 @@ function wildcardMatch (pattern, s) {
   return regExp.test(s)
 }
 
+function isProduction () {
+  return process.env.NODE_ENV === 'production'
+}
+
+function pushMetric (log) {
+  const namespace = process.env.CLOUDWATCH_NAMESPACE ? process.env.CLOUDWATCH_NAMESPACE : 'create_issue_branch_staging'
+  const metric = {
+    MetricData: [{
+      MetricName: 'branch_created', Unit: 'Count', Value: 1
+    }], //
+    Namespace: namespace
+  }
+  const cloudwatch = new AWS.CloudWatch()
+  cloudwatch.putMetricData(metric, (err) => {
+    if (err) {
+      log.error('Could not push metric to CloudWatch: ' + err)
+    } else {
+      log.info('Pushed metric to CloudWatch')
+    }
+  })
+}
+
 module.exports.makeGitSafe = makeGitSafe
 module.exports.interpolate = interpolate
 module.exports.wildcardMatch = wildcardMatch
+module.exports.isProduction = isProduction
+module.exports.pushMetric = pushMetric

@@ -66,7 +66,22 @@ function autoCloseIssue (config) {
   return ('autoCloseIssue' in config && config.autoCloseIssue === true)
 }
 
+function isSilent (config) {
+  if ('silent' in config) {
+    return config.silent === true
+  } else if (isModeChatOps(config)) {
+    return false
+  }
+  return true
+}
+
+function isChatOpsCommand (s) {
+  return ['/create-issue-branch', '/cib'].includes(s.trim().toLowerCase())
+}
+
 module.exports.load = load
 module.exports.isModeAuto = isModeAuto
 module.exports.isModeChatOps = isModeChatOps
 module.exports.autoCloseIssue = autoCloseIssue
+module.exports.isSilent = isSilent
+module.exports.isChatOpsCommand = isChatOpsCommand
