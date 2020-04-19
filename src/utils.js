@@ -1,9 +1,14 @@
 const AWS = require('aws-sdk')
 
-function makeGitSafe (s, isPrefix = false) {
-  const regexp = isPrefix ? /(?![-/])[\W]+/g : /(?![-])[\W]+/g
-  const result = trim(s, ' ').replace(regexp, '_')
-  return isPrefix ? result : trim(result, '_')
+function makePrefixGitSafe (s) {
+  const regexp = /(?![-/])[\W]+/g
+  return trim(s, ' ').replace(regexp, '_')
+}
+
+function makeGitSafe (s) {
+  const regexp = /(?![-/])[\W]+/g
+  const result = trim(s, ' ').replace(regexp, '_').replace(/[/]+$/, '')
+  return trim(result, '_')
 }
 
 function trim (str, ch) {
@@ -48,8 +53,11 @@ function pushMetric (log) {
   })
 }
 
-module.exports.makeGitSafe = makeGitSafe
-module.exports.interpolate = interpolate
-module.exports.wildcardMatch = wildcardMatch
-module.exports.isProduction = isProduction
-module.exports.pushMetric = pushMetric
+module.exports = {
+  makePrefixGitSafe: makePrefixGitSafe,
+  makeGitSafe: makeGitSafe,
+  interpolate: interpolate,
+  wildcardMatch: wildcardMatch,
+  isProduction: isProduction,
+  pushMetric: pushMetric
+}

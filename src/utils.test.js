@@ -29,12 +29,12 @@ test('interpolate string with issue assigned payload', () => {
 })
 
 test('get full branch name from issue title', () => {
-  expect(utils.makeGitSafe('feature/bug', true)).toBe('feature/bug')
-  expect(utils.makeGitSafe('  feature/this is a bug ', true)).toBe('feature/this_is_a_bug')
+  expect(utils.makePrefixGitSafe('feature/bug')).toBe('feature/bug')
+  expect(utils.makePrefixGitSafe('  feature/this is a bug ')).toBe('feature/this_is_a_bug')
+  expect(utils.makePrefixGitSafe('hello/ world')).toBe('hello/_world')
   expect(utils.makeGitSafe('feature_bug')).toBe('feature_bug')
-  expect(utils.makeGitSafe('hello/ world', true)).toBe('hello/_world')
   expect(utils.makeGitSafe('Issue name with slash/')).toBe('Issue_name_with_slash')
-  expect(utils.makeGitSafe('Also issue name/with slash')).toBe('Also_issue_name_with_slash')
+  expect(utils.makeGitSafe('Also issue name/with slash')).toBe('Also_issue_name/with_slash')
 })
 
 test('wildcard matching', () => {

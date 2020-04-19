@@ -555,21 +555,23 @@ test('do not close issue after PR close (without merge)', async () => {
 })
 
 test('create branch with slash in branch name', async () => {
-  nockNonExistingBranch('1_Test_issue')
+  nockNonExistingBranch('bug/1/Test_issue')
   nockExistingBranch('master', 12345678)
-  // eslint-disable-next-line no-template-curly-in-string
-  nockConfig('branchName: \'${issue.number}/${issue.title}\'')
+  nockConfig(// eslint-disable-next-line no-template-curly-in-string
+    'branchName: \'${issue.number}/${issue.title}\'\n' + //
+    'branches:\n' + //
+    '  - label: bug\n' + //
+    '    prefix: bug/\n')
   let branchRef = ''
 
   nock('https://api.github.com')
     .post('/repos/robvanderleek/create-issue-branch/git/refs', (body) => {
       branchRef = body.ref
-      createEndpointCalled = true
       return true
     })
     .reply(200)
 
-  await probot.receive({ name: 'issues', payload: issueAssignedPayload })
+  await probot.receive({ name: 'issues', payload: issueAssignedWithBugAndEnhancementLabelsPayload() })
 
-  expect(branchRef).toBe('refs/heads/1_Test_issue')
+  expect(branchRef).toBe('refs/heads/bug/1/Test_issue')
 })
