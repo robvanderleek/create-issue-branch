@@ -33,7 +33,7 @@ async function getBranchNameFromIssue (ctx, config) {
   } else {
     result = `issue-${number}-${title}`
   }
-  return utils.makeGitSafe(getIssueBranchPrefix(ctx, config), true) + utils.makeGitSafe(result)
+  return utils.makePrefixGitSafe(getIssueBranchPrefix(ctx, config)) + utils.makeGitSafe(result)
 }
 
 function getIssueNumberFromBranchName (branchName) {
@@ -138,9 +138,11 @@ async function createBranch (ctx, owner, repo, branchName, sha, log) {
   }
 }
 
-module.exports.createIssueBranch = createIssueBranch
-module.exports.getIssueNumberFromBranchName = getIssueNumberFromBranchName
-module.exports.getIssueBranchConfig = getIssueBranchConfig
-module.exports.getIssueBranchPrefix = getIssueBranchPrefix
-module.exports.getBranchNameFromIssue = getBranchNameFromIssue
-module.exports.createBranch = createBranch
+module.exports = {
+  createIssueBranch: createIssueBranch,
+  getIssueNumberFromBranchName: getIssueNumberFromBranchName,
+  getIssueBranchConfig: getIssueBranchConfig,
+  getIssueBranchPrefix: getIssueBranchPrefix,
+  getBranchNameFromIssue: getBranchNameFromIssue,
+  createBranch: createBranch
+}
