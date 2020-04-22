@@ -5,6 +5,7 @@ const context = require('./context')
 async function createIssueBranch (app, ctx, branchName, config) {
   const owner = context.getRepoOwner(ctx)
   const repo = context.getRepoName(ctx)
+  console.log('Checking existence of branch name: ' + branchName)
   if (await branchExists(ctx, owner, repo, branchName)) {
     await addComment(ctx, config, 'Branch already exists')
   } else {

@@ -400,6 +400,7 @@ describe('ChatOps mode', () => {
   test('chatops command with title argument', async () => {
     helpers.nockNonExistingBranch('issue-1-Simple_NPE_fix')
     helpers.nockExistingBranch('master', 12345678)
+    helpers.nockExistingBranch('issue-1-Test_issue', 87654321)
     helpers.nockConfig('mode: chatops')
     let createEndpointCalled = false
     let body = ''

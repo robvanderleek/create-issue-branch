@@ -42,6 +42,7 @@ async function commentCreated (app, ctx) {
     const config = await Config.load(ctx)
     if (config && Config.isModeChatOps(config)) {
       const commandArgument = Config.getChatOpsCommandArgument(body)
+      console.log('ChatOps command argument: ' + commandArgument)
       let branchName
       if (commandArgument) {
         branchName = await github.getBranchName(ctx, config, commandArgument)
