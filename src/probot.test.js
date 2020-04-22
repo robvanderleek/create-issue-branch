@@ -426,6 +426,37 @@ describe('ChatOps mode', () => {
     expect(body).toBe(
       'Branch [issue-1-Simple_NPE_fix](https://github.com/robvanderleek/create-issue-branch/tree/issue-1-Simple_NPE_fix) created!')
   })
+
+  test('chatops command with title argument and custom branch name', async () => {
+    helpers.nockNonExistingBranch('1-foo-Simple_NPE_fix')
+    helpers.nockExistingBranch('master', 12345678)
+    helpers.nockExistingBranch('issue-1-Test_issue', 87654321)
+    // eslint-disable-next-line no-template-curly-in-string
+    helpers.nockConfig('branchName: \'${issue.number}-foo-${issue.title}\'\nmode: chatops')
+    let createEndpointCalled = false
+    let body = ''
+
+    nock('https://api.github.com')
+      .post('/repos/robvanderleek/create-issue-branch/git/refs', () => {
+        createEndpointCalled = true
+        return true
+      })
+      .reply(200)
+    nock('https://api.github.com')
+      .post('/repos/robvanderleek/create-issue-branch/issues/1/comments', (data) => {
+        body = data.body
+        return true
+      })
+      .reply(200)
+
+    const payloadCopy = JSON.parse(JSON.stringify(commentCreatedPayload))
+    payloadCopy.comment.body = '/cib Simple NPE fix'
+    await probot.receive({ name: 'issue_comment', payload: payloadCopy })
+
+    expect(createEndpointCalled).toBeTruthy()
+    expect(body).toBe(
+      'Branch [1-foo-Simple_NPE_fix](https://github.com/robvanderleek/create-issue-branch/tree/1-foo-Simple_NPE_fix) created!')
+  })
 })
 
 test('create branch with custom issue name', async () => {
