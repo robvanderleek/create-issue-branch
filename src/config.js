@@ -76,12 +76,25 @@ function isSilent (config) {
 }
 
 function isChatOpsCommand (s) {
-  return ['/create-issue-branch', '/cib'].includes(s.trim().toLowerCase())
+  const parts = s.trim().toLowerCase().split(/\s/)
+  return ['/create-issue-branch', '/cib'].includes(parts[0])
 }
 
-module.exports.load = load
-module.exports.isModeAuto = isModeAuto
-module.exports.isModeChatOps = isModeChatOps
-module.exports.autoCloseIssue = autoCloseIssue
-module.exports.isSilent = isSilent
-module.exports.isChatOpsCommand = isChatOpsCommand
+function getChatOpsCommandArgument (s) {
+  const argumentIndex = s.trim().search(/\s/)
+  if (argumentIndex > 0) {
+    return s.substring(argumentIndex + 1)
+  } else {
+    return undefined
+  }
+}
+
+module.exports = {
+  load: load,
+  isModeAuto: isModeAuto,
+  isModeChatOps: isModeChatOps,
+  getChatOpsCommandArgument: getChatOpsCommandArgument,
+  autoCloseIssue: autoCloseIssue,
+  isSilent: isSilent,
+  isChatOpsCommand: isChatOpsCommand
+}

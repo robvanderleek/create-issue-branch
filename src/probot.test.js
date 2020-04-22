@@ -1,4 +1,5 @@
 const nock = require('nock')
+const helpers = require('./test-helpers')
 const myProbotApp = require('./probot')
 const { Probot } = require('probot')
 const issueAssignedPayload = require('./test-fixtures/issues.assigned.json')
@@ -22,82 +23,13 @@ beforeEach(() => {
   }
   nock.cleanAll()
   jest.setTimeout(10000)
-  nockAccessToken()
+  helpers.nockAccessToken()
 })
 
-function issueAssignedWithEnhancementLabelPayload () {
-  const issueCopy = JSON.parse(JSON.stringify(issueAssignedPayload))
-  issueCopy.issue.labels.push({
-    id: 1456956805,
-    node_id: 'MDU6TGFiZWwxNDU2OTU2ODA1',
-    url: 'https://api.github.com/repos/robvanderleek/create-issue-branch/labels/enhancement',
-    name: 'enhancement',
-    color: 'a2eeef',
-    default: true
-  })
-  return issueCopy
-}
-
-function issueAssignedWithBugAndEnhancementLabelsPayload () {
-  const issueCopy = JSON.parse(JSON.stringify(issueAssignedPayload))
-  issueCopy.issue.labels.push({
-    id: 1456956799,
-    node_id: 'MDU6TGFiZWwxNDU2OTU2Nzk5',
-    url: 'https://api.github.com/repos/robvanderleek/create-issue-branch/labels/bug',
-    name: 'bug',
-    color: 'd73a4a',
-    default: true
-  })
-  issueCopy.issue.labels.push({
-    id: 1456956805,
-    node_id: 'MDU6TGFiZWwxNDU2OTU2ODA1',
-    url: 'https://api.github.com/repos/robvanderleek/create-issue-branch/labels/enhancement',
-    name: 'enhancement',
-    color: 'a2eeef',
-    default: true
-  })
-  return issueCopy
-}
-
-function nockAccessToken () {
-  nock('https://api.github.com')
-    .post('/app/installations/1296032/access_tokens')
-    .reply(200, { token: 'test' })
-}
-
-function nockEmptyConfig () {
-  nock('https://api.github.com')
-    .persist()
-    .get('/repos/robvanderleek/create-issue-branch/contents/.github/issue-branch.yml')
-    .reply(404)
-    .get('/repos/robvanderleek/.github/contents/.github/issue-branch.yml')
-    .reply(404)
-}
-
-function nockConfig (yamlConfig) {
-  const encoding = 'base64'
-  nock('https://api.github.com')
-    .persist()
-    .get('/repos/robvanderleek/create-issue-branch/contents/.github/issue-branch.yml')
-    .reply(200, { content: Buffer.from(yamlConfig).toString(encoding), encoding: encoding })
-}
-
-function nockExistingBranch (name, sha) {
-  nock('https://api.github.com')
-    .get(`/repos/robvanderleek/create-issue-branch/git/refs/heads/${name}`)
-    .reply(200, { object: { sha: sha } })
-}
-
-function nockNonExistingBranch (name) {
-  nock('https://api.github.com')
-    .get(`/repos/robvanderleek/create-issue-branch/git/refs/heads/${name}`)
-    .reply(404)
-}
-
 test('creates a branch when an issue is assigned', async () => {
-  nockNonExistingBranch('issue-1-Test_issue')
-  nockExistingBranch('master', 12345678)
-  nockEmptyConfig()
+  helpers.nockNonExistingBranch('issue-1-Test_issue')
+  helpers.nockExistingBranch('master', 12345678)
+  helpers.nockEmptyConfig()
   let createEndpointCalled = false
 
   nock('https://api.github.com')
@@ -113,8 +45,8 @@ test('creates a branch when an issue is assigned', async () => {
 })
 
 test('do not create a branch when it already exists', async () => {
-  nockExistingBranch('issue-1-Test_issue', 87654321)
-  nockEmptyConfig()
+  helpers.nockExistingBranch('issue-1-Test_issue', 87654321)
+  helpers.nockEmptyConfig()
   let createEndpointCalled = false
 
   nock('https://api.github.com')
@@ -130,9 +62,9 @@ test('do not create a branch when it already exists', async () => {
 })
 
 test('create short branch when configured that way', async () => {
-  nockNonExistingBranch('issue-1')
-  nockExistingBranch('master', 12345678)
-  nockConfig('branchName: short')
+  helpers.nockNonExistingBranch('issue-1')
+  helpers.nockExistingBranch('master', 12345678)
+  helpers.nockConfig('branchName: short')
   let createEndpointCalled = false
   let branchRef = ''
 
@@ -151,10 +83,10 @@ test('create short branch when configured that way', async () => {
 })
 
 test('source branch is default branch by, well, default', async () => {
-  nockNonExistingBranch('issue-1-Test_issue')
-  nockExistingBranch('master', '12345678')
-  nockExistingBranch('dev', 'abcd1234')
-  nockEmptyConfig()
+  helpers.nockNonExistingBranch('issue-1-Test_issue')
+  helpers.nockExistingBranch('master', '12345678')
+  helpers.nockExistingBranch('dev', 'abcd1234')
+  helpers.nockEmptyConfig()
   let sourceSha = ''
 
   nock('https://api.github.com')
@@ -170,15 +102,15 @@ test('source branch is default branch by, well, default', async () => {
 })
 
 test('source branch can be configured based on issue label', async () => {
-  nockNonExistingBranch('issue-1-Test_issue')
-  nockExistingBranch('master', '12345678')
-  nockExistingBranch('dev', 'abcd1234')
+  helpers.nockNonExistingBranch('issue-1-Test_issue')
+  helpers.nockExistingBranch('master', '12345678')
+  helpers.nockExistingBranch('dev', 'abcd1234')
   const ymlConfig = `branches:
   - label: enhancement
     name: dev
   - label: bug
     name: master`
-  nockConfig(ymlConfig)
+  helpers.nockConfig(ymlConfig)
   let sourceSha = ''
 
   nock('https://api.github.com')
@@ -188,19 +120,19 @@ test('source branch can be configured based on issue label', async () => {
     })
     .reply(200)
 
-  await probot.receive({ name: 'issues', payload: issueAssignedWithEnhancementLabelPayload() })
+  await probot.receive({ name: 'issues', payload: helpers.issueAssignedWithEnhancementLabelPayload() })
 
   expect(sourceSha).toBe('abcd1234')
 })
 
 test('source branch can be configured based on issue label with wildcard pattern', async () => {
-  nockNonExistingBranch('issue-1-Test_issue')
-  nockExistingBranch('master', '12345678')
-  nockExistingBranch('dev', 'abcd1234')
+  helpers.nockNonExistingBranch('issue-1-Test_issue')
+  helpers.nockExistingBranch('master', '12345678')
+  helpers.nockExistingBranch('dev', 'abcd1234')
   const ymlConfig = `branches:
   - label: ?nhance*
     name: dev`
-  nockConfig(ymlConfig)
+  helpers.nockConfig(ymlConfig)
   let sourceSha = ''
 
   nock('https://api.github.com')
@@ -210,22 +142,22 @@ test('source branch can be configured based on issue label with wildcard pattern
     })
     .reply(200)
 
-  await probot.receive({ name: 'issues', payload: issueAssignedWithEnhancementLabelPayload() })
+  await probot.receive({ name: 'issues', payload: helpers.issueAssignedWithEnhancementLabelPayload() })
 
   expect(sourceSha).toBe('abcd1234')
 })
 
 test('source branch based on catch-all fallthrough', async () => {
-  nockNonExistingBranch('issue-1-Test_issue')
-  nockExistingBranch('master', '12345678')
-  nockExistingBranch('bug', 'abcd1234')
-  nockExistingBranch('issues', 'fghi5678')
+  helpers.nockNonExistingBranch('issue-1-Test_issue')
+  helpers.nockExistingBranch('master', '12345678')
+  helpers.nockExistingBranch('bug', 'abcd1234')
+  helpers.nockExistingBranch('issues', 'fghi5678')
   const ymlConfig = `branches:
   - label: bug
     name: bug
   - label: '*'
     name: issues`
-  nockConfig(ymlConfig)
+  helpers.nockConfig(ymlConfig)
   let sourceSha = ''
 
   nock('https://api.github.com')
@@ -241,16 +173,16 @@ test('source branch based on catch-all fallthrough', async () => {
 })
 
 test('source branch based on label where configuration contains catch-all fallthrough', async () => {
-  nockNonExistingBranch('issue-1-Test_issue')
-  nockExistingBranch('master', '12345678')
-  nockExistingBranch('enhancement', 'abcd1234')
-  nockExistingBranch('issues', 'fghi5678')
+  helpers.nockNonExistingBranch('issue-1-Test_issue')
+  helpers.nockExistingBranch('master', '12345678')
+  helpers.nockExistingBranch('enhancement', 'abcd1234')
+  helpers.nockExistingBranch('issues', 'fghi5678')
   const ymlConfig = `branches:
   - label: enhancement
     name: enhancement
   - label: '*'
     name: issues`
-  nockConfig(ymlConfig)
+  helpers.nockConfig(ymlConfig)
   let sourceSha = ''
 
   nock('https://api.github.com')
@@ -260,21 +192,21 @@ test('source branch based on label where configuration contains catch-all fallth
     })
     .reply(200)
 
-  await probot.receive({ name: 'issues', payload: issueAssignedWithEnhancementLabelPayload() })
+  await probot.receive({ name: 'issues', payload: helpers.issueAssignedWithEnhancementLabelPayload() })
 
   expect(sourceSha).toBe('abcd1234')
 })
 
 test('if configured source branch does not exist use default branch', async () => {
-  nockNonExistingBranch('issue-1-Test_issue')
-  nockNonExistingBranch('dev')
-  nockExistingBranch('master', '12345678')
+  helpers.nockNonExistingBranch('issue-1-Test_issue')
+  helpers.nockNonExistingBranch('dev')
+  helpers.nockExistingBranch('master', '12345678')
   const ymlConfig = `branches:
   - label: enhancement
     name: dev
   - label: bug
     name: master`
-  nockConfig(ymlConfig)
+  helpers.nockConfig(ymlConfig)
   let sourceSha = ''
 
   nock('https://api.github.com')
@@ -284,21 +216,21 @@ test('if configured source branch does not exist use default branch', async () =
     })
     .reply(200)
 
-  await probot.receive({ name: 'issues', payload: issueAssignedWithEnhancementLabelPayload() })
+  await probot.receive({ name: 'issues', payload: helpers.issueAssignedWithEnhancementLabelPayload() })
 
   expect(sourceSha).toBe('12345678')
 })
 
 test('if multiple issue labels match configuration use first match', async () => {
-  nockNonExistingBranch('issue-1-Test_issue')
-  nockExistingBranch('master', '12345678')
-  nockExistingBranch('dev', 'abcd1234')
+  helpers.nockNonExistingBranch('issue-1-Test_issue')
+  helpers.nockExistingBranch('master', '12345678')
+  helpers.nockExistingBranch('dev', 'abcd1234')
   const ymlConfig = `branches:
   - label: enhancement
     name: dev
   - label: bug
     name: master`
-  nockConfig(ymlConfig)
+  helpers.nockConfig(ymlConfig)
   let sourceSha = ''
 
   nock('https://api.github.com')
@@ -308,20 +240,20 @@ test('if multiple issue labels match configuration use first match', async () =>
     })
     .reply(200)
 
-  await probot.receive({ name: 'issues', payload: issueAssignedWithBugAndEnhancementLabelsPayload() })
+  await probot.receive({ name: 'issues', payload: helpers.issueAssignedWithBugAndEnhancementLabelsPayload() })
 
   expect(sourceSha).toBe('abcd1234')
 })
 
 test('configuration with label branch and prefix', async () => {
-  nockNonExistingBranch('feature/issue-1-Test_issue')
-  nockExistingBranch('master', '12345678')
-  nockExistingBranch('dev', 'abcd1234')
+  helpers.nockNonExistingBranch('feature/issue-1-Test_issue')
+  helpers.nockExistingBranch('master', '12345678')
+  helpers.nockExistingBranch('dev', 'abcd1234')
   const ymlConfig = `branches:
   - label: enhancement
     name: dev
     prefix: feature/`
-  nockConfig(ymlConfig)
+  helpers.nockConfig(ymlConfig)
   let sourceSha = ''
   let targetRef = ''
 
@@ -333,7 +265,7 @@ test('configuration with label branch and prefix', async () => {
     })
     .reply(200)
 
-  await probot.receive({ name: 'issues', payload: issueAssignedWithBugAndEnhancementLabelsPayload() })
+  await probot.receive({ name: 'issues', payload: helpers.issueAssignedWithBugAndEnhancementLabelsPayload() })
 
   expect(sourceSha).toBe('abcd1234')
   expect(targetRef).toBe('refs/heads/feature/issue-1-Test_issue')
@@ -343,7 +275,7 @@ test('configuration with label field missing', async () => {
   const ymlConfig = `branches:
   - name: dev
     prefix: feature/`
-  nockConfig(ymlConfig)
+  helpers.nockConfig(ymlConfig)
 
   nock('https://api.github.com')
     .get('/search/issues')
@@ -358,7 +290,7 @@ test('configuration with label field missing', async () => {
     })
     .reply(200)
 
-  await probot.receive({ name: 'issues', payload: issueAssignedWithBugAndEnhancementLabelsPayload() })
+  await probot.receive({ name: 'issues', payload: helpers.issueAssignedWithBugAndEnhancementLabelsPayload() })
   expect(issueTitle).toBe('Error in Create Issue Branch app configuration')
 })
 
@@ -366,7 +298,7 @@ test('configuration with invalid YAML', async () => {
   const ymlConfig = `branches:
   - label: Type: Feature
     prefix: feature/`
-  nockConfig(ymlConfig)
+  helpers.nockConfig(ymlConfig)
 
   nock('https://api.github.com')
     .get('/search/issues')
@@ -381,78 +313,125 @@ test('configuration with invalid YAML', async () => {
     })
     .reply(200)
 
-  await probot.receive({ name: 'issues', payload: issueAssignedWithBugAndEnhancementLabelsPayload() })
+  await probot.receive({ name: 'issues', payload: helpers.issueAssignedWithBugAndEnhancementLabelsPayload() })
   expect(issueTitle).toBe('Error in Create Issue Branch app configuration')
 })
 
-test('creates a branch when a chatops command is given', async () => {
-  nockNonExistingBranch('issue-1-Test_issue')
-  nockExistingBranch('master', 12345678)
-  nockConfig('mode: chatops')
-  let createEndpointCalled = false
-  let body = ''
+describe('ChatOps mode', () => {
+  test('creates a branch when a chatops command is given', async () => {
+    helpers.nockNonExistingBranch('issue-1-Test_issue')
+    helpers.nockExistingBranch('master', 12345678)
+    helpers.nockConfig('mode: chatops')
+    let createEndpointCalled = false
+    let body = ''
 
-  nock('https://api.github.com')
-    .post('/repos/robvanderleek/create-issue-branch/git/refs', () => {
-      createEndpointCalled = true
-      return true
-    })
-    .reply(200)
-  nock('https://api.github.com')
-    .post('/repos/robvanderleek/create-issue-branch/issues/1/comments', (data) => {
-      body = data.body
-      return true
-    })
-    .reply(200)
+    nock('https://api.github.com')
+      .post('/repos/robvanderleek/create-issue-branch/git/refs', () => {
+        createEndpointCalled = true
+        return true
+      })
+      .reply(200)
+    nock('https://api.github.com')
+      .post('/repos/robvanderleek/create-issue-branch/issues/1/comments', (data) => {
+        body = data.body
+        return true
+      })
+      .reply(200)
 
-  await probot.receive({ name: 'issue_comment', payload: commentCreatedPayload })
+    await probot.receive({ name: 'issue_comment', payload: commentCreatedPayload })
 
-  expect(createEndpointCalled).toBeTruthy()
-  expect(body).toBe(
-    'Branch [issue-1-Test_issue](https://github.com/robvanderleek/create-issue-branch/tree/issue-1-Test_issue) created!')
-})
+    expect(createEndpointCalled).toBeTruthy()
+    expect(body).toBe(
+      'Branch [issue-1-Test_issue](https://github.com/robvanderleek/create-issue-branch/tree/issue-1-Test_issue) created!')
+  })
 
-test('do nothing when a chatops command is given and mode is not chatops', async () => {
-  nockNonExistingBranch('issue-1-Test_issue')
-  nockExistingBranch('master', 12345678)
-  nockConfig('mode: auto')
-  let createEndpointCalled = false
+  test('do nothing when a chatops command is given and mode is not chatops', async () => {
+    helpers.nockConfig('mode: auto')
+    let createEndpointCalled = false
 
-  nock('https://api.github.com')
-    .post('/repos/robvanderleek/create-issue-branch/git/refs', () => {
-      createEndpointCalled = true
-      return true
-    })
-    .reply(200)
+    nock('https://api.github.com')
+      .post('/repos/robvanderleek/create-issue-branch/git/refs', () => {
+        createEndpointCalled = true
+        return true
+      })
+      .reply(200)
 
-  await probot.receive({ name: 'issue_comment', payload: commentCreatedPayload })
+    await probot.receive({ name: 'issue_comment', payload: commentCreatedPayload })
 
-  expect(createEndpointCalled).toBeFalsy()
-})
+    expect(createEndpointCalled).toBeFalsy()
+  })
 
-test('creates a branch when a chatops command is given, no comment', async () => {
-  nockNonExistingBranch('issue-1-Test_issue')
-  nockExistingBranch('master', 12345678)
-  nockConfig('mode: chatops\nsilent: true')
-  let createEndpointCalled = false
+  test('creates a branch when a chatops command is given, no comment', async () => {
+    helpers.nockNonExistingBranch('issue-1-Test_issue')
+    helpers.nockExistingBranch('master', 12345678)
+    helpers.nockConfig('mode: chatops\nsilent: true')
+    let createEndpointCalled = false
 
-  nock('https://api.github.com')
-    .post('/repos/robvanderleek/create-issue-branch/git/refs', () => {
-      createEndpointCalled = true
-      return true
-    })
-    .reply(200)
+    nock('https://api.github.com')
+      .post('/repos/robvanderleek/create-issue-branch/git/refs', () => {
+        createEndpointCalled = true
+        return true
+      })
+      .reply(200)
 
-  await probot.receive({ name: 'issue_comment', payload: commentCreatedPayload })
+    await probot.receive({ name: 'issue_comment', payload: commentCreatedPayload })
 
-  expect(createEndpointCalled).toBeTruthy()
+    expect(createEndpointCalled).toBeTruthy()
+  })
+
+  test('ignore chatops command if not at start of line', async () => {
+    helpers.nockConfig('mode: chatops')
+    let createEndpointCalled = false
+
+    nock('https://api.github.com')
+      .post('/repos/robvanderleek/create-issue-branch/git/refs', () => {
+        createEndpointCalled = true
+        return true
+      })
+      .reply(200)
+
+    const payloadCopy = JSON.parse(JSON.stringify(commentCreatedPayload))
+    payloadCopy.comment.body = 'This command: /cib'
+    await probot.receive({ name: 'issue_comment', payload: payloadCopy })
+
+    expect(createEndpointCalled).toBeFalsy()
+  })
+
+  test('chatops command with title argument', async () => {
+    helpers.nockNonExistingBranch('issue-1-Simple_NPE_fix')
+    helpers.nockExistingBranch('master', 12345678)
+    helpers.nockConfig('mode: chatops')
+    let createEndpointCalled = false
+    let body = ''
+
+    nock('https://api.github.com')
+      .post('/repos/robvanderleek/create-issue-branch/git/refs', () => {
+        createEndpointCalled = true
+        return true
+      })
+      .reply(200)
+    nock('https://api.github.com')
+      .post('/repos/robvanderleek/create-issue-branch/issues/1/comments', (data) => {
+        body = data.body
+        return true
+      })
+      .reply(200)
+
+    const payloadCopy = JSON.parse(JSON.stringify(commentCreatedPayload))
+    payloadCopy.comment.body = '/cib Simple NPE fix'
+    await probot.receive({ name: 'issue_comment', payload: payloadCopy })
+
+    expect(createEndpointCalled).toBeTruthy()
+    expect(body).toBe(
+      'Branch [issue-1-Simple_NPE_fix](https://github.com/robvanderleek/create-issue-branch/tree/issue-1-Simple_NPE_fix) created!')
+  })
 })
 
 test('create branch with custom issue name', async () => {
-  nockNonExistingBranch('foo-1-Test_issue')
-  nockExistingBranch('master', 12345678)
+  helpers.nockNonExistingBranch('foo-1-Test_issue')
+  helpers.nockExistingBranch('master', 12345678)
   // eslint-disable-next-line no-template-curly-in-string
-  nockConfig('branchName: \'foo-${issue.number}-${issue.title}\'')
+  helpers.nockConfig('branchName: \'foo-${issue.number}-${issue.title}\'')
   let createEndpointCalled = false
   let branchRef = ''
 
@@ -471,10 +450,10 @@ test('create branch with custom issue name', async () => {
 })
 
 test('create branch with custom short issue name', async () => {
-  nockNonExistingBranch('foo-1')
-  nockExistingBranch('master', 12345678)
+  helpers.nockNonExistingBranch('foo-1')
+  helpers.nockExistingBranch('master', 12345678)
   // eslint-disable-next-line no-template-curly-in-string
-  nockConfig('branchName: \'foo-${issue.number}\'')
+  helpers.nockConfig('branchName: \'foo-${issue.number}\'')
   let createEndpointCalled = false
   let branchRef = ''
 
@@ -493,10 +472,10 @@ test('create branch with custom short issue name', async () => {
 })
 
 test('create branch with GitLab-like issue name', async () => {
-  nockNonExistingBranch('1-Test_issue')
-  nockExistingBranch('master', 12345678)
+  helpers.nockNonExistingBranch('1-Test_issue')
+  helpers.nockExistingBranch('master', 12345678)
   // eslint-disable-next-line no-template-curly-in-string
-  nockConfig('branchName: \'${issue.number}-${issue.title}\'')
+  helpers.nockConfig('branchName: \'${issue.number}-${issue.title}\'')
   let createEndpointCalled = false
   let branchRef = ''
 
@@ -515,7 +494,7 @@ test('create branch with GitLab-like issue name', async () => {
 })
 
 test('close issue after merge', async () => {
-  nockConfig('autoCloseIssue: true')
+  helpers.nockConfig('autoCloseIssue: true')
 
   nock('https://api.github.com')
     .get('/repos/robvanderleek/create-issue-branch/issues/111')
@@ -534,7 +513,7 @@ test('close issue after merge', async () => {
 })
 
 test('do not close issue after PR close (without merge)', async () => {
-  nockConfig('autoCloseIssue: true')
+  helpers.nockConfig('autoCloseIssue: true')
 
   nock('https://api.github.com')
     .get('/repos/robvanderleek/create-issue-branch/issues/111')
@@ -555,9 +534,9 @@ test('do not close issue after PR close (without merge)', async () => {
 })
 
 test('create branch with slash in branch name', async () => {
-  nockNonExistingBranch('bug/1/Test_issue')
-  nockExistingBranch('master', 12345678)
-  nockConfig(// eslint-disable-next-line no-template-curly-in-string
+  helpers.nockNonExistingBranch('bug/1/Test_issue')
+  helpers.nockExistingBranch('master', 12345678)
+  helpers.nockConfig(// eslint-disable-next-line no-template-curly-in-string
     'branchName: \'${issue.number}/${issue.title}\'\n' + //
     'branches:\n' + //
     '  - label: bug\n' + //
@@ -571,7 +550,7 @@ test('create branch with slash in branch name', async () => {
     })
     .reply(200)
 
-  await probot.receive({ name: 'issues', payload: issueAssignedWithBugAndEnhancementLabelsPayload() })
+  await probot.receive({ name: 'issues', payload: helpers.issueAssignedWithBugAndEnhancementLabelsPayload() })
 
   expect(branchRef).toBe('refs/heads/bug/1/Test_issue')
 })
