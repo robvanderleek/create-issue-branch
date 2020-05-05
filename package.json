@@ -36,7 +36,7 @@
     "standard": "^14.3.3"
   },
   "engines": {
-    "node": ">= 8.3.0"
+    "node": "14.1.x"
   },
   "standard": {
     "env": [
