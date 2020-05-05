@@ -51,4 +51,8 @@ module.exports = app => {
     }
     console.log('Total memory: ' + Math.round(process.memoryUsage().rss / 1024 / 1024) + ' Gb')
   })
+  app.on('*', async ctx => {
+    console.log('Received event: ' + ctx.event + ', action: ' + ctx.payload.action)
+    console.log('Total memory: ' + Math.round(process.memoryUsage().rss / 1024 / 1024) + ' Gb')
+  })
 }
