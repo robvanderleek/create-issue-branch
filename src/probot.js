@@ -13,12 +13,15 @@ module.exports = app => {
     app.log('Skipping Sentry.io setup')
   }
 
+  console.log('Total memory: ' + Math.round(process.memoryUsage().rss / 1024 / 1024) + ' Gb')
+
   app.on('issues.assigned', async ctx => {
     app.log('Issue was assigned')
     const config = await Config.load(ctx)
     if (config && Config.isModeAuto(config)) {
       await github.createIssueBranch(app, ctx, config)
     }
+    console.log('Total memory: ' + Math.round(process.memoryUsage().rss / 1024 / 1024) + ' Gb')
   })
   app.on('issue_comment.created', async ctx => {
     if (Config.isChatOpsCommand(ctx.payload.comment.body)) {
@@ -28,6 +31,7 @@ module.exports = app => {
         await github.createIssueBranch(app, ctx, config)
       }
     }
+    console.log('Total memory: ' + Math.round(process.memoryUsage().rss / 1024 / 1024) + ' Gb')
   })
   app.on('pull_request.closed', async ctx => {
     if (ctx.payload.pull_request.merged === true) {
@@ -45,5 +49,6 @@ module.exports = app => {
         }
       }
     }
+    console.log('Total memory: ' + Math.round(process.memoryUsage().rss / 1024 / 1024) + ' Gb')
   })
 }
