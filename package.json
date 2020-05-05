@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "dev": "nodemon",
-    "start": "probot run ./src/probot.js",
+    "start": "NODE_OPTIONS='---optimize_for_size -max_old_space_size=460' probot run ./src/probot.js",
     "lint": "standard --fix",
     "test": "jest && standard",
     "test:watch": "jest --watch --notify --notifyMode=change --coverage",
