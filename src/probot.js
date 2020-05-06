@@ -12,16 +12,15 @@ module.exports = app => {
   } else {
     app.log('Skipping Sentry.io setup')
   }
-
-  console.log('Total memory: ' + Math.round(process.memoryUsage().rss / 1024 / 1024) + ' Gb')
+  app.log('Total memory: ' + Math.round(process.memoryUsage().rss / 1024 / 1024) + ' Mb')
 
   app.on('issues.assigned', async ctx => {
     app.log('Issue was assigned')
     const config = await Config.load(ctx)
     if (config && Config.isModeAuto(config)) {
       await github.createIssueBranch(app, ctx, config)
+      app.log('Total memory: ' + Math.round(process.memoryUsage().rss / 1024 / 1024) + ' Mb')
     }
-    console.log('Total memory: ' + Math.round(process.memoryUsage().rss / 1024 / 1024) + ' Gb')
   })
   app.on('issue_comment.created', async ctx => {
     if (Config.isChatOpsCommand(ctx.payload.comment.body)) {
@@ -29,9 +28,9 @@ module.exports = app => {
       const config = await Config.load(ctx)
       if (config && Config.isModeChatOps(config)) {
         await github.createIssueBranch(app, ctx, config)
+        app.log('Total memory: ' + Math.round(process.memoryUsage().rss / 1024 / 1024) + ' Gb')
       }
     }
-    console.log('Total memory: ' + Math.round(process.memoryUsage().rss / 1024 / 1024) + ' Gb')
   })
   app.on('pull_request.closed', async ctx => {
     if (ctx.payload.pull_request.merged === true) {
@@ -49,10 +48,5 @@ module.exports = app => {
         }
       }
     }
-    console.log('Total memory: ' + Math.round(process.memoryUsage().rss / 1024 / 1024) + ' Gb')
-  })
-  app.on('*', async ctx => {
-    console.log('Received event: ' + ctx.event + ', action: ' + ctx.payload.action)
-    console.log('Total memory: ' + Math.round(process.memoryUsage().rss / 1024 / 1024) + ' Gb')
   })
 }
