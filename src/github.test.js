@@ -95,7 +95,7 @@ test('handle branch already exist, log message to info level', async () => {
           login: 'robvanderleek'
         }, //
         name: 'create-issue-brancg'
-      }, //
+      } //
     }, //
     github: {
       git: {
@@ -122,7 +122,7 @@ test('log branch create errors with error level', async () => {
           login: 'robvanderleek'
         }, //
         name: 'create-issue-brancg'
-      }, //
+      } //
     }, //
     github: {
       git: {

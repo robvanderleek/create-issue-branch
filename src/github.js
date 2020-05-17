@@ -9,7 +9,6 @@ async function createIssueBranch (app, ctx, config) {
   } else {
     const sha = await getSourceBranchHeadSha(ctx, config, app.log)
     await createBranch(ctx, config, branchName, sha, app.log)
-
   }
 }
 
