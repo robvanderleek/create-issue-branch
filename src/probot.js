@@ -27,9 +27,8 @@ function configureSentry (app) {
   }
 }
 
-function logMemoryUsage(app) {
-  app.log('Total memory: ' + 
-    Math.round(process.memoryUsage().rss / 1024 / 1024) + ' Mb')
+function logMemoryUsage (app) {
+  app.log('Total memory: ' + Math.round(process.memoryUsage().rss / 1024 / 1024) + ' Mb')
 }
 
 async function issueAssigned (app, ctx) {
