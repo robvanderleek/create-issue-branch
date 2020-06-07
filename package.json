@@ -14,29 +14,29 @@
   ],
   "scripts": {
     "dev": "nodemon",
-    "start": "probot run ./src/probot.js",
+    "start": "NODE_OPTIONS='--max_old_space_size=460' probot run ./src/probot.js",
     "lint": "standard --fix",
     "test": "jest && standard",
     "test:watch": "jest --watch --notify --notifyMode=change --coverage",
     "dist": "ncc build src/action.js"
   },
   "dependencies": {
-    "@sentry/node": "^5.15.4",
-    "aws-sdk": "^2.658.0",
+    "@sentry/node": "^5.15.5",
+    "aws-sdk": "^2.686.0",
     "bunyan-sentry-stream": "^1.2.1",
-    "probot": "^9.11.3",
+    "probot": "^9.11.4",
     "probot-actions-adapter": "^1.0.4"
   },
   "devDependencies": {
     "@zeit/ncc": "^0.22.1",
-    "jest": "^25.4.0",
+    "jest": "^26.0.1",
     "nock": "^12.0.3",
-    "nodemon": "^2.0.3",
+    "nodemon": "^2.0.4",
     "smee-client": "^1.0.2",
-    "standard": "^14.3.3"
+    "standard": "^14.3.4"
   },
   "engines": {
-    "node": ">= 8.3.0"
+    "node": ">= 14.1.x"
   },
   "standard": {
     "env": [

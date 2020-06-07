@@ -262,6 +262,14 @@ branches:
 
 Please create an issue here: https://github.com/robvanderleek/create-issue-branch/issues
 
+## Roadmap features
+
+The list below contains features that might or might not be implemented in the future.
+Comment or +1 if this feature is useful for your use-case.
+
+- Add Projects integration (see issue [#142](https://github.com/robvanderleek/create-issue-branch/issues/142))
+- Automatically open a PR (see issue [#80](https://github.com/robvanderleek/create-issue-branch/issues/80)) 
+
 # Contributing
 
 If you have suggestions for how create-issue-branch could be improved, or want to report a bug, open an issue! We'd love all and any contributions.

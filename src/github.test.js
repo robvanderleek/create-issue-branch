@@ -89,6 +89,14 @@ test('get branch name from issue with only branch prefix configured', async () =
 
 test('handle branch already exist, log message to info level', async () => {
   const ctx = {
+    payload: {
+      repository: {
+        owner: {
+          login: 'robvanderleek'
+        }, //
+        name: 'create-issue-brancg'
+      } //
+    }, //
     github: {
       git: {
         createRef: () => {
@@ -100,25 +108,38 @@ test('handle branch already exist, log message to info level', async () => {
   }
   const log = { info: jest.fn() }
 
-  await github.createBranch(ctx, 'robvanderleek', 'create-issue-branch', 'issue-1', '1234abcd', log)
+  await github.createBranch(ctx, {}, 'issue-1', '1234abcd', log)
 
   expect(log.info).toBeCalled()
 })
 
 test('log branch create errors with error level', async () => {
+  const createComment = jest.fn()
   const ctx = {
+    payload: {
+      repository: {
+        owner: {
+          login: 'robvanderleek'
+        }, //
+        name: 'create-issue-brancg'
+      } //
+    }, //
     github: {
       git: {
         createRef: () => {
           // eslint-disable-next-line no-throw-literal
           throw { message: 'Oops, something is wrong' }
         }
+      }, //
+      issues: {
+        createComment: createComment
       }
-    }
+    }, //
+    issue: () => {}
   }
-  const log = { error: jest.fn() }
 
-  await github.createBranch(ctx, 'robvanderleek', 'create-issue-branch', 'issue-1', '1234abcd', log)
+  await github.createBranch(ctx, { silent: false }, 'robvanderleek', 'create-issue-branch', 'issue-1', '1234abcd',
+    () => {})
 
-  expect(log.error).toBeCalled()
+  expect(createComment).toBeCalled()
 })

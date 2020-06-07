@@ -3,15 +3,11 @@ const utils = require('./utils')
 const context = require('./context')
 
 async function createIssueBranch (app, ctx, branchName, config) {
-  const owner = context.getRepoOwner(ctx)
-  const repo = context.getRepoName(ctx)
-  if (await branchExists(ctx, owner, repo, branchName)) {
+  if (await branchExists(ctx, branchName)) {
     await addComment(ctx, config, 'Branch already exists')
   } else {
     const sha = await getSourceBranchHeadSha(ctx, config, app.log)
-    await createBranch(ctx, owner, repo, branchName, sha, app.log)
-    app.log(`Branch created: ${branchName}`)
-    await addComment(ctx, config, `Branch [${branchName}](${context.getRepoUrl(ctx)}/tree/${branchName}) created!`)
+    await createBranch(ctx, config, branchName, sha, app.log)
   }
 }
 
@@ -84,7 +80,9 @@ async function addComment (ctx, config, comment) {
   }
 }
 
-async function branchExists (ctx, owner, repo, branchName) {
+async function branchExists (ctx, branchName) {
+  const owner = context.getRepoOwner(ctx)
+  const repo = context.getRepoName(ctx)
   try {
     await ctx.github.git.getRef({
       owner: owner, repo: repo, ref: `heads/${branchName}`
@@ -124,11 +122,15 @@ async function getBranchHeadSha (ctx, branch) {
   }
 }
 
-async function createBranch (ctx, owner, repo, branchName, sha, log) {
+async function createBranch (ctx, config, branchName, sha, log) {
+  const owner = context.getRepoOwner(ctx)
+  const repo = context.getRepoName(ctx)
   try {
     const res = await ctx.github.git.createRef({
       owner: owner, repo: repo, ref: `refs/heads/${branchName}`, sha: sha
     })
+    log(`Branch created: ${branchName}`)
+    await addComment(ctx, config, `Branch [${branchName}](${context.getRepoUrl(ctx)}/tree/${branchName}) created!`)
     if (utils.isProduction()) {
       utils.pushMetric(log)
     }
@@ -137,7 +139,7 @@ async function createBranch (ctx, owner, repo, branchName, sha, log) {
     if (e.message === 'Reference already exists') {
       log.info('Could not create branch as it already exists')
     } else {
-      log.error(`Could not create branch (${e.message})`)
+      await addComment(ctx, config, `Could not create branch (${e.message})`)
     }
   }
 }

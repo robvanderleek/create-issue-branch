@@ -6,6 +6,7 @@ const github = require('./github')
 module.exports = app => {
   app.log('App was loaded')
   configureSentry(app)
+  logMemoryUsage(app)
   app.on('issues.assigned', async ctx => {
     await issueAssigned(app, ctx)
   })
@@ -26,12 +27,18 @@ function configureSentry (app) {
   }
 }
 
+function logMemoryUsage(app) {
+  app.log('Total memory: ' + 
+    Math.round(process.memoryUsage().rss / 1024 / 1024) + ' Mb')
+}
+
 async function issueAssigned (app, ctx) {
   app.log('Issue was assigned')
   const config = await Config.load(ctx)
   if (config && Config.isModeAuto(config)) {
     const branchName = await github.getBranchNameFromIssue(ctx, config)
     await github.createIssueBranch(app, ctx, branchName, config)
+    logMemoryUsage(app)
   }
 }
 
@@ -49,6 +56,7 @@ async function commentCreated (app, ctx) {
         branchName = await github.getBranchNameFromIssue(ctx, config)
       }
       await github.createIssueBranch(app, ctx, branchName, config)
+      logMemoryUsage(app)
     }
   }
 }
