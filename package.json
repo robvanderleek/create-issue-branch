@@ -24,7 +24,7 @@
     "@sentry/node": "^5.16.1",
     "aws-sdk": "^2.691.0",
     "bunyan-sentry-stream": "^1.2.1",
-    "probot": "^9.11.4",
+    "probot": "^9.11.5",
     "probot-actions-adapter": "^1.0.4"
   },
   "devDependencies": {
