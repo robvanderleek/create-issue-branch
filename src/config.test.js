@@ -22,3 +22,15 @@ test('get ChatOps command argument', () => {
   expect(config.getChatOpsCommandArgument('/cib Fix NPE bug')).toBe('Fix NPE bug')
   expect(config.getChatOpsCommandArgument('/cib Hello')).toBe('Hello')
 })
+
+test('is mode ChatOps', () => {
+  expect(config.isModeChatOps(undefined)).toBeFalsy()
+  expect(config.isModeChatOps({ mode: 'auto' })).toBeFalsy()
+  expect(config.isModeChatOps({ mode: 'chatops' })).toBeTruthy()
+})
+
+test('experimental feature flag', () => {
+  expect(config.isExperimentalBranchNameArgument(undefined)).toBeFalsy()
+  expect(config.isExperimentalBranchNameArgument({ experimental: { branchNameArgument: false } })).toBeFalsy()
+  expect(config.isExperimentalBranchNameArgument({ experimental: { branchNameArgument: true } })).toBeTruthy()
+})

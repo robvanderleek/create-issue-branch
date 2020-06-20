@@ -256,6 +256,19 @@ branches:
     prefix: issues/
 ```
 
+## Experimental features
+
+The features below are experimental and may be removed some day or promoted to standard features.
+
+### Branch name as ChatOps command argument
+
+As discussed in [this issue](https://github.com/robvanderleek/create-issue-branch/issues/127) determines the branch name 
+on the `/cib` ChatOps command argument, e.g.: `/cib Simple NPE fix will create a branch names `issue-1-Simple_NPE_fix`  
+```yaml
+experimental:
+  branchNameArgument: true
+```
+
 *Remember to put quotes around a single asterisk ('\*') in YAML*
 
 # Feedback, suggestions and bug reports

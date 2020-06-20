@@ -401,7 +401,7 @@ describe('ChatOps mode', () => {
     helpers.nockNonExistingBranch('issue-1-Simple_NPE_fix')
     helpers.nockExistingBranch('master', 12345678)
     helpers.nockExistingBranch('issue-1-Test_issue', 87654321)
-    helpers.nockConfig('mode: chatops')
+    helpers.nockConfig('mode: chatops\nexperimental:\n  branchNameArgument: true')
     let createEndpointCalled = false
     let body = ''
 
@@ -431,8 +431,8 @@ describe('ChatOps mode', () => {
     helpers.nockNonExistingBranch('1-foo-Simple_NPE_fix')
     helpers.nockExistingBranch('master', 12345678)
     helpers.nockExistingBranch('issue-1-Test_issue', 87654321)
-    // eslint-disable-next-line no-template-curly-in-string
-    helpers.nockConfig('branchName: \'${issue.number}-foo-${issue.title}\'\nmode: chatops')
+    helpers.nockConfig( // eslint-disable-next-line no-template-curly-in-string
+      'branchName: \'${issue.number}-foo-${issue.title}\'\nmode: chatops\nexperimental:\n  branchNameArgument: true')
     let createEndpointCalled = false
     let body = ''
 

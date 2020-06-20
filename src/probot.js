@@ -46,11 +46,15 @@ async function commentCreated (app, ctx) {
   if (Config.isChatOpsCommand(body)) {
     app.log('ChatOps command received')
     const config = await Config.load(ctx)
-    if (config && Config.isModeChatOps(config)) {
-      const commandArgument = Config.getChatOpsCommandArgument(body)
+    if (Config.isModeChatOps(config)) {
       let branchName
-      if (commandArgument) {
-        branchName = await github.getBranchName(ctx, config, commandArgument)
+      if (Config.isExperimentalBranchNameArgument(config)) {
+        const commandArgument = Config.getChatOpsCommandArgument(body)
+        if (commandArgument) {
+          branchName = await github.getBranchName(ctx, config, commandArgument)
+        } else {
+          branchName = await github.getBranchNameFromIssue(ctx, config)
+        }
       } else {
         branchName = await github.getBranchNameFromIssue(ctx, config)
       }

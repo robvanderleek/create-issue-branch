@@ -59,7 +59,12 @@ function isModeAuto (config) {
 }
 
 function isModeChatOps (config) {
-  return (config.mode && config.mode === 'chatops')
+  return (config && config.mode && config.mode === 'chatops')
+}
+
+function isExperimentalBranchNameArgument (config) {
+  return (config && config.experimental && config.experimental.branchNameArgument &&
+    config.experimental.branchNameArgument === true)
 }
 
 function autoCloseIssue (config) {
@@ -96,5 +101,6 @@ module.exports = {
   getChatOpsCommandArgument: getChatOpsCommandArgument,
   autoCloseIssue: autoCloseIssue,
   isSilent: isSilent,
-  isChatOpsCommand: isChatOpsCommand
+  isChatOpsCommand: isChatOpsCommand,
+  isExperimentalBranchNameArgument: isExperimentalBranchNameArgument
 }
