@@ -13,18 +13,8 @@ A GitHub App/Action that automates the creation of issue branches (either automa
 Built in response to this feature request issue: https://github.com/isaacs/github/issues/1125
 
 * [Installation](#installation)
-   * [Option 1. Install the GitHub App](#option-1-install-the-github-app)
-   * [Option 2. Configure GitHub Action](#option-2-configure-github-action)
 * [Usage](#usage)
 * [Configuration](#configuration)
-   * [Organization/User wide configuration](#organizationuser-wide-configuration)
-   * [Mode: auto or chatops](#mode-auto-or-chatops)
-   * [Silent or chatty](#silent-or-chatty)
-   * [Branch names](#branch-names)
-   * [Automatically close issues after a pull request merge](#automatically-close-issues-after-a-pull-request-merge)
-   * [Source branch based on issue label](#source-branch-based-on-issue-label)
-   * [Branch name prefix based on issue label](#branch-name-prefix-based-on-issue-label)
-      * [Matching labels with wildcards](#matching-labels-with-wildcards)
 * [Feedback, suggestions and bug reports](#feedback-suggestions-and-bug-reports)
 * [Contributing](#contributing)
 * [License](#license)
@@ -256,9 +246,12 @@ branches:
     prefix: issues/
 ```
 
+*Remember to put quotes around a single asterisk ('\*') in YAML*
+
 ## Experimental features
 
-The features below are experimental and may be removed some day or promoted to standard features.
+The features below are experimental and may be removed some day or promoted to 
+standard features.
 
 ### Branch name as ChatOps command argument
 
@@ -268,8 +261,6 @@ on the `/cib` ChatOps command argument, e.g.: `/cib Simple NPE fix will create a
 experimental:
   branchNameArgument: true
 ```
-
-*Remember to put quotes around a single asterisk ('\*') in YAML*
 
 # Feedback, suggestions and bug reports
 
