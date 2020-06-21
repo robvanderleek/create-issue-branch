@@ -2,8 +2,7 @@ const Config = require('./config')
 const utils = require('./utils')
 const context = require('./context')
 
-async function createIssueBranch (app, ctx, config) {
-  const branchName = await getBranchNameFromIssue(ctx, config)
+async function createIssueBranch (app, ctx, branchName, config) {
   if (await branchExists(ctx, branchName)) {
     await addComment(ctx, config, 'Branch already exists')
   } else {
@@ -13,8 +12,12 @@ async function createIssueBranch (app, ctx, config) {
 }
 
 async function getBranchNameFromIssue (ctx, config) {
-  const number = context.getIssueNumber(ctx)
   const title = context.getIssueTitle(ctx)
+  return getBranchName(ctx, config, title)
+}
+
+async function getBranchName (ctx, config, title) {
+  const number = context.getIssueNumber(ctx)
   let result
   if (config.branchName) {
     if (config.branchName === 'tiny') {
@@ -24,6 +27,7 @@ async function getBranchNameFromIssue (ctx, config) {
     } else if (config.branchName === 'full') {
       result = `issue-${number}-${title}`
     } else {
+      ctx.payload.issue.title = title
       result = utils.interpolate(config.branchName, ctx.payload)
     }
   } else {
@@ -146,5 +150,6 @@ module.exports = {
   getIssueBranchConfig: getIssueBranchConfig,
   getIssueBranchPrefix: getIssueBranchPrefix,
   getBranchNameFromIssue: getBranchNameFromIssue,
+  getBranchName: getBranchName,
   createBranch: createBranch
 }
