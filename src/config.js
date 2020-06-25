@@ -55,7 +55,7 @@ async function load (ctx) {
 }
 
 function isModeAuto (config) {
-  return !isModeChatOps(config)
+  return (config && !isModeChatOps(config))
 }
 
 function isModeChatOps (config) {

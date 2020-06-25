@@ -125,6 +125,27 @@ test('source branch can be configured based on issue label', async () => {
   expect(sourceSha).toBe('abcd1234')
 })
 
+test('do not create a branch for issue labels that are configured to be skipped', async () => {
+  helpers.nockNonExistingBranch('issue-1-Test_issue')
+  helpers.nockExistingBranch('master', '12345678')
+  const ymlConfig = `branches:
+  - label: question
+    skip: true`
+  helpers.nockConfig(ymlConfig)
+  let createEndpointCalled = false
+
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/git/refs', () => {
+      createEndpointCalled = true
+      return true
+    })
+    .reply(200)
+
+  await probot.receive({ name: 'issues', payload: helpers.issueAssignedWithQuestionLabelPayload() })
+
+  expect(createEndpointCalled).toBeFalsy()
+})
+
 test('source branch can be configured based on issue label with wildcard pattern', async () => {
   helpers.nockNonExistingBranch('issue-1-Test_issue')
   helpers.nockExistingBranch('master', '12345678')

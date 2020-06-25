@@ -29,6 +29,12 @@ test('is mode ChatOps', () => {
   expect(config.isModeChatOps({ mode: 'chatops' })).toBeTruthy()
 })
 
+test('is mode auto', () => {
+  expect(config.isModeAuto(undefined)).toBeFalsy()
+  expect(config.isModeAuto({ mode: 'auto' })).toBeTruthy()
+  expect(config.isModeAuto({ mode: 'chatops' })).toBeFalsy()
+})
+
 test('experimental feature flag', () => {
   expect(config.isExperimentalBranchNameArgument(undefined)).toBeFalsy()
   expect(config.isExperimentalBranchNameArgument({ experimental: { branchNameArgument: false } })).toBeFalsy()

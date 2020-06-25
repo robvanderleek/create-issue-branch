@@ -72,6 +72,15 @@ function getIssueBranchConfig (ctx, config) {
   return undefined
 }
 
+function skipBranchCreationForIssue (ctx, config) {
+  const branchConfig = getIssueBranchConfig(ctx, config)
+  if (branchConfig) {
+    return branchConfig.skip === true
+  } else {
+    return false
+  }
+}
+
 async function addComment (ctx, config, comment) {
   const silent = Config.isSilent(config)
   if (!silent) {
@@ -148,6 +157,7 @@ module.exports = {
   createIssueBranch: createIssueBranch,
   getIssueNumberFromBranchName: getIssueNumberFromBranchName,
   getIssueBranchConfig: getIssueBranchConfig,
+  skipBranchCreationForIssue: skipBranchCreationForIssue,
   getIssueBranchPrefix: getIssueBranchPrefix,
   getBranchNameFromIssue: getBranchNameFromIssue,
   getBranchName: getBranchName,

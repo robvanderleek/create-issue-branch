@@ -228,7 +228,22 @@ See
 [test/fixtures/issues.assigned.json](src/test-fixtures/issues.assigned.json) for
 all possible placeholder names.
 
-### Matching labels with wildcards
+## Skip branch creation based on issue label
+
+In mode "auto" branch creation can be skipped based on the label of an issue.
+
+For example, if you don't want to automatically create branches for issues with the
+`question` label, add this to your configuration YAML:
+
+```yaml
+branches:
+  - label: question
+    skip: true
+```
+
+
+
+## Matching labels with wildcards
 
 Wildcard characters '?' (matches any single character) and '*' (matches any sequence of characters, 
 including the empty sequence) can be used in the label field.

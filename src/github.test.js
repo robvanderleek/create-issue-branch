@@ -44,6 +44,22 @@ test('get branch configuration for issue', () => {
   expect(branchConfig.prefix).toBe('feature/')
 })
 
+test('get skip is true branch configuration for issue', () => {
+  const ctx = { payload: { issue: { labels: [{ name: 'question' }] } } }
+  const config = { branches: [{ label: 'question', skip: true }] }
+  const branchConfig = github.getIssueBranchConfig(ctx, config)
+  expect(branchConfig).toBeDefined()
+  expect(branchConfig.skip).toBe(true)
+})
+
+test('skip branch creation for issue', () => {
+  const questionIssue = { payload: { issue: { labels: [{ name: 'question' }] } } }
+  const bugIssue = { payload: { issue: { labels: [{ name: 'bug' }] } } }
+  const config = { branches: [{ label: 'question', skip: true }] }
+  expect(github.skipBranchCreationForIssue(questionIssue, config)).toBe(true)
+  expect(github.skipBranchCreationForIssue(bugIssue, config)).toBe(false)
+})
+
 test('get branch configuration for issue with all matching wildcard fallthrough', () => {
   const ctx = { payload: { issue: { labels: [{ name: 'mylabel' }] } } }
   const config = { branches: [{ label: 'enhancement', prefix: 'feature/' }, { label: '*', prefix: 'issues/' }] }
