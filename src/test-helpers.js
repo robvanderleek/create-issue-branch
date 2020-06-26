@@ -14,6 +14,20 @@ function issueAssignedWithEnhancementLabelPayload () {
   return issueCopy
 }
 
+function issueAssignedWithQuestionLabelPayload () {
+  const issueCopy = JSON.parse(JSON.stringify(issueAssignedPayload))
+  issueCopy.issue.labels.push({
+    id: 2005019682,
+    node_id: 'MDU6TGFiZWwyMDA1MDE5Njgy',
+    url: 'https://api.github.com/repos/robvanderleek/create-issue-branch/labels/question',
+    name: 'question',
+    color: 'd876e3',
+    default: true,
+    description: 'Further information is requested'
+  })
+  return issueCopy
+}
+
 function issueAssignedWithBugAndEnhancementLabelsPayload () {
   const issueCopy = JSON.parse(JSON.stringify(issueAssignedPayload))
   issueCopy.issue.labels.push({
@@ -72,6 +86,7 @@ function nockNonExistingBranch (name) {
 
 module.exports = {
   issueAssignedWithEnhancementLabelPayload: issueAssignedWithEnhancementLabelPayload,
+  issueAssignedWithQuestionLabelPayload: issueAssignedWithQuestionLabelPayload,
   issueAssignedWithBugAndEnhancementLabelsPayload: issueAssignedWithBugAndEnhancementLabelsPayload,
   nockAccessToken: nockAccessToken,
   nockEmptyConfig: nockEmptyConfig,

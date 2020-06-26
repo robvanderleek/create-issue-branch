@@ -31,10 +31,12 @@ function getIssueLabels (ctx) {
   }
 }
 
-module.exports.getRepoOwner = getRepoOwner
-module.exports.getRepoName = getRepoName
-module.exports.getRepoUrl = getRepoUrl
-module.exports.getIssueNumber = getIssueNumber
-module.exports.getIssueTitle = getIssueTitle
-module.exports.getDefaultBranch = getDefaultBranch
-module.exports.getIssueLabels = getIssueLabels
+module.exports = {
+  getRepoOwner: getRepoOwner,
+  getRepoName: getRepoName,
+  getRepoUrl: getRepoUrl,
+  getIssueNumber: getIssueNumber,
+  getIssueTitle: getIssueTitle,
+  getDefaultBranch: getDefaultBranch,
+  getIssueLabels: getIssueLabels
+}

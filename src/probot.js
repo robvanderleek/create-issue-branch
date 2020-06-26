@@ -34,10 +34,12 @@ function logMemoryUsage (app) {
 async function issueAssigned (app, ctx) {
   app.log('Issue was assigned')
   const config = await Config.load(ctx)
-  if (config && Config.isModeAuto(config)) {
-    const branchName = await github.getBranchNameFromIssue(ctx, config)
-    await github.createIssueBranch(app, ctx, branchName, config)
-    logMemoryUsage(app)
+  if (Config.isModeAuto(config)) {
+    if (!github.skipBranchCreationForIssue(ctx, config)) {
+      const branchName = await github.getBranchNameFromIssue(ctx, config)
+      await github.createIssueBranch(app, ctx, branchName, config)
+      logMemoryUsage(app)
+    }
   }
 }
 
