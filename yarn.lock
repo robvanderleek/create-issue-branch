@@ -4790,10 +4790,10 @@ probot-actions-adapter@^1.0.4:
     probot "^9.5.3"
     uuid "^3.3.3"
 
-probot@^9.11.5, probot@^9.5.3:
-  version "9.11.5"
-  resolved "https://registry.yarnpkg.com/probot/-/probot-9.11.5.tgz#2a27eb37cdd2cf22b757e8dc689ad589b397d2af"
-  integrity sha512-t7OoWyIkMlFcFxjywF/Oq0i093FU0RD93xWF4TOXTjyossXwVnBFDJ4jyb303VCkuwGgoNO4Uz/fdKRnC6ILgg==
+probot@^9.11.7, probot@^9.5.3:
+  version "9.11.7"
+  resolved "https://registry.yarnpkg.com/probot/-/probot-9.11.7.tgz#1d9910de22ccdb00b0280bd7c6c65087305a84f3"
+  integrity sha512-0fjLgDc84tpNNWrUvHOtCwO+CxaSjJXbFrM//NDyU7s92LcVdLCjPZyTyyr3kveA2DzAl/LFqb87RkoJL4dyOQ==
   dependencies:
     "@octokit/app" "^4.0.0"
     "@octokit/graphql" "^4.2.0"
