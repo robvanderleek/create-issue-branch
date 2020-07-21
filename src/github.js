@@ -4,7 +4,9 @@ const context = require('./context')
 
 async function createIssueBranch (app, ctx, branchName, config) {
   if (await branchExists(ctx, branchName)) {
-    await addComment(ctx, config, 'Branch already exists')
+    if (Config.isModeChatOps(config)) {
+      await addComment(ctx, config, 'Branch already exists')
+    }
   } else {
     const sha = await getSourceBranchHeadSha(ctx, config, app.log)
     await createBranch(ctx, config, branchName, sha, app.log)
