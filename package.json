@@ -28,7 +28,7 @@
     "probot-actions-adapter": "^1.0.4"
   },
   "devDependencies": {
-    "@zeit/ncc": "^0.22.1",
+    "@zeit/ncc": "^0.22.3",
     "jest": "^26.1.0",
     "nock": "^13.0.2",
     "nodemon": "^2.0.4",
