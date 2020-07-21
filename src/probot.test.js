@@ -61,6 +61,23 @@ test('do not create a branch when it already exists', async () => {
   expect(createEndpointCalled).toBeFalsy()
 })
 
+test('do not warn about existing branches in auto mode', async () => {
+  helpers.nockExistingBranch('issue-1-Test_issue', 87654321)
+  helpers.nockConfig('mode: auto\nsilent: false')
+  let commentEndpointCalled = false
+
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/issues/1/comments', () => {
+      commentEndpointCalled = true
+      return true
+    })
+    .reply(200)
+
+  await probot.receive({ name: 'issues', payload: issueAssignedPayload })
+
+  expect(commentEndpointCalled).toBeFalsy()
+})
+
 test('create short branch when configured that way', async () => {
   helpers.nockNonExistingBranch('issue-1')
   helpers.nockExistingBranch('master', 12345678)
@@ -477,6 +494,26 @@ describe('ChatOps mode', () => {
     expect(createEndpointCalled).toBeTruthy()
     expect(body).toBe(
       'Branch [1-foo-Simple_NPE_fix](https://github.com/robvanderleek/create-issue-branch/tree/1-foo-Simple_NPE_fix) created!')
+  })
+
+  test('warn about existing branches', async () => {
+    helpers.nockExistingBranch('issue-1-Test_issue', 87654321)
+    helpers.nockConfig('mode: chatops')
+    let commentEndpointCalled = false
+    let body = ''
+
+    nock('https://api.github.com')
+      .post('/repos/robvanderleek/create-issue-branch/issues/1/comments', (data) => {
+        commentEndpointCalled = true
+        body = data.body
+        return true
+      })
+      .reply(200)
+
+    await probot.receive({ name: 'issue_comment', payload: commentCreatedPayload })
+
+    expect(commentEndpointCalled).toBeTruthy()
+    expect(body).toBe('Branch already exists')
   })
 })
 
