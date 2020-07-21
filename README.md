@@ -287,7 +287,8 @@ The list below contains features that might or might not be implemented in the f
 Comment or +1 if this feature is useful for your use-case.
 
 - Add Projects integration (see issue [#142](https://github.com/robvanderleek/create-issue-branch/issues/142))
-- Automatically open a PR (see issue [#80](https://github.com/robvanderleek/create-issue-branch/issues/80)) 
+- Automatically open a PR (see issue [#80](https://github.com/robvanderleek/create-issue-branch/issues/80))
+- Add issue label management functionality [#177](https://github.com/robvanderleek/create-issue-branch/issues/177)
 
 # Contributing
 
