@@ -25,7 +25,7 @@ function interpolate (s, obj) {
   return s.replace(/[$]{([^}]+)}/g, function (_, path) {
     let properties
     if (containsLowerCaseOperator(path) || containsUpperCaseOperator(path)) {
-      properties = path.substring(0, path.length - 1).split('.');
+      properties = path.substring(0, path.length - 1).split('.')
     } else {
       properties = path.split('.')
     }
