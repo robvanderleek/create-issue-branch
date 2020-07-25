@@ -62,6 +62,10 @@ function nockEmptyConfig () {
     .reply(404)
     .get('/repos/robvanderleek/.github/contents/.github/issue-branch.yml')
     .reply(404)
+    .get('/repos/robvanderleek/create-issue-branch/contents/.github/issue-branch.yaml')
+    .reply(404)
+    .get('/repos/robvanderleek/.github/contents/.github/issue-branch.yaml')
+    .reply(404)
 }
 
 function nockConfig (yamlConfig) {

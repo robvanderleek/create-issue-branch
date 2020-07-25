@@ -38,7 +38,10 @@ async function handleError (ctx, err) {
 
 async function load (ctx) {
   try {
-    const result = await ctx.config('issue-branch.yml', {})
+    let result = await ctx.config('issue-branch.yml')
+    if (!result) {
+      result = await ctx.config('issue-branch.yaml', {})
+    }
     if (result.branches) {
       for (const branchConfiguration of result.branches) {
         if (!branchConfiguration.label) {
