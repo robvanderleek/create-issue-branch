@@ -8,10 +8,31 @@ test('interpolate string with object field expression', () => {
   expect(result).toBe('hello world')
 })
 
+test('interpolate string with object field expression and uppercase operator', () => {
+  const o = { hello: 'world' }
+  // eslint-disable-next-line no-template-curly-in-string
+  const result = utils.interpolate('HELLO ${hello^}', o)
+  expect(result).toBe('HELLO WORLD')
+})
+
+test('interpolate string with object field expression and lowercase operator', () => {
+  const o = { hello: 'World' }
+  // eslint-disable-next-line no-template-curly-in-string
+  const result = utils.interpolate('hello ${hello,}', o)
+  expect(result).toBe('hello world')
+})
+
 test('interpolate string with nested object field expression', () => {
   const o = { outer: { inner: 'world' } }
   // eslint-disable-next-line no-template-curly-in-string
   const result = utils.interpolate('hello ${outer.inner}', o)
+  expect(result).toBe('hello world')
+})
+
+test('interpolate string with nested object field expression and lowercase operator', () => {
+  const o = { outer: { inner: 'WoRlD' } }
+  // eslint-disable-next-line no-template-curly-in-string
+  const result = utils.interpolate('hello ${outer.inner,}', o)
   expect(result).toBe('hello world')
 })
 

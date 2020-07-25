@@ -20,9 +20,23 @@ function trim (str, ch) {
 }
 
 function interpolate (s, obj) {
+  const containsLowerCaseOperator = path => path.length > 0 && path.endsWith(',')
+  const containsUpperCaseOperator = path => path.length > 0 && path.endsWith('^')
   return s.replace(/[$]{([^}]+)}/g, function (_, path) {
-    const properties = path.split('.')
-    return properties.reduce((prev, curr) => prev && prev[curr], obj)
+    let properties
+    if (containsLowerCaseOperator(path) || containsUpperCaseOperator(path)) {
+      properties = path.substring(0, path.length - 1).split('.')
+    } else {
+      properties = path.split('.')
+    }
+    const interpolated = properties.reduce((prev, curr) => prev && prev[curr], obj)
+    if (containsLowerCaseOperator(path)) {
+      return interpolated.toLowerCase()
+    } else if (containsUpperCaseOperator(path)) {
+      return interpolated.toUpperCase()
+    } else {
+      return interpolated
+    }
   })
 }
 
