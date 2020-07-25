@@ -155,6 +155,22 @@ See
 [test/fixtures/issues.assigned.json](src/test-fixtures/issues.assigned.json) for
 all possible placeholder names.
 
+### Lowercase and uppercase substitutions
+
+Substitutions for `${...}` placeholders can be lowercased by putting a `,` before the closing curly. Likewise, substitutions can be uppercased by putting a `^` before the closing curly.
+
+For example, issue titles can be lowercased in branch names like this:
+
+```yaml
+branchName: '${issue.number}-${issue.title,}'
+```
+
+or if you want the complete title in uppercase:
+
+```yaml
+branchName: '${issue.number}-${issue.title^}'
+```
+
 ## Automatically close issues after a pull request merge
 
 This app can close issues automatically for you when a pull request for an issue 
