@@ -59,8 +59,6 @@ test('git safe replacements', () => {
 })
 
 test('custom git safe replacements', () => {
-  expect(utils.makePrefixGitSafe('  feature/this is a bug ', '-')).toBe('feature/this-is-a-bug')
-  expect(utils.makePrefixGitSafe('hello/ world', '-')).toBe('hello/-world')
   expect(utils.makeGitSafe('feature_bug', '-')).toBe('feature_bug')
   expect(utils.makeGitSafe('Issue name with slash/', '-')).toBe('Issue-name-with-slash')
   expect(utils.makeGitSafe('Also issue name/with slash', '-')).toBe('Also-issue-name/with-slash')
