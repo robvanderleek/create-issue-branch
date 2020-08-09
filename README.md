@@ -152,8 +152,18 @@ branchName: '${issue.number}-${issue.title}'
 ```
 
 See 
-[test/fixtures/issues.assigned.json](src/test-fixtures/issues.assigned.json) for
+[test/fixtures/issues.assigned.json](tests/test-fixtures/issues.assigned.json) for
 all possible placeholder names.
+
+### Change replacement for illegal characters in branch title
+
+Characters that are not allowed in Git branch names are replaced by default with an underscore (`_`) character. You can configure a different replacement character as follows:
+
+```yaml
+gitSafeReplacementChar: '-'
+```
+
+The above configuration would generate the following branch name for issue 15 that has the title "Fix nasty bug": `issue-15-Fix-nasty-bug`.
 
 ### Lowercase and uppercase substitutions
 
@@ -241,7 +251,7 @@ branches:
 ```
 
 See 
-[test/fixtures/issues.assigned.json](src/test-fixtures/issues.assigned.json) for
+[test/fixtures/issues.assigned.json](tests/test-fixtures/issues.assigned.json) for
 all possible placeholder names.
 
 ## Skip branch creation based on issue label

@@ -1,4 +1,4 @@
-const github = require('./github')
+const github = require('../src/github')
 
 test('get issue number from branch name', () => {
   expect(github.getIssueNumberFromBranchName('i12')).toBe(12)

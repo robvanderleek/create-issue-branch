@@ -97,6 +97,10 @@ function getChatOpsCommandArgument (s) {
   }
 }
 
+function getGitSafeReplacementChar (config) {
+  return config.gitSafeReplacementChar ? config.gitSafeReplacementChar : '_'
+}
+
 module.exports = {
   load: load,
   isModeAuto: isModeAuto,
@@ -105,5 +109,6 @@ module.exports = {
   autoCloseIssue: autoCloseIssue,
   isSilent: isSilent,
   isChatOpsCommand: isChatOpsCommand,
-  isExperimentalBranchNameArgument: isExperimentalBranchNameArgument
+  isExperimentalBranchNameArgument: isExperimentalBranchNameArgument,
+  getGitSafeReplacementChar: getGitSafeReplacementChar
 }

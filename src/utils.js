@@ -5,10 +5,10 @@ function makePrefixGitSafe (s) {
   return trim(s, ' ').replace(regexp, '_')
 }
 
-function makeGitSafe (s) {
+function makeGitSafe (s, replacementChar = '_') {
   const regexp = /(?![-/])[\W]+/g
-  const result = trim(s, ' ').replace(regexp, '_').replace(/[/]+$/, '')
-  return trim(result, '_')
+  const result = trim(s, ' ').replace(regexp, replacementChar).replace(/[/]+$/, '')
+  return trim(result, replacementChar)
 }
 
 function trim (str, ch) {
