@@ -1,8 +1,7 @@
-import { EOL } from 'os'
-
 const Config = require('./config')
 const utils = require('./utils')
 const context = require('./context')
+const os = require('os')
 
 async function createIssueBranch (app, ctx, branchName, config) {
   if (await branchExists(ctx, branchName)) {
@@ -145,7 +144,7 @@ async function createBranch (ctx, config, branchName, sha, log) {
       owner: owner, repo: repo, ref: `refs/heads/${branchName}`, sha: sha
     })
     log('Branch created:')
-    process.stdout.write(`::set-output name=branchName::${branchName}` + EOL)
+    process.stdout.write(`::set-output name=branchName::${branchName}` + os.EOL)
     await addComment(ctx, config, `Branch [${branchName}](${context.getRepoUrl(ctx)}/tree/${branchName}) created!`)
     if (utils.isProduction()) {
       utils.pushMetric(log)
