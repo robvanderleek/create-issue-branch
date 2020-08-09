@@ -152,7 +152,7 @@ branchName: '${issue.number}-${issue.title}'
 ```
 
 See 
-[test/fixtures/issues.assigned.json](src/test-fixtures/issues.assigned.json) for
+[test/fixtures/issues.assigned.json](tests/test-fixtures/issues.assigned.json) for
 all possible placeholder names.
 
 ### Lowercase and uppercase substitutions
@@ -241,7 +241,7 @@ branches:
 ```
 
 See 
-[test/fixtures/issues.assigned.json](src/test-fixtures/issues.assigned.json) for
+[test/fixtures/issues.assigned.json](tests/test-fixtures/issues.assigned.json) for
 all possible placeholder names.
 
 ## Skip branch creation based on issue label

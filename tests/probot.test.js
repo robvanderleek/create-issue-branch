@@ -1,6 +1,6 @@
 const nock = require('nock')
 const helpers = require('./test-helpers')
-const myProbotApp = require('./probot')
+const myProbotApp = require('../src/probot')
 const { Probot } = require('probot')
 const issueAssignedPayload = require('./test-fixtures/issues.assigned.json')
 const commentCreatedPayload = require('./test-fixtures/issue_comment.created.json')

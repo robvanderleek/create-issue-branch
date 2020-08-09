@@ -1,4 +1,4 @@
-const utils = require('./utils')
+const utils = require('../src/utils')
 const issueAssignedPayload = require('./test-fixtures/issues.assigned.json')
 
 test('interpolate string with object field expression', () => {
@@ -49,13 +49,21 @@ test('interpolate string with issue assigned payload', () => {
   expect(result).toBe('Creator robvanderleek, repo: create-issue-branch')
 })
 
-test('get full branch name from issue title', () => {
+test('git safe replacements', () => {
   expect(utils.makePrefixGitSafe('feature/bug')).toBe('feature/bug')
   expect(utils.makePrefixGitSafe('  feature/this is a bug ')).toBe('feature/this_is_a_bug')
   expect(utils.makePrefixGitSafe('hello/ world')).toBe('hello/_world')
   expect(utils.makeGitSafe('feature_bug')).toBe('feature_bug')
   expect(utils.makeGitSafe('Issue name with slash/')).toBe('Issue_name_with_slash')
   expect(utils.makeGitSafe('Also issue name/with slash')).toBe('Also_issue_name/with_slash')
+})
+
+test('custom git safe replacements', () => {
+  expect(utils.makePrefixGitSafe('  feature/this is a bug ', '-')).toBe('feature/this-is-a-bug')
+  expect(utils.makePrefixGitSafe('hello/ world', '-')).toBe('hello/-world')
+  expect(utils.makeGitSafe('feature_bug', '-')).toBe('feature_bug')
+  expect(utils.makeGitSafe('Issue name with slash/', '-')).toBe('Issue-name-with-slash')
+  expect(utils.makeGitSafe('Also issue name/with slash', '-')).toBe('Also-issue-name/with-slash')
 })
 
 test('wildcard matching', () => {
