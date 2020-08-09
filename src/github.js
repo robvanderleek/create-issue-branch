@@ -1,3 +1,5 @@
+import { EOL } from 'os'
+
 const Config = require('./config')
 const utils = require('./utils')
 const context = require('./context')
@@ -142,7 +144,8 @@ async function createBranch (ctx, config, branchName, sha, log) {
     const res = await ctx.github.git.createRef({
       owner: owner, repo: repo, ref: `refs/heads/${branchName}`, sha: sha
     })
-    log(`Branch created: ${branchName}`)
+    log('Branch created:')
+    process.stdout.write(`::set-output name=branchName::${branchName}` + EOL)
     await addComment(ctx, config, `Branch [${branchName}](${context.getRepoUrl(ctx)}/tree/${branchName}) created!`)
     if (utils.isProduction()) {
       utils.pushMetric(log)
