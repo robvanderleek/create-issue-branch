@@ -32,6 +32,7 @@ function logMemoryUsage (app) {
 }
 
 async function issueAssigned (app, ctx) {
+  app.log('Hello world')
   app.log('Issue was assigned')
   const config = await Config.load(ctx)
   if (Config.isModeAuto(config)) {
