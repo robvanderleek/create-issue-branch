@@ -5,13 +5,11 @@ const os = require('os')
 
 async function createIssueBranch (app, ctx, branchName, config) {
   if (await branchExists(ctx, branchName)) {
-    app.log('Here 3')
     if (Config.isModeChatOps(config)) {
       await addComment(ctx, config, 'Branch already exists')
     }
   } else {
     const sha = await getSourceBranchHeadSha(ctx, config, app.log)
-    app.log('Here 4')
     await createBranch(ctx, config, branchName, sha, app.log)
   }
 }
@@ -141,7 +139,6 @@ async function getBranchHeadSha (ctx, branch) {
 async function createBranch (ctx, config, branchName, sha, log) {
   const owner = context.getRepoOwner(ctx)
   const repo = context.getRepoName(ctx)
-  app.log('Here 5')
   try {
     const res = await ctx.github.git.createRef({
       owner: owner, repo: repo, ref: `refs/heads/${branchName}`, sha: sha

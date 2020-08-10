@@ -35,6 +35,7 @@ async function issueAssigned (app, ctx) {
   app.log('Hello world')
   app.log('Issue was assigned')
   const config = await Config.load(ctx)
+  console.log(config)
   if (Config.isModeAuto(config)) {
     app.log('Here 1')
     if (!github.skipBranchCreationForIssue(ctx, config)) {
