@@ -34,7 +34,6 @@ function logMemoryUsage (app) {
 async function issueAssigned (app, ctx) {
   app.log('Issue was assigned')
   const config = await Config.load(ctx)
-  console.log(config)
   if (Config.isModeAuto(config)) {
     if (!github.skipBranchCreationForIssue(ctx, config)) {
       const branchName = await github.getBranchNameFromIssue(ctx, config)
@@ -48,7 +47,6 @@ async function commentCreated (app, ctx) {
   const body = ctx.payload.comment.body
   if (Config.isChatOpsCommand(body)) {
     app.log('ChatOps command received')
-    console.log('Hello world!')
     const config = await Config.load(ctx)
     if (Config.isModeChatOps(config)) {
       let branchName
