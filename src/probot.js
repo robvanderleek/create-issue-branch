@@ -36,7 +36,9 @@ async function issueAssigned (app, ctx) {
   app.log('Issue was assigned')
   const config = await Config.load(ctx)
   if (Config.isModeAuto(config)) {
+    app.log('Here 1')
     if (!github.skipBranchCreationForIssue(ctx, config)) {
+      app.log('Here 2')
       const branchName = await github.getBranchNameFromIssue(ctx, config)
       await github.createIssueBranch(app, ctx, branchName, config)
       logMemoryUsage(app)
