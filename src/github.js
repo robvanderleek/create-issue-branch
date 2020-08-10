@@ -144,9 +144,9 @@ async function createBranch (ctx, config, branchName, sha, log) {
       owner: owner, repo: repo, ref: `refs/heads/${branchName}`, sha: sha
     })
     log('Branch created:')
-    console.log(`set-output name=branchName::${branchName}`)
-    console.log(`::set-output name=branchName::${branchName}`)
-    process.stdout.write(`::set-output name=branchName::${branchName}` + os.EOL)
+    console.log('set-output name=branchName::BAR')
+    console.log('::set-output name=branchName::BAR')
+    // process.stdout.write(`::set-output name=branchName::${branchName}` + os.EOL)
     await addComment(ctx, config, `Branch [${branchName}](${context.getRepoUrl(ctx)}/tree/${branchName}) created!`)
     if (utils.isProduction()) {
       utils.pushMetric(log)
