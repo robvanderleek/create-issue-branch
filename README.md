@@ -53,6 +53,10 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
+### GitHub Action output variable
+
+The GitHub Action has one output variable: `branchName`, which contains the name of the branch that was created. You can use this output in downstream actions. For a trivial example see [this workflow](https://github.com/robvanderleek/robvanderleek.github.io/blob/2af5f90d94d81e942382892a6b6149467184b38b/.github/workflows/issue-branch.yml).
+
 # Usage
 
 This app can support your development workflow in two ways (modes): auto and chatops.

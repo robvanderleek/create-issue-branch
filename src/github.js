@@ -1,7 +1,6 @@
 const Config = require('./config')
 const utils = require('./utils')
 const context = require('./context')
-const os = require('os')
 
 async function createIssueBranch (app, ctx, branchName, config) {
   if (await branchExists(ctx, branchName)) {
