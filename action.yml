@@ -3,6 +3,9 @@ description: 'GitHub action that creates a new branch after assigning an issue.'
 branding:
   icon: 'activity'
   color: 'blue'
+outputs:
+  branchName:
+    description: 'Name of the branch that was created'
 runs:
   using: 'node12'
   main: 'dist/index.js'
