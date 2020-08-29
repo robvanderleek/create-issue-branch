@@ -82,6 +82,18 @@ In "chatops" mode the typical development workflow is:
     (for the example issue this branch will be called `issue-15-Fix_nasty_bug`)
     By default the app notifies creation is completed with a comment on the issue.
 
+## Advanced usage with other Apps & Actions
+
+GitHub Apps & Actions allow you to define custom and advanced automated workflows. Examples of Apps & Actions that can be used alongside this app to compose tailored issue workflows are:
+
+- [project-bot](https://github.com/philschatz/project-bot): App for project automation
+- [github-actions-automate-projects](https://github.com/takanabe/github-actions-automate-projects): Action for project automation
+- [auto-card-labeler](https://github.com/technote-space/auto-card-labeler): Automatically label issues/PRs
+
+To get inspired of what is possible with Actions workflows, see [this configuration](https://github.com/takeshape/.github/blob/4ecfb2fb54164934ad70822c709ab1917541114d/.github/workflows/_pm_issues.yml). 
+
+_Remember to always pick the simplest issue workflow that fits your poject_.
+
 # Configuration
 
 This app does not require a configuration. However, if you want to override 
