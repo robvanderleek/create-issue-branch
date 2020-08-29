@@ -30,7 +30,7 @@
   "devDependencies": {
     "@zeit/ncc": "^0.22.3",
     "jest": "^26.4.2",
-    "nock": "^13.0.3",
+    "nock": "^13.0.4",
     "nodemon": "^2.0.4",
     "smee-client": "^1.2.2",
     "standard": "^14.3.4"
