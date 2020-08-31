@@ -234,7 +234,7 @@ branches:
     name: staging
 ```
 
-The `label` field also takes a list of label names. In that case all labels in the list must be macthed by labels of the issue. For example:
+The `label` field also takes a list of label names. In that case all labels in the list must be matched by labels of the issue. For example:
 
 ```yaml
 branches:
