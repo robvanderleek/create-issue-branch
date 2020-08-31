@@ -44,6 +44,17 @@ test('get branch configuration for issue', () => {
   expect(branchConfig.prefix).toBe('feature/')
 })
 
+test('get branch configuration with multiple labels for issue', () => {
+  const ctx = { payload: { issue: { labels: [{ name: 'enhancement' }, { name: 'documentation' }] } } }
+  const config = {
+    branches: [{ label: ['enhancement', 'documentation'], prefix: 'docs/' },
+      { label: 'enhancement', prefix: 'feature/' }]
+  }
+  const branchConfig = github.getIssueBranchConfig(ctx, config)
+  expect(branchConfig).toBeDefined()
+  expect(branchConfig.prefix).toBe('docs/')
+})
+
 test('get skip is true branch configuration for issue', () => {
   const ctx = { payload: { issue: { labels: [{ name: 'question' }] } } }
   const config = { branches: [{ label: 'question', skip: true }] }

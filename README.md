@@ -222,7 +222,7 @@ You can override the source branch (by default the "default branch" of the
 repository is used) based on the issue label.
 
 For example, if you want branches for issues with the `enhancement` label to
-have the `dev` branch as a source and branches for issues with the `bug`
+have the `dev` branch as a source, and branches for issues with the `bug`
 label to have the `staging` branch as a source, add this to your configuration
 YAML:
 
@@ -233,6 +233,20 @@ branches:
   - label: bug
     name: staging
 ```
+
+The `label` field also takes a list of label names. In that case all labels in the list must be macthed by labels of the issue. For example:
+
+```yaml
+branches:
+  - label: 
+    - enhancement
+    - docs
+    name: docs
+  - label: enhancement
+    name: dev
+```
+
+In the configuration above issues with the labels `enhancement` _and_ `docs` will have the `docs` branch as a source, while issues with an `enhancement` label _but not_ a `docs` label will have the `dev` branch as a source.
 
 When issues have multiple labels the branch of the first match (based on the 
 order in the configuration YAML will be used).
