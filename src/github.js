@@ -67,13 +67,18 @@ function getIssueBranchPrefix (ctx, config) {
 function getIssueBranchConfig (ctx, config) {
   if (config.branches) {
     const issueLabels = context.getIssueLabels(ctx)
-    for (const branchConfiguration of config.branches) {
-      if (issueLabels.some(l => utils.wildcardMatch(branchConfiguration.label, l))) {
-        return branchConfiguration
+    for (const branchConfig of config.branches) {
+      const labels = branchConfig.label instanceof Array ? branchConfig.label : [branchConfig.label]
+      if (allLabelsMatchIssueLabels(labels, issueLabels)) {
+        return branchConfig
       }
     }
   }
   return undefined
+}
+
+function allLabelsMatchIssueLabels (labels, issueLabels) {
+  return labels.every(label => issueLabels.some(issueLabel => utils.wildcardMatch(label, issueLabel)))
 }
 
 function skipBranchCreationForIssue (ctx, config) {
