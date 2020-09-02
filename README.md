@@ -345,7 +345,7 @@ Comment or +1 if this feature is useful for your use-case.
 - Add Projects integration (see issue [#142](https://github.com/robvanderleek/create-issue-branch/issues/142))
 - Automatically open a PR (see issue [#80](https://github.com/robvanderleek/create-issue-branch/issues/80))
 - Add issue label management functionality (see issue [#177](https://github.com/robvanderleek/create-issue-branch/issues/177))
-- Choose branch to branch from in ChatOps mode (see issue [#155](https://github.com/robvanderleek/create-issue-branch/issues/155))
+- Choose branch to branch from in ChatOps mode (see issues [#155](https://github.com/robvanderleek/create-issue-branch/issues/155) and [#213](https://github.com/robvanderleek/create-issue-branch/issues/213))
 
 # Contributing
 
