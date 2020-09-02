@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@sentry/node": "^5.20.1",
-    "aws-sdk": "^2.738.0",
+    "aws-sdk": "^2.742.0",
     "bunyan-sentry-stream": "^1.2.1",
     "probot": "^9.13.0",
     "probot-actions-adapter": "^1.0.4"
