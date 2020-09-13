@@ -13,7 +13,10 @@ jobs:
         with:
           id: ${{ secrets.APP_ID }}
           private_key: ${{ secrets.PRIVATE_KEY }}
-      - run: 'echo "{\"installations\": ${{ steps.stats.outputs.installations }}, \"repositories\": ${{ steps.stats.outputs.repositories }}, \"suspended\": ${{ steps.stats.outputs.suspended_installations }}, \"popular\": ${{ steps.stats.outputs.popular_repositories }} }" > static/stats.json'
+      - run: 'pwd'
+      - run: 'ls -l'
+      - run: 'echo "{\"installations\": ${{ steps.stats.outputs.installations }}, \"repositories\": ${{ steps.stats.outputs.repositories }}, \"suspended\": ${{ steps.stats.outputs.suspended_installations }}, \"popular\": ${{ steps.stats.outputs.popular_repositories }} }" > stats.json'
+      - run: 'ls -l'
       - name: Commit GitHub Action distribution
         run: |
           git config --local user.email "action@github.com"
