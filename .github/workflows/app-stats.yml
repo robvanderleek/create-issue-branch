@@ -13,7 +13,17 @@ jobs:
         with:
           id: ${{ secrets.APP_ID }}
           private_key: ${{ secrets.PRIVATE_KEY }}
-      - run: "echo installations: '${{ steps.stats.outputs.installations }}'"
-      - run: "echo repositories: '${{ steps.stats.outputs.repositories }}'"
-      - run: "echo suspended: '${{ steps.stats.outputs.suspended_installations }}'"
-      - run: "echo most popular repositories: '${{ steps.stats.outputs.popular_repositories }}'"
+      - run: 'echo {"installations": ${{ steps.stats.outputs.installations }}, "repositories": ${{ steps.stats.outputs.repositories }}, "suspended": ${{ steps.stats.outputs.suspended_installations }}, "popular": ${{ steps.stats.outputs.popular_repositories }} }' > static/stats.json
+      - name: Commit GitHub Action distribution
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add static/stats.json
+          git commit -m "Build by GitHub Actions" || true
+        if: job.status == 'success'
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+        if: job.status == 'success'
+
