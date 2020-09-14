@@ -6,10 +6,7 @@ const stats = require('../static/stats.json')
 
 module.exports = app => {
   app.log('App was loaded')
-  const router = app.route('/probot')
-  router.get('/stats', (req, res) => {
-    res.send(stats)
-  })
+  addStatsRoute(app)
   configureSentry(app)
   logMemoryUsage(app)
   app.on('issues.assigned', async ctx => {
@@ -20,6 +17,13 @@ module.exports = app => {
   })
   app.on('pull_request.closed', async ctx => {
     await pullRequestClosed(app, ctx)
+  })
+}
+
+function addStatsRoute (app) {
+  const router = app.route('/probot')
+  router.get('/stats', (req, res) => {
+    res.send(stats)
   })
 }
 
