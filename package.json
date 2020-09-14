@@ -21,7 +21,7 @@
     "dist": "ncc build src/action.js"
   },
   "dependencies": {
-    "@sentry/node": "^5.22.3",
+    "@sentry/node": "^5.23.0",
     "aws-sdk": "^2.742.0",
     "bunyan-sentry-stream": "^1.2.1",
     "probot": "^9.14.1",
