@@ -2,9 +2,14 @@ const Sentry = require('@sentry/node')
 const Config = require('./config')
 const context = require('./context')
 const github = require('./github')
+const stats = require('../static/stats.json')
 
 module.exports = app => {
   app.log('App was loaded')
+  const router = app.route('/probot')
+  router.get('/stats', (req, res) => {
+    res.send(stats)
+  })
   configureSentry(app)
   logMemoryUsage(app)
   app.on('issues.assigned', async ctx => {
