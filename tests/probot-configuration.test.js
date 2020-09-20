@@ -1,7 +1,7 @@
 const nock = require('nock')
 const helpers = require('./test-helpers')
 const myProbotApp = require('../src/probot')
-const { Probot } = require('probot')
+const { Probot, ProbotOctokit } = require('probot')
 const issueAssignedPayload = require('./test-fixtures/issues.assigned.json')
 
 nock.disableNetConnect()
@@ -14,7 +14,13 @@ beforeAll(() => {
 })
 
 beforeEach(() => {
-  probot = new Probot({})
+  probot = new Probot({
+    id: 1, //
+    githubToken: 'test', // Disable throttling & retrying requests for easier testing
+    Octokit: ProbotOctokit.defaults({
+      retry: { enabled: false }, throttle: { enabled: false }
+    })
+  })
   const app = probot.load(myProbotApp)
   app.app = {
     getInstallationAccessToken: () => Promise.resolve('test')
@@ -299,7 +305,7 @@ test('support .yaml extension for configuration file', async () => {
   const encoding = 'base64'
   nock('https://api.github.com')
     .persist()
-    .get('/repos/robvanderleek/create-issue-branch/contents/.github/issue-branch.yaml')
+    .get('/repos/robvanderleek/create-issue-branch/contents/.github%2Fissue-branch.yaml')
     .reply(200, { content: Buffer.from(ymlConfig).toString(encoding), encoding: encoding })
   helpers.nockEmptyConfig()
   let sourceSha = ''

@@ -1,7 +1,7 @@
 const nock = require('nock')
 const helpers = require('./test-helpers')
 const myProbotApp = require('../src/probot')
-const { Probot } = require('probot')
+const { Probot, ProbotOctokit } = require('probot')
 const issueAssignedPayload = require('./test-fixtures/issues.assigned.json')
 const commentCreatedPayload = require('./test-fixtures/issue_comment.created.json')
 const pullRequestClosedPayload = require('./test-fixtures/pull_request.closed.json')
@@ -16,7 +16,13 @@ beforeAll(() => {
 })
 
 beforeEach(() => {
-  probot = new Probot({})
+  probot = new Probot({
+    id: 1, //
+    githubToken: 'test', // Disable throttling & retrying requests for easier testing
+    Octokit: ProbotOctokit.defaults({
+      retry: { enabled: false }, throttle: { enabled: false }
+    })
+  })
   const app = probot.load(myProbotApp)
   app.app = {
     getInstallationAccessToken: () => Promise.resolve('test')
