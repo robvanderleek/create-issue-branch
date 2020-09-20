@@ -1,3 +1,3 @@
-const adapt = require('probot-actions-adapter')
+const runProbot = require('probot-actions-adapter')
 const probot = require('./probot')
-adapt(probot)
+runProbot(probot)

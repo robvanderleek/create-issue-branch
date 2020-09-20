@@ -24,11 +24,11 @@
     "@sentry/node": "^5.22.3",
     "aws-sdk": "^2.742.0",
     "bunyan-sentry-stream": "^1.2.1",
-    "probot": "^9.14.1",
-    "probot-actions-adapter": "^1.0.4"
+    "probot": "^10.8.0",
+    "probot-actions-adapter": "^2.0.0"
   },
   "devDependencies": {
-    "@zeit/ncc": "^0.22.3",
+    "@vercel/ncc": "^0.24",
     "jest": "^26.4.2",
     "nock": "^13.0.4",
     "nodemon": "^2.0.4",
