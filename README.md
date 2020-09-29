@@ -42,6 +42,8 @@ on:
         types: [assigned]
     issue_comment:
         types: [created]
+    pull_request:
+        types: [closed]
 
 jobs:
     create_issue_branch_job:
