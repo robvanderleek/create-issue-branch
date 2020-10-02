@@ -36,6 +36,7 @@ test('creates a branch when an issue is assigned', async () => {
   helpers.nockNonExistingBranch('issue-1-Test_issue')
   helpers.nockExistingBranch('master', 12345678)
   helpers.nockEmptyConfig()
+  helpers.nockBranchCreatedComment()
   let createEndpointCalled = false
 
   nock('https://api.github.com')
@@ -88,6 +89,7 @@ test('create short branch when configured that way', async () => {
   helpers.nockNonExistingBranch('issue-1')
   helpers.nockExistingBranch('master', 12345678)
   helpers.nockConfig('branchName: short')
+  helpers.nockBranchCreatedComment()
   let createEndpointCalled = false
   let branchRef = ''
 
@@ -109,6 +111,7 @@ test('source branch is default branch by, well, default', async () => {
   helpers.nockNonExistingBranch('issue-1-Test_issue')
   helpers.nockExistingBranch('master', '12345678')
   helpers.nockExistingBranch('dev', 'abcd1234')
+  helpers.nockBranchCreatedComment()
   helpers.nockEmptyConfig()
   let sourceSha = ''
 
@@ -289,6 +292,7 @@ describe('ChatOps mode', () => {
 test('create branch with custom issue name', async () => {
   helpers.nockNonExistingBranch('foo-1-Test_issue')
   helpers.nockExistingBranch('master', 12345678)
+  helpers.nockBranchCreatedComment()
   // eslint-disable-next-line no-template-curly-in-string
   helpers.nockConfig('branchName: \'foo-${issue.number}-${issue.title}\'')
   let createEndpointCalled = false
@@ -308,9 +312,33 @@ test('create branch with custom issue name', async () => {
   expect(branchRef).toBe('refs/heads/foo-1-Test_issue')
 })
 
+test('create branch with custom name containing event initiator', async () => {
+  helpers.nockNonExistingBranch('robvanderleek-1-Test_issue')
+  helpers.nockExistingBranch('master', 12345678)
+  helpers.nockBranchCreatedComment()
+  // eslint-disable-next-line no-template-curly-in-string
+  helpers.nockConfig('branchName: \'${sender.login}-${issue.number}-${issue.title}\'')
+  let createEndpointCalled = false
+  let branchRef = ''
+
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/git/refs', (body) => {
+      branchRef = body.ref
+      createEndpointCalled = true
+      return true
+    })
+    .reply(200)
+
+  await probot.receive({ name: 'issues', payload: issueAssignedPayload })
+
+  expect(createEndpointCalled).toBeTruthy()
+  expect(branchRef).toBe('refs/heads/robvanderleek-1-Test_issue')
+})
+
 test('create branch with custom short issue name', async () => {
   helpers.nockNonExistingBranch('foo-1')
   helpers.nockExistingBranch('master', 12345678)
+  helpers.nockBranchCreatedComment()
   // eslint-disable-next-line no-template-curly-in-string
   helpers.nockConfig('branchName: \'foo-${issue.number}\'')
   let createEndpointCalled = false
@@ -333,6 +361,7 @@ test('create branch with custom short issue name', async () => {
 test('create branch with GitLab-like issue name', async () => {
   helpers.nockNonExistingBranch('1-Test_issue')
   helpers.nockExistingBranch('master', 12345678)
+  helpers.nockBranchCreatedComment()
   // eslint-disable-next-line no-template-curly-in-string
   helpers.nockConfig('branchName: \'${issue.number}-${issue.title}\'')
   let createEndpointCalled = false
@@ -395,6 +424,7 @@ test('do not close issue after PR close (without merge)', async () => {
 test('create branch with slash in branch name', async () => {
   helpers.nockNonExistingBranch('bug/1/Test_issue')
   helpers.nockExistingBranch('master', 12345678)
+  helpers.nockBranchCreatedComment()
   helpers.nockConfig(// eslint-disable-next-line no-template-curly-in-string
     'branchName: \'${issue.number}/${issue.title}\'\n' + //
     'branches:\n' + //

@@ -34,6 +34,7 @@ test('source branch can be configured based on issue label', async () => {
   helpers.nockNonExistingBranch('issue-1-Test_issue')
   helpers.nockExistingBranch('master', '12345678')
   helpers.nockExistingBranch('dev', 'abcd1234')
+  helpers.nockBranchCreatedComment()
   const ymlConfig = `branches:
   - label: enhancement
     name: dev
@@ -58,6 +59,7 @@ test('source branch can be configured based on multiple issue labels', async () 
   helpers.nockNonExistingBranch('issue-1-Test_issue')
   helpers.nockExistingBranch('master', '12345678')
   helpers.nockExistingBranch('docs', 'abcd1234')
+  helpers.nockBranchCreatedComment()
   const ymlConfig = `branches:
   - label: 
     - enhancement
@@ -105,6 +107,7 @@ test('source branch can be configured based on issue label with wildcard pattern
   helpers.nockNonExistingBranch('issue-1-Test_issue')
   helpers.nockExistingBranch('master', '12345678')
   helpers.nockExistingBranch('dev', 'abcd1234')
+  helpers.nockBranchCreatedComment()
   const ymlConfig = `branches:
   - label: ?nhance*
     name: dev`
@@ -128,6 +131,7 @@ test('source branch based on catch-all fallthrough', async () => {
   helpers.nockExistingBranch('master', '12345678')
   helpers.nockExistingBranch('bug', 'abcd1234')
   helpers.nockExistingBranch('issues', 'fghi5678')
+  helpers.nockBranchCreatedComment()
   const ymlConfig = `branches:
   - label: bug
     name: bug
@@ -153,6 +157,7 @@ test('source branch based on label where configuration contains catch-all fallth
   helpers.nockExistingBranch('master', '12345678')
   helpers.nockExistingBranch('enhancement', 'abcd1234')
   helpers.nockExistingBranch('issues', 'fghi5678')
+  helpers.nockBranchCreatedComment()
   const ymlConfig = `branches:
   - label: enhancement
     name: enhancement
@@ -177,6 +182,7 @@ test('if configured source branch does not exist use default branch', async () =
   helpers.nockNonExistingBranch('issue-1-Test_issue')
   helpers.nockNonExistingBranch('dev')
   helpers.nockExistingBranch('master', '12345678')
+  helpers.nockBranchCreatedComment()
   const ymlConfig = `branches:
   - label: enhancement
     name: dev
@@ -201,6 +207,7 @@ test('if multiple issue labels match configuration use first match', async () =>
   helpers.nockNonExistingBranch('issue-1-Test_issue')
   helpers.nockExistingBranch('master', '12345678')
   helpers.nockExistingBranch('dev', 'abcd1234')
+  helpers.nockBranchCreatedComment()
   const ymlConfig = `branches:
   - label: enhancement
     name: dev
@@ -225,6 +232,7 @@ test('configuration with label branch and prefix', async () => {
   helpers.nockNonExistingBranch('feature/issue-1-Test_issue')
   helpers.nockExistingBranch('master', '12345678')
   helpers.nockExistingBranch('dev', 'abcd1234')
+  helpers.nockBranchCreatedComment()
   const ymlConfig = `branches:
   - label: enhancement
     name: dev
@@ -297,6 +305,7 @@ test('support .yaml extension for configuration file', async () => {
   helpers.nockNonExistingBranch('issue-1-Test_issue')
   helpers.nockExistingBranch('master', '12345678')
   helpers.nockExistingBranch('dev', 'abcd1234')
+  helpers.nockBranchCreatedComment()
   const ymlConfig = `branches:
   - label: enhancement
     name: dev

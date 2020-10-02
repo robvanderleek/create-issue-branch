@@ -46,11 +46,18 @@ function nockNonExistingBranch (name) {
     .reply(404)
 }
 
+function nockBranchCreatedComment () {
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/issues/1/comments')
+    .reply(200)
+}
+
 module.exports = {
   issueAssignedWithLabelsPayload: issueAssignedWithLabelsPayload,
   nockAccessToken: nockAccessToken,
   nockEmptyConfig: nockEmptyConfig,
   nockConfig: nockConfig,
   nockExistingBranch: nockExistingBranch,
-  nockNonExistingBranch: nockNonExistingBranch
+  nockNonExistingBranch: nockNonExistingBranch,
+  nockBranchCreatedComment: nockBranchCreatedComment
 }

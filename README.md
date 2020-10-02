@@ -124,12 +124,12 @@ mode: chatops
 
 ## Silent or chatty
 
-By default in mode "Auto" this app is silent. By default in mode "ChatOps" the app comments on the issue after creating a branch.
+By default the app comments on the issue after creating a branch.
 
-You can change this default behaviour by putting the following line in your `issue-branch.yml`:
+You can change this default behaviour, and make the app silent, by putting the following line in your `issue-branch.yml`:
 
 ```yaml
-silent: true # or false
+silent: true
 ```
 
 ## Branch names
