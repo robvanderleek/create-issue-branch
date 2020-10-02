@@ -77,10 +77,9 @@ function autoCloseIssue (config) {
 function isSilent (config) {
   if ('silent' in config) {
     return config.silent === true
-  } else if (isModeChatOps(config)) {
+  } else {
     return false
   }
-  return true
 }
 
 function isChatOpsCommand (s) {
