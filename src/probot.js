@@ -13,10 +13,15 @@ module.exports = app => {
     await issueAssigned(app, ctx)
   })
   app.on('issue_comment.created', async ctx => {
-    await commentCreated(app, ctx)
+    const comment = ctx.payload.comment.body
+    await commentCreated(app, ctx, comment)
   })
   app.on('pull_request.closed', async ctx => {
     await pullRequestClosed(app, ctx)
+  })
+  app.on('issues.opened', async ctx => {
+    const comment = ctx.payload.issue.body
+    await commentCreated(app, ctx, comment)
   })
 }
 
@@ -52,15 +57,14 @@ async function issueAssigned (app, ctx) {
   }
 }
 
-async function commentCreated (app, ctx) {
-  const body = ctx.payload.comment.body
-  if (Config.isChatOpsCommand(body)) {
+async function commentCreated (app, ctx, comment) {
+  if (Config.isChatOpsCommand(comment)) {
     app.log('ChatOps command received')
     const config = await Config.load(ctx)
     if (Config.isModeChatOps(config)) {
       let branchName
       if (Config.isExperimentalBranchNameArgument(config)) {
-        const commandArgument = Config.getChatOpsCommandArgument(body)
+        const commandArgument = Config.getChatOpsCommandArgument(comment)
         if (commandArgument) {
           branchName = await github.getBranchName(ctx, config, commandArgument)
         } else {
