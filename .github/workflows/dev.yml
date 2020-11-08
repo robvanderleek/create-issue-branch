@@ -1,0 +1,30 @@
+name: Dev
+
+on:
+  push:
+    branches-ignore:
+      - master
+      - dependabot/**
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    env:
+      CI: true
+      
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 14.x
+    - run: yarn install
+    - run: yarn test
+    - run: yarn run lint
+    - run: yarn dist
+    - name: Deploy branches to Heroku staging environment
+      env:
+        HEROKU_AUTH_TOKEN: ${{ secrets.HEROKU_AUTH_TOKEN }}
+      run: git push https://heroku:$HEROKU_AUTH_TOKEN@git.heroku.com/create-issue-branch-staging.git origin/${GITHUB_REF##*/}:master
+      if: job.status == 'success' && ! startsWith(github.ref)
