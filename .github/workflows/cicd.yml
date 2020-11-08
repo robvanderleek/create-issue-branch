@@ -1,9 +1,6 @@
-name: Prod
+name: CICD
 
-on: 
-  push:
-    branches:
-      - master
+on: [push]
 
 jobs:
   build:
@@ -26,16 +23,21 @@ jobs:
       env:
         HEROKU_AUTH_TOKEN: ${{ secrets.HEROKU_AUTH_TOKEN }}
       run: git push https://heroku:$HEROKU_AUTH_TOKEN@git.heroku.com/create-issue-branch.git origin/master:master
-      if: job.status == 'success'
+      if: github.ref == 'refs/heads/master' && job.status == 'success'
+    - name: Deploy branches to Heroku staging environment
+      env:
+        HEROKU_AUTH_TOKEN: ${{ secrets.HEROKU_AUTH_TOKEN }}
+      run: git push https://heroku:$HEROKU_AUTH_TOKEN@git.heroku.com/create-issue-branch-staging.git origin/${GITHUB_REF##*/}:master
+      if: github.ref != 'refs/heads/master' && job.status == 'success' && (! startsWith(github.ref, 'refs/heads/dependabot/'))
     - name: Commit GitHub Action distribution
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add dist/index.js
         git commit -m "Build by GitHub Actions" || true
-      if: job.status == 'success'
+      if: github.ref == 'refs/heads/master' && job.status == 'success'
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-      if: job.status == 'success'
+      if: github.ref == 'refs/heads/master' && job.status == 'success'
