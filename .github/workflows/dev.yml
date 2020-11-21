@@ -20,5 +20,6 @@ jobs:
     - name: Deploy branches to Heroku staging environment
       env:
         HEROKU_AUTH_TOKEN: ${{ secrets.HEROKU_AUTH_TOKEN }}
-      run: git push https://heroku:$HEROKU_AUTH_TOKEN@git.heroku.com/create-issue-branch-staging.git origin/${GITHUB_REF##*/}:master
+        HEROKU_STAGING_ENV_NAME: ${{ secrets.HEROKU_STAGING_ENV_NAME}}
+      run: git push https://heroku:$HEROKU_AUTH_TOKEN@$HEROKU_STAGING_ENV_NAME origin/${GITHUB_REF#refs/heads/}:master
       if: job.status == 'success' && (! startsWith(github.ref, 'refs/heads/dependabot/'))

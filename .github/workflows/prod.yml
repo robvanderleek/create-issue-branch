@@ -20,7 +20,8 @@ jobs:
     - name: Deploy master to Heroku production environment
       env:
         HEROKU_AUTH_TOKEN: ${{ secrets.HEROKU_AUTH_TOKEN }}
-      run: git push https://heroku:$HEROKU_AUTH_TOKEN@git.heroku.com/create-issue-branch.git origin/master:master
+        HEROKU_PROD_ENV_NAME: ${{ secrets.HEROKU_PROD_ENV_NAME }}
+      run: git push production https://heroku:$HEROKU_AUTH_TOKEN@$HEROKU_PROD_ENV_NAME origin/master:master
       if: job.status == 'success'
     - name: Commit GitHub Action distribution
       run: |
