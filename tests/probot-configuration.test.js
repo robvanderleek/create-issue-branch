@@ -311,11 +311,10 @@ test('support .yaml extension for configuration file', async () => {
     name: dev
   - label: bug
     name: master`
-  const encoding = 'base64'
   nock('https://api.github.com')
     .persist()
     .get('/repos/robvanderleek/create-issue-branch/contents/.github%2Fissue-branch.yaml')
-    .reply(200, { content: Buffer.from(ymlConfig).toString(encoding), encoding: encoding })
+    .reply(200, ymlConfig)
   helpers.nockEmptyConfig()
   let sourceSha = ''
 

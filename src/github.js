@@ -94,7 +94,7 @@ async function addComment (ctx, config, comment) {
   const silent = Config.isSilent(config)
   if (!silent) {
     const params = ctx.issue({ body: comment })
-    await ctx.github.issues.createComment(params)
+    await ctx.octokit.issues.createComment(params)
   }
 }
 
@@ -102,7 +102,7 @@ async function branchExists (ctx, branchName) {
   const owner = context.getRepoOwner(ctx)
   const repo = context.getRepoName(ctx)
   try {
-    await ctx.github.git.getRef({
+    await ctx.octokit.git.getRef({
       owner: owner, repo: repo, ref: `heads/${branchName}`
     })
     return true
@@ -130,7 +130,7 @@ async function getSourceBranchHeadSha (ctx, config, log) {
 
 async function getBranchHeadSha (ctx, branch) {
   try {
-    const res = await ctx.github.git.getRef({
+    const res = await ctx.octokit.git.getRef({
       owner: context.getRepoOwner(ctx), repo: context.getRepoName(ctx), ref: `heads/${branch}`
     })
     const ref = res.data.object
@@ -144,7 +144,7 @@ async function createBranch (ctx, config, branchName, sha, log) {
   const owner = context.getRepoOwner(ctx)
   const repo = context.getRepoName(ctx)
   try {
-    const res = await ctx.github.git.createRef({
+    const res = await ctx.octokit.git.createRef({
       owner: owner, repo: repo, ref: `refs/heads/${branchName}`, sha: sha
     })
     log(`Branch created: ${branchName}`)

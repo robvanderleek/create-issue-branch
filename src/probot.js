@@ -4,9 +4,9 @@ const context = require('./context')
 const github = require('./github')
 const stats = require('../static/stats.json')
 
-module.exports = app => {
+module.exports = ({ app, getRouter }) => {
   app.log('App was loaded')
-  addStatsRoute(app)
+  addStatsRoute(getRouter)
   configureSentry(app)
   logMemoryUsage(app)
   app.on('issues.assigned', async ctx => {
@@ -25,8 +25,8 @@ module.exports = app => {
   })
 }
 
-function addStatsRoute (app) {
-  const router = app.route('/probot')
+function addStatsRoute (getRouter) {
+  const router = getRouter('/probot')
   router.get('/stats', (req, res) => {
     res.send(stats)
   })
@@ -88,9 +88,9 @@ async function pullRequestClosed (app, ctx) {
       const branchName = ctx.payload.pull_request.head.ref
       const issueNumber = github.getIssueNumberFromBranchName(branchName)
       if (issueNumber) {
-        const issueForBranch = await ctx.github.issues.get({ owner: owner, repo: repo, issue_number: issueNumber })
+        const issueForBranch = await ctx.octokit.issues.get({ owner: owner, repo: repo, issue_number: issueNumber })
         if (issueForBranch) {
-          await ctx.github.issues.update({ owner: owner, repo: repo, issue_number: issueNumber, state: 'closed' })
+          await ctx.octokit.issues.update({ owner: owner, repo: repo, issue_number: issueNumber, state: 'closed' })
         }
       }
     }
