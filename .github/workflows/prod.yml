@@ -17,6 +17,7 @@ jobs:
     - run: yarn test
     - run: yarn run lint
     - run: yarn dist
+    - run: yarn run coverage
     - name: Deploy master to Heroku production environment
       env:
         HEROKU_AUTH_TOKEN: ${{ secrets.HEROKU_AUTH_TOKEN }}
