@@ -17,6 +17,7 @@
     "start": "NODE_OPTIONS='--max_old_space_size=490' probot run ./src/probot.js",
     "lint": "standard --fix",
     "test": "jest && standard",
+    "test:docker": "docker-compose up",
     "test:watch": "jest --watch --notify --notifyMode=change --coverage",
     "dist": "ncc build src/action.js"
   },
