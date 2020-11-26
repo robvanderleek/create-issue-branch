@@ -124,7 +124,7 @@ test('handle branch already exist, log message to info level', async () => {
         name: 'create-issue-brancg'
       } //
     }, //
-    github: {
+    octokit: {
       git: {
         createRef: () => {
           // eslint-disable-next-line no-throw-literal
@@ -151,7 +151,7 @@ test('log branch create errors with error level', async () => {
         name: 'create-issue-brancg'
       } //
     }, //
-    github: {
+    octokit: {
       git: {
         createRef: () => {
           // eslint-disable-next-line no-throw-literal

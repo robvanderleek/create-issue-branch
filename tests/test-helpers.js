@@ -27,11 +27,10 @@ function nockEmptyConfig () {
 }
 
 function nockConfig (yamlConfig) {
-  const encoding = 'base64'
   nock('https://api.github.com')
     .persist()
     .get('/repos/robvanderleek/create-issue-branch/contents/.github%2Fissue-branch.yml')
-    .reply(200, { content: Buffer.from(yamlConfig).toString(encoding), encoding: encoding })
+    .reply(200, yamlConfig)
 }
 
 function nockExistingBranch (name, sha) {

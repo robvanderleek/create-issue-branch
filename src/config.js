@@ -6,7 +6,7 @@ const issueTitle = 'Error in Create Issue Branch app configuration'
 
 async function findConfigurationErrorIssue (ctx) {
   const fullName = ctx.payload.repository.full_name
-  const result = await ctx.github.search.issuesAndPullRequests(
+  const result = await ctx.octokit.search.issuesAndPullRequests(
     { q: `${issueTitle} repo:${fullName} in:title type:issue state:open` })
   return result.data.items
 }
@@ -21,7 +21,7 @@ async function createConfigurationErrorIssue (ctx, err) {
   Please check the syntax of your \`.issue-branch.yml\`
 `
   }
-  return ctx.github.issues.create(ctx.repo({
+  return ctx.octokit.issues.create(ctx.repo({
     title: issueTitle, body: errorBody(err)
   }))
 }
