@@ -18,6 +18,7 @@
     "lint": "standard --fix",
     "test": "jest && standard",
     "coverage": "jest --collect-coverage",
+    "test:docker": "docker-compose up",
     "test:watch": "jest --watch --notify --notifyMode=change --coverage",
     "dist": "ncc build src/action.js"
   },
