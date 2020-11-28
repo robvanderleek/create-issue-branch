@@ -5,6 +5,7 @@
 [![BCH compliance](https://bettercodehub.com/edge/badge/robvanderleek/create-issue-branch?branch=master)](https://bettercodehub.com/)
 [![Build Status](https://github.com/robvanderleek/create-issue-branch/workflows/Prod/badge.svg)](https://github.com/robvanderleek/create-issue-branch/actions)
 [![Build Status](https://github.com/robvanderleek/create-issue-branch/workflows/Create%20Release/badge.svg)](https://github.com/robvanderleek/create-issue-branch/actions)
+[![codecov](https://codecov.io/gh/robvanderleek/create-issue-branch/branch/master/graph/badge.svg?token=WBKIPs2WEc)](https://codecov.io/gh/robvanderleek/create-issue-branch)
 [![Dependabot](https://badgen.net/badge/Dependabot/enabled/green?icon=dependabot)](https://dependabot.com/)
 [![Sentry](https://img.shields.io/badge/sentry-enabled-green)](https://sentry.io)
 
