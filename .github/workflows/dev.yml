@@ -17,6 +17,8 @@ jobs:
     - run: yarn test
     - run: yarn run lint
     - run: yarn dist
+    - run: yarn run coverage
+    - run: bash <(curl -s https://codecov.io/bash) -t ${{secrets.CODECOV_SECRET_TOKEN }}
     - name: Deploy branches to Heroku staging environment
       env:
         HEROKU_AUTH_TOKEN: ${{ secrets.HEROKU_AUTH_TOKEN }}
