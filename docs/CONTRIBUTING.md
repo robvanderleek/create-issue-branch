@@ -17,25 +17,25 @@ A) Use the following command to create a staging environment:
 
 `heroku create --remote staging`
 
-Note the name of the app created e.g `git.heroku.com/strong-river-216.git`, this is the Heroku staging environment name.
+Note the name of the Heroku git repository created e.g `git.heroku.com/strong-river-216.git`, this is to be used as the Heroku staging environment name in Section C below.
 
 Push to staging with the following command:
 
 `heroku push staging master`
 
-B) Use the following command to create a staging environment:
+B) Use the following command to create a production environment:
 
 `heroku create --remote production`
 
-Note the name of the app created e.g `git.heroku.com/fierce-ice-327.git`, this is the Heroku Production environment name.
+Note the name of the Heroku git repository created e.g `git.heroku.com/fierce-ice-327.git`, this is to be used as the Heroku production environment name in Section C below.
 
 `heroku push production master`
 
 C) Then you must add the following GitHub secrets:
 
 1. HEROKU_AUTH_TOKEN : Retrieved using command `heroku auth:token`
-2. HEROKU_PROD_ENV_NAME : the production environment name created above (A)
-3. HEROKU_STAGING_ENV_NAME : the staging environment name created above (B)
+2. HEROKU_PROD_ENV_NAME : the production Heroku git repository created above (A)
+3. HEROKU_STAGING_ENV_NAME : the staging Heroku git repository created above (B)
 
 Any following commits will leverage the workflow files for prod and dev respectively to update and deploy to production and staging environments created automatically. Both can be used to test and use the service and verify functionality works ahead of creating a PR.
 
