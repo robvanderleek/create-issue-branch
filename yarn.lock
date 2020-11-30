@@ -5053,10 +5053,10 @@ probot-actions-adapter@^2.0.0:
     probot "^10.1.1"
     uuid "^3.3.3"
 
-probot@^10.1.1, probot@^10.17.1:
-  version "10.17.1"
-  resolved "https://registry.yarnpkg.com/probot/-/probot-10.17.1.tgz#082b98697d47cdd14060a4a681129e7702949e94"
-  integrity sha512-lQ1BRku6T7FvZeKXQfuvFQo+0EPA+Z9/ijHtkX/kBjsmGbktr5TjiTxzPq9aJcKr3zsnyRaQvmzwE8+N63TnrQ==
+probot@^10.1.1, probot@^10.17.2:
+  version "10.17.2"
+  resolved "https://registry.yarnpkg.com/probot/-/probot-10.17.2.tgz#b4d2f29a50955793786a4d332c6401a001b1756f"
+  integrity sha512-vf4LzIGRGnzGJw6cDWKEOW7mDXBd/asjlafn8L3432i2LfnQj7B0lh5rJUnG4W03Oh6ZR4O4gNSoMCQ90wnwjw==
   dependencies:
     "@octokit/core" "^3.2.1"
     "@octokit/graphql" "^4.2.0"
