@@ -8,7 +8,7 @@
 [![codecov](https://codecov.io/gh/robvanderleek/create-issue-branch/branch/master/graph/badge.svg?token=WBKIPs2WEc)](https://codecov.io/gh/robvanderleek/create-issue-branch)
 [![Dependabot](https://badgen.net/badge/Dependabot/enabled/green?icon=dependabot)](https://dependabot.com/)
 [![Sentry](https://img.shields.io/badge/sentry-enabled-green)](https://sentry.io)
-[![Heroku](https://heroku-badge.herokuapp.com/?app=create-issue-branch)]
+[![Heroku](https://heroku-badge.herokuapp.com/?app=create-issue-branch)](https://heroku.com)
 
 A GitHub App/Action that automates the creation of issue branches (either automatically after assigning an issue or after commenting on an issue with a ChatOps command: `/create-issue-branch` or `/cib`).
 
