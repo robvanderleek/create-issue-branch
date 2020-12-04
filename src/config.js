@@ -83,8 +83,12 @@ function isSilent (config) {
 }
 
 function isChatOpsCommand (s) {
-  const parts = s.trim().toLowerCase().split(/\s/)
-  return ['/create-issue-branch', '/cib'].includes(parts[0])
+  if (s) {
+    const parts = s.trim().toLowerCase().split(/\s/)
+    return ['/create-issue-branch', '/cib'].includes(parts[0])
+  } else {
+    return false
+  }
 }
 
 function getChatOpsCommandArgument (s) {

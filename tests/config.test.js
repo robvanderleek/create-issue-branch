@@ -14,6 +14,8 @@ test('is ChatOps command', () => {
   expect(Config.isChatOpsCommand(' / cb')).toBeFalsy()
   expect(Config.isChatOpsCommand('/createbranch')).toBeFalsy()
   expect(Config.isChatOpsCommand('/create-issue')).toBeFalsy()
+  expect(Config.isChatOpsCommand(null)).toBeFalsy()
+  expect(Config.isChatOpsCommand(undefined)).toBeFalsy()
 })
 
 test('get ChatOps command argument', () => {
