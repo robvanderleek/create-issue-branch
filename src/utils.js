@@ -67,11 +67,16 @@ function pushMetric (log) {
   })
 }
 
+function isRunningInGitHubActions () {
+  return process.env.GITHUB_ACTIONS === 'true';
+}
+
 module.exports = {
   makePrefixGitSafe: makePrefixGitSafe,
   makeGitSafe: makeGitSafe,
   interpolate: interpolate,
   wildcardMatch: wildcardMatch,
   isProduction: isProduction,
-  pushMetric: pushMetric
+  pushMetric: pushMetric,
+  isRunningInGitHubActions: isRunningInGitHubActions
 }

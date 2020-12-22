@@ -2,6 +2,7 @@ const Sentry = require('@sentry/node')
 const Config = require('./config')
 const context = require('./context')
 const github = require('./github')
+const utils = require('./utils')
 const stats = require('../static/stats.json')
 
 module.exports = ({ app, getRouter }) => {
@@ -52,6 +53,9 @@ async function issueAssigned (app, ctx) {
     if (!github.skipBranchCreationForIssue(ctx, config)) {
       const branchName = await github.getBranchNameFromIssue(ctx, config)
       await github.createIssueBranch(app, ctx, branchName, config)
+      if (Config.shouldOpenDraftPR(config) && utils.isRunningInGitHubActions()) {
+        await github.createDraftPR(ctx, config, branchName)
+      }
       logMemoryUsage(app)
     }
   }
@@ -74,6 +78,9 @@ async function commentCreated (app, ctx, comment) {
         branchName = await github.getBranchNameFromIssue(ctx, config)
       }
       await github.createIssueBranch(app, ctx, branchName, config)
+      if (Config.shouldOpenDraftPR(config) && utils.isRunningInGitHubActions()) {
+        await github.createDraftPR(ctx, config, branchName)
+      }
       logMemoryUsage(app)
     }
   }

@@ -17,6 +17,7 @@ Built in response to this feature request issue: https://github.com/isaacs/githu
 * [Installation](#installation)
 * [Usage](#usage)
 * [Configuration](#configuration)
+* [Development](#development)
 * [Feedback, suggestions and bug reports](#feedback-suggestions-and-bug-reports)
 * [Contributing](#contributing)
 * [License](#license)
@@ -301,6 +302,50 @@ branches:
     skip: true
 ```
 
+## Matching labels with wildcards
+
+Wildcard characters '?' (matches any single character) and '*' (matches any sequence of characters, 
+including the empty sequence) can be used in the label field.
+
+For example, to set the default/fallback prefix `issues/` for issues that do not have the `enhancement`  or `bug`
+label, use this configuration:
+
+```yaml
+branches:
+  - label: enhancement
+    prefix: feature/
+  - label: bug
+    prefix: bugfix/
+  - label: '*'
+    prefix: issues/
+```
+
+*Remember to put quotes around a single asterisk ('\*') in YAML*
+
+## Automatically open a draft PR
+
+Automatically open a draft Pull Request for the newly created branch. This feature is (currently) only available if your run Create Issue Branch in a GitHub Action workflow. To enable the feature put this in your configuration YAML:
+
+```yaml
+openDraftPR: true
+```
+
+## Experimental features
+
+The features below are experimental and may be removed some day or promoted to 
+standard features.
+
+### Branch name as ChatOps command argument
+
+As discussed in [this issue](https://github.com/robvanderleek/create-issue-branch/issues/127) determines the branch name 
+on the `/cib` ChatOps command argument, e.g.: `/cib Simple NPE fix will create a branch names `issue-1-Simple_NPE_fix`  
+```yaml
+experimental:
+  branchNameArgument: true
+```
+
+# Development
+
 ## Unit Test Coverage
 
 #### Jest/Istanbul:
@@ -333,40 +378,6 @@ The snippet below shows the workflow which runs the coverage command through yar
 ```yaml
  - run: yarn run coverage
  - run: bash <(curl -s https://codecov.io/bash) -t ${{secrets.CODECOV_SECRET_TOKEN }}
-```
-
-## Matching labels with wildcards
-
-Wildcard characters '?' (matches any single character) and '*' (matches any sequence of characters, 
-including the empty sequence) can be used in the label field.
-
-For example, to set the default/fallback prefix `issues/` for issues that do not have the `enhancement`  or `bug`
-label, use this configuration:
-
-```yaml
-branches:
-  - label: enhancement
-    prefix: feature/
-  - label: bug
-    prefix: bugfix/
-  - label: '*'
-    prefix: issues/
-```
-
-*Remember to put quotes around a single asterisk ('\*') in YAML*
-
-## Experimental features
-
-The features below are experimental and may be removed some day or promoted to 
-standard features.
-
-### Branch name as ChatOps command argument
-
-As discussed in [this issue](https://github.com/robvanderleek/create-issue-branch/issues/127) determines the branch name 
-on the `/cib` ChatOps command argument, e.g.: `/cib Simple NPE fix will create a branch names `issue-1-Simple_NPE_fix`  
-```yaml
-experimental:
-  branchNameArgument: true
 ```
 
 # Feedback, suggestions and bug reports

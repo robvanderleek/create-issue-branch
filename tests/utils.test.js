@@ -75,3 +75,11 @@ test('wildcard matching', () => {
   expect(utils.wildcardMatch('noot', 'aapnoot')).toBeFalsy()
   expect(utils.wildcardMatch('aap', 'Aap')).toBeFalsy()
 })
+
+test('is running in GitHub Actions', () => {
+  expect(utils.isRunningInGitHubActions()).toBeFalsy()
+
+  process.env.GITHUB_ACTIONS = 'true'
+
+  expect(utils.isRunningInGitHubActions()).toBeTruthy()
+})

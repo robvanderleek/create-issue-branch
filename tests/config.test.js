@@ -47,3 +47,8 @@ test('get Git safe replacement char', () => {
   expect(Config.getGitSafeReplacementChar({})).toBe('_')
   expect(Config.getGitSafeReplacementChar({ gitSafeReplacementChar: '-' })).toBe('-')
 })
+
+test('open draft PR after creating an issue', () => {
+  expect(Config.shouldOpenDraftPR({})).toBeFalsy()
+  expect(Config.shouldOpenDraftPR({ openDraftPR: true })).toBeTruthy()
+})

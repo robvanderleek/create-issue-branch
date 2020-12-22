@@ -163,6 +163,18 @@ async function createBranch (ctx, config, branchName, sha, log) {
   }
 }
 
+async function createDraftPR (ctx, config, branchName) {
+  const owner = context.getRepoOwner(ctx)
+  const repo = context.getRepoName(ctx)
+  const base = context.getDefaultBranch(ctx)
+  const issue = context.getIssueNumber(ctx)
+  try {
+    await ctx.octokit.pulls.create({ owner, repo, head: branchName, base, draft: true, issue })
+  } catch (e) {
+    await addComment(ctx, config, `Could not create draft PR (${e.message})`)
+  }
+}
+
 module.exports = {
   createIssueBranch: createIssueBranch,
   getIssueNumberFromBranchName: getIssueNumberFromBranchName,
@@ -171,5 +183,6 @@ module.exports = {
   getIssueBranchPrefix: getIssueBranchPrefix,
   getBranchNameFromIssue: getBranchNameFromIssue,
   getBranchName: getBranchName,
-  createBranch: createBranch
+  createBranch: createBranch,
+  createDraftPR: createDraftPR
 }
