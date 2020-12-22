@@ -82,6 +82,8 @@ async function commentCreated (app, ctx, comment) {
         await github.createDraftPR(ctx, config, branchName)
       }
       logMemoryUsage(app)
+    } else {
+      app.log('Received ChatOps command but current mode is not `chatops`, exiting')
     }
   }
 }
