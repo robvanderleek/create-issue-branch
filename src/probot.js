@@ -53,7 +53,9 @@ async function issueAssigned (app, ctx) {
     if (!github.skipBranchCreationForIssue(ctx, config)) {
       const branchName = await github.getBranchNameFromIssue(ctx, config)
       await github.createIssueBranch(app, ctx, branchName, config)
-      if (Config.shouldOpenDraftPR(config) && utils.isRunningInGitHubActions()) {
+      const shouldCreateDraftPR = Config.shouldOpenDraftPR(config) && utils.isRunningInGitHubActions()
+      app.log(`Should create draft pull request: ${shouldCreateDraftPR}`)
+      if (shouldCreateDraftPR) {
         await github.createDraftPR(app, ctx, config, branchName)
       }
       logMemoryUsage(app)
