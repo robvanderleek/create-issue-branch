@@ -79,7 +79,9 @@ test('wildcard matching', () => {
 test('is running in GitHub Actions', () => {
   expect(utils.isRunningInGitHubActions()).toBeFalsy()
 
-  process.env.GITHUB_ACTIONS = 'true'
+  if (!process.env.CI) {
+    process.env.GITHUB_ACTIONS = 'true'
 
-  expect(utils.isRunningInGitHubActions()).toBeTruthy()
+    expect(utils.isRunningInGitHubActions()).toBeTruthy()
+  }
 })
