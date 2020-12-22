@@ -191,7 +191,7 @@ test('create draft PR', async () => {
     issue: () => {}
   }
 
-  await github.createDraftPR(ctx, { silent: false }, 'issue-1')
+  await github.createDraftPR({ log: () => {} }, ctx, { silent: false }, 'issue-1')
 
   expect(createPR).toHaveBeenCalledWith(
     { owner: 'robvanderleek', repo: 'create-issue-branch', draft: true, base: undefined, issue: 1, head: 'issue-1' })

@@ -54,7 +54,7 @@ async function issueAssigned (app, ctx) {
       const branchName = await github.getBranchNameFromIssue(ctx, config)
       await github.createIssueBranch(app, ctx, branchName, config)
       if (Config.shouldOpenDraftPR(config) && utils.isRunningInGitHubActions()) {
-        await github.createDraftPR(ctx, config, branchName)
+        await github.createDraftPR(app, ctx, config, branchName)
       }
       logMemoryUsage(app)
     }
@@ -79,7 +79,7 @@ async function commentCreated (app, ctx, comment) {
       }
       await github.createIssueBranch(app, ctx, branchName, config)
       if (Config.shouldOpenDraftPR(config) && utils.isRunningInGitHubActions()) {
-        await github.createDraftPR(ctx, config, branchName)
+        await github.createDraftPR(app, ctx, config, branchName)
       }
       logMemoryUsage(app)
     } else {

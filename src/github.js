@@ -163,13 +163,14 @@ async function createBranch (ctx, config, branchName, sha, log) {
   }
 }
 
-async function createDraftPR (ctx, config, branchName) {
+async function createDraftPR (app, ctx, config, branchName) {
   const owner = context.getRepoOwner(ctx)
   const repo = context.getRepoName(ctx)
   const base = context.getDefaultBranch(ctx)
   const issue = context.getIssueNumber(ctx)
   try {
     await ctx.octokit.pulls.create({ owner, repo, head: branchName, base, draft: true, issue })
+    app.log(`Draft pull request created for branch ${branchName}`)
   } catch (e) {
     await addComment(ctx, config, `Could not create draft PR (${e.message})`)
   }
