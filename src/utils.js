@@ -68,7 +68,7 @@ function pushMetric (log) {
 }
 
 function isRunningInGitHubActions () {
-  return process.env.GITHUB_ACTIONS === 'true' && !process.env.CI
+  return process.env.GITHUB_ACTIONS === 'true'
 }
 
 module.exports = {

@@ -77,8 +77,6 @@ test('wildcard matching', () => {
 })
 
 test('is running in GitHub Actions', () => {
-  expect(utils.isRunningInGitHubActions()).toBeFalsy()
-
   if (!process.env.CI) {
     process.env.GITHUB_ACTIONS = 'true'
 
