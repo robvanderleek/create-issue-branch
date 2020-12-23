@@ -30,7 +30,7 @@
     "probot-actions-adapter": "^2.0.0"
   },
   "devDependencies": {
-    "@vercel/ncc": "^0.25",
+    "@vercel/ncc": "^0.26",
     "jest": "^26.6.1",
     "nock": "^13.0.5",
     "nodemon": "^2.0.6",
