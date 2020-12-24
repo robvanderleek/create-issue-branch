@@ -134,6 +134,7 @@ async function getBranchHeadSha (ctx, branch) {
       owner: context.getRepoOwner(ctx), repo: context.getRepoName(ctx), ref: `heads/${branch}`
     })
     const ref = res.data.object
+    console.log('RETURNING SHA: ' + ref.sha)
     return ref.sha
   } catch (e) {
     return undefined
@@ -143,7 +144,9 @@ async function getBranchHeadSha (ctx, branch) {
 async function getCommitTreeSha (ctx, commitSha) {
   const owner = context.getRepoOwner(ctx)
   const repo = context.getRepoName(ctx)
+  console.log('LOOKING UP SHA: ' + commitSha)
   const res = ctx.octokit.git.getCommit({ owner, repo, commit_sha: commitSha })
+  console.log('RESULT: ' + res)
   return res.data.commit.tree.sha
 }
 
