@@ -144,7 +144,7 @@ async function getCommitTreeSha (ctx, commitSha) {
   const owner = context.getRepoOwner(ctx)
   const repo = context.getRepoName(ctx)
   const res = await ctx.octokit.git.getCommit({ owner, repo, commit_sha: commitSha })
-  return res.data.sha
+  return res.data.tree.sha
 }
 
 async function createCommit (ctx, commitSha, treeSha, message) {
