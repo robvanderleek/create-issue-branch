@@ -151,14 +151,13 @@ async function createCommit (ctx, commitSha, treeSha, message) {
   const owner = context.getRepoOwner(ctx)
   const repo = context.getRepoName(ctx)
   const res = await ctx.octokit.git.createCommit({ owner, repo, message, tree: treeSha, parents: [commitSha] })
-  console.log('RESULT: ' + JSON.stringify(res))
   return res.data.sha
 }
 
 async function updateReference (ctx, branchName, sha) {
   const owner = context.getRepoOwner(ctx)
   const repo = context.getRepoName(ctx)
-  await ctx.octokit.git.updateRef({ owner, repo, ref: `refs/heads/${branchName}`, sha })
+  await ctx.octokit.git.updateRef({ owner, repo, ref: `heads/${branchName}`, sha })
 }
 
 async function createBranch (ctx, config, branchName, sha, log) {
