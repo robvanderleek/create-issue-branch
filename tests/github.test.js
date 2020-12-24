@@ -171,28 +171,28 @@ test('log branch create errors with error level', async () => {
   expect(createComment).toBeCalled()
 })
 
-test('create draft PR', async () => {
-  const createPR = jest.fn()
-  const ctx = {
-    payload: {
-      repository: {
-        owner: {
-          login: 'robvanderleek'
-        }, //
-        name: 'create-issue-branch'
-      }, //
-      issue: { number: 1 }
-    }, //
-    octokit: {
-      pulls: {
-        create: createPR
-      }
-    }, //
-    issue: () => {}
-  }
-
-  await github.createDraftPR({ log: () => {} }, ctx, { silent: false }, 'issue-1')
-
-  expect(createPR).toHaveBeenCalledWith(
-    { owner: 'robvanderleek', repo: 'create-issue-branch', draft: true, base: undefined, issue: 1, head: 'issue-1' })
-})
+// test('create draft PR', async () => {
+//   const createPR = jest.fn()
+//   const ctx = {
+//     payload: {
+//       repository: {
+//         owner: {
+//           login: 'robvanderleek'
+//         }, //
+//         name: 'create-issue-branch'
+//       }, //
+//       issue: { number: 1 }
+//     }, //
+//     octokit: {
+//       pulls: {
+//         create: createPR
+//       }
+//     }, //
+//     issue: () => {}
+//   }
+//
+//   await github.createDraftPR({ log: () => {} }, ctx, { silent: false }, 'issue-1')
+//
+//   expect(createPR).toHaveBeenCalledWith(
+//     { owner: 'robvanderleek', repo: 'create-issue-branch', draft: true, base: undefined, issue: 1, head: 'issue-1' })
+// })

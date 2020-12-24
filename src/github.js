@@ -140,6 +140,26 @@ async function getBranchHeadSha (ctx, branch) {
   }
 }
 
+async function getCommitTreeSha (ctx, commitSha) {
+  const owner = context.getRepoOwner(ctx)
+  const repo = context.getRepoName(ctx)
+  const res = ctx.octokit.git.getCommit({ owner, repo, commit_sha: commitSha })
+  return res.data.commit.tree.sha
+}
+
+async function createCommit (ctx, commitSha, treeSha, message) {
+  const owner = context.getRepoOwner(ctx)
+  const repo = context.getRepoName(ctx)
+  const res = ctx.octokit.git.createCommit({ owner, repo, message, tree: treeSha, parents: [commitSha] })
+  return res.data.sha
+}
+
+async function updateReference (ctx, branchName, sha) {
+  const owner = context.getRepoOwner(ctx)
+  const repo = context.getRepoName(ctx)
+  ctx.octokit.git.updateRef({ owner, repo, ref: `refs/heads/${branchName}`, sha })
+}
+
 async function createBranch (ctx, config, branchName, sha, log) {
   const owner = context.getRepoOwner(ctx)
   const repo = context.getRepoName(ctx)
@@ -169,6 +189,10 @@ async function createDraftPR (app, ctx, config, branchName) {
   const base = context.getDefaultBranch(ctx)
   const issue = context.getIssueNumber(ctx)
   try {
+    const commitSha = await getBranchHeadSha(ctx, branchName)
+    const treeSha = await getCommitTreeSha(ctx, commitSha)
+    const emptyCommitSha = await createCommit(ctx, commitSha, treeSha, 'Create draft PR')
+    await updateReference(ctx, branchName, emptyCommitSha)
     await ctx.octokit.pulls.create({ owner, repo, head: branchName, base, draft: true, issue })
     app.log(`Draft pull request created for branch ${branchName}`)
   } catch (e) {
