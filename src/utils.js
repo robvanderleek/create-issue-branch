@@ -67,11 +67,29 @@ function pushMetric (log) {
   })
 }
 
+function getStringLengthInBytes (str) {
+  return (new TextEncoder().encode(str)).length
+}
+
+function trimStringToByteLength (str, length) {
+  if (getStringLengthInBytes(str) <= length) {
+    return str
+  } else {
+    let result = str.substring(0, length)
+    while (getStringLengthInBytes(result) > length) {
+      result = Array.from(str).slice(0, [...result].length - 1).join('')
+    }
+    return result
+  }
+}
+
 module.exports = {
   makePrefixGitSafe: makePrefixGitSafe,
   makeGitSafe: makeGitSafe,
   interpolate: interpolate,
   wildcardMatch: wildcardMatch,
   isProduction: isProduction,
-  pushMetric: pushMetric
+  pushMetric: pushMetric,
+  getStringLengthInBytes: getStringLengthInBytes,
+  trimStringToByteLength: trimStringToByteLength
 }
