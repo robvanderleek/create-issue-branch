@@ -75,3 +75,20 @@ test('wildcard matching', () => {
   expect(utils.wildcardMatch('noot', 'aapnoot')).toBeFalsy()
   expect(utils.wildcardMatch('aap', 'Aap')).toBeFalsy()
 })
+
+test('get string length in bytes', () => {
+  expect(utils.getStringLengthInBytes('foo')).toBe(3)
+  expect(utils.getStringLengthInBytes('😁')).toBe(4)
+})
+
+test('trim string to byte length', () => {
+  expect(utils.trimStringToByteLength('foo', 3)).toBe('foo')
+  expect(utils.trimStringToByteLength('😁', 4)).toBe('😁')
+  expect(utils.trimStringToByteLength('foo', 4)).toBe('foo')
+  expect(utils.trimStringToByteLength('foo', 2)).toBe('fo')
+  expect(utils.trimStringToByteLength('😁😁', 4)).toBe('😁')
+  expect(utils.trimStringToByteLength('😁😁', 5)).toBe('😁')
+  expect(utils.trimStringToByteLength('😁😁', 6)).toBe('😁')
+  expect(utils.trimStringToByteLength('😁😁', 7)).toBe('😁')
+  expect(utils.trimStringToByteLength('😁😁', 8)).toBe('😁😁')
+})
