@@ -53,10 +53,9 @@ async function issueAssigned (app, ctx) {
     if (!github.skipBranchCreationForIssue(ctx, config)) {
       const branchName = await github.getBranchNameFromIssue(ctx, config)
       await github.createIssueBranch(app, ctx, branchName, config)
-      const shouldCreateDraftPR = Config.shouldOpenDraftPR(config) && utils.isRunningInGitHubActions()
-      app.log(`Should create draft pull request: ${shouldCreateDraftPR}`)
-      if (shouldCreateDraftPR) {
-        await github.createDraftPR(app, ctx, config, branchName)
+      const shouldCreatePR = Config.shouldOpenPR(config) && utils.isRunningInGitHubActions()
+      if (shouldCreatePR) {
+        await github.createPR(app, ctx, config, branchName)
       }
       logMemoryUsage(app)
     }
@@ -80,8 +79,9 @@ async function commentCreated (app, ctx, comment) {
         branchName = await github.getBranchNameFromIssue(ctx, config)
       }
       await github.createIssueBranch(app, ctx, branchName, config)
-      if (Config.shouldOpenDraftPR(config) && utils.isRunningInGitHubActions()) {
-        await github.createDraftPR(app, ctx, config, branchName)
+      const shouldCreatePR = Config.shouldOpenPR(config) && utils.isRunningInGitHubActions()
+      if (shouldCreatePR) {
+        await github.createPR(app, ctx, config, branchName)
       }
       logMemoryUsage(app)
     } else {

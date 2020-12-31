@@ -183,21 +183,23 @@ async function createBranch (ctx, config, branchName, sha, log) {
   }
 }
 
-async function createDraftPR (app, ctx, config, branchName) {
+async function createPR (app, ctx, config, branchName) {
   const owner = context.getRepoOwner(ctx)
   const repo = context.getRepoName(ctx)
   const base = context.getDefaultBranch(ctx)
   const title = context.getIssueTitle(ctx)
   const issueNumber = context.getIssueNumber(ctx)
+  const draft = Config.shouldOpenDraftPR(config)
   try {
     const commitSha = await getBranchHeadSha(ctx, branchName)
     const treeSha = await getCommitTreeSha(ctx, commitSha)
     const emptyCommitSha = await createCommit(ctx, commitSha, treeSha, 'Create draft PR')
     await updateReference(ctx, branchName, emptyCommitSha)
     await ctx.octokit.pulls.create(
-      { owner, repo, head: branchName, base, title, body: `closes #${issueNumber}`, draft: true })
-    app.log(`Draft pull request created for branch ${branchName}`)
+      { owner, repo, head: branchName, base, title, body: `closes #${issueNumber}`, draft: draft })
+    app.log(`Pull request created for branch ${branchName}`)
   } catch (e) {
+    app.log(`Could not create draft PR (${e.message})`)
     await addComment(ctx, config, `Could not create draft PR (${e.message})`)
   }
 }
@@ -211,5 +213,5 @@ module.exports = {
   getBranchNameFromIssue: getBranchNameFromIssue,
   getBranchName: getBranchName,
   createBranch: createBranch,
-  createDraftPR: createDraftPR
+  createPR: createPR
 }

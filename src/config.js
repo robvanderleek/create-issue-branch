@@ -82,6 +82,10 @@ function shouldOpenDraftPR (config) {
   return 'openDraftPR' in config && config.openDraftPR === true
 }
 
+function shouldOpenPR (config) {
+  return ('openPR' in config && config.openPR === true) || shouldOpenDraftPR(config)
+}
+
 function isChatOpsCommand (s) {
   if (s) {
     const parts = s.trim().toLowerCase().split(/\s/)
@@ -114,5 +118,6 @@ module.exports = {
   isChatOpsCommand: isChatOpsCommand,
   isExperimentalBranchNameArgument: isExperimentalBranchNameArgument,
   getGitSafeReplacementChar: getGitSafeReplacementChar,
+  shouldOpenPR: shouldOpenPR,
   shouldOpenDraftPR: shouldOpenDraftPR
 }

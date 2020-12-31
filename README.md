@@ -322,13 +322,21 @@ branches:
 
 *Remember to put quotes around a single asterisk ('\*') in YAML*
 
-## Automatically open a draft PR
+## Automatically open a Pull Request
 
-Automatically open a draft Pull Request for the newly created branch. This feature is (currently) only available if your run Create Issue Branch in a GitHub Action workflow. To enable the feature put this in your configuration YAML:
+Automatically open a (draft) Pull Request for the newly created branch. This feature is (currently) only available if you run Create Issue Branch in a GitHub Action workflow. Enable this feature in your configuration YAML, for draft pull requests use:
 
 ```yaml
 openDraftPR: true
 ```
+
+and for regular pull requests use:
+
+```yaml
+openPR: true
+```
+
+Be aware that draft pull requests are not available in all repositories types, see the [GitHub documentation](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/about-pull-requests#draft-pull-requests) for details.
 
 ## Experimental features
 
@@ -337,8 +345,8 @@ standard features.
 
 ### Branch name as ChatOps command argument
 
-As discussed in [this issue](https://github.com/robvanderleek/create-issue-branch/issues/127) determines the branch name 
-on the `/cib` ChatOps command argument, e.g.: `/cib Simple NPE fix will create a branch names `issue-1-Simple_NPE_fix`  
+As discussed in [this issue](https://github.com/robvanderleek/create-issue-branch/issues/127), enabling this feature allows you to give the branch name as an argument to the `/cib` ChatOps command. For example: `/cib Simple NPE fix` will create a branch named `issue-1-Simple_NPE_fix`
+  
 ```yaml
 experimental:
   branchNameArgument: true
