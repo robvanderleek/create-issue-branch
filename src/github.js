@@ -15,7 +15,15 @@ async function createIssueBranch (app, ctx, branchName, config) {
 
 async function getBranchNameFromIssue (ctx, config) {
   const title = context.getIssueTitle(ctx)
-  return getBranchName(ctx, config, title)
+  const result = await getBranchName(ctx, config, title)
+  // For magic number below see:
+  // https://stackoverflow.com/questions/60045157/what-is-the-maximum-length-of-a-github-branch-name
+  const MAX_BYTES_GITHUB_BRANCH_NAME = 250
+  if (utils.getStringLengthInBytes(result) > MAX_BYTES_GITHUB_BRANCH_NAME) {
+    return utils.trimStringToByteLength(result, MAX_BYTES_GITHUB_BRANCH_NAME)
+  } else {
+    return result
+  }
 }
 
 async function getBranchName (ctx, config, title) {
@@ -178,7 +186,7 @@ async function createBranch (ctx, config, branchName, sha, log) {
     if (e.message === 'Reference already exists') {
       log.info('Could not create branch as it already exists')
     } else {
-      await addComment(ctx, config, `Could not create branch (${e.message})`)
+      await addComment(ctx, config, `Could not create branch \`${branchName}\` due to: ${e.message}`)
     }
   }
 }

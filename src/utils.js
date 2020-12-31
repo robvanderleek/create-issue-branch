@@ -71,6 +71,22 @@ function isRunningInGitHubActions () {
   return process.env.GITHUB_ACTIONS === 'true'
 }
 
+function getStringLengthInBytes (str) {
+  return (new TextEncoder().encode(str)).length
+}
+
+function trimStringToByteLength (str, length) {
+  if (getStringLengthInBytes(str) <= length) {
+    return str
+  } else {
+    let result = str.substring(0, length)
+    while (getStringLengthInBytes(result) > length) {
+      result = Array.from(str).slice(0, [...result].length - 1).join('')
+    }
+    return result
+  }
+}
+
 module.exports = {
   makePrefixGitSafe: makePrefixGitSafe,
   makeGitSafe: makeGitSafe,
@@ -79,4 +95,6 @@ module.exports = {
   isProduction: isProduction,
   pushMetric: pushMetric,
   isRunningInGitHubActions: isRunningInGitHubActions
+  getStringLengthInBytes: getStringLengthInBytes,
+  trimStringToByteLength: trimStringToByteLength
 }
