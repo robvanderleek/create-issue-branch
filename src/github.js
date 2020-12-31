@@ -148,6 +148,26 @@ async function getBranchHeadSha (ctx, branch) {
   }
 }
 
+async function getCommitTreeSha (ctx, commitSha) {
+  const owner = context.getRepoOwner(ctx)
+  const repo = context.getRepoName(ctx)
+  const res = await ctx.octokit.git.getCommit({ owner, repo, commit_sha: commitSha })
+  return res.data.tree.sha
+}
+
+async function createCommit (ctx, commitSha, treeSha, message) {
+  const owner = context.getRepoOwner(ctx)
+  const repo = context.getRepoName(ctx)
+  const res = await ctx.octokit.git.createCommit({ owner, repo, message, tree: treeSha, parents: [commitSha] })
+  return res.data.sha
+}
+
+async function updateReference (ctx, branchName, sha) {
+  const owner = context.getRepoOwner(ctx)
+  const repo = context.getRepoName(ctx)
+  await ctx.octokit.git.updateRef({ owner, repo, ref: `heads/${branchName}`, sha })
+}
+
 async function createBranch (ctx, config, branchName, sha, log) {
   const owner = context.getRepoOwner(ctx)
   const repo = context.getRepoName(ctx)
@@ -171,6 +191,27 @@ async function createBranch (ctx, config, branchName, sha, log) {
   }
 }
 
+async function createPR (app, ctx, config, branchName) {
+  const owner = context.getRepoOwner(ctx)
+  const repo = context.getRepoName(ctx)
+  const base = context.getDefaultBranch(ctx)
+  const title = context.getIssueTitle(ctx)
+  const issueNumber = context.getIssueNumber(ctx)
+  const draft = Config.shouldOpenDraftPR(config)
+  try {
+    const commitSha = await getBranchHeadSha(ctx, branchName)
+    const treeSha = await getCommitTreeSha(ctx, commitSha)
+    const emptyCommitSha = await createCommit(ctx, commitSha, treeSha, 'Create draft PR')
+    await updateReference(ctx, branchName, emptyCommitSha)
+    await ctx.octokit.pulls.create(
+      { owner, repo, head: branchName, base, title, body: `closes #${issueNumber}`, draft: draft })
+    app.log(`Pull request created for branch ${branchName}`)
+  } catch (e) {
+    app.log(`Could not create draft PR (${e.message})`)
+    await addComment(ctx, config, `Could not create draft PR (${e.message})`)
+  }
+}
+
 module.exports = {
   createIssueBranch: createIssueBranch,
   getIssueNumberFromBranchName: getIssueNumberFromBranchName,
@@ -179,5 +220,6 @@ module.exports = {
   getIssueBranchPrefix: getIssueBranchPrefix,
   getBranchNameFromIssue: getBranchNameFromIssue,
   getBranchName: getBranchName,
-  createBranch: createBranch
+  createBranch: createBranch,
+  createPR: createPR
 }

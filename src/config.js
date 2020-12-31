@@ -71,15 +71,19 @@ function isExperimentalBranchNameArgument (config) {
 }
 
 function autoCloseIssue (config) {
-  return ('autoCloseIssue' in config && config.autoCloseIssue === true)
+  return 'autoCloseIssue' in config && config.autoCloseIssue === true
 }
 
 function isSilent (config) {
-  if ('silent' in config) {
-    return config.silent === true
-  } else {
-    return false
-  }
+  return 'silent' in config && config.silent === true
+}
+
+function shouldOpenDraftPR (config) {
+  return 'openDraftPR' in config && config.openDraftPR === true
+}
+
+function shouldOpenPR (config) {
+  return ('openPR' in config && config.openPR === true) || shouldOpenDraftPR(config)
 }
 
 function isChatOpsCommand (s) {
@@ -113,5 +117,7 @@ module.exports = {
   isSilent: isSilent,
   isChatOpsCommand: isChatOpsCommand,
   isExperimentalBranchNameArgument: isExperimentalBranchNameArgument,
-  getGitSafeReplacementChar: getGitSafeReplacementChar
+  getGitSafeReplacementChar: getGitSafeReplacementChar,
+  shouldOpenPR: shouldOpenPR,
+  shouldOpenDraftPR: shouldOpenDraftPR
 }

@@ -76,6 +76,14 @@ test('wildcard matching', () => {
   expect(utils.wildcardMatch('aap', 'Aap')).toBeFalsy()
 })
 
+test('is running in GitHub Actions', () => {
+  if (!process.env.CI) {
+    process.env.GITHUB_ACTIONS = 'true'
+
+    expect(utils.isRunningInGitHubActions()).toBeTruthy()
+  }
+})
+
 test('get string length in bytes', () => {
   expect(utils.getStringLengthInBytes('foo')).toBe(3)
   expect(utils.getStringLengthInBytes('😁')).toBe(4)

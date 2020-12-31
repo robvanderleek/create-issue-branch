@@ -180,3 +180,41 @@ test('log branch create errors with error level', async () => {
 
   expect(createComment).toBeCalled()
 })
+
+test('create PR', async () => {
+  const createPR = jest.fn()
+  const ctx = {
+    payload: {
+      repository: {
+        owner: {
+          login: 'robvanderleek'
+        }, //
+        name: 'create-issue-branch'
+      }, //
+      issue: { number: 1, title: 'Hello world' }
+    }, //
+    octokit: {
+      pulls: {
+        create: createPR
+      }, //
+      git: {
+        getCommit: () => ({ data: { tree: { sha: '1234abcd' } } }),
+        createCommit: () => ({ data: { sha: 'abcd1234' } }),
+        updateRef: () => {}
+      }
+    }, //
+    issue: () => {}
+  }
+
+  await github.createPR({ log: (msg) => { console.log(msg) } }, ctx, { silent: false }, 'issue-1')
+
+  expect(createPR).toHaveBeenCalledWith({
+    owner: 'robvanderleek',
+    repo: 'create-issue-branch',
+    draft: false,
+    base: undefined,
+    head: 'issue-1',
+    body: 'closes #1',
+    title: 'Hello world'
+  })
+})

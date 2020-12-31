@@ -67,6 +67,10 @@ function pushMetric (log) {
   })
 }
 
+function isRunningInGitHubActions () {
+  return process.env.GITHUB_ACTIONS === 'true'
+}
+
 function getStringLengthInBytes (str) {
   return (new TextEncoder().encode(str)).length
 }
@@ -90,6 +94,7 @@ module.exports = {
   wildcardMatch: wildcardMatch,
   isProduction: isProduction,
   pushMetric: pushMetric,
+  isRunningInGitHubActions: isRunningInGitHubActions,
   getStringLengthInBytes: getStringLengthInBytes,
   trimStringToByteLength: trimStringToByteLength
 }
