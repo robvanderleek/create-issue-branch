@@ -94,7 +94,7 @@ module.exports = {
   wildcardMatch: wildcardMatch,
   isProduction: isProduction,
   pushMetric: pushMetric,
-  isRunningInGitHubActions: isRunningInGitHubActions
+  isRunningInGitHubActions: isRunningInGitHubActions,
   getStringLengthInBytes: getStringLengthInBytes,
   trimStringToByteLength: trimStringToByteLength
 }
