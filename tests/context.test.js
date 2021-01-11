@@ -18,4 +18,4 @@ test('get sender', () => {
   const ctx = { payload: issueCommentCreatedPayload }
 
   expect(context.getSender(ctx)).toBe('robvanderleek')
-});
+})
