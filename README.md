@@ -338,6 +338,27 @@ openPR: true
 
 Be aware that draft pull requests are not available in all repositories types, see the [GitHub documentation](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/about-pull-requests#draft-pull-requests) for details.
 
+## Change message in issue comments
+
+The default message displayed in the issue comments after a branch is created (and 
+[silent mode](#silent-or-chatty) is not enabled) is:
+
+```
+Branch ${branchName} created!
+```
+
+You can customize this message with the `commentMessage` option in the configuration YAML. In the string value for this option `${branchName}` is substituted with the name of the newly created branch and other `${...}` placeholders are substituted with fields from the GitHub issue assignment JSON object.
+
+For example, if you would like to have the original issue title in the comment, confgure it like this:
+
+```yaml
+commentMessage: 'Branch ${branchName} created for issue: ${issue.title}'
+```
+
+See 
+[test/fixtures/issues.assigned.json](tests/test-fixtures/issues.assigned.json) for
+all possible placeholder names.
+
 ## Experimental features
 
 The features below are experimental and may be removed some day or promoted to 
