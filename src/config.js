@@ -108,6 +108,15 @@ function getGitSafeReplacementChar (config) {
   return config.gitSafeReplacementChar ? config.gitSafeReplacementChar : '_'
 }
 
+function getCommentMessage (config) {
+  if (config && config.commentMessage) {
+    return config.commentMessage;
+  } else {
+    // eslint-disable-next-line no-template-curly-in-string
+    return 'Branch [${branchName}](${repository.html_url}/tree/${branchName}) created!'
+  }
+}
+
 module.exports = {
   load: load,
   isModeAuto: isModeAuto,
@@ -119,5 +128,6 @@ module.exports = {
   isExperimentalBranchNameArgument: isExperimentalBranchNameArgument,
   getGitSafeReplacementChar: getGitSafeReplacementChar,
   shouldOpenPR: shouldOpenPR,
-  shouldOpenDraftPR: shouldOpenDraftPR
+  shouldOpenDraftPR: shouldOpenDraftPR,
+  getCommentMessage: getCommentMessage
 }
