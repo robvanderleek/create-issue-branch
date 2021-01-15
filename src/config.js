@@ -110,7 +110,7 @@ function getGitSafeReplacementChar (config) {
 
 function getCommentMessage (config) {
   if (config && config.commentMessage) {
-    return config.commentMessage;
+    return config.commentMessage
   } else {
     // eslint-disable-next-line no-template-curly-in-string
     return 'Branch [${branchName}](${repository.html_url}/tree/${branchName}) created!'
