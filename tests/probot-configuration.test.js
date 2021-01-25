@@ -255,6 +255,30 @@ test('configuration with label branch and prefix', async () => {
   expect(targetRef).toBe('refs/heads/feature/issue-1-Test_issue')
 })
 
+test('issue #322 configuration', async () => {
+  helpers.nockNonExistingBranch('feature/issue-1-Test_issue')
+  helpers.nockExistingBranch('master', '12345678')
+  helpers.nockBranchCreatedComment()
+  const ymlConfig = `branches:
+  - label: 'type | bug'
+    prefix: bug/
+  - label: 'type | feature'
+    prefix: feature/`
+  helpers.nockConfig(ymlConfig)
+  let targetRef = ''
+
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/git/refs', (body) => {
+      targetRef = body.ref
+      return true
+    })
+    .reply(200)
+
+  await probot.receive({ name: 'issues', payload: helpers.issueAssignedWithLabelsPayload('type | feature') })
+
+  expect(targetRef).toBe('refs/heads/feature/issue-1-Test_issue')
+})
+
 test('configuration with label field missing', async () => {
   const ymlConfig = `branches:
   - name: dev
