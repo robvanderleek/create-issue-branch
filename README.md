@@ -58,6 +58,8 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
+*The latest GitHub Marketplace release is not always up-to-date (due to [this](https://github.community/t/automatically-publish-action-to-marketplace-on-release/17978)). To have access to all features please use version `@master`*
+
 ### GitHub Action output variable
 
 The GitHub Action has one output variable: `branchName`, which contains the name of the branch that was created. You can use this output in downstream actions. For a trivial example see [this workflow](https://github.com/robvanderleek/robvanderleek.github.io/blob/2af5f90d94d81e942382892a6b6149467184b38b/.github/workflows/issue-branch.yml).

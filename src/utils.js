@@ -1,4 +1,5 @@
 const AWS = require('aws-sdk')
+const wcMatch = require('wildcard-match')
 
 function makePrefixGitSafe (s) {
   const regexp = /(?![-/])[\W]+/g
@@ -41,8 +42,8 @@ function interpolate (s, obj) {
 }
 
 function wildcardMatch (pattern, s) {
-  const regExp = new RegExp('^' + pattern.replace(/\*/g, '.*').replace(/\?/g, '.') + '$')
-  return regExp.test(s)
+  const isMatch = wcMatch(pattern, false)
+  return isMatch(s)
 }
 
 function isProduction () {
