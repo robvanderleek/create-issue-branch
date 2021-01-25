@@ -23,7 +23,7 @@
     "dist": "ncc build src/action.js"
   },
   "dependencies": {
-    "@sentry/node": "^5.29.2",
+    "@sentry/node": "^6.0.1",
     "aws-sdk": "^2.824.0",
     "bunyan-sentry-stream": "^1.2.1",
     "probot": "^10.17.3",
