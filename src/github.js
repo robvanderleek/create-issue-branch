@@ -184,7 +184,9 @@ async function createBranch (ctx, config, branchName, sha, log) {
     })
     log(`Branch created: ${branchName}`)
     process.stdout.write(`::set-output name=branchName::${branchName}\n`)
-    await addComment(ctx, config, `Branch [${branchName}](${context.getRepoUrl(ctx)}/tree/${branchName}) created!`)
+    const commentMessage = utils.interpolate(Config.getCommentMessage(config),
+      { ...ctx.payload, branchName: branchName })
+    await addComment(ctx, config, commentMessage)
     if (utils.isProduction()) {
       utils.pushMetric(log)
     }

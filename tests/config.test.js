@@ -57,3 +57,10 @@ test('open (draft) PR after creating an issue', () => {
   expect(Config.shouldOpenDraftPR({ openDraftPR: true })).toBeTruthy()
   expect(Config.shouldOpenDraftPR({ openPR: true, openDraftPR: true })).toBeTruthy()
 })
+
+test('get comment message', () => {
+  expect(Config.getCommentMessage({})).toBeDefined()
+  expect(Config.getCommentMessage({ commentMessage: 'hello world' })).toBe('hello world')
+  // eslint-disable-next-line no-template-curly-in-string
+  expect(Config.getCommentMessage({ commentMessage: 'hello ${branchName}' })).toBe('hello ${branchName}')
+})

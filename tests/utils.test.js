@@ -74,6 +74,9 @@ test('wildcard matching', () => {
   expect(utils.wildcardMatch('aap', 'aapnoot')).toBeFalsy()
   expect(utils.wildcardMatch('noot', 'aapnoot')).toBeFalsy()
   expect(utils.wildcardMatch('aap', 'Aap')).toBeFalsy()
+
+  expect(utils.wildcardMatch('aap*', 'aap/bar/noot')).toBeTruthy()
+  expect(utils.wildcardMatch('type | bug', 'type | feature')).toBeFalsy()
 })
 
 test('is running in GitHub Actions', () => {
