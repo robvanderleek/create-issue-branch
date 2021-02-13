@@ -206,7 +206,7 @@ test('create PR', async () => {
     issue: () => {}
   }
 
-  await github.createPR({ log: (msg) => { console.log(msg) } }, ctx, { silent: false }, 'issue-1')
+  await github.createPR({ log: (msg) => { console.log(msg) } }, ctx, { silent: false }, 'robvanderleek', 'issue-1')
 
   expect(createPR).toHaveBeenCalledWith({
     owner: 'robvanderleek',

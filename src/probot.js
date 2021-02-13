@@ -55,7 +55,9 @@ async function issueAssigned (app, ctx) {
       await github.createIssueBranch(app, ctx, branchName, config)
       const shouldCreatePR = Config.shouldOpenPR(config) && utils.isRunningInGitHubActions()
       if (shouldCreatePR) {
-        await github.createPR(app, ctx, config, branchName)
+        const assignee = context.getAssignee(ctx)
+        app.log(`Creating pull request for user ${assignee}`)
+        await github.createPR(app, ctx, config, assignee, branchName)
       }
       logMemoryUsage(app)
     }
@@ -81,7 +83,9 @@ async function commentCreated (app, ctx, comment) {
       await github.createIssueBranch(app, ctx, branchName, config)
       const shouldCreatePR = Config.shouldOpenPR(config) && utils.isRunningInGitHubActions()
       if (shouldCreatePR) {
-        await github.createPR(app, ctx, config, branchName)
+        const sender = context.getSender(ctx)
+        app.log(`Creating pull request for user ${sender}`)
+        await github.createPR(app, ctx, config, sender, branchName)
       }
       logMemoryUsage(app)
     } else {

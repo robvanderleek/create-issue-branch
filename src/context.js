@@ -31,6 +31,21 @@ function getIssueLabels (ctx) {
   }
 }
 
+function getAssignee (ctx) {
+  const assignee = ctx.payload.issue.assignee
+  if (assignee) {
+    return assignee.login
+  }
+  const assignees = ctx.payload.issue.assignees
+  if (assignees) {
+    return assignees[0].login
+  }
+}
+
+function getSender (ctx) {
+  return ctx.payload.sender.login
+}
+
 module.exports = {
   getRepoOwner: getRepoOwner,
   getRepoName: getRepoName,
@@ -38,5 +53,7 @@ module.exports = {
   getIssueNumber: getIssueNumber,
   getIssueTitle: getIssueTitle,
   getDefaultBranch: getDefaultBranch,
-  getIssueLabels: getIssueLabels
+  getIssueLabels: getIssueLabels,
+  getAssignee: getAssignee,
+  getSender: getSender
 }
