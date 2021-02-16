@@ -51,6 +51,12 @@ function nockBranchCreatedComment () {
     .reply(200)
 }
 
+function nockCreateBranch () {
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/git/refs')
+    .reply(200)
+}
+
 module.exports = {
   issueAssignedWithLabelsPayload: issueAssignedWithLabelsPayload,
   nockAccessToken: nockAccessToken,
@@ -58,5 +64,6 @@ module.exports = {
   nockConfig: nockConfig,
   nockExistingBranch: nockExistingBranch,
   nockNonExistingBranch: nockNonExistingBranch,
-  nockBranchCreatedComment: nockBranchCreatedComment
+  nockBranchCreatedComment: nockBranchCreatedComment,
+  nockCreateBranch: nockCreateBranch
 }

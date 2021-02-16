@@ -8,7 +8,7 @@
 [![codecov](https://codecov.io/gh/robvanderleek/create-issue-branch/branch/master/graph/badge.svg?token=WBKIPs2WEc)](https://codecov.io/gh/robvanderleek/create-issue-branch)
 [![Dependabot](https://badgen.net/badge/Dependabot/enabled/green?icon=dependabot)](https://dependabot.com/)
 [![Sentry](https://img.shields.io/badge/sentry-enabled-green)](https://sentry.io)
-[![Heroku](https://heroku-badge.herokuapp.com/?app=create-issue-branch)](https://heroku.com)
+[![Heroku](https://pyheroku-badge.herokuapp.com/?app=create-issue-branch)](https://heroku.com)
 
 A GitHub App/Action that automates the creation of issue branches (either automatically after assigning an issue or after commenting on an issue with a ChatOps command: `/create-issue-branch` or `/cib`).
 
@@ -57,6 +57,8 @@ jobs:
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
+
+*The latest GitHub Marketplace release is not always up-to-date (due to [this](https://github.community/t/automatically-publish-action-to-marketplace-on-release/17978)). To have access to all features please use version `@master`*
 
 ### GitHub Action output variable
 
@@ -337,6 +339,27 @@ openPR: true
 ```
 
 Be aware that draft pull requests are not available in all repositories types, see the [GitHub documentation](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/about-pull-requests#draft-pull-requests) for details.
+
+## Change message in issue comments
+
+The default message displayed in the issue comments after a branch is created (and 
+[silent mode](#silent-or-chatty) is not enabled) is:
+
+```
+Branch ${branchName} created!
+```
+
+You can customize this message with the `commentMessage` option in the configuration YAML. In the string value for this option `${branchName}` is substituted with the name of the newly created branch and other `${...}` placeholders are substituted with fields from the GitHub issue assignment JSON object.
+
+For example, if you would like to have the original issue title in the comment, confgure it like this:
+
+```yaml
+commentMessage: 'Branch ${branchName} created for issue: ${issue.title}'
+```
+
+See 
+[test/fixtures/issues.assigned.json](tests/test-fixtures/issues.assigned.json) for
+all possible placeholder names.
 
 ## Experimental features
 

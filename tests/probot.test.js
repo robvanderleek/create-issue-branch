@@ -280,3 +280,40 @@ test('create branch with slash in branch name', async () => {
 
   expect(branchRef).toBe('refs/heads/bug/1/Test_issue')
 })
+
+test('custom message in comment', async () => {
+  helpers.nockNonExistingBranch('issue-1-Test_issue')
+  helpers.nockExistingBranch('master', 12345678)
+  helpers.nockConfig('commentMessage: \'hello world\'')
+  helpers.nockCreateBranch()
+  let comment = ''
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/issues/1/comments', (data) => {
+      comment = data.body
+      return true
+    })
+    .reply(200)
+
+  await probot.receive({ name: 'issues', payload: helpers.issueAssignedWithLabelsPayload('bug', 'enhancement') })
+
+  expect(comment).toBe('hello world')
+})
+
+test('custom message with placeholder substitution in comment', async () => {
+  helpers.nockNonExistingBranch('issue-1-Test_issue')
+  helpers.nockExistingBranch('master', 12345678)
+  // eslint-disable-next-line no-template-curly-in-string
+  helpers.nockConfig('commentMessage: \'hello branch for issue ${issue.number}\'')
+  helpers.nockCreateBranch()
+  let comment = ''
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/issues/1/comments', (data) => {
+      comment = data.body
+      return true
+    })
+    .reply(200)
+
+  await probot.receive({ name: 'issues', payload: helpers.issueAssignedWithLabelsPayload('bug', 'enhancement') })
+
+  expect(comment).toBe('hello branch for issue 1')
+})

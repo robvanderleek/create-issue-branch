@@ -1,7 +1,11 @@
+dev:
+github.com/create-issue-branch-dev: Installed as GitHub App (ChatOps mode)
+
+staging:
+github.com/create-issue-branch-staging: Installed as GitHub App (ChatOps mode)
+
 prod:
 github.com/robvanderleek.github.io: Installed as GitHub Action
 github.com/JLifx: Installed as GitHub App (ChatOps mode)
 github.com/create-issue-branch: Installed as GitHub App (auto mode)
-
-dev:
-github.com/create-issue-branch-dev: Installed as GitHub App (ChatOps mode)
+github.com/capture-website-api: Installed as GitHub App (ChatOps mode)
