@@ -2,7 +2,6 @@ const Sentry = require('@sentry/node')
 const Config = require('./config')
 const context = require('./context')
 const github = require('./github')
-const utils = require('./utils')
 const stats = require('../static/stats.json')
 
 module.exports = ({ app, getRouter }) => {
