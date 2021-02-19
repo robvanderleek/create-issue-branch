@@ -306,7 +306,7 @@ branches:
 
 ## Matching labels with wildcards
 
-Wildcard characters '?' (matches any single character) and '*' (matches any sequence of characters, 
+Wildcard characters '?' (matches any single character) and '&ast;' (matches any sequence of characters, 
 including the empty sequence) can be used in the label field.
 
 For example, to set the default/fallback prefix `issues/` for issues that do not have the `enhancement`  or `bug`
@@ -322,7 +322,19 @@ branches:
     prefix: issues/
 ```
 
-*Remember to put quotes around a single asterisk ('\*') in YAML*
+You can use this default/fallback behaviour also to run the App/Action only
+for certain issue labels. For example, put this in your configuration YAML
+if you want to run the App/Action only for issues with the `bug` label:
+
+```yaml
+branches:
+  - label: bug
+    skip: false
+  - label: '*'
+    skip: true
+```
+
+*Remember to put quotes around a single asterisk ('&ast;') in YAML*
 
 ## Automatically open a Pull Request
 

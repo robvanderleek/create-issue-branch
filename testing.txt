@@ -1,5 +1,5 @@
 prod:
-github.com/robvanderleek.github.io: Installed as GitHub Action
+github.com/robvanderleek.github.io: Installed as GitHub Action (auto mode)
 github.com/JLifx: Installed as GitHub App (ChatOps mode)
 github.com/create-issue-branch: Installed as GitHub App (auto mode)
 
