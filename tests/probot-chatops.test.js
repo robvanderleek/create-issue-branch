@@ -119,6 +119,27 @@ test('creates a branch when a chatops command is given, no comment', async () =>
   expect(createEndpointCalled).toBeTruthy()
 })
 
+test('do not create a branch for issue labels that are configured to be skipped', async () => {
+  helpers.nockNonExistingBranch('issue-1-Test_issue')
+  helpers.nockExistingBranch('master', '12345678')
+  const ymlConfig = `mode: chatops\nbranches:
+  - label: question
+    skip: true`
+  helpers.nockConfig(ymlConfig)
+  let createEndpointCalled = false
+
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/git/refs', () => {
+      createEndpointCalled = true
+      return true
+    })
+    .reply(200)
+
+  await probot.receive({ name: 'issue_comment', payload: helpers.commentCreatedWithLabelsPayload('question') })
+
+  expect(createEndpointCalled).toBeFalsy()
+})
+
 test('ignore chatops command if not at start of line', async () => {
   helpers.nockConfig('mode: chatops')
   let createEndpointCalled = false

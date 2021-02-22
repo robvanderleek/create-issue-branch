@@ -1,8 +1,17 @@
 const nock = require('nock')
 const issueAssignedPayload = require('./test-fixtures/issues.assigned.json')
+const commentCreatedPayload = require('./test-fixtures/issue_comment.created.json')
 
 function issueAssignedWithLabelsPayload (...labels) {
-  const issueCopy = JSON.parse(JSON.stringify(issueAssignedPayload))
+  return payloadWithLabels(issueAssignedPayload, labels)
+}
+
+function commentCreatedWithLabelsPayload (...labels) {
+  return payloadWithLabels(commentCreatedPayload, labels)
+}
+
+function payloadWithLabels (payload, labels) {
+  const issueCopy = JSON.parse(JSON.stringify(payload))
   labels.forEach(l => issueCopy.issue.labels.push({ name: l }))
   return issueCopy
 }
@@ -59,6 +68,7 @@ function nockCreateBranch () {
 
 module.exports = {
   issueAssignedWithLabelsPayload: issueAssignedWithLabelsPayload,
+  commentCreatedWithLabelsPayload: commentCreatedWithLabelsPayload,
   nockAccessToken: nockAccessToken,
   nockEmptyConfig: nockEmptyConfig,
   nockConfig: nockConfig,
