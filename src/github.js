@@ -207,17 +207,18 @@ async function createPR (app, ctx, config, username, branchName) {
   const title = context.getIssueTitle(ctx)
   const issueNumber = context.getIssueNumber(ctx)
   const draft = Config.shouldOpenDraftPR(config)
+  const draftText = draft ? 'draft ' : ''
   try {
     const commitSha = await getBranchHeadSha(ctx, branchName)
     const treeSha = await getCommitTreeSha(ctx, commitSha)
-    const emptyCommitSha = await createCommit(ctx, commitSha, treeSha, username, 'Create draft PR')
+    const emptyCommitSha = await createCommit(ctx, commitSha, treeSha, username, `Create ${draftText}PR`)
     await updateReference(ctx, branchName, emptyCommitSha)
     await ctx.octokit.pulls.create(
       { owner, repo, head: branchName, base, title, body: `closes #${issueNumber}`, draft: draft })
     app.log(`Pull request created for branch ${branchName}`)
   } catch (e) {
     app.log(`Could not create draft PR (${e.message})`)
-    await addComment(ctx, config, `Could not create draft PR (${e.message})`)
+    await addComment(ctx, config, `Could not create ${draftText}PR (${e.message})`)
   }
 }
 
