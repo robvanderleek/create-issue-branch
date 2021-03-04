@@ -207,7 +207,7 @@ async function createPR (app, ctx, config, username, branchName) {
   const title = context.getIssueTitle(ctx)
   const issueNumber = context.getIssueNumber(ctx)
   const draft = Config.shouldOpenDraftPR(config)
-  const draftText = draft ? "draft " : ""
+  const draftText = draft ? 'draft ' : ''
   try {
     const commitSha = await getBranchHeadSha(ctx, branchName)
     const treeSha = await getCommitTreeSha(ctx, commitSha)
