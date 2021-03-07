@@ -43,7 +43,7 @@ test('get branch name from issue', async () => {
   expect(await github.getBranchNameFromIssue(ctx, config)).toBe(
     'issue-12-_Error_Mysqli_statement_execute_error_Cannot_add_or_update_a_child_row_a_foreign_key_constraint_fails' +
     '_omeka_omeka_super_eight_festivals_filmmaker_films_CONSTRAINT_omeka_super_eight_festivals_filmmaker_films_' +
-    'ibfk_1_FOREIGN_KEY_filmmaker_id_RE')
+    'ibfk_1_FOREIGN_KEY_filmmake')
 })
 
 test('get branch configuration for issue', () => {

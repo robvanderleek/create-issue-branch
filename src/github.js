@@ -18,7 +18,7 @@ async function getBranchNameFromIssue (ctx, config) {
   const result = await getBranchName(ctx, config, title)
   // For magic number below see:
   // https://stackoverflow.com/questions/60045157/what-is-the-maximum-length-of-a-github-branch-name
-  const MAX_BYTES_GITHUB_BRANCH_NAME = 250
+  const MAX_BYTES_GITHUB_BRANCH_NAME = 243
   if (utils.getStringLengthInBytes(result) > MAX_BYTES_GITHUB_BRANCH_NAME) {
     return utils.trimStringToByteLength(result, MAX_BYTES_GITHUB_BRANCH_NAME)
   } else {
