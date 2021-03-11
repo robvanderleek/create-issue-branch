@@ -2,7 +2,6 @@ const Sentry = require('@sentry/node')
 const Config = require('./config')
 const context = require('./context')
 const github = require('./github')
-const utils = require('./utils')
 const stats = require('../static/stats.json')
 
 module.exports = ({ app, getRouter }) => {
@@ -58,7 +57,7 @@ async function issueAssigned (app, ctx) {
   }
   const branchName = await github.getBranchNameFromIssue(ctx, config)
   await github.createIssueBranch(app, ctx, branchName, config)
-  const shouldCreatePR = Config.shouldOpenPR(config) && utils.isRunningInGitHubActions()
+  const shouldCreatePR = Config.shouldOpenPR(config)
   if (shouldCreatePR) {
     const assignee = context.getAssignee(ctx)
     app.log(`Creating pull request for user ${assignee}`)
@@ -96,7 +95,7 @@ async function chatOpsCommandGiven (app, ctx, comment) {
     branchName = await github.getBranchNameFromIssue(ctx, config)
   }
   await github.createIssueBranch(app, ctx, branchName, config)
-  const shouldCreatePR = Config.shouldOpenPR(config) && utils.isRunningInGitHubActions()
+  const shouldCreatePR = Config.shouldOpenPR(config)
   if (shouldCreatePR) {
     const sender = context.getSender(ctx)
     app.log(`Creating pull request for user ${sender}`)
