@@ -219,7 +219,7 @@ test('create (draft) PR', async () => {
     body: 'closes #1',
     title: 'Hello world'
   })
-  expect(capturedCommitMessage).toBe('Create PR')
+  expect(capturedCommitMessage).toBe('Create PR for #1')
   await github.createPR({ log: () => { } }, ctx, { silent: false, openDraftPR: true },
     'robvanderleek', 'issue-1')
   expect(createPR).toHaveBeenCalledWith({
@@ -231,5 +231,5 @@ test('create (draft) PR', async () => {
     body: 'closes #1',
     title: 'Hello world'
   })
-  expect(capturedCommitMessage).toBe('Create draft PR')
+  expect(capturedCommitMessage).toBe('Create draft PR for #1')
 })

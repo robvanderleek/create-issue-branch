@@ -211,7 +211,8 @@ async function createPR (app, ctx, config, username, branchName) {
   try {
     const commitSha = await getBranchHeadSha(ctx, branchName)
     const treeSha = await getCommitTreeSha(ctx, commitSha)
-    const emptyCommitSha = await createCommit(ctx, commitSha, treeSha, username, `Create ${draftText}PR`)
+    const emptyCommitSha = await createCommit(ctx, commitSha, treeSha, username,
+      `Create ${draftText}PR for #${issueNumber}`)
     await updateReference(ctx, branchName, emptyCommitSha)
     await ctx.octokit.pulls.create(
       { owner, repo, head: branchName, base, title, body: `closes #${issueNumber}`, draft: draft })
