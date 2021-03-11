@@ -18,7 +18,7 @@ async function getBranchNameFromIssue (ctx, config) {
   const result = await getBranchName(ctx, config, title)
   // For magic number below see:
   // https://stackoverflow.com/questions/60045157/what-is-the-maximum-length-of-a-github-branch-name
-  const MAX_BYTES_GITHUB_BRANCH_NAME = 250
+  const MAX_BYTES_GITHUB_BRANCH_NAME = 243
   if (utils.getStringLengthInBytes(result) > MAX_BYTES_GITHUB_BRANCH_NAME) {
     return utils.trimStringToByteLength(result, MAX_BYTES_GITHUB_BRANCH_NAME)
   } else {
@@ -207,17 +207,18 @@ async function createPR (app, ctx, config, username, branchName) {
   const title = context.getIssueTitle(ctx)
   const issueNumber = context.getIssueNumber(ctx)
   const draft = Config.shouldOpenDraftPR(config)
+  const draftText = draft ? 'draft ' : ''
   try {
     const commitSha = await getBranchHeadSha(ctx, branchName)
     const treeSha = await getCommitTreeSha(ctx, commitSha)
-    const emptyCommitSha = await createCommit(ctx, commitSha, treeSha, username, 'Create draft PR')
+    const emptyCommitSha = await createCommit(ctx, commitSha, treeSha, username, `Create ${draftText}PR`)
     await updateReference(ctx, branchName, emptyCommitSha)
     await ctx.octokit.pulls.create(
       { owner, repo, head: branchName, base, title, body: `closes #${issueNumber}`, draft: draft })
     app.log(`Pull request created for branch ${branchName}`)
   } catch (e) {
     app.log(`Could not create draft PR (${e.message})`)
-    await addComment(ctx, config, `Could not create draft PR (${e.message})`)
+    await addComment(ctx, config, `Could not create ${draftText}PR (${e.message})`)
   }
 }
 

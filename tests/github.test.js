@@ -43,7 +43,7 @@ test('get branch name from issue', async () => {
   expect(await github.getBranchNameFromIssue(ctx, config)).toBe(
     'issue-12-_Error_Mysqli_statement_execute_error_Cannot_add_or_update_a_child_row_a_foreign_key_constraint_fails' +
     '_omeka_omeka_super_eight_festivals_filmmaker_films_CONSTRAINT_omeka_super_eight_festivals_filmmaker_films_' +
-    'ibfk_1_FOREIGN_KEY_filmmaker_id_RE')
+    'ibfk_1_FOREIGN_KEY_filmmake')
 })
 
 test('get branch configuration for issue', () => {
@@ -181,8 +181,13 @@ test('log branch create errors with error level', async () => {
   expect(createComment).toBeCalled()
 })
 
-test('create PR', async () => {
+test('create (draft) PR', async () => {
   const createPR = jest.fn()
+  let capturedCommitMessage = ''
+  const createCommit = ({ message }) => {
+    capturedCommitMessage = message
+    return ({ data: { sha: 'abcd1234' } })
+  }
   const ctx = {
     payload: {
       repository: {
@@ -198,16 +203,13 @@ test('create PR', async () => {
         create: createPR
       }, //
       git: {
-        getCommit: () => ({ data: { tree: { sha: '1234abcd' } } }),
-        createCommit: () => ({ data: { sha: 'abcd1234' } }),
-        updateRef: () => {}
+        getCommit: () => ({ data: { tree: { sha: '1234abcd' } } }), createCommit: createCommit, updateRef: () => {}
       }
     }, //
     issue: () => {}
   }
 
-  await github.createPR({ log: (msg) => { console.log(msg) } }, ctx, { silent: false }, 'robvanderleek', 'issue-1')
-
+  await github.createPR({ log: () => { } }, ctx, { silent: false }, 'robvanderleek', 'issue-1')
   expect(createPR).toHaveBeenCalledWith({
     owner: 'robvanderleek',
     repo: 'create-issue-branch',
@@ -217,4 +219,17 @@ test('create PR', async () => {
     body: 'closes #1',
     title: 'Hello world'
   })
+  expect(capturedCommitMessage).toBe('Create PR')
+  await github.createPR({ log: () => { } }, ctx, { silent: false, openDraftPR: true },
+    'robvanderleek', 'issue-1')
+  expect(createPR).toHaveBeenCalledWith({
+    owner: 'robvanderleek',
+    repo: 'create-issue-branch',
+    draft: true,
+    base: undefined,
+    head: 'issue-1',
+    body: 'closes #1',
+    title: 'Hello world'
+  })
+  expect(capturedCommitMessage).toBe('Create draft PR')
 })

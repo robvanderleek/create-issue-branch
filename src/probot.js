@@ -48,49 +48,60 @@ function logMemoryUsage (app) {
 async function issueAssigned (app, ctx) {
   app.log('Issue was assigned')
   const config = await Config.load(ctx)
-  if (Config.isModeAuto(config)) {
-    if (!github.skipBranchCreationForIssue(ctx, config)) {
-      const branchName = await github.getBranchNameFromIssue(ctx, config)
-      await github.createIssueBranch(app, ctx, branchName, config)
-      const shouldCreatePR = Config.shouldOpenPR(config)
-      if (shouldCreatePR) {
-        const assignee = context.getAssignee(ctx)
-        app.log(`Creating pull request for user ${assignee}`)
-        await github.createPR(app, ctx, config, assignee, branchName)
-      }
-      logMemoryUsage(app)
-    }
+  if (!Config.isModeAuto(config)) {
+    return
   }
+  if (github.skipBranchCreationForIssue(ctx, config)) {
+    app.log(`Skipping branch creation for issue: ${context.getIssueTitle(ctx)}`)
+    return
+  }
+  const branchName = await github.getBranchNameFromIssue(ctx, config)
+  await github.createIssueBranch(app, ctx, branchName, config)
+  const shouldCreatePR = Config.shouldOpenPR(config)
+  if (shouldCreatePR) {
+    const assignee = context.getAssignee(ctx)
+    app.log(`Creating pull request for user ${assignee}`)
+    await github.createPR(app, ctx, config, assignee, branchName)
+  }
+  logMemoryUsage(app)
 }
 
 async function commentCreated (app, ctx, comment) {
   if (Config.isChatOpsCommand(comment)) {
-    app.log('ChatOps command received')
-    const config = await Config.load(ctx)
-    if (Config.isModeChatOps(config)) {
-      let branchName
-      if (Config.isExperimentalBranchNameArgument(config)) {
-        const commandArgument = Config.getChatOpsCommandArgument(comment)
-        if (commandArgument) {
-          branchName = await github.getBranchName(ctx, config, commandArgument)
-        } else {
-          branchName = await github.getBranchNameFromIssue(ctx, config)
-        }
-      } else {
-        branchName = await github.getBranchNameFromIssue(ctx, config)
-      }
-      await github.createIssueBranch(app, ctx, branchName, config)
-      const shouldCreatePR = Config.shouldOpenPR(config)
-      if (shouldCreatePR) {
-        const sender = context.getSender(ctx)
-        app.log(`Creating pull request for user ${sender}`)
-        await github.createPR(app, ctx, config, sender, branchName)
-      }
-      logMemoryUsage(app)
-    } else {
-      app.log('Received ChatOps command but current mode is not `chatops`, exiting')
-    }
+    await chatOpsCommandGiven(app, ctx, comment)
   }
+}
+
+async function chatOpsCommandGiven (app, ctx, comment) {
+  app.log('ChatOps command received')
+  const config = await Config.load(ctx)
+  if (!Config.isModeChatOps(config)) {
+    app.log('Received ChatOps command but current mode is not `chatops`, exiting')
+    return
+  }
+  if (github.skipBranchCreationForIssue(ctx, config)) {
+    app.log(`Skipping branch creation for issue: ${context.getIssueTitle(ctx)}`)
+    return
+  }
+  let branchName
+  if (Config.isExperimentalBranchNameArgument(config)) {
+    const commandArgument = Config.getChatOpsCommandArgument(comment)
+    if (commandArgument) {
+      branchName = await github.getBranchName(ctx, config, commandArgument)
+    } else {
+      branchName = await github.getBranchNameFromIssue(ctx, config)
+    }
+  } else {
+    branchName = await github.getBranchNameFromIssue(ctx, config)
+  }
+  await github.createIssueBranch(app, ctx, branchName, config)
+  const shouldCreatePR = Config.shouldOpenPR(config)
+  if (shouldCreatePR) {
+    const sender = context.getSender(ctx)
+    app.log(`Creating pull request for user ${sender}`)
+    await github.createPR(app, ctx, config, sender, branchName)
+  }
+  logMemoryUsage(app)
 }
 
 async function pullRequestClosed (app, ctx) {
