@@ -66,6 +66,36 @@ function nockCreateBranch () {
     .reply(200)
 }
 
+function getDefaultContext () {
+  return {
+    payload: {
+      repository: {
+        owner: {
+          login: 'robvanderleek'
+        }, //
+        name: 'create-issue-branch', //
+        default_branch: 'master'
+      }, //
+      issue: { number: 1, title: 'Hello world' }
+    }, //
+    octokit: {
+      pulls: {
+        create: () => {}
+      }, //
+      git: {
+        getCommit: () => ({ data: { tree: { sha: '1234abcd' } } }),
+        createCommit: () => ({ data: { sha: 'abcd1234' } }),
+        createRef: () => {},
+        updateRef: () => {}
+      }, //
+      issues: {
+        createComment: () => {}
+      }
+    }, //
+    issue: () => {}
+  }
+}
+
 module.exports = {
   issueAssignedWithLabelsPayload: issueAssignedWithLabelsPayload,
   commentCreatedWithLabelsPayload: commentCreatedWithLabelsPayload,
@@ -75,5 +105,6 @@ module.exports = {
   nockExistingBranch: nockExistingBranch,
   nockNonExistingBranch: nockNonExistingBranch,
   nockBranchCreatedComment: nockBranchCreatedComment,
-  nockCreateBranch: nockCreateBranch
+  nockCreateBranch: nockCreateBranch,
+  getDefaultContext: getDefaultContext
 }
