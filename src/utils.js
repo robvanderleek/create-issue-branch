@@ -88,6 +88,10 @@ function trimStringToByteLength (str, length) {
   }
 }
 
+function logMemoryUsage (app) {
+  app.log('Total memory: ' + Math.round(process.memoryUsage().rss / 1024 / 1024) + ' Mb')
+}
+
 module.exports = {
   makePrefixGitSafe: makePrefixGitSafe,
   makeGitSafe: makeGitSafe,
@@ -97,5 +101,6 @@ module.exports = {
   pushMetric: pushMetric,
   isRunningInGitHubActions: isRunningInGitHubActions,
   getStringLengthInBytes: getStringLengthInBytes,
-  trimStringToByteLength: trimStringToByteLength
+  trimStringToByteLength: trimStringToByteLength,
+  logMemoryUsage: logMemoryUsage
 }
