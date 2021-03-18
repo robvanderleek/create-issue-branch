@@ -1,33 +1,15 @@
 const nock = require('nock')
 const helpers = require('./test-helpers')
-const myProbotApp = require('../src/probot')
-const { Probot, ProbotOctokit } = require('probot')
 const issueAssignedPayload = require('./test-fixtures/issues.assigned.json')
-
-nock.disableNetConnect()
 
 let probot
 
 beforeAll(() => {
-  const logRequest = (r) => console.log(`No match: ${r.path}, method: ${r.method}, host: ${r.options.host}`)
-  nock.emitter.on('no match', req => { logRequest(req) })
+  helpers.initNock()
 })
 
 beforeEach(() => {
-  probot = new Probot({
-    id: 1, //
-    githubToken: 'test', // Disable throttling & retrying requests for easier testing
-    Octokit: ProbotOctokit.defaults({
-      retry: { enabled: false }, throttle: { enabled: false }
-    })
-  })
-  const app = probot.load(myProbotApp)
-  app.app = {
-    getInstallationAccessToken: () => Promise.resolve('test')
-  }
-  nock.cleanAll()
-  jest.setTimeout(10000)
-  helpers.nockAccessToken()
+  probot = helpers.initProbot()
 })
 
 test('source branch can be configured based on issue label', async () => {

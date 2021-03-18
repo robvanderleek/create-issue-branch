@@ -1,6 +1,8 @@
 const nock = require('nock')
 const issueAssignedPayload = require('./test-fixtures/issues.assigned.json')
 const commentCreatedPayload = require('./test-fixtures/issue_comment.created.json')
+const myProbotApp = require('../src/probot')
+const { Probot, ProbotOctokit } = require('probot')
 
 function issueAssignedWithLabelsPayload (...labels) {
   return payloadWithLabels(issueAssignedPayload, labels)
@@ -96,6 +98,30 @@ function getDefaultContext () {
   }
 }
 
+function initNock () {
+  nock.disableNetConnect()
+  const logRequest = (r) => console.log(`No match: ${r.path}, method: ${r.method}, host: ${r.options.host}`)
+  nock.emitter.on('no match', req => { logRequest(req) })
+}
+
+function initProbot () {
+  const result = new Probot({
+    id: 1, //
+    githubToken: 'test', // Disable throttling & retrying requests for easier testing
+    Octokit: ProbotOctokit.defaults({
+      retry: { enabled: false }, throttle: { enabled: false }
+    })
+  })
+  const app = result.load(myProbotApp)
+  app.app = {
+    getInstallationAccessToken: () => Promise.resolve('test')
+  }
+  nock.cleanAll()
+  jest.setTimeout(10000)
+  nockAccessToken()
+  return result
+}
+
 module.exports = {
   issueAssignedWithLabelsPayload: issueAssignedWithLabelsPayload,
   commentCreatedWithLabelsPayload: commentCreatedWithLabelsPayload,
@@ -106,5 +132,7 @@ module.exports = {
   nockNonExistingBranch: nockNonExistingBranch,
   nockBranchCreatedComment: nockBranchCreatedComment,
   nockCreateBranch: nockCreateBranch,
-  getDefaultContext: getDefaultContext
+  getDefaultContext: getDefaultContext,
+  initNock: initNock,
+  initProbot: initProbot
 }

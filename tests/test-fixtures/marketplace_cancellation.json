@@ -1,0 +1,15 @@
+{
+  "action": "cancelled",
+  "marketplace_purchase": {
+    "account": {
+      "type": "Organization",
+      "id": 1,
+      "login": "wip"
+    },
+    "plan": {
+      "name": "Free",
+      "monthly_price_in_cents": 0,
+      "price_model": "FREE"
+    }
+  }
+}
