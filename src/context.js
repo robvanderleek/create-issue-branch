@@ -1,5 +1,9 @@
-function getRepoOwner (ctx) {
+function getRepoOwnerLogin (ctx) {
   return ctx.payload.repository.owner.login
+}
+
+function getRepoOwnerId (ctx) {
+  return ctx.payload.repository.owner.id
 }
 
 function getRepoName (ctx) {
@@ -47,7 +51,8 @@ function getSender (ctx) {
 }
 
 module.exports = {
-  getRepoOwner: getRepoOwner,
+  getRepoOwnerLogin: getRepoOwnerLogin,
+  getRepoOwnerId: getRepoOwnerId,
   getRepoName: getRepoName,
   getRepoUrl: getRepoUrl,
   getIssueNumber: getIssueNumber,

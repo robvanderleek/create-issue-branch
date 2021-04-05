@@ -6,7 +6,7 @@ async function handle (app, ctx) {
   if (ctx.payload.pull_request.merged === true) {
     const config = await Config.load(ctx)
     if (config && Config.autoCloseIssue(config)) {
-      const owner = context.getRepoOwner(ctx)
+      const owner = context.getRepoOwnerLogin(ctx)
       const repo = context.getRepoName(ctx)
       const branchName = ctx.payload.pull_request.head.ref
       const issueNumber = github.getIssueNumberFromBranchName(branchName)

@@ -5,7 +5,7 @@ const issueCommentCreatedPayload = require('./test-fixtures/issue_comment.create
 test('get owner', () => {
   const ctx = { payload: issueAssignedPayload }
 
-  expect(context.getRepoOwner(ctx)).toBe('robvanderleek')
+  expect(context.getRepoOwnerLogin(ctx)).toBe('robvanderleek')
 })
 
 test('get assignee', () => {

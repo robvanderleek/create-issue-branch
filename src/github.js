@@ -107,7 +107,7 @@ async function addComment (ctx, config, comment) {
 }
 
 async function branchExists (ctx, branchName) {
-  const owner = context.getRepoOwner(ctx)
+  const owner = context.getRepoOwnerLogin(ctx)
   const repo = context.getRepoName(ctx)
   try {
     await ctx.octokit.git.getRef({
@@ -145,7 +145,7 @@ async function getSourceBranchHeadSha (ctx, config, log) {
 async function getBranchHeadSha (ctx, branch) {
   try {
     const res = await ctx.octokit.git.getRef({
-      owner: context.getRepoOwner(ctx), repo: context.getRepoName(ctx), ref: `heads/${branch}`
+      owner: context.getRepoOwnerLogin(ctx), repo: context.getRepoName(ctx), ref: `heads/${branch}`
     })
     const ref = res.data.object
     return ref.sha
@@ -155,14 +155,14 @@ async function getBranchHeadSha (ctx, branch) {
 }
 
 async function getCommitTreeSha (ctx, commitSha) {
-  const owner = context.getRepoOwner(ctx)
+  const owner = context.getRepoOwnerLogin(ctx)
   const repo = context.getRepoName(ctx)
   const res = await ctx.octokit.git.getCommit({ owner, repo, commit_sha: commitSha })
   return res.data.tree.sha
 }
 
 async function createCommit (ctx, commitSha, treeSha, username, message) {
-  const owner = context.getRepoOwner(ctx)
+  const owner = context.getRepoOwnerLogin(ctx)
   const repo = context.getRepoName(ctx)
   const res = await ctx.octokit.git.createCommit({
     owner,
@@ -176,13 +176,13 @@ async function createCommit (ctx, commitSha, treeSha, username, message) {
 }
 
 async function updateReference (ctx, branchName, sha) {
-  const owner = context.getRepoOwner(ctx)
+  const owner = context.getRepoOwnerLogin(ctx)
   const repo = context.getRepoName(ctx)
   await ctx.octokit.git.updateRef({ owner, repo, ref: `heads/${branchName}`, sha })
 }
 
 async function createBranch (ctx, config, branchName, sha, log) {
-  const owner = context.getRepoOwner(ctx)
+  const owner = context.getRepoOwnerLogin(ctx)
   const repo = context.getRepoName(ctx)
   try {
     const res = await ctx.octokit.git.createRef({
@@ -207,7 +207,7 @@ async function createBranch (ctx, config, branchName, sha, log) {
 }
 
 async function createPR (app, ctx, config, username, branchName) {
-  const owner = context.getRepoOwner(ctx)
+  const owner = context.getRepoOwnerLogin(ctx)
   const repo = context.getRepoName(ctx)
   const base = getSourceBranch(ctx, config, app.log)
   const title = context.getIssueTitle(ctx)
