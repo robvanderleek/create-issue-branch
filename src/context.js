@@ -1,5 +1,9 @@
-function getRepoOwner (ctx) {
+function getRepoOwnerLogin (ctx) {
   return ctx.payload.repository.owner.login
+}
+
+function getRepoOwnerId (ctx) {
+  return ctx.payload.repository.owner.id
 }
 
 function getRepoName (ctx) {
@@ -20,6 +24,11 @@ function getIssueTitle (ctx) {
 
 function getDefaultBranch (ctx) {
   return ctx.payload.repository.default_branch
+}
+
+function isPrivateOrgRepo (ctx) {
+  const { repository } = ctx.payload
+  return repository.private && repository.owner.type === 'Organization'
 }
 
 function getIssueLabels (ctx) {
@@ -47,9 +56,11 @@ function getSender (ctx) {
 }
 
 module.exports = {
-  getRepoOwner: getRepoOwner,
+  getRepoOwnerLogin: getRepoOwnerLogin,
+  getRepoOwnerId: getRepoOwnerId,
   getRepoName: getRepoName,
   getRepoUrl: getRepoUrl,
+  isPrivateOrgRepo: isPrivateOrgRepo,
   getIssueNumber: getIssueNumber,
   getIssueTitle: getIssueTitle,
   getDefaultBranch: getDefaultBranch,

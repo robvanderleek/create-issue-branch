@@ -14,7 +14,7 @@ function getChangeEmoji (action, plan, previous) {
     case 'cancelled':
       return '🚫'
     default:
-      return plan.monthly_price_in_cents > previous.plan.monthly_price_in_cents ? '⬆️' : '⬇️'
+      return plan.monthly_price_in_cents >= previous.plan.monthly_price_in_cents ? '⬆️' : '⬇️'
   }
 }
 

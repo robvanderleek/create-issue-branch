@@ -2,6 +2,7 @@ const nock = require('nock')
 const helpers = require('./test-helpers')
 const issueAssignedPayload = require('./test-fixtures/issues.assigned.json')
 const pullRequestClosedPayload = require('./test-fixtures/pull_request.closed.json')
+const marketplaceFreePlan = require('./test-fixtures/marketplace_free_plan.json')
 
 let probot
 
@@ -298,4 +299,28 @@ test('custom message with placeholder substitution in comment', async () => {
   await probot.receive({ name: 'issues', payload: helpers.issueAssignedWithLabelsPayload('bug', 'enhancement') })
 
   expect(comment).toBe('hello branch for issue 1')
+})
+
+test('Buy Pro message in comment for private organization repos', async () => {
+  helpers.nockEmptyConfig()
+  helpers.nockMarketplaceFreePlan()
+  let comment = ''
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/issues/1/comments', (data) => {
+      comment = data.body
+      return true
+    })
+    .reply(200)
+
+  const ctx = {
+    name: 'issues',
+    octokit: {
+      apps: { getSubscriptionPlanForAccount: () => ({ data: marketplaceFreePlan }) }
+    }, //
+    payload: helpers.privateOrganizationRepoPayload(issueAssignedPayload)
+  }
+
+  await probot.receive(ctx)
+
+  expect(comment).toBeDefined()
 })

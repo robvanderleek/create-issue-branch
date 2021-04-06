@@ -1,6 +1,7 @@
 const nock = require('nock')
 const issueAssignedPayload = require('./test-fixtures/issues.assigned.json')
 const commentCreatedPayload = require('./test-fixtures/issue_comment.created.json')
+const marketplaceFreePlan = require('./test-fixtures/marketplace_free_plan.json')
 const myProbotApp = require('../src/probot')
 const { Probot, ProbotOctokit } = require('probot')
 
@@ -16,6 +17,13 @@ function payloadWithLabels (payload, labels) {
   const issueCopy = JSON.parse(JSON.stringify(payload))
   labels.forEach(l => issueCopy.issue.labels.push({ name: l }))
   return issueCopy
+}
+
+function privateOrganizationRepoPayload (payload) {
+  const payloadCopy = JSON.parse(JSON.stringify(payload))
+  payloadCopy.repository.private = true
+  payloadCopy.repository.owner.type = 'Organization'
+  return payloadCopy
 }
 
 function nockAccessToken () {
@@ -42,6 +50,20 @@ function nockConfig (yamlConfig) {
     .persist()
     .get('/repos/robvanderleek/create-issue-branch/contents/.github%2Fissue-branch.yml')
     .reply(200, yamlConfig)
+}
+
+function nockInstallation (installation) {
+  nock('https://api.github.com')
+    .persist()
+    .get('/users/robvanderleek/installation')
+    .reply(200, installation)
+}
+
+function nockMarketplaceFreePlan () {
+  nock('https://api.github.com')
+    .persist()
+    .get('/marketplace_listing/accounts/5324924')
+    .reply(200, marketplaceFreePlan)
 }
 
 function nockExistingBranch (name, sha) {
@@ -125,13 +147,16 @@ function initProbot () {
 module.exports = {
   issueAssignedWithLabelsPayload: issueAssignedWithLabelsPayload,
   commentCreatedWithLabelsPayload: commentCreatedWithLabelsPayload,
+  privateOrganizationRepoPayload: privateOrganizationRepoPayload,
   nockAccessToken: nockAccessToken,
   nockEmptyConfig: nockEmptyConfig,
   nockConfig: nockConfig,
+  nockInstallation: nockInstallation,
   nockExistingBranch: nockExistingBranch,
   nockNonExistingBranch: nockNonExistingBranch,
   nockBranchCreatedComment: nockBranchCreatedComment,
   nockCreateBranch: nockCreateBranch,
+  nockMarketplaceFreePlan: nockMarketplaceFreePlan,
   getDefaultContext: getDefaultContext,
   initNock: initNock,
   initProbot: initProbot

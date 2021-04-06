@@ -1,8 +1,16 @@
 const Config = require('./config')
 const utils = require('./utils')
 const context = require('./context')
+const plans = require('./plans')
 
 async function createIssueBranch (app, ctx, branchName, config) {
+  if (context.isPrivateOrgRepo(ctx)) {
+    const isProPan = await plans.isProPlan(app, ctx)
+    if (!isProPan) {
+      await addBuyProComment(ctx)
+      return
+    }
+  }
   if (await branchExists(ctx, branchName)) {
     if (Config.isModeChatOps(config)) {
       await addComment(ctx, config, 'Branch already exists')
@@ -98,6 +106,16 @@ function skipBranchCreationForIssue (ctx, config) {
   }
 }
 
+async function addBuyProComment (ctx) {
+  const params = ctx.issue({
+    body: 'Hi there :wave:\n\nUsing this App for a private organization repository requires a paid ' +
+      'subscription that you can buy on the [GitHub Marketplace](https://github.com/marketplace/create-issue-branch)\n\n' +
+      'If you are a non-profit organization or otherwise can not pay for such a plan, contact me by ' +
+      '[creating an issue](https://github.com/robvanderleek/create-issue-branch/issues)'
+  })
+  await ctx.octokit.issues.createComment(params)
+}
+
 async function addComment (ctx, config, comment) {
   const silent = Config.isSilent(config)
   if (!silent) {
@@ -107,7 +125,7 @@ async function addComment (ctx, config, comment) {
 }
 
 async function branchExists (ctx, branchName) {
-  const owner = context.getRepoOwner(ctx)
+  const owner = context.getRepoOwnerLogin(ctx)
   const repo = context.getRepoName(ctx)
   try {
     await ctx.octokit.git.getRef({
@@ -145,7 +163,7 @@ async function getSourceBranchHeadSha (ctx, config, log) {
 async function getBranchHeadSha (ctx, branch) {
   try {
     const res = await ctx.octokit.git.getRef({
-      owner: context.getRepoOwner(ctx), repo: context.getRepoName(ctx), ref: `heads/${branch}`
+      owner: context.getRepoOwnerLogin(ctx), repo: context.getRepoName(ctx), ref: `heads/${branch}`
     })
     const ref = res.data.object
     return ref.sha
@@ -155,14 +173,14 @@ async function getBranchHeadSha (ctx, branch) {
 }
 
 async function getCommitTreeSha (ctx, commitSha) {
-  const owner = context.getRepoOwner(ctx)
+  const owner = context.getRepoOwnerLogin(ctx)
   const repo = context.getRepoName(ctx)
   const res = await ctx.octokit.git.getCommit({ owner, repo, commit_sha: commitSha })
   return res.data.tree.sha
 }
 
 async function createCommit (ctx, commitSha, treeSha, username, message) {
-  const owner = context.getRepoOwner(ctx)
+  const owner = context.getRepoOwnerLogin(ctx)
   const repo = context.getRepoName(ctx)
   const res = await ctx.octokit.git.createCommit({
     owner,
@@ -176,13 +194,13 @@ async function createCommit (ctx, commitSha, treeSha, username, message) {
 }
 
 async function updateReference (ctx, branchName, sha) {
-  const owner = context.getRepoOwner(ctx)
+  const owner = context.getRepoOwnerLogin(ctx)
   const repo = context.getRepoName(ctx)
   await ctx.octokit.git.updateRef({ owner, repo, ref: `heads/${branchName}`, sha })
 }
 
 async function createBranch (ctx, config, branchName, sha, log) {
-  const owner = context.getRepoOwner(ctx)
+  const owner = context.getRepoOwnerLogin(ctx)
   const repo = context.getRepoName(ctx)
   try {
     const res = await ctx.octokit.git.createRef({
@@ -207,7 +225,7 @@ async function createBranch (ctx, config, branchName, sha, log) {
 }
 
 async function createPR (app, ctx, config, username, branchName) {
-  const owner = context.getRepoOwner(ctx)
+  const owner = context.getRepoOwnerLogin(ctx)
   const repo = context.getRepoName(ctx)
   const base = getSourceBranch(ctx, config, app.log)
   const title = context.getIssueTitle(ctx)

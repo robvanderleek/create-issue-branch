@@ -1,6 +1,6 @@
 dev:
 * create-issue-branch/create-issue-branch-dev
-  Installed as GitHub App (ChatOps mode)
+  Installed as GitHub App (ChatOps mode, openDraftPR: true)
 
 staging:
 github.com/create-issue-branch-staging: Installed as GitHub App (ChatOps mode)

@@ -3,7 +3,7 @@ node_modules/
 .idea/
 .env
 .env.production
-.env.test
+.env.test*
 .env.staging
 .private-key.pem
 .private-key.staging.pem

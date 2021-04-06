@@ -2,6 +2,7 @@ const helpers = require('./test-helpers')
 const marketplacePurchasePayload = require('./test-fixtures/marketplace_purchase.json')
 const marketplaceCancellationPayload = require('./test-fixtures/marketplace_cancellation.json')
 const marketplaceDowngradePayload = require('./test-fixtures/marketplace_downgrade.json')
+const marketplacePendingChangePayload = require('./test-fixtures/marketplace_pending_change.json')
 
 let probot
 
@@ -23,4 +24,8 @@ test('handle marketplace cancellation', async () => {
 
 test('handle marketplace downgrade', async () => {
   await probot.receive({ name: 'marketplace_purchase', payload: marketplaceDowngradePayload })
+})
+
+test('handle pending change', async () => {
+  await probot.receive({ name: 'marketplace_purchase', payload: marketplacePendingChangePayload })
 })

@@ -1,0 +1,51 @@
+{
+  "url": "https://api.github.com/orgs/create-issue-branch",
+  "type": "Organization",
+  "id": 79683951,
+  "login": "create-issue-branch",
+  "marketplace_pending_change": {
+    "id": 44511,
+    "unit_count": 1,
+    "plan": {
+      "url": "https://api.github.com/marketplace_listing/plans/6259",
+      "accounts_url": "https://api.github.com/marketplace_listing/plans/6259/accounts",
+      "id": 6259,
+      "number": 2,
+      "name": "Commercial organization",
+      "description": "For organizations that develop commercial software. Fair play.",
+      "monthly_price_in_cents": 500,
+      "yearly_price_in_cents": 5000,
+      "price_model": "FLAT_RATE",
+      "has_free_trial": true,
+      "unit_name": null,
+      "state": "published",
+      "bullets": []
+    },
+    "effective_date": "2021-05-06T07:00:00Z"
+  },
+  "marketplace_purchase": {
+    "billing_cycle": "monthly",
+    "unit_count": 1,
+    "on_free_trial": true,
+    "free_trial_ends_on": "2021-04-20T00:00:00.000Z",
+    "is_installed": false,
+    "updated_at": "2021-04-06T16:02:49Z",
+    "next_billing_date": "2021-05-06T00:00:00Z",
+    "plan": {
+      "url": "https://api.github.com/marketplace_listing/plans/6259",
+      "accounts_url": "https://api.github.com/marketplace_listing/plans/6259/accounts",
+      "id": 6259,
+      "number": 2,
+      "name": "Commercial organization",
+      "description": "For organizations that develop commercial software. Fair play.",
+      "monthly_price_in_cents": 500,
+      "yearly_price_in_cents": 5000,
+      "price_model": "FLAT_RATE",
+      "has_free_trial": true,
+      "unit_name": null,
+      "state": "published",
+      "bullets": []
+    }
+  },
+  "organization_billing_email": "robvanderleek@gmail.com"
+}
