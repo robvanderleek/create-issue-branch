@@ -27,7 +27,8 @@ function getDefaultBranch (ctx) {
 }
 
 function isPrivateOrgRepo (ctx) {
-  return ctx.payload.repository.private && ctx.payload.repository.owner.type === 'Organization'
+  const { repository } = ctx.payload
+  return repository.private && repository.owner.type === 'Organization'
 }
 
 function getIssueLabels (ctx) {

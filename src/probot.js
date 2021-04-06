@@ -5,7 +5,6 @@ const PullRequestClosed = require('./webhooks/pull-request-closed')
 const IssueAssigned = require('./webhooks/issue-assigned')
 const CommentCreated = require('./webhooks/comment-created')
 const MarketplacePurchase = require('./webhooks/marketplace-purchase')
-// const plans = require('./plans')
 
 module.exports = ({ app, getRouter }) => {
   app.log('App was loaded')
@@ -13,7 +12,6 @@ module.exports = ({ app, getRouter }) => {
   configureSentry(app)
   utils.logMemoryUsage(app)
   app.on('issues.assigned', async ctx => {
-    // await plans.isProPlan(app, ctx)
     await IssueAssigned.handle(app, ctx)
   })
   app.on('issue_comment.created', async ctx => {

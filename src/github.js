@@ -1,8 +1,16 @@
 const Config = require('./config')
 const utils = require('./utils')
 const context = require('./context')
+const plans = require('./plans')
 
 async function createIssueBranch (app, ctx, branchName, config) {
+  if (context.isPrivateOrgRepo(ctx)) {
+    const isProPan = await plans.isProPlan(app, ctx)
+    if (!isProPan) {
+      await addBuyProComment(ctx)
+      return
+    }
+  }
   if (await branchExists(ctx, branchName)) {
     if (Config.isModeChatOps(config)) {
       await addComment(ctx, config, 'Branch already exists')
@@ -96,6 +104,16 @@ function skipBranchCreationForIssue (ctx, config) {
   } else {
     return false
   }
+}
+
+async function addBuyProComment (ctx) {
+  const params = ctx.issue({
+    body: 'Hi there :wave:\n\nUsing this App for a private organization repository requires a paid ' +
+      'subscription that you can buy on the [GitHub Marketplace](https://github.com/marketplace/create-issue-branch)\n\n' +
+      'If you are a non-profit organization or otherwise can not pay for such a plan, contact me by ' +
+      '[creating an issue](https://github.com/robvanderleek/create-issue-branch/issues)'
+  })
+  await ctx.octokit.issues.createComment(params)
 }
 
 async function addComment (ctx, config, comment) {
