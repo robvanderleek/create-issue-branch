@@ -44,6 +44,13 @@ function nockConfig (yamlConfig) {
     .reply(200, yamlConfig)
 }
 
+function nockInstallation (installation) {
+  nock('https://api.github.com')
+    .persist()
+    .get('/users/robvanderleek/installation')
+    .reply(200, installation)
+}
+
 function nockExistingBranch (name, sha) {
   nock('https://api.github.com')
     .get(`/repos/robvanderleek/create-issue-branch/git/refs/heads%2F${encodeURIComponent(name)}`)
@@ -128,6 +135,7 @@ module.exports = {
   nockAccessToken: nockAccessToken,
   nockEmptyConfig: nockEmptyConfig,
   nockConfig: nockConfig,
+  nockInstallation: nockInstallation,
   nockExistingBranch: nockExistingBranch,
   nockNonExistingBranch: nockNonExistingBranch,
   nockBranchCreatedComment: nockBranchCreatedComment,

@@ -1,0 +1,32 @@
+{
+  "url": "https://api.github.com/orgs/create-issue-branch",
+  "type": "Organization",
+  "id": 79683951,
+  "login": "create-issue-branch",
+  "marketplace_pending_change": null,
+  "marketplace_purchase": {
+    "billing_cycle": "monthly",
+    "unit_count": 1,
+    "on_free_trial": false,
+    "free_trial_ends_on": null,
+    "is_installed": true,
+    "updated_at": "2021-04-05T19:51:53Z",
+    "next_billing_date": null,
+    "plan": {
+      "url": "https://api.github.com/marketplace_listing/plans/6240",
+      "accounts_url": "https://api.github.com/marketplace_listing/plans/6240/accounts",
+      "id": 6240,
+      "number": 1,
+      "name": "Enjoy for free",
+      "description": "Star the repo if you like this app.",
+      "monthly_price_in_cents": 0,
+      "yearly_price_in_cents": 0,
+      "price_model": "FREE",
+      "has_free_trial": false,
+      "unit_name": null,
+      "state": "published",
+      "bullets": []
+    }
+  },
+  "organization_billing_email": "robvanderleek@gmail.com"
+}
