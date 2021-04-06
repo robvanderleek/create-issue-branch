@@ -19,3 +19,16 @@ test('get sender', () => {
 
   expect(context.getSender(ctx)).toBe('robvanderleek')
 })
+
+test('is private Org repo', () => {
+  expect(context.isPrivateOrgRepo({ payload: issueAssignedPayload })).toBeFalsy()
+
+  const payloadCopy = JSON.parse(JSON.stringify(issueAssignedPayload))
+  payloadCopy.repository.private = true
+
+  expect(context.isPrivateOrgRepo({ payload: payloadCopy })).toBeFalsy()
+
+  payloadCopy.repository.owner.type = 'Organization'
+
+  expect(context.isPrivateOrgRepo({ payload: payloadCopy })).toBeTruthy()
+})

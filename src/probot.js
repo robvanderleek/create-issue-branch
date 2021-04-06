@@ -5,7 +5,7 @@ const PullRequestClosed = require('./webhooks/pull-request-closed')
 const IssueAssigned = require('./webhooks/issue-assigned')
 const CommentCreated = require('./webhooks/comment-created')
 const MarketplacePurchase = require('./webhooks/marketplace-purchase')
-const plans = require('./plans')
+// const plans = require('./plans')
 
 module.exports = ({ app, getRouter }) => {
   app.log('App was loaded')
@@ -27,10 +27,10 @@ module.exports = ({ app, getRouter }) => {
     const comment = ctx.payload.issue.body
     await CommentCreated.handle(app, ctx, comment)
   })
-  app.on(['marketplace_purchase.purchased', 'marketplace_purchase.changed', 'marketplace_purchase.cancelled'],
-    async ctx => {
-      await MarketplacePurchase.handle(app, ctx)
-    })
+  app.on(['marketplace_purchase.purchased', 'marketplace_purchase.changed', 'marketplace_purchase.cancelled',
+    'marketplace_purchase.pending_change'], async ctx => {
+    await MarketplacePurchase.handle(app, ctx)
+  })
 }
 
 function addStatsRoute (getRouter) {

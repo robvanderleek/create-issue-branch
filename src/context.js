@@ -26,6 +26,10 @@ function getDefaultBranch (ctx) {
   return ctx.payload.repository.default_branch
 }
 
+function isPrivateOrgRepo (ctx) {
+  return ctx.payload.repository.private && ctx.payload.repository.owner.type === 'Organization'
+}
+
 function getIssueLabels (ctx) {
   const labels = ctx.payload.issue.labels.map(l => l.name)
   if (labels.length === 0) {
@@ -55,6 +59,7 @@ module.exports = {
   getRepoOwnerId: getRepoOwnerId,
   getRepoName: getRepoName,
   getRepoUrl: getRepoUrl,
+  isPrivateOrgRepo: isPrivateOrgRepo,
   getIssueNumber: getIssueNumber,
   getIssueTitle: getIssueTitle,
   getDefaultBranch: getDefaultBranch,

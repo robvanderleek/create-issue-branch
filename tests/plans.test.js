@@ -2,6 +2,7 @@ const helpers = require('./test-helpers')
 const issueAssignedPayload = require('./test-fixtures/issues.assigned.json')
 const userInstallation = require('./test-fixtures/user_installation.json')
 const marketplaceFreePlan = require('./test-fixtures/marketplace_free_plan.json')
+const marketplaceProPlan = require('./test-fixtures/marketplace_pro_plan.json')
 const plans = require('../src/plans')
 
 let probot
@@ -43,4 +44,17 @@ test('installed as marketplace free plan', async () => {
   const result = await plans.isProPlan(probot, ctx)
 
   expect(result).toBeFalsy()
+})
+
+test('installed as marketplace pro (trial) plan', async () => {
+  const ctx = {
+    octokit: {
+      apps: { getSubscriptionPlanForAccount: () => ({ data: marketplaceProPlan }) }
+    }, //
+    payload: issueAssignedPayload
+  }
+
+  const result = await plans.isProPlan(probot, ctx)
+
+  expect(result).toBeTruthy()
 })
