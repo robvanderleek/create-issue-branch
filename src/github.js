@@ -4,7 +4,7 @@ const context = require('./context')
 const plans = require('./plans')
 
 async function createIssueBranch (app, ctx, branchName, config) {
-  if (context.isPrivateOrgRepo(ctx)) {
+  if (!utils.isRunningInGitHubActions() && context.isPrivateOrgRepo(ctx)) {
     const isProPan = await plans.isProPlan(app, ctx)
     if (!isProPan) {
       await addBuyProComment(ctx)
