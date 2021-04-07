@@ -33,10 +33,25 @@ test('installed as app but after pro plan introduction', async () => {
   expect(result).toBeFalsy()
 })
 
-test('installed as marketplace free plan', async () => {
+test('installed as marketplace free plan but before pro plan introduction', async () => {
   const ctx = {
     octokit: {
       apps: { getSubscriptionPlanForAccount: () => ({ data: marketplaceFreePlan }) }
+    }, //
+    payload: issueAssignedPayload
+  }
+
+  const result = await plans.isProPlan(probot, ctx)
+
+  expect(result).toBeTruthy()
+})
+
+test('installed as marketplace free plan but after pro plan introduction', async () => {
+  const marketplaceFreePlanCopy = JSON.parse(JSON.stringify(marketplaceFreePlan))
+  marketplaceFreePlanCopy.marketplace_purchase.updated_at = '2021-04-08T19:51:53.000Z'
+  const ctx = {
+    octokit: {
+      apps: { getSubscriptionPlanForAccount: () => ({ data: marketplaceFreePlanCopy }) }
     }, //
     payload: issueAssignedPayload
   }
