@@ -1,6 +1,5 @@
 const Sentry = require('@sentry/node')
 const utils = require('./utils')
-const stats = require('../static/stats.json')
 const PullRequestClosed = require('./webhooks/pull-request-closed')
 const IssueAssigned = require('./webhooks/issue-assigned')
 const CommentCreated = require('./webhooks/comment-created')
@@ -34,7 +33,7 @@ module.exports = ({ app, getRouter }) => {
 function addStatsRoute (getRouter) {
   const router = getRouter('/probot')
   router.get('/stats', (req, res) => {
-    res.send(stats)
+    res.redirect('https://raw.githubusercontent.com/robvanderleek/create-issue-branch/master/static/stats.json')
   })
 }
 
