@@ -18,8 +18,10 @@ beforeEach(() => {
 test('installed as app but before pro plan introduction', async () => {
   helpers.nockInstallation(userInstallation)
 
-  const result = await plans.isProPlan(probot, { payload: issueAssignedPayload })
+  let result = await plans.isProPlan(probot, { payload: issueAssignedPayload })
 
+  expect(result).toBeFalsy()
+  result = await plans.isActivatedBeforeProPlanIntroduction(probot, { payload: issueAssignedPayload })
   expect(result).toBeTruthy()
 })
 
@@ -28,8 +30,10 @@ test('installed as app but after pro plan introduction', async () => {
   userInstallationCopy.created_at = '2021-04-08T19:51:53.000Z'
   helpers.nockInstallation(userInstallationCopy)
 
-  const result = await plans.isProPlan(probot, { payload: issueAssignedPayload })
+  let result = await plans.isProPlan(probot, { payload: issueAssignedPayload })
 
+  expect(result).toBeFalsy()
+  result = await plans.isActivatedBeforeProPlanIntroduction(probot, { payload: issueAssignedPayload })
   expect(result).toBeFalsy()
 })
 
@@ -41,8 +45,10 @@ test('installed as marketplace free plan but before pro plan introduction', asyn
     payload: issueAssignedPayload
   }
 
-  const result = await plans.isProPlan(probot, ctx)
+  let result = await plans.isProPlan(probot, ctx)
 
+  expect(result).toBeFalsy()
+  result = await plans.isActivatedBeforeProPlanIntroduction(probot, ctx)
   expect(result).toBeTruthy()
 })
 
@@ -56,8 +62,10 @@ test('installed as marketplace free plan but after pro plan introduction', async
     payload: issueAssignedPayload
   }
 
-  const result = await plans.isProPlan(probot, ctx)
+  let result = await plans.isProPlan(probot, ctx)
 
+  expect(result).toBeFalsy()
+  result = await plans.isActivatedBeforeProPlanIntroduction(probot, ctx)
   expect(result).toBeFalsy()
 })
 

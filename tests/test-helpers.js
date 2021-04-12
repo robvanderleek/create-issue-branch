@@ -1,7 +1,6 @@
 const nock = require('nock')
 const issueAssignedPayload = require('./test-fixtures/issues.assigned.json')
 const commentCreatedPayload = require('./test-fixtures/issue_comment.created.json')
-const marketplaceFreePlan = require('./test-fixtures/marketplace_free_plan.json')
 const myProbotApp = require('../src/probot')
 const { Probot, ProbotOctokit } = require('probot')
 
@@ -59,11 +58,11 @@ function nockInstallation (installation) {
     .reply(200, installation)
 }
 
-function nockMarketplaceFreePlan () {
+function nockMarketplacePlan (plan) {
   nock('https://api.github.com')
     .persist()
     .get('/marketplace_listing/accounts/5324924')
-    .reply(200, marketplaceFreePlan)
+    .reply(200, plan)
 }
 
 function nockExistingBranch (name, sha) {
@@ -156,7 +155,7 @@ module.exports = {
   nockNonExistingBranch: nockNonExistingBranch,
   nockBranchCreatedComment: nockBranchCreatedComment,
   nockCreateBranch: nockCreateBranch,
-  nockMarketplaceFreePlan: nockMarketplaceFreePlan,
+  nockMarketplacePlan: nockMarketplacePlan,
   getDefaultContext: getDefaultContext,
   initNock: initNock,
   initProbot: initProbot

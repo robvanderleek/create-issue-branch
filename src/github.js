@@ -4,20 +4,39 @@ const context = require('./context')
 const plans = require('./plans')
 
 async function createIssueBranch (app, ctx, branchName, config) {
-  if (!utils.isRunningInGitHubActions() && context.isPrivateOrgRepo(ctx)) {
-    const isProPan = await plans.isProPlan(app, ctx)
-    if (!isProPan) {
-      await addBuyProComment(ctx)
-      return
+  if (await hasValidSubscriptionForRepo(app, ctx)) {
+    if (await branchExists(ctx, branchName)) {
+      if (Config.isModeChatOps(config)) {
+        await addComment(ctx, config, 'Branch already exists')
+      }
+    } else {
+      const sha = await getSourceBranchHeadSha(ctx, config, app.log)
+      await createBranch(ctx, config, branchName, sha, app.log)
     }
   }
-  if (await branchExists(ctx, branchName)) {
-    if (Config.isModeChatOps(config)) {
-      await addComment(ctx, config, 'Branch already exists')
+}
+
+async function hasValidSubscriptionForRepo (app, ctx) {
+  if (utils.isRunningInGitHubActions()) {
+    return true
+  }
+  if (context.isPrivateOrgRepo(ctx)) {
+    const isProPan = await plans.isProPlan(app, ctx)
+    if (!isProPan) {
+      if (await plans.isActivatedBeforeProPlanIntroduction(app, ctx)) {
+        await addUpgradeToProComment(ctx)
+        app.log('Added comment to upgrade Free plan')
+        return true
+      } else {
+        await addBuyProComment(ctx)
+        app.log('Added comment to buy Pro plan')
+        return false
+      }
+    } else {
+      return true
     }
   } else {
-    const sha = await getSourceBranchHeadSha(ctx, config, app.log)
-    await createBranch(ctx, config, branchName, sha, app.log)
+    return true
   }
 }
 
@@ -106,14 +125,21 @@ function skipBranchCreationForIssue (ctx, config) {
   }
 }
 
+const buyComment = 'Hi there :wave:\n\nUsing this App for a private organization repository requires a paid ' +
+  'subscription that you can buy on the [GitHub Marketplace](https://github.com/marketplace/create-issue-branch)\n\n' +
+  'If you are a non-profit organization or otherwise can not pay for such a plan, contact me by ' +
+  '[creating an issue](https://github.com/robvanderleek/create-issue-branch/issues)'
+
 async function addBuyProComment (ctx) {
-  const params = ctx.issue({
-    body: 'Hi there :wave:\n\nUsing this App for a private organization repository requires a paid ' +
-      'subscription that you can buy on the [GitHub Marketplace](https://github.com/marketplace/create-issue-branch)\n\n' +
-      'If you are a non-profit organization or otherwise can not pay for such a plan, contact me by ' +
-      '[creating an issue](https://github.com/robvanderleek/create-issue-branch/issues)'
-  })
-  await ctx.octokit.issues.createComment(params)
+  await addComment(ctx, { silent: false }, buyComment)
+}
+
+async function addUpgradeToProComment (ctx) {
+  const comment = buyComment +
+    '\n\nSince you activated this App before the paid plan introduction it keeps on working ' +
+    'for this repository. [Upgrade to the paid plan](https://github.com/marketplace/create-issue-branch) to ' +
+    'remove this message.'
+  await addComment(ctx, { silent: false }, comment)
 }
 
 async function addComment (ctx, config, comment) {

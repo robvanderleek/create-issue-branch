@@ -301,9 +301,43 @@ test('custom message with placeholder substitution in comment', async () => {
   expect(comment).toBe('hello branch for issue 1')
 })
 
-test('Buy Pro message in comment for private organization repos', async () => {
+test('Upgrade to Pro message in comment for subscriptions activated before Pro plan introduction', async () => {
+  helpers.nockNonExistingBranch('issue-1-Test_issue')
+  helpers.nockExistingBranch('master', 12345678)
+  helpers.nockConfig('silent: true')
+  helpers.nockMarketplacePlan(marketplaceFreePlan)
+  let comment = ''
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/issues/1/comments', (data) => {
+      comment = data.body
+      return true
+    })
+    .reply(200)
+
+  let branchCreated = ''
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/git/refs', () => {
+      branchCreated = true
+      return true
+    })
+    .reply(200)
+
+  const ctx = {
+    name: 'issues', payload: helpers.privateOrganizationRepoPayload(issueAssignedPayload)
+  }
+
+  await probot.receive(ctx)
+
+  expect(comment).toBeDefined()
+  expect(comment.toLowerCase().indexOf('this message')).toBeGreaterThan(0)
+  expect(branchCreated).toBeTruthy()
+})
+
+test('Buy Pro message in comment for subscriptions activated after Pro plan introduction', async () => {
   helpers.nockEmptyConfig()
-  helpers.nockMarketplaceFreePlan()
+  const marketplaceFreePlanCopy = JSON.parse(JSON.stringify(marketplaceFreePlan))
+  marketplaceFreePlanCopy.marketplace_purchase.updated_at = '2021-04-08T19:51:53Z'
+  helpers.nockMarketplacePlan(marketplaceFreePlanCopy)
   let comment = ''
   nock('https://api.github.com')
     .post('/repos/robvanderleek/create-issue-branch/issues/1/comments', (data) => {
@@ -313,14 +347,11 @@ test('Buy Pro message in comment for private organization repos', async () => {
     .reply(200)
 
   const ctx = {
-    name: 'issues',
-    octokit: {
-      apps: { getSubscriptionPlanForAccount: () => ({ data: marketplaceFreePlan }) }
-    }, //
-    payload: helpers.privateOrganizationRepoPayload(issueAssignedPayload)
+    name: 'issues', payload: helpers.privateOrganizationRepoPayload(issueAssignedPayload)
   }
 
   await probot.receive(ctx)
 
   expect(comment).toBeDefined()
+  expect(comment.toLowerCase().indexOf('buy')).toBeGreaterThan(0)
 })
