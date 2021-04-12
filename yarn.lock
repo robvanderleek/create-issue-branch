@@ -1366,10 +1366,10 @@ atomic-sleep@^1.0.0:
   resolved "https://registry.yarnpkg.com/atomic-sleep/-/atomic-sleep-1.0.0.tgz#eb85b77a601fc932cfe432c5acd364a9e2c9075b"
   integrity sha512-kNOjDqAh7px0XWNI+4QbzoiR/nTkHAWNud2uvnJquD1/x5a7EQZMJT0AczqK0Qn67oY/TTQ1LbUKajZpp3I9tQ==
 
-aws-sdk@^2.853.0:
-  version "2.853.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.853.0.tgz#4428565e7c5d81ab0dec685ee48d9044e04da3e9"
-  integrity sha512-3cifeifeMHKtpvQ6OcrA9j34BEdvWmLlSGzZU/mZf9nYcV+22PPXjwpVhPh9BvfC2S77upKNbMgnkv4u50aQKw==
+aws-sdk@^2.884.0:
+  version "2.884.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.884.0.tgz#dd82338bb2c26201c59ac799abec3d6db51cbe21"
+  integrity sha512-+rhzq7zmntsj4VJRUf0v6ri9vw3dYroy9BbRtbxLHILdnSFPkoqMcodr/pwcUSO5kYEYbCG7mxr5/R2a+cfbxQ==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
