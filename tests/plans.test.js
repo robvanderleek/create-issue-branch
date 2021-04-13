@@ -81,3 +81,15 @@ test('installed as marketplace pro (trial) plan', async () => {
 
   expect(result).toBeTruthy()
 })
+
+test('free Pro subscription', async () => {
+  const issueAssignedPayloadCopy = JSON.parse(JSON.stringify(issueAssignedPayload))
+  issueAssignedPayloadCopy.repository.owner.login = 'PWrInSpace'
+  const ctx = {
+    payload: issueAssignedPayloadCopy
+  }
+
+  const result = await plans.isProPlan(probot, ctx)
+
+  expect(result).toBeTruthy()
+})

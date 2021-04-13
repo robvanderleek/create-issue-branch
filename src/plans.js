@@ -7,6 +7,10 @@ async function isProPlan (app, ctx) {
     const id = context.getRepoOwnerId(ctx)
     const login = context.getRepoOwnerLogin(ctx)
     app.log(`Checking Marketplace for organization: ${login} ...`)
+    if (freeProSubscription(login)) {
+      app.log('Found free Pro plan')
+      return true
+    }
     const res = await ctx.octokit.apps.getSubscriptionPlanForAccount({ account_id: id })
     const purchase = res.data.marketplace_purchase
     if (purchase.plan.price_model === 'FREE') {
@@ -20,6 +24,12 @@ async function isProPlan (app, ctx) {
     app.log('Marketplace purchase not found')
     return false
   }
+}
+
+function freeProSubscription (login) {
+  const organizations = ['PWrInSpace', 'KPLRCDBS']
+  const match = organizations.find(o => o.toLowerCase() === String(login).toLowerCase())
+  return match !== undefined
 }
 
 async function isActivatedBeforeProPlanIntroduction (app, ctx) {
