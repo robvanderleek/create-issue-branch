@@ -8,6 +8,7 @@ const MarketplacePurchase = require('./webhooks/marketplace-purchase')
 module.exports = ({ app, getRouter }) => {
   app.log('App was loaded')
   addStatsRoute(getRouter)
+  addPlansRoute(app, getRouter)
   configureSentry(app)
   utils.logMemoryUsage(app)
   app.on('issues.assigned', async ctx => {
@@ -34,6 +35,19 @@ function addStatsRoute (getRouter) {
   const router = getRouter('/probot')
   router.get('/stats', (req, res) => {
     res.redirect('https://raw.githubusercontent.com/robvanderleek/create-issue-branch/master/static/stats.json')
+  })
+}
+
+async function addPlansRoute (app, getRouter) {
+  const router = getRouter('/probot')
+  router.get('/plans', async (req, res) => {
+    const result = {}
+    const plans = (await app.state.octokit.apps.listPlans()).data
+    for (const plan of plans) {
+      const accounts = (await app.state.octokit.apps.listAccountsForPlan({ per_page: 100, plan_id: plan.id })).data
+      result[plan.name] = accounts.length
+    }
+    res.json(result)
   })
 }
 
