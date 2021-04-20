@@ -340,7 +340,7 @@ branches:
 
 ## Automatically open a Pull Request
 
-Automatically open a (draft) Pull Request for the newly created branch. This feature is (currently) only available if you run Create Issue Branch in a GitHub Action workflow. Enable this feature in your configuration YAML, for draft pull requests use:
+Automatically open a (draft) Pull Request for the newly created branch. Enable this feature in your configuration YAML, for draft pull requests use:
 
 ```yaml
 openDraftPR: true
