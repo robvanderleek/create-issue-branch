@@ -27,7 +27,7 @@ async function isProPlan (app, ctx) {
 }
 
 function freeProSubscription (login) {
-  const organizations = ['PWrInSpace', 'KPLRCDBS', 'codemeistre']
+  const organizations = ['PWrInSpace', 'KPLRCDBS', 'codemeistre', 'RaspberryPiFoundation', 'astro-pi']
   const match = organizations.find(o => o.toLowerCase() === String(login).toLowerCase())
   return match !== undefined
 }
