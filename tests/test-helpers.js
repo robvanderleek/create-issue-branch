@@ -77,16 +77,33 @@ function nockNonExistingBranch (name) {
     .reply(404)
 }
 
-function nockBranchCreatedComment () {
+function nockUpdateBranch (name) {
+  nock('https://api.github.com').patch(`/repos/robvanderleek/create-issue-branch/git/refs/heads%2F${name}`).reply(200)
+}
+
+function nockCommentCreated () {
   nock('https://api.github.com')
     .post('/repos/robvanderleek/create-issue-branch/issues/1/comments')
     .reply(200)
+}
+
+function nockCommitTreeSha (sha, treeSha) {
+  nock('https://api.github.com').get(`/repos/robvanderleek/create-issue-branch/git/commits/${sha}`)
+    .reply(200, { tree: { sha: treeSha } })
+}
+
+function nockCommit () {
+  nock('https://api.github.com').post('/repos/robvanderleek/create-issue-branch/git/commits').reply(200)
 }
 
 function nockCreateBranch () {
   nock('https://api.github.com')
     .post('/repos/robvanderleek/create-issue-branch/git/refs')
     .reply(200)
+}
+
+function nockCreatePR () {
+  nock('https://api.github.com').post('/repos/robvanderleek/create-issue-branch/pulls').reply(200)
 }
 
 function getDefaultContext () {
@@ -153,8 +170,12 @@ module.exports = {
   nockInstallation: nockInstallation,
   nockExistingBranch: nockExistingBranch,
   nockNonExistingBranch: nockNonExistingBranch,
-  nockBranchCreatedComment: nockBranchCreatedComment,
+  nockUpdateBranch: nockUpdateBranch,
+  nockCommitTreeSha: nockCommitTreeSha,
+  nockCommit: nockCommit,
+  nockCommentCreated: nockCommentCreated,
   nockCreateBranch: nockCreateBranch,
+  nockCreatePR: nockCreatePR,
   nockMarketplacePlan: nockMarketplacePlan,
   getDefaultContext: getDefaultContext,
   initNock: initNock,

@@ -9,6 +9,19 @@ async function handle (app, ctx, comment) {
   }
 }
 
+async function getBranchName (ctx, config, comment) {
+  if (Config.isExperimentalBranchNameArgument(config)) {
+    const commandArgument = Config.getChatOpsCommandArgument(comment)
+    if (commandArgument) {
+      return await github.getBranchName(ctx, config, commandArgument)
+    } else {
+      return await github.getBranchNameFromIssue(ctx, config)
+    }
+  } else {
+    return await github.getBranchNameFromIssue(ctx, config)
+  }
+}
+
 async function chatOpsCommandGiven (app, ctx, comment) {
   app.log('ChatOps command received')
   const config = await Config.load(ctx)
@@ -20,16 +33,11 @@ async function chatOpsCommandGiven (app, ctx, comment) {
     app.log(`Skipping branch creation for issue: ${context.getIssueTitle(ctx)}`)
     return
   }
-  let branchName
-  if (Config.isExperimentalBranchNameArgument(config)) {
-    const commandArgument = Config.getChatOpsCommandArgument(comment)
-    if (commandArgument) {
-      branchName = await github.getBranchName(ctx, config, commandArgument)
-    } else {
-      branchName = await github.getBranchNameFromIssue(ctx, config)
-    }
-  } else {
-    branchName = await github.getBranchNameFromIssue(ctx, config)
+  const branchName = await getBranchName(ctx, config, comment)
+  if (await github.branchExists(ctx, branchName)) {
+    app.log('Could not create branch as it already exists')
+    await github.addComment(ctx, config, 'Branch already exists')
+    return
   }
   await github.createIssueBranch(app, ctx, branchName, config)
   const shouldCreatePR = Config.shouldOpenPR(config)
