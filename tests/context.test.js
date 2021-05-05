@@ -16,7 +16,7 @@ test('get assignee', () => {
 
 test('get assignee from event', () => {
   const ctx = { payload: issueAssignedPayload }
-  ctx.payload.issue.assignees = [];
+  ctx.payload.issue.assignees = []
 
   expect(context.getAssignee(ctx)).toBe('robvanderleek')
 })
