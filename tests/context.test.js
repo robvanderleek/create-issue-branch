@@ -14,6 +14,13 @@ test('get assignee', () => {
   expect(context.getAssignee(ctx)).toBe('robvanderleek')
 })
 
+test('get assignee from event', () => {
+  const ctx = { payload: issueAssignedPayload }
+  ctx.payload.issue.assignees = [];
+
+  expect(context.getAssignee(ctx)).toBe('robvanderleek')
+})
+
 test('get sender', () => {
   const ctx = { payload: issueCommentCreatedPayload }
 

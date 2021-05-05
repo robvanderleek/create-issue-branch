@@ -5,14 +5,8 @@ const plans = require('./plans')
 
 async function createIssueBranch (app, ctx, branchName, config) {
   if (await hasValidSubscriptionForRepo(app, ctx)) {
-    if (await branchExists(ctx, branchName)) {
-      if (Config.isModeChatOps(config)) {
-        await addComment(ctx, config, 'Branch already exists')
-      }
-    } else {
-      const sha = await getSourceBranchHeadSha(ctx, config, app.log)
-      await createBranch(ctx, config, branchName, sha, app.log)
-    }
+    const sha = await getSourceBranchHeadSha(ctx, config, app.log)
+    await createBranch(ctx, config, branchName, sha, app.log)
   }
 }
 
@@ -275,6 +269,8 @@ async function createPR (app, ctx, config, username, branchName) {
 
 module.exports = {
   createIssueBranch: createIssueBranch,
+  addComment: addComment,
+  branchExists: branchExists,
   getIssueNumberFromBranchName: getIssueNumberFromBranchName,
   getIssueBranchConfig: getIssueBranchConfig,
   skipBranchCreationForIssue: skipBranchCreationForIssue,

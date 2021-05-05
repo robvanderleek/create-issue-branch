@@ -6,7 +6,7 @@ async function isProPlan (app, ctx) {
   try {
     const id = context.getRepoOwnerId(ctx)
     const login = context.getRepoOwnerLogin(ctx)
-    app.log(`Checking Marketplace for organization: ${login} ...`)
+    app.log(`Checking Marketplace for organization: https://github.com/${login} ...`)
     if (freeProSubscription(login)) {
       app.log('Found free Pro plan')
       return true

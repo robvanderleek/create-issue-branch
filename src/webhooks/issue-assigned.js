@@ -14,6 +14,10 @@ async function handle (app, ctx) {
     return
   }
   const branchName = await github.getBranchNameFromIssue(ctx, config)
+  if (await github.branchExists(ctx, branchName)) {
+    app.log('Could not create branch as it already exists')
+    return
+  }
   await github.createIssueBranch(app, ctx, branchName, config)
   const shouldCreatePR = Config.shouldOpenPR(config)
   if (shouldCreatePR) {

@@ -41,13 +41,19 @@ function getIssueLabels (ctx) {
 }
 
 function getAssignee (ctx) {
-  const assignee = ctx.payload.issue.assignee
-  if (assignee) {
-    return assignee.login
+  const { payload } = ctx
+  const { issue } = payload
+  if (issue.assignee) {
+    return issue.assignee.login
   }
-  const assignees = ctx.payload.issue.assignees
-  if (assignees) {
-    return assignees[0].login
+  if (issue.assignees && issue.assignees.length > 0) {
+    return issue.assignees[0].login
+  }
+  if (payload.assignee) {
+    return payload.assignee.login
+  }
+  if (payload.assignees && issue.assignees.length > 0) {
+    return payload.assignees[0].login
   }
 }
 
