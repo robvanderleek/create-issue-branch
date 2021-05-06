@@ -63,7 +63,7 @@ function pushMetric (log) {
     if (err) {
       log.error('Could not push metric to CloudWatch: ' + err)
     } else {
-      log.info('Pushed metric to CloudWatch')
+      log.debug('Pushed metric to CloudWatch')
     }
   })
 }
@@ -89,7 +89,12 @@ function trimStringToByteLength (str, length) {
 }
 
 function logMemoryUsage (app) {
-  app.log('Total memory: ' + Math.round(process.memoryUsage().rss / 1024 / 1024) + ' Mb')
+  const usage = Math.round(process.memoryUsage().rss / 1024 / 1024)
+  if (usage >= 150) {
+    app.log.info(`Total memory: ${usage} Mb`)
+  } else {
+    app.log.debug(`Total memory: ${usage} Mb`)
+  }
 }
 
 module.exports = {

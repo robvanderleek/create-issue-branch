@@ -23,7 +23,7 @@ async function hasValidSubscriptionForRepo (app, ctx) {
         return true
       } else {
         await addBuyProComment(ctx)
-        app.log('Added comment to buy Pro plan')
+        app.log('Added comment to buy Pro 🙏 plan')
         return false
       }
     } else {
@@ -170,11 +170,11 @@ async function getSourceBranchHeadSha (ctx, config, log) {
   const sourceBranch = getSourceBranch(ctx, config)
   let result = await getBranchHeadSha(ctx, sourceBranch)
   if (result) {
-    log(`Source branch: ${sourceBranch}`)
+    log.debug(`Source branch: ${sourceBranch}`)
   }
   if (!result) {
     const defaultBranch = context.getDefaultBranch(ctx)
-    log(`Source branch: ${defaultBranch}`)
+    log.debug(`Source branch: ${defaultBranch}`)
     result = await getBranchHeadSha(ctx, defaultBranch)
   }
   return result
@@ -227,7 +227,9 @@ async function createBranch (ctx, config, branchName, sha, log) {
       owner: owner, repo: repo, ref: `refs/heads/${branchName}`, sha: sha
     })
     log(`Branch created: ${branchName}`)
-    process.stdout.write(`::set-output name=branchName::${branchName}\n`)
+    if (utils.isRunningInGitHubActions()) {
+      process.stdout.write(`::set-output name=branchName::${branchName}\n`)
+    }
     const commentMessage = utils.interpolate(Config.getCommentMessage(config),
       { ...ctx.payload, branchName: branchName })
     await addComment(ctx, config, commentMessage)

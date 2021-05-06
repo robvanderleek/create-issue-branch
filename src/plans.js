@@ -8,7 +8,7 @@ async function isProPlan (app, ctx) {
     const login = context.getRepoOwnerLogin(ctx)
     app.log(`Checking Marketplace for organization: https://github.com/${login} ...`)
     if (freeProSubscription(login)) {
-      app.log('Found free Pro plan')
+      app.log('Found free Pro ❤️ plan')
       return true
     }
     const res = await ctx.octokit.apps.getSubscriptionPlanForAccount({ account_id: id })
