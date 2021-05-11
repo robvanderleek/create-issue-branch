@@ -46,7 +46,6 @@ async function addPlansRoute (app, getRouter) {
     for (const plan of plans) {
       const accounts = (await app.state.octokit.apps.listAccountsForPlan({ per_page: 100, plan_id: plan.id })).data
       if (plan.price_model === 'FLAT_RATE') {
-        console.log(accounts)
         app.log(`Subscriptions for plan: ${plan.name}`)
         for (const account of accounts) {
           const purchase = account.marketplace_purchase
