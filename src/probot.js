@@ -50,8 +50,15 @@ async function addPlansRoute (app, getRouter) {
         app.log(`Subscriptions for plan: ${plan.name}`)
         for (const account of accounts) {
           const purchase = account.marketplace_purchase
-          app.log(
-            `Org: ${account.login}, free trial: ${purchase.on_free_trial}, billing_cycle: ${purchase.billing_cycle}`)
+          const pendingChange = account.marketplace_pending_change
+          if (pendingChange) {
+            app.log(
+              `Org: ${account.login}, free trial: ${purchase.on_free_trial}, billing_cycle: ${purchase.billing_cycle}, ` +
+              `pending change to plan: ${pendingChange.plan.name} on: ${pendingChange.effective_date}`)
+          } else {
+            app.log(
+              `Org: ${account.login}, free trial: ${purchase.on_free_trial}, billing_cycle: ${purchase.billing_cycle}`)
+          }
         }
       }
       result[plan.name] = accounts.length
