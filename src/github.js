@@ -19,7 +19,7 @@ async function hasValidSubscriptionForRepo (app, ctx) {
     if (!isProPan) {
       if (await plans.isActivatedBeforeProPlanIntroduction(app, ctx)) {
         await addUpgradeToProComment(ctx)
-        app.log('Added comment to upgrade Free plan')
+        app.log('Added comment 📝 to upgrade Free plan')
         return true
       } else {
         await addBuyProComment(ctx)
