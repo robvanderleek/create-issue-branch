@@ -30,6 +30,8 @@ async function hasValidSubscriptionForRepo (app, ctx) {
       return true
     }
   } else {
+    const login = context.getRepoOwnerLogin(ctx)
+    app.log(`Creating branch in public repository from user/org: https://github.com/${login} ...`)
     return true
   }
 }

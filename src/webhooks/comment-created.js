@@ -23,7 +23,7 @@ async function getBranchName (ctx, config, comment) {
 }
 
 async function chatOpsCommandGiven (app, ctx, comment) {
-  app.log('ChatOps command received')
+  app.log.debug('ChatOps command received')
   const config = await Config.load(ctx)
   if (!Config.isModeChatOps(config)) {
     app.log('Received ChatOps command but current mode is not `chatops`, exiting')

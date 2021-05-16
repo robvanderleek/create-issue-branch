@@ -4,7 +4,7 @@ const github = require('./../github')
 const utils = require('./../utils')
 
 async function handle (app, ctx) {
-  app.log('Issue was assigned')
+  app.log.debug('Issue was assigned')
   const config = await Config.load(ctx)
   if (!Config.isModeAuto(config)) {
     return

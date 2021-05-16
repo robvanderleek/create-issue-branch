@@ -42,10 +42,10 @@ async function isActivatedBeforeProPlanIntroduction (app, ctx) {
     datestring = purchase.updated_at
   } catch (error) {
     const login = context.getRepoOwnerLogin(ctx)
-    app.log('Checking App installation date...')
+    app.log.debug('Checking App installation date...')
     const github = await app.auth()
     const installation = await github.apps.getUserInstallation({ username: login })
-    app.log(`Found installation date: ${installation.data.created_at}`)
+    app.log.debug(`Found installation date: ${installation.data.created_at}`)
     datestring = installation.data.created_at
   }
   const installationDate = new Date(datestring)
