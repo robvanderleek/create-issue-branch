@@ -32,6 +32,9 @@ jobs:
         git add dist/index.js
         git commit -m "Build by GitHub Actions" || true
       if: job.status == 'success'
+    - uses: actions/checkout@v1
+      with:
+        clean: false
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
