@@ -64,8 +64,3 @@ test('get comment message', () => {
   // eslint-disable-next-line no-template-curly-in-string
   expect(Config.getCommentMessage({ commentMessage: 'hello ${branchName}' })).toBe('hello ${branchName}')
 })
-
-test('get default branch', () => {
-  expect(Config.getDefaultBranch({})).toBeUndefined()
-  expect(Config.getDefaultBranch({ defaultBranch: 'main' })).toBe('main')
-})

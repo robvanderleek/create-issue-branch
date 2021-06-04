@@ -117,14 +117,6 @@ function getCommentMessage (config) {
   }
 }
 
-function getDefaultBranch (config) {
-  if (config && config.defaultBranch) {
-    return config.defaultBranch
-  } else {
-    return undefined
-  }
-}
-
 module.exports = {
   load: load,
   isModeAuto: isModeAuto,
@@ -137,6 +129,5 @@ module.exports = {
   getGitSafeReplacementChar: getGitSafeReplacementChar,
   shouldOpenPR: shouldOpenPR,
   shouldOpenDraftPR: shouldOpenDraftPR,
-  getCommentMessage: getCommentMessage,
-  getDefaultBranch: getDefaultBranch
+  getCommentMessage: getCommentMessage
 }
