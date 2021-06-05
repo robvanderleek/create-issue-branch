@@ -185,7 +185,7 @@ test('if configured source branch does not exist use default branch', async () =
   expect(sourceSha).toBe('12345678')
 })
 
-test('use configures default branch', async () => {
+test('use configured default branch', async () => {
   helpers.nockNonExistingBranch('issue-1-Test_issue')
   helpers.nockExistingBranch('dev', 'abcdef01')
   helpers.nockExistingBranch('master', '12345678')
