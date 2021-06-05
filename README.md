@@ -26,7 +26,7 @@ Built in response to this feature request issue: https://github.com/isaacs/githu
 
 There are two options to run this app as part of your development workflow:
 
-1. [Install](https://github.com/apps/create-issue-branch) it as an *app* for your organization/account/repository
+1. [Install](https://github.com/marketplace/create-issue-branch) it as an *app* for your organization/account/repository
 2. Run it as an *action* in your GitHub action YAML configuration
 
 Option 1 is easiest if you're developing on GitHub.com, option 2 gives you full control how and when the app runs in your development workflow.
@@ -35,7 +35,7 @@ The App is free to use for personal, and public organization repositories. There
 
 ## Option 1. Install the GitHub App
 
-You can install the app for your organization/account/repository from [*this page*](https://github.com/apps/create-issue-branch)
+You can install the app for your organization/account/repository from [*the GitHub Marketplace*](https://github.com/marketplace/create-issue-branch)
 
 ## Option 2. Configure GitHub Action
 
@@ -225,10 +225,17 @@ is true for your app configuration:
 - Your branch name contains the string `issue-` (case insensitive) followed by the 
   issue number, for example: `Project-A-Issue-123-Rewrite_in_Clojure`
 
+## Default source branch
+
+You can override the source branch (by default the ["default branch"](https://docs.github.com/en/github/administering-a-repository/managing-branches-in-your-repository/changing-the-default-branch) of the repository is used) in the configuration like this:
+
+```yaml
+defaultBranch: 'dev'
+```
+
 ## Source branch based on issue label
 
-You can override the source branch (by default the "default branch" of the
-repository is used) based on the issue label.
+You can override the source branch based on the issue label.
 
 For example, if you want branches for issues with the `enhancement` label to
 have the `dev` branch as a source, and branches for issues with the `bug`
@@ -260,8 +267,8 @@ In the configuration above issues with the labels `enhancement` _and_ `docs` wil
 When issues have multiple labels the branch of the first match (based on the 
 order in the configuration YAML will be used).
 
-If a configured branch does not exist in the repository the "default branch"
-is used.
+If a configured branch does not exist in the repository the [default
+branch](#default-source-branch) is used.
 
 ## Branch name prefix based on issue label
 

@@ -185,6 +185,26 @@ test('if configured source branch does not exist use default branch', async () =
   expect(sourceSha).toBe('12345678')
 })
 
+test('use configured default branch', async () => {
+  helpers.nockNonExistingBranch('issue-1-Test_issue')
+  helpers.nockExistingBranch('dev', 'abcdef01')
+  helpers.nockExistingBranch('master', '12345678')
+  const ymlConfig = 'silent: true\ndefaultBranch: dev'
+  helpers.nockConfig(ymlConfig)
+  let sourceSha = ''
+
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/git/refs', (body) => {
+      sourceSha = body.sha
+      return true
+    })
+    .reply(200)
+
+  await probot.receive({ name: 'issues', payload: helpers.issueAssignedWithLabelsPayload('enhancement') })
+
+  expect(sourceSha).toBe('abcdef01')
+})
+
 test('if multiple issue labels match configuration use first match', async () => {
   helpers.nockNonExistingBranch('issue-1-Test_issue')
   helpers.nockExistingBranch('master', '12345678')

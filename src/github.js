@@ -164,7 +164,7 @@ function getSourceBranch (ctx, config) {
   if (branchConfig && branchConfig.name) {
     return branchConfig.name
   } else {
-    return context.getDefaultBranch(ctx)
+    return getDefaultBranch(ctx, config)
   }
 }
 
@@ -175,11 +175,15 @@ async function getSourceBranchHeadSha (ctx, config, log) {
     log.debug(`Source branch: ${sourceBranch}`)
   }
   if (!result) {
-    const defaultBranch = context.getDefaultBranch(ctx)
+    const defaultBranch = getDefaultBranch(ctx, config)
     log.debug(`Source branch: ${defaultBranch}`)
     result = await getBranchHeadSha(ctx, defaultBranch)
   }
   return result
+}
+
+function getDefaultBranch (ctx, config) {
+  return Config.getDefaultBranch(config) || context.getDefaultBranch(ctx)
 }
 
 async function getBranchHeadSha (ctx, branch) {
