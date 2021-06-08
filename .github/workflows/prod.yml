@@ -9,7 +9,7 @@ jobs:
     env:
       CI: true
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
       with:
         node-version: 14.x
@@ -32,7 +32,8 @@ jobs:
         git add dist/index.js
         git commit -m "Build by GitHub Actions" || true
       if: job.status == 'success'
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
+      run: git pull --no-rebase
       with:
         clean: false
     - name: Push changes
