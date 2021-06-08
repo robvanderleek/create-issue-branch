@@ -7,7 +7,7 @@ jobs:
   log:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - uses: gr2m/app-stats-action@v1.x
         id: stats
         with:
@@ -21,9 +21,8 @@ jobs:
           git add static/stats.json
           git commit -m "Build by GitHub Actions" || true
         if: job.status == 'success'
-      - uses: actions/checkout@v1
-        with:
-          clean: false
+      - name: Update repo
+        run: git pull --no-rebase
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:

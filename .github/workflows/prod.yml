@@ -33,7 +33,6 @@ jobs:
         git commit -m "Build by GitHub Actions" || true
       if: job.status == 'success'
     - uses: actions/checkout@v2
-      run: git pull --no-rebase
       with:
         clean: false
     - name: Push changes
