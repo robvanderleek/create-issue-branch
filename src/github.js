@@ -97,7 +97,7 @@ function getIssueBranchPrefix (ctx, config) {
 
 function getIssueBranchConfig (ctx, config) {
   if (config.branches) {
-    const issueLabels = context.getIssueLabels(ctx)
+    const issueLabels = context.getIssueLabelsForMatching(ctx)
     for (const branchConfig of config.branches) {
       const labels = branchConfig.label instanceof Array ? branchConfig.label : [branchConfig.label]
       if (allLabelsMatchIssueLabels(labels, issueLabels)) {
@@ -266,13 +266,33 @@ async function createPR (app, ctx, config, username, branchName) {
     const emptyCommitSha = await createCommit(ctx, commitSha, treeSha, username,
       `Create ${draftText}PR for #${issueNumber}`)
     await updateReference(ctx, branchName, emptyCommitSha)
-    await ctx.octokit.pulls.create(
+    const { data: pr } = await ctx.octokit.pulls.create(
       { owner, repo, head: branchName, base, title, body: `closes #${issueNumber}`, draft: draft })
-    app.log(`Pull request created for branch ${branchName}`)
+    app.log(`${draft ? 'Created draft' : 'Created'} pull request ${pr.number} for branch ${branchName}`)
+    if (Config.copyIssueLabelsToPR(config)) {
+      await copyIssueLabelsToPr(ctx, pr)
+    }
+    if (Config.copyIssueAssigneeToPR(config)) {
+      await copyIssueAssigneeToPr(ctx, pr)
+    }
   } catch (e) {
     app.log(`Could not create draft PR (${e.message})`)
     await addComment(ctx, config, `Could not create ${draftText}PR (${e.message})`)
   }
+}
+
+async function copyIssueLabelsToPr (ctx, pr) {
+  const owner = context.getRepoOwnerLogin(ctx)
+  const repo = context.getRepoName(ctx)
+  const labels = context.getIssueLabels(ctx)
+  await ctx.octokit.issues.addLabels({ owner, repo, issue_number: pr.number, labels })
+}
+
+async function copyIssueAssigneeToPr (ctx, pr) {
+  const owner = context.getRepoOwnerLogin(ctx)
+  const repo = context.getRepoName(ctx)
+  const assignee = context.getAssignee(ctx)
+  await ctx.octokit.issues.addAssignees({ owner, repo, issue_number: pr.number, assignees: [assignee] })
 }
 
 module.exports = {

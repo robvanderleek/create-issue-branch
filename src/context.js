@@ -10,10 +10,6 @@ function getRepoName (ctx) {
   return ctx.payload.repository.name
 }
 
-function getRepoUrl (ctx) {
-  return ctx.payload.repository.html_url
-}
-
 function getIssueNumber (ctx) {
   return ctx.payload.issue.number
 }
@@ -32,6 +28,11 @@ function isPrivateOrgRepo (ctx) {
 }
 
 function getIssueLabels (ctx) {
+  const labels = ctx.payload.issue.labels
+  return labels.map(l => ({ name: l.name }))
+}
+
+function getIssueLabelsForMatching (ctx) {
   const labels = ctx.payload.issue.labels.map(l => l.name)
   if (labels.length === 0) {
     return ['']
@@ -65,12 +66,12 @@ module.exports = {
   getRepoOwnerLogin: getRepoOwnerLogin,
   getRepoOwnerId: getRepoOwnerId,
   getRepoName: getRepoName,
-  getRepoUrl: getRepoUrl,
   isPrivateOrgRepo: isPrivateOrgRepo,
   getIssueNumber: getIssueNumber,
   getIssueTitle: getIssueTitle,
   getDefaultBranch: getDefaultBranch,
   getIssueLabels: getIssueLabels,
+  getIssueLabelsForMatching: getIssueLabelsForMatching,
   getAssignee: getAssignee,
   getSender: getSender
 }

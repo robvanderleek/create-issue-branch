@@ -81,7 +81,8 @@ see [this workflow](https://github.com/robvanderleek/robvanderleek.github.io/blo
 Uninstall the App by navigating to: `Settings > Applications > Installed GitHub Apps > Create Issue Branch > Configure`.
 At the bottom of that page there's a button to uninstall the Create Issue Branch app.
 
-You can also use [this link](https://github.com/settings/installations/7740930) to navigate to the configuration page mentioned above.
+You can also use [this link](https://github.com/settings/installations/7740930) to navigate to the configuration page
+mentioned above.
 
 # Usage
 
@@ -383,6 +384,16 @@ openPR: true
 Be aware that draft pull requests are not available in all repositories types, see
 the [GitHub documentation](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/about-pull-requests#draft-pull-requests)
 for details.
+
+### Copy labels and assignee from issue
+
+When the App opens a new (draft) Pull Request, it can also copy over the labels and assignee from the issue for you.
+You can enable this behaviour in the configuration:
+
+```yaml
+copyIssueLabelsToPR: true
+copyIssueAssigneeToPR: true
+```
 
 ## Change message in issue comments
 

@@ -236,6 +236,27 @@ test('open a pull request when a chatops command is given', async () => {
   await probot.receive({ name: 'issue_comment', payload: commentCreatedPayload })
 })
 
+test('open a pull request, copy labels and assignee from issue', async () => {
+  helpers.nockNonExistingBranch('issue-1-Test_issue')
+  helpers.nockExistingBranch('master', 12345678)
+  helpers.nockConfig(`
+    mode: chatops
+    openPR: true
+    silent: true
+    copyIssueLabelsToPR: true
+    copyIssueAssigneeToPR: true`)
+  helpers.nockCreateBranch()
+  helpers.nockExistingBranch('issue-1-Test_issue', 87654321)
+  helpers.nockCommitTreeSha(87654321, 12344321)
+  helpers.nockCommit()
+  helpers.nockUpdateBranch('issue-1-Test_issue')
+  helpers.nockCreatePR()
+  helpers.nockIssueLabels()
+  helpers.nockIssueAssignees()
+
+  await probot.receive({ name: 'issue_comment', payload: commentCreatedPayload })
+})
+
 test('do not open a pull request when the branch already exists', async () => {
   helpers.nockExistingBranch('issue-1-Test_issue')
   helpers.nockExistingBranch('master', 12345678)

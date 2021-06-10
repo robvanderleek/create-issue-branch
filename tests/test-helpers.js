@@ -103,7 +103,15 @@ function nockCreateBranch () {
 }
 
 function nockCreatePR () {
-  nock('https://api.github.com').post('/repos/robvanderleek/create-issue-branch/pulls').reply(200)
+  nock('https://api.github.com').post('/repos/robvanderleek/create-issue-branch/pulls').reply(200, { number: 123 })
+}
+
+function nockIssueLabels () {
+  nock('https://api.github.com').post('/repos/robvanderleek/create-issue-branch/issues/123/labels').reply(200)
+}
+
+function nockIssueAssignees () {
+  nock('https://api.github.com').post('/repos/robvanderleek/create-issue-branch/issues/123/assignees').reply(200)
 }
 
 function getDefaultContext () {
@@ -176,6 +184,8 @@ module.exports = {
   nockCommentCreated: nockCommentCreated,
   nockCreateBranch: nockCreateBranch,
   nockCreatePR: nockCreatePR,
+  nockIssueLabels: nockIssueLabels,
+  nockIssueAssignees: nockIssueAssignees,
   nockMarketplacePlan: nockMarketplacePlan,
   getDefaultContext: getDefaultContext,
   initNock: initNock,
