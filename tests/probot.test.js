@@ -341,6 +341,7 @@ test('Buy Pro message in comment for subscriptions activated after Pro plan intr
   if (utils.isRunningInGitHubActions()) { // Test fails in GitHub Actions due to application logic
     return
   }
+  helpers.nockNonExistingBranch('issue-1-Test_issue')
   helpers.nockEmptyConfig()
   const marketplaceFreePlanCopy = JSON.parse(JSON.stringify(marketplaceFreePlan))
   marketplaceFreePlanCopy.marketplace_purchase.updated_at = '2021-04-08T19:51:53Z'
