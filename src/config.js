@@ -86,6 +86,14 @@ function shouldOpenPR (config) {
   return ('openPR' in config && config.openPR === true) || shouldOpenDraftPR(config)
 }
 
+function copyIssueLabelsToPR (config) {
+  return 'copyIssueLabelsToPR' in config && config.copyIssueLabelsToPR === true
+}
+
+function copyIssueAssigneeToPR (config) {
+  return 'copyIssueAssigneeToPR' in config && config.copyIssueAssigneeToPR === true
+}
+
 function isChatOpsCommand (s) {
   if (s) {
     const parts = s.trim().toLowerCase().split(/\s/)
@@ -138,5 +146,7 @@ module.exports = {
   shouldOpenPR: shouldOpenPR,
   shouldOpenDraftPR: shouldOpenDraftPR,
   getCommentMessage: getCommentMessage,
-  getDefaultBranch: getDefaultBranch
+  getDefaultBranch: getDefaultBranch,
+  copyIssueLabelsToPR: copyIssueLabelsToPR,
+  copyIssueAssigneeToPR: copyIssueAssigneeToPR
 }
