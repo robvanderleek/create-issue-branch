@@ -5926,10 +5926,10 @@ widest-line@^3.1.0:
   dependencies:
     string-width "^4.0.0"
 
-wildcard-match@^5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/wildcard-match/-/wildcard-match-5.1.0.tgz#cb9d0c54a8bde298e534054146f3577f9e7b3c97"
-  integrity sha512-Q02fSwOl4xPEyLLMs3TiAOBD735ELrdiczcCnvYAn5VRDAycmzYzc69BmWI1MGONfngCSq+5mgIaYMoGfICqQg==
+wildcard-match@^5.1.1:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/wildcard-match/-/wildcard-match-5.1.1.tgz#1b9e1476a0ab4408f3da205c1c41ea5ae21dbf75"
+  integrity sha512-gEhyikE35x7ApjBSXfKUMQdKsLuNrgW1DiolVgTcxEnj4JHX2z4k54GBtR4p1mKLFmuQUoTH3QoOXR+9udsmLw==
 
 word-wrap@^1.2.3, word-wrap@~1.2.3:
   version "1.2.3"
