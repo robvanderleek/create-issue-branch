@@ -13,7 +13,10 @@
 A GitHub App/Action that automates the creation of issue branches (either automatically after assigning an issue or
 after commenting on an issue with a ChatOps command: `/create-issue-branch` or `/cib`).
 
-Built in response to this feature request issue: https://github.com/isaacs/github/issues/1125
+Built in response to this feature request issue:
+https://github.com/isaacs/github/issues/1125 (that issue is now closed and the
+discussion [continuous
+here](https://github.com/github/feedback/discussions/3441))
 
 * [Installation](#installation)
 * [Usage](#usage)
