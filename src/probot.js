@@ -34,7 +34,7 @@ module.exports = ({ app, getRouter }) => {
 function addStatsRoute (getRouter) {
   const router = getRouter('/probot')
   router.get('/stats', (req, res) => {
-    res.redirect('https://raw.githubusercontent.com/robvanderleek/create-issue-branch/master/static/stats.json')
+    res.redirect('https://raw.githubusercontent.com/robvanderleek/create-issue-branch/main/static/stats.json')
   })
 }
 

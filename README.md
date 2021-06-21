@@ -2,10 +2,10 @@
 
 ![Logo](static/logo.png)
 
-[![BCH compliance](https://bettercodehub.com/edge/badge/robvanderleek/create-issue-branch?branch=master)](https://bettercodehub.com/)
+[![BCH compliance](https://bettercodehub.com/edge/badge/robvanderleek/create-issue-branch?branch=main)](https://bettercodehub.com/)
 [![Build Status](https://github.com/robvanderleek/create-issue-branch/workflows/Prod/badge.svg)](https://github.com/robvanderleek/create-issue-branch/actions)
 [![Build Status](https://github.com/robvanderleek/create-issue-branch/workflows/Create%20Release/badge.svg)](https://github.com/robvanderleek/create-issue-branch/actions)
-[![codecov](https://codecov.io/gh/robvanderleek/create-issue-branch/branch/master/graph/badge.svg?token=WBKIPs2WEc)](https://codecov.io/gh/robvanderleek/create-issue-branch)
+[![codecov](https://codecov.io/gh/robvanderleek/create-issue-branch/branch/main/graph/badge.svg?token=WBKIPs2WEc)](https://codecov.io/gh/robvanderleek/create-issue-branch)
 [![Dependabot](https://badgen.net/badge/Dependabot/enabled/green?icon=dependabot)](https://dependabot.com/)
 [![Sentry](https://img.shields.io/badge/sentry-enabled-green)](https://sentry.io)
 [![Heroku](https://pyheroku-badge.herokuapp.com/?app=create-issue-branch)](https://heroku.com)
@@ -63,14 +63,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create Issue Branch
-        uses: robvanderleek/create-issue-branch@master
+        uses: robvanderleek/create-issue-branch@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 *The latest GitHub Marketplace release is not always up-to-date (due
 to [this](https://github.community/t/automatically-publish-action-to-marketplace-on-release/17978)). To have access to
-all features please use version `@master`*
+all features please use version `@main`*
 
 ### GitHub Action output variable
 
@@ -142,7 +142,7 @@ create new issues, only one stays open.
 Organization/user wide configuration prevents a configuration in every individual repo and is supported by putting the
 YAML file `.github/issue-branch.yml`
 in a repository called `.github`. So, if your organization/username is `acme`, the full path becomes:
-`https://github.com/acme/.github/blob/master/.github/issue-branch.yml`.
+`https://github.com/acme/.github/blob/main/.github/issue-branch.yml`.
 
 ## Mode: auto or chatops
 

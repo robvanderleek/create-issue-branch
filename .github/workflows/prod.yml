@@ -2,7 +2,7 @@ name: Prod
 on: 
   push:
     branches:
-      - master
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,11 +21,11 @@ jobs:
     - run: yarn dist
     - run: yarn run coverage
     - run: bash <(curl -s https://codecov.io/bash) -t ${{secrets.CODECOV_SECRET_TOKEN }}
-    - name: Deploy master to Heroku production environment
+    - name: Deploy main to Heroku production environment
       env:
         HEROKU_AUTH_TOKEN: ${{ secrets.HEROKU_AUTH_TOKEN }}
         HEROKU_PROD_ENV_NAME: ${{ secrets.HEROKU_PROD_ENV_NAME }}
-      run: git push https://heroku:$HEROKU_AUTH_TOKEN@$HEROKU_PROD_ENV_NAME origin/master:master --force
+      run: git push https://heroku:$HEROKU_AUTH_TOKEN@$HEROKU_PROD_ENV_NAME origin/main:master --force
       if: job.status == 'success'
     - name: Commit GitHub Action distribution
       run: |
