@@ -1,12 +1,13 @@
 dev:
-* create-issue-branch/create-issue-branch-dev
-  Installed as GitHub App (ChatOps mode, openDraftPR: true)
+* facio-ergo-sum/create-issue-branch-dev-app
 
 staging:
-github.com/create-issue-branch-staging: Installed as GitHub App (ChatOps mode)
+* robvanderleek/create-issue-branch-staging: Installed as GitHub App (ChatOps mode)
 
 prod:
-github.com/robvanderleek.github.io: Installed as GitHub Action (auto mode)
-github.com/JLifx: Installed as GitHub App (ChatOps mode)
-github.com/create-issue-branch: Installed as GitHub App (auto mode)
-github.com/capture-website-api: Installed as GitHub App (ChatOps mode)
+* facio-ergo-sum/create-issue-branch-prod-action
+
+* robvanderleek/robvanderleek.github.io: Installed as GitHub Action (auto mode)
+* robvanderleek/JLifx: Installed as GitHub App
+* robvanderleek/create-issue-branch: Installed as GitHub App (auto mode)
+* robvanderleek/capture-website-api: Installed as GitHub App (ChatOps mode)
