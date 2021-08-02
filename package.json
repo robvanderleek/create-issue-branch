@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@sentry/node": "^6.5.1",
-    "aws-sdk": "^2.943.0",
+    "aws-sdk": "^2.958.0",
     "bunyan-sentry-stream": "^1.2.1",
     "probot": "^10.17.3",
     "probot-actions-adapter": "^2.0.0",
