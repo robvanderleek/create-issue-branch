@@ -1333,10 +1333,10 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@vercel/ncc@^0.28":
-  version "0.28.6"
-  resolved "https://registry.yarnpkg.com/@vercel/ncc/-/ncc-0.28.6.tgz#073c0ce8e0269210c0a9f180fb0bf949eecc20e0"
-  integrity sha512-t4BoSSuyK8BZaUE0gV18V6bkFs4st7baumtFGa50dv1tMu2GDBEBF8sUZaKBdKiL6DzJ2D2+XVCwYWWDcQOYdQ==
+"@vercel/ncc@^0.29":
+  version "0.29.1"
+  resolved "https://registry.yarnpkg.com/@vercel/ncc/-/ncc-0.29.1.tgz#d62b1b9508a2bc7a822791ff6a6eb3e08a2cfdd7"
+  integrity sha512-92d2AApJtkpampMqKgfqWbYkuFvqRFs8kPkKLTbesSB9RVwWfiI3i6mgBxtZgMV9iRuLPVZ+OBNocKHXZSRj6Q==
 
 abab@^2.0.3, abab@^2.0.5:
   version "2.0.5"
@@ -4248,10 +4248,10 @@ neo-async@^2.6.0:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
-nock@^13.1.0:
-  version "13.1.0"
-  resolved "https://registry.yarnpkg.com/nock/-/nock-13.1.0.tgz#41c8ce8b35ab7d618c4cbf40de1d5bce319979ba"
-  integrity sha512-3N3DUY8XYrxxzWazQ+nSBpiaJ3q6gcpNh4gXovC/QBxrsvNp4tq+wsLHF6mJ3nrn3lPLn7KCJqKxy/9aD+0fdw==
+nock@^13.1.1:
+  version "13.1.1"
+  resolved "https://registry.yarnpkg.com/nock/-/nock-13.1.1.tgz#3c830129d4560957f59b6f480a41ddbaf9cf57af"
+  integrity sha512-YKTR9MjfK3kS9/l4nuTxyYm30cgOExRHzkLNhL8nhEUyU4f8Za/dRxOqjhVT1vGs0svWo3dDnJTUX1qxYeWy5w==
   dependencies:
     debug "^4.1.0"
     json-stringify-safe "^5.0.1"
@@ -4594,9 +4594,9 @@ path-key@^3.0.0, path-key@^3.1.0:
   integrity sha512-ojmeN0qd+y0jszEtoY48r0Peq5dwMEkIlCOu6Q5f41lfkswXuKtYrhgoTpLnyIcHm24Uhqx+5Tqm2InSwLhE6Q==
 
 path-parse@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/path-parse/-/path-parse-1.0.6.tgz#d62dbb5679405d72c4737ec58600e9ddcf06d24c"
-  integrity sha512-GSmOT2EbHrINBf9SR7CDELwlJ8AENk3Qn7OikK4nFYAu3Ote2+JYNVvkpAEQm3/TLNEJFD/xZJjzyxg3KBWOzw==
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/path-parse/-/path-parse-1.0.7.tgz#fbc114b60ca42b30d9daf5858e4bd68bbedb6735"
+  integrity sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==
 
 path-to-regexp@0.1.7:
   version "0.1.7"
