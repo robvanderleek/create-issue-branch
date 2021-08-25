@@ -70,7 +70,9 @@ test('get default branch', () => {
   expect(Config.getDefaultBranch({ defaultBranch: 'main' })).toBe('main')
 })
 
-test('copy issue labels and assignee to PR', () => {
+test('copy issue description, labels and assignee to PR', () => {
+  expect(Config.copyIssueDescriptionToPR({})).toBeFalsy()
+  expect(Config.copyIssueDescriptionToPR({ copyIssueDescriptionToPR: true })).toBeTruthy()
   expect(Config.copyIssueLabelsToPR({})).toBeFalsy()
   expect(Config.copyIssueLabelsToPR({ copyIssueLabelsToPR: true })).toBeTruthy()
   expect(Config.copyIssueAssigneeToPR({})).toBeFalsy()

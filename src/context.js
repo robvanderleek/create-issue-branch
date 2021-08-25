@@ -14,6 +14,10 @@ function getIssueNumber (ctx) {
   return ctx.payload.issue.number
 }
 
+function getIssueDescription (ctx) {
+  return ctx.payload.issue.body
+}
+
 function getIssueTitle (ctx) {
   return ctx.payload.issue.title
 }
@@ -67,6 +71,7 @@ module.exports = {
   getRepoOwnerId: getRepoOwnerId,
   getRepoName: getRepoName,
   isPrivateOrgRepo: isPrivateOrgRepo,
+  getIssueDescription: getIssueDescription,
   getIssueNumber: getIssueNumber,
   getIssueTitle: getIssueTitle,
   getDefaultBranch: getDefaultBranch,

@@ -1,5 +1,6 @@
 const context = require('../src/context')
 const issueAssignedPayload = require('./test-fixtures/issues.assigned.json')
+const issueOpenedPayload = require('./test-fixtures/issues.opened.json')
 const issueCommentCreatedPayload = require('./test-fixtures/issue_comment.created.json')
 
 test('get owner', () => {
@@ -38,4 +39,10 @@ test('is private Org repo', () => {
   payloadCopy.repository.owner.type = 'Organization'
 
   expect(context.isPrivateOrgRepo({ payload: payloadCopy })).toBeTruthy()
+})
+
+test('get Issue description', () => {
+  const ctx = { payload: issueOpenedPayload }
+
+  expect(context.getIssueDescription(ctx)).toBe('/cib')
 })
