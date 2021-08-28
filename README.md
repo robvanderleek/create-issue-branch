@@ -10,8 +10,9 @@
 [![Sentry](https://img.shields.io/badge/sentry-enabled-green)](https://sentry.io)
 [![Heroku](https://pyheroku-badge.herokuapp.com/?app=create-issue-branch)](https://heroku.com)
 
-A GitHub App/Action that automates the creation of issue branches (either automatically after assigning an issue or
-after commenting on an issue with a ChatOps command: `/create-issue-branch` or `/cib`).
+A GitHub App/Action that automates the creation of issue branches (either
+automatically after assigning an issue or after commenting on an issue with a
+ChatOps command: `/create-issue-branch` or `/cib`).
 
 Built in response to this feature request issue:
 https://github.com/isaacs/github/issues/1125 (that issue is now closed and the
