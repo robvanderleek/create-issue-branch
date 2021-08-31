@@ -191,6 +191,27 @@ test('create (draft) PR', async () => {
   expect(capturedCommitMessage).toBe('Create draft PR for #1')
 })
 
+test('copy Issue description into PR', async () => {
+  const createPR = jest.fn()
+  const createCommit = () => ({ data: { sha: 'abcd1234' } })
+  const ctx = helpers.getDefaultContext()
+  ctx.octokit.pulls.create = createPR
+  ctx.octokit.git.createCommit = createCommit
+  ctx.payload.issue.body = 'This is the description'
+
+  await github.createPR({ log: () => { } }, ctx, { copyIssueDescriptionToPR: true, silent: false }, 'robvanderleek',
+    'issue-1')
+  expect(createPR).toHaveBeenCalledWith({
+    owner: 'robvanderleek',
+    repo: 'create-issue-branch',
+    draft: false,
+    base: 'master',
+    head: 'issue-1',
+    body: 'This is the description\ncloses #1',
+    title: 'Hello world'
+  })
+})
+
 test('use correct source branch', async () => {
   const createPR = jest.fn()
   const ctx = helpers.getDefaultContext()
