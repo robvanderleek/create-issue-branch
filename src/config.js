@@ -86,6 +86,10 @@ function shouldOpenPR (config) {
   return ('openPR' in config && config.openPR === true) || shouldOpenDraftPR(config)
 }
 
+function copyIssueDescriptionToPR (config) {
+  return 'copyIssueDescriptionToPR' in config && config.copyIssueDescriptionToPR === true
+}
+
 function copyIssueLabelsToPR (config) {
   return 'copyIssueLabelsToPR' in config && config.copyIssueLabelsToPR === true
 }
@@ -147,6 +151,7 @@ module.exports = {
   shouldOpenDraftPR: shouldOpenDraftPR,
   getCommentMessage: getCommentMessage,
   getDefaultBranch: getDefaultBranch,
+  copyIssueDescriptionToPR: copyIssueDescriptionToPR,
   copyIssueLabelsToPR: copyIssueLabelsToPR,
   copyIssueAssigneeToPR: copyIssueAssigneeToPR
 }

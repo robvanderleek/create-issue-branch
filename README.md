@@ -10,13 +10,13 @@
 [![Sentry](https://img.shields.io/badge/sentry-enabled-green)](https://sentry.io)
 [![Heroku](https://pyheroku-badge.herokuapp.com/?app=create-issue-branch)](https://heroku.com)
 
-A GitHub App/Action that automates the creation of issue branches (either automatically after assigning an issue or
-after commenting on an issue with a ChatOps command: `/create-issue-branch` or `/cib`).
+A GitHub App/Action that automates the creation of issue branches (either
+automatically after assigning an issue or after commenting on an issue with a
+ChatOps command: `/create-issue-branch` or `/cib`).
 
 Built in response to this feature request issue:
 https://github.com/isaacs/github/issues/1125 (that issue is now closed and the
-discussion [continuous
-here](https://github.com/github/feedback/discussions/3441))
+discussion [continuous here](https://github.com/github/feedback/discussions/3441))
 
 * [Installation](#installation)
 * [Usage](#usage)
@@ -388,12 +388,13 @@ Be aware that draft pull requests are not available in all repositories types, s
 the [GitHub documentation](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/about-pull-requests#draft-pull-requests)
 for details.
 
-### Copy labels and assignee from issue
+### Copy description, labels and assignee from issue
 
-When the App opens a new (draft) Pull Request, it can also copy over the labels and assignee from the issue for you.
-You can enable this behaviour in the configuration:
+When the App opens a new (draft) Pull Request, it can also copy over the description, labels and assignee from the issue
+for you. You can enable this behaviour in the configuration:
 
 ```yaml
+copyIssueDescriptionToPR: true
 copyIssueLabelsToPR: true
 copyIssueAssigneeToPR: true
 ```
