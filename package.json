@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@sentry/node": "^6.11.0",
-    "aws-sdk": "^2.968.0",
+    "aws-sdk": "^2.978.0",
     "bunyan-sentry-stream": "^1.2.1",
     "probot": "^10.17.3",
     "probot-actions-adapter": "^2.0.0",
@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "@vercel/ncc": "^0.29",
-    "jest": "^27.0.6",
+    "jest": "^27.1.0",
     "nock": "^13.1.1",
     "nodemon": "^2.0.12",
     "smee-client": "^1.2.2",
