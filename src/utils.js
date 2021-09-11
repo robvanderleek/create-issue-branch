@@ -54,7 +54,7 @@ function isProduction () {
 const analytics = Analytics({
   app: 'create-issue-branch', //
   plugins: [googleAnalytics({
-    trackingId: 'UA-UA-207350952-1'
+    trackingId: 'UA-207350952-1'
   })]
 })
 
