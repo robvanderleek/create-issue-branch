@@ -1,4 +1,5 @@
-const AWS = require('aws-sdk')
+const { Analytics } = require('analytics')
+const googleAnalytics = require('@analytics/google-analytics').default
 const wcMatch = require('wildcard-match')
 
 function makePrefixGitSafe (s) {
@@ -50,22 +51,18 @@ function isProduction () {
   return process.env.NODE_ENV === 'production'
 }
 
-function pushMetric (log) {
-  const namespace = process.env.CLOUDWATCH_NAMESPACE ? process.env.CLOUDWATCH_NAMESPACE : 'create_issue_branch_staging'
-  const metric = {
-    MetricData: [{
-      MetricName: 'branch_created', Unit: 'Count', Value: 1
-    }], //
-    Namespace: namespace
-  }
-  const cloudwatch = new AWS.CloudWatch()
-  cloudwatch.putMetricData(metric, (err) => {
-    if (err) {
-      log.error('Could not push metric to CloudWatch: ' + err)
-    } else {
-      log.debug('Pushed metric to CloudWatch')
-    }
-  })
+const analytics = Analytics({
+  app: 'create-issue-branch', //
+  plugins: [googleAnalytics({
+    trackingId: 'UA-207350952-1'
+  })]
+})
+
+function pushMetric (owner, log) {
+  analytics.identify(owner, () => {
+    analytics.track('branch_created', { category: 'Branches' }, () => log.info('Pushed metric to Google Analytics'))
+      .catch(err => log.error('Could not push metric to Google Analytics: ' + err))
+  }).catch(err => log.error('Could not identify user: ' + err))
 }
 
 function isRunningInGitHubActions () {
