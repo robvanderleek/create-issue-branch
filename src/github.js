@@ -240,7 +240,7 @@ async function createBranch (ctx, config, branchName, sha, log) {
       { ...ctx.payload, branchName: branchName })
     await addComment(ctx, config, commentMessage)
     if (utils.isProduction()) {
-      utils.pushMetric(log)
+      utils.pushMetric(owner, log)
     }
     return res
   } catch (e) {
