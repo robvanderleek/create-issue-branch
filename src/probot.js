@@ -5,7 +5,7 @@ const IssueAssigned = require('./webhooks/issue-assigned')
 const CommentCreated = require('./webhooks/comment-created')
 const MarketplacePurchase = require('./webhooks/marketplace-purchase')
 
-module.exports = ({ app, getRouter }) => {
+module.exports = (app, { getRouter }) => {
   app.log('App was loaded')
   addStatsRoute(getRouter)
   addPlansRoute(app, getRouter)
