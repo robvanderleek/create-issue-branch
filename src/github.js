@@ -269,14 +269,9 @@ async function createPR (app, ctx, config, username, branchName) {
     const { data: pr } = await ctx.octokit.pulls.create(
       { owner, repo, head: branchName, base, title, body: getPrBody(ctx, config), draft: draft })
     app.log(`${draft ? 'Created draft' : 'Created'} pull request ${pr.number} for branch ${branchName}`)
-    if (Config.copyIssueLabelsToPR(config)) {
-      await copyIssueLabelsToPr(ctx, pr)
-    }
-    if (Config.copyIssueAssigneeToPR(config)) {
-      await copyIssueAssigneeToPr(ctx, pr)
-    }
+    await copyIssueAttributesToPr(app, ctx, config, pr)
   } catch (e) {
-    app.log(`Could not create draft PR (${e.message})`)
+    app.log(`Could not create ${draftText}PR (${e.message})`)
     await addComment(ctx, config, `Could not create ${draftText}PR (${e.message})`)
   }
 }
@@ -288,6 +283,20 @@ function getPrBody (ctx, config) {
     return `${issueDescription}\ncloses #${issueNumber}`
   } else {
     return `closes #${issueNumber}`
+  }
+}
+
+async function copyIssueAttributesToPr (app, ctx, config, pr) {
+  try {
+    if (Config.copyIssueLabelsToPR(config)) {
+      await copyIssueLabelsToPr(ctx, pr)
+    }
+    if (Config.copyIssueAssigneeToPR(config)) {
+      await copyIssueAssigneeToPr(ctx, pr)
+    }
+  } catch (e) {
+    app.log(`Could not copy issue attributes (${e.message})`)
+    await addComment(ctx, config, `Could not copy issue attributes (${e.message})`)
   }
 }
 
