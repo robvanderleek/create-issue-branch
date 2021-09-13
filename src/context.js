@@ -33,7 +33,7 @@ function isPrivateOrgRepo (ctx) {
 
 function getIssueLabels (ctx) {
   const labels = ctx.payload.issue.labels
-  return labels.map(l => ({ name: l.name }))
+  return labels.map(l => l.name)
 }
 
 function getIssueLabelsForMatching (ctx) {
