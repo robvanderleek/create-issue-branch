@@ -304,7 +304,9 @@ async function copyIssueLabelsToPr (ctx, pr) {
   const owner = context.getRepoOwnerLogin(ctx)
   const repo = context.getRepoName(ctx)
   const labels = context.getIssueLabels(ctx)
-  await ctx.octokit.issues.addLabels({ owner, repo, issue_number: pr.number, labels })
+  if (labels.length > 0) {
+    await ctx.octokit.issues.addLabels({ owner, repo, issue_number: pr.number, labels })
+  }
 }
 
 async function copyIssueAssigneeToPr (ctx, pr) {
