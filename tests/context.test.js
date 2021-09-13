@@ -46,3 +46,9 @@ test('get Issue description', () => {
 
   expect(context.getIssueDescription(ctx)).toBe('/cib')
 })
+
+test('get Issue labels', () => {
+  const ctx = { payload: issueOpenedPayload }
+  ctx.payload.issue.labels = [{ name: 'enhancement' }, { name: 'pinned' }]
+  expect(context.getIssueLabels(ctx)).toStrictEqual(['enhancement', 'pinned'])
+})

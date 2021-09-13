@@ -67,13 +67,13 @@ function nockMarketplacePlan (plan) {
 
 function nockExistingBranch (name, sha) {
   nock('https://api.github.com')
-    .get(`/repos/robvanderleek/create-issue-branch/git/refs/heads%2F${encodeURIComponent(name)}`)
+    .get(`/repos/robvanderleek/create-issue-branch/git/ref/heads%2F${encodeURIComponent(name)}`)
     .reply(200, { object: { sha: sha } })
 }
 
 function nockNonExistingBranch (name) {
   nock('https://api.github.com')
-    .get(`/repos/robvanderleek/create-issue-branch/git/refs/heads%2F${encodeURIComponent(name)}`)
+    .get(`/repos/robvanderleek/create-issue-branch/git/ref/heads%2F${encodeURIComponent(name)}`)
     .reply(404)
 }
 
@@ -152,7 +152,7 @@ function initNock () {
 
 function initProbot () {
   const result = new Probot({
-    id: 1, //
+    appId: 1, //
     githubToken: 'test', // Disable throttling & retrying requests for easier testing
     Octokit: ProbotOctokit.defaults({
       retry: { enabled: false }, throttle: { enabled: false }
