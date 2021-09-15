@@ -7,8 +7,12 @@ const MarketplacePurchase = require('./webhooks/marketplace-purchase')
 
 module.exports = (app, { getRouter }) => {
   app.log('App was loaded')
-  addStatsRoute(getRouter)
-  addPlansRoute(app, getRouter)
+  if (getRouter) {
+    addStatsRoute(getRouter)
+    addPlansRoute(app, getRouter)
+  } else {
+    app.log.warn('Custom routes not available!')
+  }
   configureSentry(app)
   utils.logMemoryUsage(app)
   app.on('issues.assigned', async ctx => {
