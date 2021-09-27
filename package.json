@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@analytics/google-analytics": "^0.5.3",
-    "@sentry/node": "^6.12.0",
+    "@sentry/node": "^6.13.2",
     "analytics": "^0.7.14",
     "bunyan-sentry-stream": "^1.2.1",
     "probot": "^12.1.1",
