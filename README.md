@@ -203,7 +203,7 @@ branchName: '${issue.number}-${issue.title}'
 See
 [test/fixtures/issues.assigned.json](tests/test-fixtures/issues.assigned.json) for all possible placeholder names.
 
-### Change replacement for illegal characters in branch title
+### Configure replacement character and replace arbitrary characters
 
 Characters that are not allowed in Git branch names are replaced by default with an underscore (`_`) character. You can
 configure a different replacement character as follows:
@@ -214,6 +214,14 @@ gitSafeReplacementChar: '-'
 
 The above configuration would generate the following branch name for issue 15 that has the title "Fix nasty
 bug": `issue-15-Fix-nasty-bug`.
+
+Furthermore, you also can replace arbitrary characters in the branch title:
+
+```yaml
+gitReplaceChars: 'ab/'
+```
+
+The above configuration replaces all occurences of the characters 'a', 'b' and '/' in the branch title.
 
 ### Lowercase and uppercase substitutions
 

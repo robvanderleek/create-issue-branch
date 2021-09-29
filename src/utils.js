@@ -2,15 +2,20 @@ const { Analytics } = require('analytics')
 const googleAnalytics = require('@analytics/google-analytics').default
 const wcMatch = require('wildcard-match')
 
-function makePrefixGitSafe (s) {
+function makePrefixGitSafe (s, { replaceChars = '', replacementChar = '_' } = {}) {
   const regexp = /(?![-/])[\W]+/g
-  return trim(s, ' ').replace(regexp, '_')
+  let result = trim(s, ' ').replace(regexp, replacementChar)
+  if (replaceChars.length > 0) {
+    result = result.replace(new RegExp(`[${replaceChars}]`, 'g'), replacementChar)
+  }
+  return result
 }
 
-function makeGitSafe (s, replacementChar = '_') {
-  const regexp = /(?![-/])[\W]+/g
-  const result = trim(s, ' ').replace(regexp, replacementChar).replace(/[/]+$/, '')
-  return trim(result, replacementChar)
+function makeGitSafe (s, { replaceChars = '', replacementChar = '_' } = {}) {
+  let result = makePrefixGitSafe(s, { replaceChars: replaceChars, replacementChar: replacementChar })
+  result = trim(result, replacementChar)
+  result = result.replace(/[/]+$/, '')
+  return result
 }
 
 function trim (str, ch) {

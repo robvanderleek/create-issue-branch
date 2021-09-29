@@ -43,6 +43,11 @@ test('experimental feature flag', () => {
   expect(Config.isExperimentalBranchNameArgument({ experimental: { branchNameArgument: true } })).toBeTruthy()
 })
 
+test('get Git replace chars', () => {
+  expect(Config.getGitReplaceChars({})).toBe('')
+  expect(Config.getGitReplaceChars({ gitReplaceChars: 'abcd' })).toBe('abcd')
+})
+
 test('get Git safe replacement char', () => {
   expect(Config.getGitSafeReplacementChar({})).toBe('_')
   expect(Config.getGitSafeReplacementChar({ gitSafeReplacementChar: '-' })).toBe('-')

@@ -67,8 +67,11 @@ async function getBranchName (ctx, config, title) {
     result = `issue-${number}-${title}`
   }
   const replacementChar = Config.getGitSafeReplacementChar(config)
-  return utils.makePrefixGitSafe(getIssueBranchPrefix(ctx, config), replacementChar) +
-    utils.makeGitSafe(result, replacementChar)
+  const replaceChars = Config.getGitReplaceChars(config)
+  return utils.makePrefixGitSafe(getIssueBranchPrefix(ctx, config), {
+    replaceChars: replaceChars, //
+    replacementChar: replacementChar //
+  }) + utils.makeGitSafe(result, { replaceChars: replaceChars, replacementChar: replacementChar })
 }
 
 function getIssueNumberFromBranchName (branchName) {

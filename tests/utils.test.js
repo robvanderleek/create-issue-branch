@@ -59,9 +59,21 @@ test('git safe replacements', () => {
 })
 
 test('custom git safe replacements', () => {
-  expect(utils.makeGitSafe('feature_bug', '-')).toBe('feature_bug')
-  expect(utils.makeGitSafe('Issue name with slash/', '-')).toBe('Issue-name-with-slash')
-  expect(utils.makeGitSafe('Also issue name/with slash', '-')).toBe('Also-issue-name/with-slash')
+  expect(utils.makePrefixGitSafe('  feature/this is a bug ', { replacementChar: '+' })).toBe('feature/this+is+a+bug')
+  expect(utils.makePrefixGitSafe('hello/ world', { replacementChar: '+' })).toBe('hello/+world')
+  expect(utils.makeGitSafe('feature_bug', { replacementChar: '-' })).toBe('feature_bug')
+  expect(utils.makeGitSafe('Issue name with slash/', { replacementChar: '-' })).toBe('Issue-name-with-slash')
+  expect(utils.makeGitSafe('Also issue name/with slash', { replacementChar: '-' })).toBe('Also-issue-name/with-slash')
+})
+
+test('custom replace chars', () => {
+  expect(utils.makePrefixGitSafe('  feature/this is a bug ', { replaceChars: '/', replacementChar: '+' }))
+    .toBe('feature+this+is+a+bug')
+  expect(utils.makePrefixGitSafe('hello/ world', { replaceChars: '/', replacementChar: '+' })).toBe('hello++world')
+  expect(utils.makeGitSafe('feature_bug', { replaceChars: '_', replacementChar: '-' })).toBe('feature-bug')
+  expect(utils.makeGitSafe('Issue name with slash/', { replaceChars: 'Is' })).toBe('ue_name_with__la_h')
+  expect(utils.makeGitSafe('Also issue name/with slash', { replaceChars: '/', replacementChar: '-' }))
+    .toBe('Also-issue-name-with-slash')
 })
 
 test('wildcard matching', () => {
