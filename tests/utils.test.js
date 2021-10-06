@@ -63,6 +63,7 @@ test('git safe replacements', () => {
   expect(utils.makeGitSafe('?hello*world[')).toBe('hello_world')
   expect(utils.makeGitSafe('@{hello@world}')).toBe('hello_world')
   expect(utils.makeGitSafe('"(hello),`world`"')).toBe('hello_world')
+  expect(utils.makeGitSafe("'hello world'")).toBe('hello_world')
 })
 
 test('custom git safe replacements', () => {
