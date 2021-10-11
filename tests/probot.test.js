@@ -333,7 +333,7 @@ test('Upgrade to Pro message in comment for subscriptions activated before Pro p
   await probot.receive(ctx)
 
   expect(comment).toBeDefined()
-  expect(comment.toLowerCase().indexOf('this message')).toBeGreaterThan(0)
+  expect(comment.toLowerCase().indexOf('until november 7')).toBeGreaterThan(0)
   expect(branchCreated).toBeTruthy()
 })
 
