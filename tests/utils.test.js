@@ -56,6 +56,14 @@ test('git safe replacements', () => {
   expect(utils.makeGitSafe('feature_bug')).toBe('feature_bug')
   expect(utils.makeGitSafe('Issue name with slash/')).toBe('Issue_name_with_slash')
   expect(utils.makeGitSafe('Also issue name/with slash')).toBe('Also_issue_name/with_slash')
+  expect(utils.makeGitSafe('全是中文的名字')).toBe('全是中文的名字')
+  expect(utils.makeGitSafe('..lock')).toBe('lock')
+  expect(utils.makeGitSafe('hello..world')).toBe('hello_world')
+  expect(utils.makeGitSafe('~hello^world:')).toBe('hello_world')
+  expect(utils.makeGitSafe('?hello*world[')).toBe('hello_world')
+  expect(utils.makeGitSafe('@{hello@world}')).toBe('hello_world')
+  expect(utils.makeGitSafe('"(hello),`world`"')).toBe('hello_world')
+  expect(utils.makeGitSafe("'hello world'")).toBe('hello_world')
 })
 
 test('custom git safe replacements', () => {

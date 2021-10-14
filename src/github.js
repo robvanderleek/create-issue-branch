@@ -136,8 +136,8 @@ async function addBuyProComment (ctx) {
 async function addUpgradeToProComment (ctx) {
   const comment = buyComment +
     '\n\nSince you activated this App before the paid plan introduction it keeps on working ' +
-    'for this repository. [Upgrade to the paid plan](https://github.com/marketplace/create-issue-branch) to ' +
-    'remove this message.'
+    ':rotating_light: until November 7, 2021 :rotating_light: \n\n' +
+    '[Upgrade to the paid plan](https://github.com/marketplace/create-issue-branch) for uninterrupted service.'
   await addComment(ctx, { silent: false }, comment)
 }
 
