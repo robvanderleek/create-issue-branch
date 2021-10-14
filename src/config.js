@@ -116,6 +116,10 @@ function getChatOpsCommandArgument (s) {
   }
 }
 
+function getGitReplaceChars (config) {
+  return config.gitReplaceChars ? config.gitReplaceChars : ''
+}
+
 function getGitSafeReplacementChar (config) {
   return config.gitSafeReplacementChar ? config.gitSafeReplacementChar : '_'
 }
@@ -146,6 +150,7 @@ module.exports = {
   isSilent: isSilent,
   isChatOpsCommand: isChatOpsCommand,
   isExperimentalBranchNameArgument: isExperimentalBranchNameArgument,
+  getGitReplaceChars: getGitReplaceChars,
   getGitSafeReplacementChar: getGitSafeReplacementChar,
   shouldOpenPR: shouldOpenPR,
   shouldOpenDraftPR: shouldOpenDraftPR,

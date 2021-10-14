@@ -5,13 +5,19 @@ const wcMatch = require('wildcard-match')
 // Regexp below is a stricter implementation of https://git-scm.com/docs/git-check-ref-format
 const GIT_SAFE_REGEXP = /([.~^:?*[\]@{}\\"'()`,]|\s)+/g
 
-function makePrefixGitSafe (s) {
-  return trim(s, ' ').replace(GIT_SAFE_REGEXP, '_')
+function makePrefixGitSafe (s, { replaceChars = '', replacementChar = '_' } = {}) {
+  let result = trim(s, ' ').replace(GIT_SAFE_REGEXP, replacementChar)
+  if (replaceChars.length > 0) {
+    result = result.replace(new RegExp(`[${replaceChars}]`, 'g'), replacementChar)
+  }
+  return result
 }
 
-function makeGitSafe (s, replacementChar = '_') {
-  const result = trim(s, ' ').replace(GIT_SAFE_REGEXP, replacementChar).replace(/[/]+$/, '')
-  return trim(result, replacementChar)
+function makeGitSafe (s, { replaceChars = '', replacementChar = '_' } = {}) {
+  let result = makePrefixGitSafe(s, { replaceChars: replaceChars, replacementChar: replacementChar })
+  result = trim(result, replacementChar)
+  result = result.replace(/[/]+$/, '')
+  return result
 }
 
 function trim (str, ch) {
