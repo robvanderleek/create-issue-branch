@@ -396,15 +396,23 @@ Be aware that draft pull requests are not available in all repositories types, s
 the [GitHub documentation](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/about-pull-requests#draft-pull-requests)
 for details.
 
-### Copy description, labels and assignee from issue
+### Copy attributes from issue
 
-When the App opens a new (draft) Pull Request, it can also copy over the description, labels and assignee from the issue
-for you. You can enable this behaviour in the configuration:
+When the App opens a new (draft) Pull Request it can also copy over the following attributes from your issue:
+- Description
+- Labels
+- Assignee
+- Projects
+- Milestone
+ 
+You can enable this behaviour per attribute in the configuration:
 
 ```yaml
 copyIssueDescriptionToPR: true
 copyIssueLabelsToPR: true
 copyIssueAssigneeToPR: true
+copyIssueProjectsToPR: true
+copyIssueMilestoneToPR: true
 ```
 
 ## Change message in issue comments

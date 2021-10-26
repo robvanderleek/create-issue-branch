@@ -52,3 +52,13 @@ test('get Issue labels', () => {
   ctx.payload.issue.labels = [{ name: 'enhancement' }, { name: 'pinned' }]
   expect(context.getIssueLabels(ctx)).toStrictEqual(['enhancement', 'pinned'])
 })
+
+test('get Issue milestone number', () => {
+  let ctx = { payload: issueAssignedPayload }
+
+  expect(context.getMilestoneNumber(ctx)).toBeUndefined()
+
+  ctx = { payload: issueOpenedPayload }
+
+  expect(context.getMilestoneNumber(ctx)).toBe(1)
+})

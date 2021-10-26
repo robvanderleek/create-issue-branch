@@ -297,6 +297,12 @@ async function copyIssueAttributesToPr (app, ctx, config, pr) {
     if (Config.copyIssueAssigneeToPR(config)) {
       await copyIssueAssigneeToPr(ctx, pr)
     }
+    if (Config.copyIssueProjectsToPR(config)) {
+      await copyIssueProjectsToPr(ctx, pr)
+    }
+    if (Config.copyIssueMilestoneToPR(config)) {
+      await copyIssueMilestoneToPr(ctx, pr)
+    }
   } catch (e) {
     app.log(`Could not copy issue attributes (${e.message})`)
     await addComment(ctx, config, `Could not copy issue attributes (${e.message})`)
@@ -317,6 +323,19 @@ async function copyIssueAssigneeToPr (ctx, pr) {
   const repo = context.getRepoName(ctx)
   const assignee = context.getAssignee(ctx)
   await ctx.octokit.issues.addAssignees({ owner, repo, issue_number: pr.number, assignees: [assignee] })
+}
+
+async function copyIssueMilestoneToPr (ctx, pr) {
+  const owner = context.getRepoOwnerLogin(ctx)
+  const repo = context.getRepoName(ctx)
+  const number = context.getMilestoneNumber(ctx)
+  if (number) {
+    await ctx.octokit.issues.update({ owner, repo, issue_number: pr.number, milestone: number })
+  }
+}
+
+async function copyIssueProjectsToPr (ctx, pr) {
+  // TODO: Implement me
 }
 
 module.exports = {
