@@ -335,7 +335,39 @@ async function copyIssueMilestoneToPr (ctx, pr) {
 }
 
 async function copyIssueProjectsToPr (ctx, pr) {
-  // TODO: Implement me
+  const owner = context.getRepoOwnerLogin(ctx)
+  const repo = context.getRepoName(ctx)
+  const issueNumber = context.getIssueNumber(ctx)
+  const queryProjectName = `
+  query ($owner: String!, $repo: String!, $number: Int!) {
+    repository(owner: $owner, name: $repo) {
+      issue(number: $number) {
+        projectCards {
+          nodes {
+            project {
+              id
+            }
+          }
+        }
+      }
+    }
+  }
+  `
+  const queryResult = await ctx.octokit.graphql(queryProjectName, {
+    owner: owner, repo: repo, number: issueNumber
+  })
+  const projectId = queryResult?.repository?.issue?.projectCards?.nodes[0].project?.id
+  const mutatePullRequest = `
+  mutation($pullRequestId: ID!, $projectIds: [ID!])  {
+    updatePullRequest(input:{pullRequestId: $pullRequestId, projectIds: $projectIds}) {
+      pullRequest{
+        id
+      }
+    }
+  }`
+  await ctx.octokit.graphql(mutatePullRequest, {
+    pullRequestId: pr.node_id, projectIds: [projectId]
+  })
 }
 
 module.exports = {
