@@ -40,7 +40,7 @@
     "standard": "^16.0.2"
   },
   "engines": {
-    "node": ">= 14.1.x"
+    "node": ">= 14.x"
   },
   "standard": {
     "env": [
