@@ -292,15 +292,19 @@ function getPrBody (ctx, config) {
 async function copyIssueAttributesToPr (app, ctx, config, pr) {
   try {
     if (Config.copyIssueLabelsToPR(config)) {
+      app.log('Copying issue labels to PR')
       await copyIssueLabelsToPr(ctx, pr)
     }
     if (Config.copyIssueAssigneeToPR(config)) {
+      app.log('Copying issue assignee to PR')
       await copyIssueAssigneeToPr(ctx, pr)
     }
     if (Config.copyIssueProjectsToPR(config)) {
+      app.log('Copying issue projects to PR')
       await copyIssueProjectsToPr(ctx, pr)
     }
     if (Config.copyIssueMilestoneToPR(config)) {
+      app.log('Copying issue milestone to PR')
       await copyIssueMilestoneToPr(ctx, pr)
     }
   } catch (e) {
@@ -335,10 +339,22 @@ async function copyIssueMilestoneToPr (ctx, pr) {
 }
 
 async function copyIssueProjectsToPr (ctx, pr) {
-  const owner = context.getRepoOwnerLogin(ctx)
-  const repo = context.getRepoName(ctx)
-  const issueNumber = context.getIssueNumber(ctx)
-  const queryProjectName = `
+  const projectIds = await queryProjectIdsForIssue(ctx)
+  const mutatePullRequest = `
+  mutation($pullRequestId: ID!, $projectIds: [ID!])  {
+    updatePullRequest(input:{pullRequestId: $pullRequestId, projectIds: $projectIds}) {
+      pullRequest{
+        id
+      }
+    }
+  }`
+  await ctx.octokit.graphql(mutatePullRequest, {
+    pullRequestId: pr.node_id, projectIds: projectIds
+  })
+}
+
+async function queryProjectIdsForIssue (ctx) {
+  const queryProjectIds = `
   query ($owner: String!, $repo: String!, $number: Int!) {
     repository(owner: $owner, name: $repo) {
       issue(number: $number) {
@@ -353,21 +369,20 @@ async function copyIssueProjectsToPr (ctx, pr) {
     }
   }
   `
-  const queryResult = await ctx.octokit.graphql(queryProjectName, {
-    owner: owner, repo: repo, number: issueNumber
+  const queryResult = await ctx.octokit.graphql(queryProjectIds, {
+    owner: context.getRepoOwnerLogin(ctx), repo: context.getRepoName(ctx), number: context.getIssueNumber(ctx)
   })
-  const projectId = queryResult?.repository?.issue?.projectCards?.nodes[0].project?.id
-  const mutatePullRequest = `
-  mutation($pullRequestId: ID!, $projectIds: [ID!])  {
-    updatePullRequest(input:{pullRequestId: $pullRequestId, projectIds: $projectIds}) {
-      pullRequest{
-        id
+  const projectCards = queryResult?.repository?.issue?.projectCards
+  const result = []
+  if (projectCards) {
+    for (const node of projectCards.nodes) {
+      const projectId = node.project?.id
+      if (projectId) {
+        result.push(projectId)
       }
     }
-  }`
-  await ctx.octokit.graphql(mutatePullRequest, {
-    pullRequestId: pr.node_id, projectIds: [projectId]
-  })
+  }
+  return result
 }
 
 module.exports = {
