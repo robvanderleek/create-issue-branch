@@ -24,4 +24,4 @@ jobs:
         HEROKU_AUTH_TOKEN: ${{ secrets.HEROKU_AUTH_TOKEN }}
         HEROKU_STAGING_ENV_NAME: ${{ secrets.HEROKU_STAGING_ENV_NAME}}
       run: git push https://heroku:$HEROKU_AUTH_TOKEN@$HEROKU_STAGING_ENV_NAME origin/${GITHUB_REF#refs/heads/}:master --force
-      if: job.status == 'success' && (! startsWith(github.ref, 'refs/heads/dependabot/'))
+      if: job.status == 'success' && github.ref == 'refs/heads/staging'
