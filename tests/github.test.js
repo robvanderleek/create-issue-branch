@@ -222,6 +222,27 @@ test('copy Issue description into PR', async () => {
   })
 })
 
+test('Do not copy undefined Issue description into PR', async () => {
+  const createPR = jest.fn()
+  const createCommit = () => ({ data: { sha: 'abcd1234' } })
+  const ctx = helpers.getDefaultContext()
+  ctx.octokit.pulls.create = createPR
+  ctx.octokit.git.createCommit = createCommit
+  ctx.payload.issue.body = null
+
+  await github.createPR({ log: () => { } }, ctx, { copyIssueDescriptionToPR: true, silent: false }, 'robvanderleek',
+    'issue-1')
+  expect(createPR).toHaveBeenCalledWith({
+    owner: 'robvanderleek',
+    repo: 'create-issue-branch',
+    draft: false,
+    base: 'master',
+    head: 'issue-1',
+    body: 'closes #1',
+    title: 'Hello world'
+  })
+})
+
 test('use correct source branch', async () => {
   const createPR = jest.fn()
   const ctx = helpers.getDefaultContext()
