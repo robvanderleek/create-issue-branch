@@ -281,12 +281,15 @@ async function createPR (app, ctx, config, username, branchName) {
 
 function getPrBody (ctx, config) {
   const issueNumber = context.getIssueNumber(ctx)
+  let result = ''
   if (Config.copyIssueDescriptionToPR(config)) {
     const issueDescription = context.getIssueDescription(ctx)
-    return `${issueDescription}\ncloses #${issueNumber}`
-  } else {
-    return `closes #${issueNumber}`
+    if (issueDescription) {
+      result = `${issueDescription}\n`
+    }
   }
+  result = result + `closes #${issueNumber}`
+  return result
 }
 
 async function copyIssueAttributesToPr (app, ctx, config, pr) {
