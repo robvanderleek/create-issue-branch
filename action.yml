@@ -8,4 +8,4 @@ outputs:
     description: 'Name of the branch that was created'
 runs:
   using: 'docker'
-  main: 'dist/index.js'
+  image: 'Dockerfile'
