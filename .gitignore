@@ -8,3 +8,5 @@ node_modules/
 .private-key.pem
 .private-key.staging.pem
 coverage/
+dist/static/
+dist/views/

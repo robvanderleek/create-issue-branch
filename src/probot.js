@@ -11,7 +11,7 @@ module.exports = (app, { getRouter }) => {
     addStatsRoute(getRouter)
     addPlansRoute(app, getRouter)
   } else {
-    app.log.warn('Custom routes not available!')
+    app.log('Custom routes not available!')
   }
   configureSentry(app)
   utils.logMemoryUsage(app)
