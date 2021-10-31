@@ -1,6 +1,6 @@
-const { run } = require("@probot/github-action");
+const { run } = require('@probot/adapter-github-actions')
 const app = require('./probot')
 run(app).catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+  console.error(error)
+  process.exit(1)
+})
