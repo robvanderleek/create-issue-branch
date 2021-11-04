@@ -51,8 +51,12 @@ Add this to your workflow YAML configuration:
 
 ```yaml
 on:
+  # The issues event below is only needed for the default (auto) mode,
+  # you can remove it otherwise
   issues:
     types: [ assigned ]
+  # The issue_comment event below is only needed for the ChatOps mode,
+  # you can remove it otherwise
   issue_comment:
     types: [ created ]
   pull_request:
