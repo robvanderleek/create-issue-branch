@@ -261,3 +261,20 @@ test('use correct source branch', async () => {
     title: 'Hello world'
   })
 })
+
+test('copy Issue milestone into PR', async () => {
+  const updateIssue = jest.fn()
+  const createCommit = () => ({ data: { sha: 'abcd1234' } })
+  const ctx = helpers.getDefaultContext()
+  ctx.octokit.pulls.create = () => ({ data: { number: 123 } })
+  ctx.octokit.issues.update = updateIssue
+  ctx.octokit.git.createCommit = createCommit
+  ctx.payload.issue.body = 'This is the description'
+  ctx.payload.issue.milestone = { number: 456 }
+
+  await github.createPR({ log: () => { } }, ctx, { copyIssueMilestoneToPR: true, silent: false }, 'robvanderleek',
+    'issue-1')
+  expect(updateIssue).toHaveBeenCalledWith({
+    owner: 'robvanderleek', repo: 'create-issue-branch', issue_number: 123, milestone: 456
+  })
+})

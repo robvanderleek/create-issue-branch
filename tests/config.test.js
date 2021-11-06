@@ -82,4 +82,8 @@ test('copy issue description, labels and assignee to PR', () => {
   expect(Config.copyIssueLabelsToPR({ copyIssueLabelsToPR: true })).toBeTruthy()
   expect(Config.copyIssueAssigneeToPR({})).toBeFalsy()
   expect(Config.copyIssueAssigneeToPR({ copyIssueAssigneeToPR: true })).toBeTruthy()
+  expect(Config.copyIssueProjectsToPR({})).toBeFalsy()
+  expect(Config.copyIssueProjectsToPR({ copyIssueProjectsToPR: true })).toBeTruthy()
+  expect(Config.copyIssueMilestoneToPR({})).toBeFalsy()
+  expect(Config.copyIssueMilestoneToPR({ copyIssueMilestoneToPR: true })).toBeTruthy()
 })

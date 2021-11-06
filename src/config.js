@@ -98,6 +98,14 @@ function copyIssueAssigneeToPR (config) {
   return 'copyIssueAssigneeToPR' in config && config.copyIssueAssigneeToPR === true
 }
 
+function copyIssueProjectsToPR (config) {
+  return 'copyIssueProjectsToPR' in config && config.copyIssueProjectsToPR === true
+}
+
+function copyIssueMilestoneToPR (config) {
+  return 'copyIssueMilestoneToPR' in config && config.copyIssueMilestoneToPR === true
+}
+
 function isChatOpsCommand (s) {
   if (s) {
     const parts = s.trim().toLowerCase().split(/\s/)
@@ -158,5 +166,7 @@ module.exports = {
   getDefaultBranch: getDefaultBranch,
   copyIssueDescriptionToPR: copyIssueDescriptionToPR,
   copyIssueLabelsToPR: copyIssueLabelsToPR,
-  copyIssueAssigneeToPR: copyIssueAssigneeToPR
+  copyIssueAssigneeToPR: copyIssueAssigneeToPR,
+  copyIssueProjectsToPR: copyIssueProjectsToPR,
+  copyIssueMilestoneToPR: copyIssueMilestoneToPR
 }

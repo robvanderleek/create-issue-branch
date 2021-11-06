@@ -66,6 +66,14 @@ function getSender (ctx) {
   return ctx.payload.sender.login
 }
 
+function getMilestoneNumber (ctx) {
+  const { payload } = ctx
+  const { issue } = payload
+  if (issue.milestone) {
+    return issue.milestone.number
+  }
+}
+
 module.exports = {
   getRepoOwnerLogin: getRepoOwnerLogin,
   getRepoOwnerId: getRepoOwnerId,
@@ -78,5 +86,6 @@ module.exports = {
   getIssueLabels: getIssueLabels,
   getIssueLabelsForMatching: getIssueLabelsForMatching,
   getAssignee: getAssignee,
-  getSender: getSender
+  getSender: getSender,
+  getMilestoneNumber: getMilestoneNumber
 }

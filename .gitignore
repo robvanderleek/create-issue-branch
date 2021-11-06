@@ -7,3 +7,6 @@ node_modules/
 .env.staging
 .private-key.pem
 .private-key.staging.pem
+coverage/
+dist/static/
+dist/views/

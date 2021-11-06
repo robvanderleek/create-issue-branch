@@ -7,5 +7,5 @@ outputs:
   branchName:
     description: 'Name of the branch that was created'
 runs:
-  using: 'node12'
-  main: 'dist/index.js'
+  using: 'docker'
+  image: 'Dockerfile'
