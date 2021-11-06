@@ -1,4 +1,7 @@
 const utils = require('../src/utils')
+const standard = require('standard')
+const path = require('path')
+const fs = require('fs')
 const issueAssignedPayload = require('./test-fixtures/issues.assigned.json')
 
 test('interpolate string with object field expression', () => {
@@ -63,7 +66,7 @@ test('git safe replacements', () => {
   expect(utils.makeGitSafe('?hello*world[')).toBe('hello_world')
   expect(utils.makeGitSafe('@{hello@world}')).toBe('hello_world')
   expect(utils.makeGitSafe('"(hello),`world`"')).toBe('hello_world')
-  expect(utils.makeGitSafe("'hello world'")).toBe('hello_world')
+  expect(utils.makeGitSafe('\'hello world\'')).toBe('hello_world')
 })
 
 test('custom git safe replacements', () => {
@@ -122,4 +125,17 @@ test('trim string to byte length', () => {
   expect(utils.trimStringToByteLength('😁😁', 6)).toBe('😁')
   expect(utils.trimStringToByteLength('😁😁', 7)).toBe('😁')
   expect(utils.trimStringToByteLength('😁😁', 8)).toBe('😁😁')
+})
+
+test('StandardJS format', () => {
+  const parentDir = path.resolve(__dirname, '..')
+  const srcDir = path.join(parentDir, 'src')
+  const files = fs.readdirSync(srcDir).map(f => path.join(srcDir, f)).filter(p => fs.lstatSync(p).isFile())
+  const cb = (_, results) => {
+    if (results.errorCount > 0) {
+      console.log(JSON.stringify(results, null, 2))
+    }
+    expect(results.errorCount).toBe(0)
+  }
+  standard.lintFiles(files, cb)
 })
