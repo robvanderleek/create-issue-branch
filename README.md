@@ -406,7 +406,7 @@ When the App opens a new (draft) Pull Request it can also copy over the followin
 - Description
 - Labels
 - Assignee
-- Projects
+- Projects (*only available in GitHub Action, not in the App*)
 - Milestone
  
 You can enable this behaviour per attribute in the configuration:
@@ -507,7 +507,6 @@ The list below contains features that might or might not be implemented in the f
 useful for your use-case.
 
 - Add Projects integration (see issue [#142](https://github.com/robvanderleek/create-issue-branch/issues/142))
-- Automatically open a PR (see issue [#80](https://github.com/robvanderleek/create-issue-branch/issues/80))
 - Add issue label management functionality (see
   issue [#177](https://github.com/robvanderleek/create-issue-branch/issues/177))
 - Choose branch to branch from in ChatOps mode (see
