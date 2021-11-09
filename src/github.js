@@ -6,7 +6,11 @@ const plans = require('./plans')
 async function createIssueBranch (app, ctx, branchName, config) {
   if (await hasValidSubscriptionForRepo(app, ctx)) {
     const sha = await getSourceBranchHeadSha(ctx, config, app.log)
-    await createBranch(ctx, config, branchName, sha, app.log)
+    if (sha) {
+      await createBranch(ctx, config, branchName, sha, app.log)
+    } else {
+      await addComment(ctx, config, 'Could not find source branch for new issue branch')
+    }
   }
 }
 
