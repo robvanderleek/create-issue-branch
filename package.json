@@ -25,7 +25,7 @@
   "dependencies": {
     "@analytics/google-analytics": "^0.5.3",
     "@probot/adapter-github-actions": "^3.0.1",
-    "@sentry/node": "^6.14.0",
+    "@sentry/node": "^6.14.3",
     "analytics": "^0.7.18",
     "bunyan-sentry-stream": "^1.2.1",
     "probot": "^12.1.1",
