@@ -28,7 +28,8 @@ async function isProPlan (app, ctx) {
 
 function freeProSubscription (login) {
   const organizations = ['PWrInSpace', 'KPLRCDBS', 'codemeistre', 'RaspberryPiFoundation', 'astro-pi',
-    'LOG680-01-Equipe-09', 'New-AutoMotive', 'EpitechMscPro2020', 'snaphu-msu', 'SerenKodi', 'oyunprotocol']
+    'LOG680-01-Equipe-09', 'New-AutoMotive', 'EpitechMscPro2020', 'snaphu-msu', 'SerenKodi', 'oyunprotocol',
+    'web-illinois']
   const match = organizations.find(o => o.toLowerCase() === String(login).toLowerCase())
   return match !== undefined
 }
