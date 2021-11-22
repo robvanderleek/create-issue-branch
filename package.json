@@ -32,7 +32,7 @@
     "wildcard-match": "^5.1.2"
   },
   "devDependencies": {
-    "@vercel/ncc": "^0.31",
+    "@vercel/ncc": "^0.32",
     "jest": "^27.3.1",
     "nock": "^13.1.4",
     "nodemon": "^2.0.14",
