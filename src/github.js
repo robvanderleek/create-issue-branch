@@ -68,7 +68,7 @@ async function getBranchName (ctx, config, title) {
       result = `issue-${number}-${title}`
     } else {
       ctx.payload.issue.title = title
-      result = utils.interpolate(config.branchName, ctx.payload)
+      result = utils.interpolate(config.branchName, ctx.payload, process.env)
     }
   } else {
     result = `issue-${number}-${title}`
@@ -102,7 +102,7 @@ function getIssueBranchPrefix (ctx, config) {
   if (branchConfig && branchConfig.prefix) {
     result = branchConfig.prefix
   }
-  return utils.interpolate(result, ctx.payload)
+  return utils.interpolate(result, ctx.payload, process.env)
 }
 
 function getIssueBranchConfig (ctx, config) {

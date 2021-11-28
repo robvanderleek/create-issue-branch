@@ -10,9 +10,8 @@
 [![Sentry](https://img.shields.io/badge/sentry-enabled-green)](https://sentry.io)
 [![Heroku](https://pyheroku-badge.herokuapp.com/?app=create-issue-branch)](https://heroku.com)
 
-A GitHub App/Action that automates the creation of issue branches (either
-automatically after assigning an issue or after commenting on an issue with a
-ChatOps command: `/create-issue-branch` or `/cib`).
+A GitHub App/Action that automates the creation of issue branches (either automatically after assigning an issue or
+after commenting on an issue with a ChatOps command: `/create-issue-branch` or `/cib`).
 
 Built in response to this feature request issue:
 https://github.com/isaacs/github/issues/1125 (that issue is now closed and the
@@ -194,11 +193,13 @@ or
 branchName: short
 ```
 
+### Substitution placeholders
+
 To customize branch names you can give `branchName` a string value where `${...}`
-placeholders are substituted with fields from the GitHub issue assignment JSON object.
+placeholders are substituted with fields from the GitHub issue or environment variables.
 
 For example, if you would like to have your branch names contain only the issue number and title (similar to the GitLab
-branch naming convention), confgure it like this:
+branch naming convention), configure it like this:
 
 ```yaml
 branchName: '${issue.number}-${issue.title}'
@@ -206,6 +207,16 @@ branchName: '${issue.number}-${issue.title}'
 
 See
 [test/fixtures/issues.assigned.json](tests/test-fixtures/issues.assigned.json) for all possible placeholder names.
+
+Substitution placeholders can also refer to environment variables in GitHub Actions. Environment variable names need to
+be prefixed with a `%` character to distinguish them from GitHub issue fields.
+
+For example, if the environment variable `SOME_VAR` is defined outside the action it can be used in a branch name like
+this:
+
+```yaml
+branchName: '${issue.number}-${%SOME_VAR}-${issue.title}'
+```
 
 ### Configure replacement character and replace arbitrary characters
 
@@ -403,12 +414,13 @@ for details.
 ### Copy attributes from issue
 
 When the App opens a new (draft) Pull Request it can also copy over the following attributes from your issue:
+
 - Description
 - Labels
 - Assignee
 - Projects (*only available in GitHub Action, not in the App*)
 - Milestone
- 
+
 You can enable this behaviour per attribute in the configuration:
 
 ```yaml
