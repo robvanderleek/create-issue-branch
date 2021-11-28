@@ -302,41 +302,6 @@ test('custom message with placeholder substitution in comment', async () => {
   expect(comment).toBe('hello branch for issue 1')
 })
 
-test('Upgrade to Pro message in comment for subscriptions activated before Pro plan introduction', async () => {
-  if (utils.isRunningInGitHubActions()) { // Test fails in GitHub Actions due to application logic
-    return
-  }
-  helpers.nockNonExistingBranch('issue-1-Test_issue')
-  helpers.nockExistingBranch('master', 12345678)
-  helpers.nockConfig('silent: true')
-  helpers.nockMarketplacePlan(marketplaceFreePlan)
-  let comment = ''
-  nock('https://api.github.com')
-    .post('/repos/robvanderleek/create-issue-branch/issues/1/comments', (data) => {
-      comment = data.body
-      return true
-    })
-    .reply(200)
-
-  let branchCreated = ''
-  nock('https://api.github.com')
-    .post('/repos/robvanderleek/create-issue-branch/git/refs', () => {
-      branchCreated = true
-      return true
-    })
-    .reply(200)
-
-  const ctx = {
-    name: 'issues', payload: helpers.privateOrganizationRepoPayload(issueAssignedPayload)
-  }
-
-  await probot.receive(ctx)
-
-  expect(comment).toBeDefined()
-  expect(comment.toLowerCase().indexOf('until november 7')).toBeGreaterThan(0)
-  expect(branchCreated).toBeTruthy()
-})
-
 test('Buy Pro message in comment for subscriptions activated after Pro plan introduction', async () => {
   if (utils.isRunningInGitHubActions()) { // Test fails in GitHub Actions due to application logic
     return

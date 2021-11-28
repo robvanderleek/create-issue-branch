@@ -6,7 +6,11 @@ const plans = require('./plans')
 async function createIssueBranch (app, ctx, branchName, config) {
   if (await hasValidSubscriptionForRepo(app, ctx)) {
     const sha = await getSourceBranchHeadSha(ctx, config, app.log)
-    await createBranch(ctx, config, branchName, sha, app.log)
+    if (sha) {
+      await createBranch(ctx, config, branchName, sha, app.log)
+    } else {
+      await addComment(ctx, config, 'Could not find source branch for new issue branch')
+    }
   }
 }
 
@@ -17,15 +21,9 @@ async function hasValidSubscriptionForRepo (app, ctx) {
   if (context.isPrivateOrgRepo(ctx)) {
     const isProPan = await plans.isProPlan(app, ctx)
     if (!isProPan) {
-      if (await plans.isActivatedBeforeProPlanIntroduction(app, ctx)) {
-        await addUpgradeToProComment(ctx)
-        app.log('Added comment 📝 to upgrade Free plan')
-        return true
-      } else {
-        await addBuyProComment(ctx)
-        app.log('Added comment to buy Pro 🙏 plan')
-        return false
-      }
+      await addBuyProComment(ctx)
+      app.log('Added comment to buy Pro 🙏 plan')
+      return false
     } else {
       return true
     }
@@ -34,6 +32,15 @@ async function hasValidSubscriptionForRepo (app, ctx) {
     app.log(`Creating branch in public repository from user/org: https://github.com/${login} ...`)
     return true
   }
+}
+
+const buyComment = 'Hi there :wave:\n\nUsing this App for a private organization repository requires a paid ' +
+  'subscription that you can buy on the [GitHub Marketplace](https://github.com/marketplace/create-issue-branch)\n\n' +
+  'If you are a non-profit organization or otherwise can not pay for such a plan, contact me by ' +
+  '[creating an issue](https://github.com/robvanderleek/create-issue-branch/issues)'
+
+async function addBuyProComment (ctx) {
+  await addComment(ctx, { silent: false }, buyComment)
 }
 
 async function getBranchNameFromIssue (ctx, config) {
@@ -61,7 +68,7 @@ async function getBranchName (ctx, config, title) {
       result = `issue-${number}-${title}`
     } else {
       ctx.payload.issue.title = title
-      result = utils.interpolate(config.branchName, ctx.payload)
+      result = utils.interpolate(config.branchName, ctx.payload, process.env)
     }
   } else {
     result = `issue-${number}-${title}`
@@ -95,7 +102,7 @@ function getIssueBranchPrefix (ctx, config) {
   if (branchConfig && branchConfig.prefix) {
     result = branchConfig.prefix
   }
-  return utils.interpolate(result, ctx.payload)
+  return utils.interpolate(result, ctx.payload, process.env)
 }
 
 function getIssueBranchConfig (ctx, config) {
@@ -122,23 +129,6 @@ function skipBranchCreationForIssue (ctx, config) {
   } else {
     return false
   }
-}
-
-const buyComment = 'Hi there :wave:\n\nUsing this App for a private organization repository requires a paid ' +
-  'subscription that you can buy on the [GitHub Marketplace](https://github.com/marketplace/create-issue-branch)\n\n' +
-  'If you are a non-profit organization or otherwise can not pay for such a plan, contact me by ' +
-  '[creating an issue](https://github.com/robvanderleek/create-issue-branch/issues)'
-
-async function addBuyProComment (ctx) {
-  await addComment(ctx, { silent: false }, buyComment)
-}
-
-async function addUpgradeToProComment (ctx) {
-  const comment = buyComment +
-    '\n\nSince you activated this App before the paid plan introduction it keeps on working ' +
-    ':rotating_light: until November 7, 2021 :rotating_light: \n\n' +
-    '[Upgrade to the paid plan](https://github.com/marketplace/create-issue-branch) for uninterrupted service.'
-  await addComment(ctx, { silent: false }, comment)
 }
 
 async function addComment (ctx, config, comment) {

@@ -1,4 +1,7 @@
 const utils = require('../src/utils')
+const standard = require('standard')
+const path = require('path')
+const fs = require('fs')
 const issueAssignedPayload = require('./test-fixtures/issues.assigned.json')
 
 test('interpolate string with object field expression', () => {
@@ -49,6 +52,26 @@ test('interpolate string with issue assigned payload', () => {
   expect(result).toBe('Creator robvanderleek, repo: create-issue-branch')
 })
 
+test('interpolate string with environment variable expression', () => {
+  const env = { SOME_VAR: 'world' }
+  // eslint-disable-next-line no-template-curly-in-string
+  const result = utils.interpolate('hello ${%SOME_VAR}', {}, env)
+  expect(result).toBe('hello world')
+})
+
+test('interpolate string with undefined environment variable expression', () => {
+  // eslint-disable-next-line no-template-curly-in-string
+  const result = utils.interpolate('hello ${%DOES_NOT_EXIST}', {}, {})
+  expect(result).toBe('hello undefined')
+})
+
+test('interpolate string with environment variable expression and lowercase operator', () => {
+  const env = { SOME_VAR: 'WoRlD' }
+  // eslint-disable-next-line no-template-curly-in-string
+  const result = utils.interpolate('hello ${%SOME_VAR,}', {}, env)
+  expect(result).toBe('hello world')
+})
+
 test('git safe replacements', () => {
   expect(utils.makePrefixGitSafe('feature/bug')).toBe('feature/bug')
   expect(utils.makePrefixGitSafe('  feature/this is a bug ')).toBe('feature/this_is_a_bug')
@@ -63,7 +86,7 @@ test('git safe replacements', () => {
   expect(utils.makeGitSafe('?hello*world[')).toBe('hello_world')
   expect(utils.makeGitSafe('@{hello@world}')).toBe('hello_world')
   expect(utils.makeGitSafe('"(hello),`world`"')).toBe('hello_world')
-  expect(utils.makeGitSafe("'hello world'")).toBe('hello_world')
+  expect(utils.makeGitSafe('\'hello world\'')).toBe('hello_world')
 })
 
 test('custom git safe replacements', () => {
@@ -122,4 +145,17 @@ test('trim string to byte length', () => {
   expect(utils.trimStringToByteLength('😁😁', 6)).toBe('😁')
   expect(utils.trimStringToByteLength('😁😁', 7)).toBe('😁')
   expect(utils.trimStringToByteLength('😁😁', 8)).toBe('😁😁')
+})
+
+test('StandardJS format', () => {
+  const parentDir = path.resolve(__dirname, '..')
+  const srcDir = path.join(parentDir, 'src')
+  const files = fs.readdirSync(srcDir).map(f => path.join(srcDir, f)).filter(p => fs.lstatSync(p).isFile())
+  const cb = (_, results) => {
+    if (results.errorCount > 0) {
+      console.log(JSON.stringify(results, null, 2))
+    }
+    expect(results.errorCount).toBe(0)
+  }
+  standard.lintFiles(files, cb)
 })
