@@ -28,9 +28,11 @@ function trim (str, ch) {
   return (start > 0 || end < str.length) ? str.substring(start, end) : str
 }
 
-function interpolate (s, obj) {
-  const containsLowerCaseOperator = path => path.length > 0 && path.endsWith(',')
-  const containsUpperCaseOperator = path => path.length > 0 && path.endsWith('^')
+const containsLowerCaseOperator = path => path.length > 0 && path.endsWith(',')
+
+const containsUpperCaseOperator = path => path.length > 0 && path.endsWith('^')
+
+function interpolate (s, obj, env) {
   return s.replace(/[$]{([^}]+)}/g, function (_, path) {
     let properties
     if (containsLowerCaseOperator(path) || containsUpperCaseOperator(path)) {
@@ -38,7 +40,12 @@ function interpolate (s, obj) {
     } else {
       properties = path.split('.')
     }
-    const interpolated = properties.reduce((prev, curr) => prev && prev[curr], obj)
+    let interpolated
+    if (properties[0].startsWith('%')) {
+      interpolated = env[properties[0].slice(1)]
+    } else {
+      interpolated = properties.reduce((prev, curr) => prev && prev[curr], obj)
+    }
     if (containsLowerCaseOperator(path)) {
       return interpolated.toLowerCase()
     } else if (containsUpperCaseOperator(path)) {

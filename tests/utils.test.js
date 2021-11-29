@@ -52,6 +52,26 @@ test('interpolate string with issue assigned payload', () => {
   expect(result).toBe('Creator robvanderleek, repo: create-issue-branch')
 })
 
+test('interpolate string with environment variable expression', () => {
+  const env = { SOME_VAR: 'world' }
+  // eslint-disable-next-line no-template-curly-in-string
+  const result = utils.interpolate('hello ${%SOME_VAR}', {}, env)
+  expect(result).toBe('hello world')
+})
+
+test('interpolate string with undefined environment variable expression', () => {
+  // eslint-disable-next-line no-template-curly-in-string
+  const result = utils.interpolate('hello ${%DOES_NOT_EXIST}', {}, {})
+  expect(result).toBe('hello undefined')
+})
+
+test('interpolate string with environment variable expression and lowercase operator', () => {
+  const env = { SOME_VAR: 'WoRlD' }
+  // eslint-disable-next-line no-template-curly-in-string
+  const result = utils.interpolate('hello ${%SOME_VAR,}', {}, env)
+  expect(result).toBe('hello world')
+})
+
 test('git safe replacements', () => {
   expect(utils.makePrefixGitSafe('feature/bug')).toBe('feature/bug')
   expect(utils.makePrefixGitSafe('  feature/this is a bug ')).toBe('feature/this_is_a_bug')

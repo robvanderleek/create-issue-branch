@@ -35,6 +35,16 @@ test('get branch name from issue', async () => {
 
   config = { branches: [{ label: 'bug', prefix: 'feature\\' }] }
   expect(await github.getBranchNameFromIssue(ctx, config)).toBe('feature_issue-12-Hello_world')
+
+  // eslint-disable-next-line no-template-curly-in-string
+  config = { branchName: '${issue.title}-${issue.number}' }
+  expect(await github.getBranchNameFromIssue(ctx, config)).toBe('Hello_world-12')
+
+  // eslint-disable-next-line
+  process.env['SOME_VAR'] = 'Hello world'
+  // eslint-disable-next-line no-template-curly-in-string
+  config = { branchName: '${issue.number}-${%SOME_VAR}' }
+  expect(await github.getBranchNameFromIssue(ctx, config)).toBe('12-Hello_world')
 })
 
 test('get branch name from issue, reported issues', async () => {
