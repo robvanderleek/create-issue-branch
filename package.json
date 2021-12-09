@@ -13,14 +13,15 @@
     "probot-app"
   ],
   "scripts": {
-    "dev": "nodemon",
-    "start": "NODE_OPTIONS='--max_old_space_size=490' probot run ./src/probot.js",
+    "git-info": "node src/generate-versionjs.js > src/version.js",
+    "dev": "yarn git-info && nodemon",
+    "start": "yarn git-info && NODE_OPTIONS='--max_old_space_size=490' probot run ./src/probot.js",
     "lint": "standard --fix",
-    "test": "jest && standard",
-    "coverage": "jest --collect-coverage",
+    "test": "yarn git-info && jest && standard",
+    "coverage": "yarn git-info && jest --collect-coverage",
     "test:docker": "docker-compose up",
-    "test:watch": "jest --watch --notify --notifyMode=change --coverage",
-    "dist": "ncc build src/action.js"
+    "test:watch": "yarn git-info && jest --watch --notify --notifyMode=change --coverage",
+    "dist": "yarn git-info && ncc build src/action.js"
   },
   "dependencies": {
     "@analytics/google-analytics": "^0.5.3",
