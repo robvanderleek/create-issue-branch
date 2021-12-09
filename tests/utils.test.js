@@ -3,6 +3,7 @@ const standard = require('standard')
 const path = require('path')
 const fs = require('fs')
 const issueAssignedPayload = require('./test-fixtures/issues.assigned.json')
+const { version } = require('../src/version')
 
 test('interpolate string with object field expression', () => {
   const o = { hello: 'world' }
@@ -157,5 +158,10 @@ test('StandardJS format', () => {
     }
     expect(results.errorCount).toBe(0)
   }
-  standard.lintFiles(files, cb)
+  standard.lintFiles(files, { ignore: [] }, cb)
+})
+
+test('version', () => {
+  expect(version.revision).toBeDefined()
+  expect(version.date).toBeDefined()
 })
