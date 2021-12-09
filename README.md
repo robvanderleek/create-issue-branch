@@ -414,6 +414,7 @@ for details.
 ### Copy attributes from issue
 
 When the App opens a new (draft) Pull Request it can also copy over the following attributes from your issue:
+
 - Description
 - Labels
 - Assignee
