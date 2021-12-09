@@ -10,3 +10,4 @@ node_modules/
 coverage/
 dist/static/
 dist/views/
+src/version.js

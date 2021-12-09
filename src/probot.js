@@ -4,13 +4,14 @@ const PullRequestClosed = require('./webhooks/pull-request-closed')
 const IssueAssigned = require('./webhooks/issue-assigned')
 const CommentCreated = require('./webhooks/comment-created')
 const MarketplacePurchase = require('./webhooks/marketplace-purchase')
+const { version } = require('./version')
 
 module.exports = (app, { getRouter }) => {
-  app.log('App was loaded')
+  app.log(`Create Issue Branch, revision: ${version.revision}, built on: ${version.date}`)
   if (getRouter) {
     addStatsRoute(getRouter)
     addPlansRoute(app, getRouter)
-  } else {
+  } else if (!utils.isRunningInGitHubActions()) {
     app.log('Custom routes not available!')
   }
   configureSentry(app)
