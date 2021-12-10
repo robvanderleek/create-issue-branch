@@ -3,6 +3,6 @@ let output = 'main-latest'
 try {
   output = execSync('git rev-parse --short HEAD', { encoding: 'utf-8' })
 } catch (e) {
-  console.log('Could not retrieve version information')
+  console.error('Could not retrieve version information')
 }
 console.log('const version = {\n    "revision": "' + output.trim() + '",\n    "date": "' + new Date().toISOString().substring(0, 10) + '"\n}\nmodule.exports = { version: version }')
