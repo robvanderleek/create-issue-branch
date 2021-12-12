@@ -32,7 +32,7 @@ test('trim spaces', () => {
 test('interpolate string with nested object field expression', () => {
   const o = { outer: { inner: 'world' } }
   // eslint-disable-next-line no-template-curly-in-string
-  const result = interpolate('hello ${outer.inner}', o)
+  const result = interpolate('hello ${ outer.inner}', o)
   expect(result).toBe('hello world')
 })
 
@@ -76,9 +76,44 @@ test('interpolate string with environment variable expression and lowercase oper
   expect(result).toBe('hello world')
 })
 
-test('interpolate string with slice operator', () => {
-  const o = { hello: 'world' }
+test('interpolate string with slice operator, start and end', () => {
+  const o = { hello: 'hello' }
   // eslint-disable-next-line no-template-curly-in-string
-  const result = interpolate('hello ${hello[1,3]}', o)
-  expect(result).toBe('hello or')
+  const result = interpolate('h${hello[1,3]}lo', o)
+  expect(result).toBe('hello')
+})
+
+test('interpolate string with slice operator, only start', () => {
+  const o = { hello: 'hello' }
+  // eslint-disable-next-line no-template-curly-in-string
+  const result = interpolate('hel${hello[3]}', o)
+  expect(result).toBe('hello')
+})
+
+test('interpolate string with slice operator, only end', () => {
+  const o = { hello: 'hello' }
+  // eslint-disable-next-line no-template-curly-in-string
+  const result = interpolate('${hello[,3]}lo', o)
+  expect(result).toBe('hello')
+})
+
+test('interpolate string with slice operator, only negative start', () => {
+  const o = { hello: 'hello' }
+  // eslint-disable-next-line no-template-curly-in-string
+  const result = interpolate('hel${hello[-2]}', o)
+  expect(result).toBe('hello')
+})
+
+test('interpolate string with slice and uppercase operator', () => {
+  const o = { hello: 'hello' }
+  // eslint-disable-next-line no-template-curly-in-string
+  const result = interpolate('h${hello[1,3]^}lo', o)
+  expect(result).toBe('hELlo')
+})
+
+test('interpolate string with negative slices and lowercase operator', () => {
+  const o = { hello: 'HELLO' }
+  // eslint-disable-next-line no-template-curly-in-string
+  const result = interpolate('h${hello[-4,-2],}lo', o)
+  expect(result).toBe('hello')
 })

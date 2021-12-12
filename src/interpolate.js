@@ -1,31 +1,79 @@
-const containsLowerCaseOperator = path => path.length > 0 && path.endsWith(',')
+const jsTokens = require('js-tokens')
 
-const containsUpperCaseOperator = path => path.length > 0 && path.endsWith('^')
+const isEnvironmentVariableReference = tokens => tokens.length > 0 && tokens[0].value === '%'
+
+const containsLowerCaseOperator = tokens => tokens.length > 0 && tokens[tokens.length - 1].value === ','
+
+const containsUpperCaseOperator = tokens => tokens.length > 0 && tokens[tokens.length - 1].value === '^'
 
 function interpolate (s, obj, env) {
   return s.replace(/[$]{([^}]+)}/g, (_, expression) => interpolateExpression(expression, obj, env))
 }
 
 function interpolateExpression (expression, obj, env) {
-  expression = expression.trim()
-  if (containsLowerCaseOperator(expression)) {
-    const property = expression.substring(0, expression.length - 1).split('.')
-    return interpolateProperty(property, obj, env).toLowerCase()
-  } else if (containsUpperCaseOperator(expression)) {
-    const property = expression.substring(0, expression.length - 1).split('.')
-    return interpolateProperty(property, obj, env).toUpperCase()
+  const tokens = Array.from(jsTokens(expression)).filter(t => t.type !== 'WhiteSpace')
+  const property = tokens.filter(t => t.type === 'IdentifierName').map(t => t.value)
+  let value
+  if (isEnvironmentVariableReference(tokens)) {
+    value = interpolateEnvironmentVariable(property, env)
   } else {
-    const property = expression.split('.')
-    return interpolateProperty(property, obj, env)
+    value = interpolateProperty(property, obj)
   }
+  return checkOperators(tokens, value)
 }
 
-function interpolateProperty (property, obj, env) {
-  if (property[0].startsWith('%')) {
-    return env[property[0].slice(1)]
-  } else {
-    return property.reduce((prev, curr) => prev && prev[curr], obj)
+function interpolateEnvironmentVariable (property, env) {
+  return env[property[0]]
+}
+
+function interpolateProperty (property, obj) {
+  return property.reduce((prev, curr) => prev && prev[curr], obj)
+}
+
+function checkOperators (tokens, value) {
+  if (containsLowerCaseOperator(tokens)) {
+    value = value.toLowerCase()
+  } else if (containsUpperCaseOperator(tokens)) {
+    value = value.toUpperCase()
   }
+  value = slice(tokens, value)
+  return value
+}
+
+function slice (tokens, value) {
+  const startOperator = tokens.findIndex(t => t.value === '[')
+  const endOperator = tokens.findIndex(t => t.value === ']')
+  if (startOperator === -1 || endOperator === -1 || endOperator <= startOperator) {
+    return value
+  }
+  const rangeTokens = rewriteSignedNumbers(tokens.slice(startOperator + 1, endOperator))
+  if (rangeTokens.length < 1) {
+    return value
+  }
+  let start, end
+  if (rangeTokens[0].type === 'NumericLiteral') {
+    start = Number.parseInt(rangeTokens[0].value)
+    if (rangeTokens.length === 3 && rangeTokens[2].type === 'NumericLiteral') {
+      end = Number.parseInt(rangeTokens[2].value)
+    }
+  } else if (rangeTokens[0].value === ',' && rangeTokens.length === 2 && rangeTokens[1].type === 'NumericLiteral') {
+    end = Number.parseInt(rangeTokens[1].value)
+  }
+  return value.slice(start, end)
+}
+
+function rewriteSignedNumbers (tokens) {
+  const isSignToken = token => (token.value === '-' || token.value === '+')
+  const result = []
+  for (let i = 0; i < tokens.length; i++) {
+    if (isSignToken(tokens[i]) && i < tokens.length - 1 && tokens[i + 1].type === 'NumericLiteral') {
+      result.push({ type: 'NumericLiteral', value: `${tokens[i].value}${tokens[i + 1].value}` })
+      i++
+    } else {
+      result.push(tokens[i])
+    }
+  }
+  return result
 }
 
 module.exports = {
