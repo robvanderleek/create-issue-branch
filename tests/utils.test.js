@@ -2,6 +2,7 @@ const utils = require('../src/utils')
 const standard = require('standard')
 const path = require('path')
 const fs = require('fs')
+const { version } = require('../src/version')
 
 test('git safe replacements', () => {
   expect(utils.makePrefixGitSafe('feature/bug')).toBe('feature/bug')
@@ -88,5 +89,10 @@ test('StandardJS format', () => {
     }
     expect(results.errorCount).toBe(0)
   }
-  standard.lintFiles(files, cb)
+  standard.lintFiles(files, { ignore: [] }, cb)
+})
+
+test('version', () => {
+  expect(version.revision).toBeDefined()
+  expect(version.date).toBeDefined()
 })
