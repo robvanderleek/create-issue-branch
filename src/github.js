@@ -2,6 +2,7 @@ const Config = require('./config')
 const utils = require('./utils')
 const context = require('./context')
 const plans = require('./plans')
+const { interpolate } = require('./interpolate')
 
 async function createIssueBranch (app, ctx, branchName, config) {
   if (await hasValidSubscriptionForRepo(app, ctx)) {
@@ -68,7 +69,7 @@ async function getBranchName (ctx, config, title) {
       result = `issue-${number}-${title}`
     } else {
       ctx.payload.issue.title = title
-      result = utils.interpolate(config.branchName, ctx.payload, process.env)
+      result = interpolate(config.branchName, ctx.payload, process.env)
     }
   } else {
     result = `issue-${number}-${title}`
@@ -102,7 +103,7 @@ function getIssueBranchPrefix (ctx, config) {
   if (branchConfig && branchConfig.prefix) {
     result = branchConfig.prefix
   }
-  return utils.interpolate(result, ctx.payload, process.env)
+  return interpolate(result, ctx.payload, process.env)
 }
 
 function getIssueBranchConfig (ctx, config) {
@@ -229,8 +230,7 @@ async function createBranch (ctx, config, branchName, sha, log) {
     if (utils.isRunningInGitHubActions()) {
       process.stdout.write(`::set-output name=branchName::${branchName}\n`)
     }
-    const commentMessage = utils.interpolate(Config.getCommentMessage(config),
-      { ...ctx.payload, branchName: branchName })
+    const commentMessage = interpolate(Config.getCommentMessage(config), { ...ctx.payload, branchName: branchName })
     await addComment(ctx, config, commentMessage)
     if (utils.isProduction()) {
       utils.pushMetric(owner, log)

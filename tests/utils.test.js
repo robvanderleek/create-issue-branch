@@ -2,76 +2,7 @@ const utils = require('../src/utils')
 const standard = require('standard')
 const path = require('path')
 const fs = require('fs')
-const issueAssignedPayload = require('./test-fixtures/issues.assigned.json')
 const { version } = require('../src/version')
-
-test('interpolate string with object field expression', () => {
-  const o = { hello: 'world' }
-  // eslint-disable-next-line no-template-curly-in-string
-  const result = utils.interpolate('hello ${hello}', o)
-  expect(result).toBe('hello world')
-})
-
-test('interpolate string with object field expression and uppercase operator', () => {
-  const o = { hello: 'world' }
-  // eslint-disable-next-line no-template-curly-in-string
-  const result = utils.interpolate('HELLO ${hello^}', o)
-  expect(result).toBe('HELLO WORLD')
-})
-
-test('interpolate string with object field expression and lowercase operator', () => {
-  const o = { hello: 'World' }
-  // eslint-disable-next-line no-template-curly-in-string
-  const result = utils.interpolate('hello ${hello,}', o)
-  expect(result).toBe('hello world')
-})
-
-test('interpolate string with nested object field expression', () => {
-  const o = { outer: { inner: 'world' } }
-  // eslint-disable-next-line no-template-curly-in-string
-  const result = utils.interpolate('hello ${outer.inner}', o)
-  expect(result).toBe('hello world')
-})
-
-test('interpolate string with nested object field expression and lowercase operator', () => {
-  const o = { outer: { inner: 'WoRlD' } }
-  // eslint-disable-next-line no-template-curly-in-string
-  const result = utils.interpolate('hello ${outer.inner,}', o)
-  expect(result).toBe('hello world')
-})
-
-test('interpolate string with undefined object field expression', () => {
-  const o = { outer: { inner: 'world' } }
-  // eslint-disable-next-line no-template-curly-in-string
-  const result = utils.interpolate('hello ${inner.outer}', o)
-  expect(result).toBe('hello undefined')
-})
-
-test('interpolate string with issue assigned payload', () => {
-  // eslint-disable-next-line no-template-curly-in-string
-  const result = utils.interpolate('Creator ${issue.user.login}, repo: ${repository.name}', issueAssignedPayload)
-  expect(result).toBe('Creator robvanderleek, repo: create-issue-branch')
-})
-
-test('interpolate string with environment variable expression', () => {
-  const env = { SOME_VAR: 'world' }
-  // eslint-disable-next-line no-template-curly-in-string
-  const result = utils.interpolate('hello ${%SOME_VAR}', {}, env)
-  expect(result).toBe('hello world')
-})
-
-test('interpolate string with undefined environment variable expression', () => {
-  // eslint-disable-next-line no-template-curly-in-string
-  const result = utils.interpolate('hello ${%DOES_NOT_EXIST}', {}, {})
-  expect(result).toBe('hello undefined')
-})
-
-test('interpolate string with environment variable expression and lowercase operator', () => {
-  const env = { SOME_VAR: 'WoRlD' }
-  // eslint-disable-next-line no-template-curly-in-string
-  const result = utils.interpolate('hello ${%SOME_VAR,}', {}, env)
-  expect(result).toBe('hello world')
-})
 
 test('git safe replacements', () => {
   expect(utils.makePrefixGitSafe('feature/bug')).toBe('feature/bug')
