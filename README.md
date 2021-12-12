@@ -218,6 +218,34 @@ this:
 branchName: '${issue.number}-${%SOME_VAR}-${issue.title}'
 ```
 
+### Substitution value slicing
+
+Substitution values can be "sliced" with the slice operator: `[start, end]`. This operator behaves exactly like the
+[JavaScript String `slice()` method](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/slice).
+
+For example, put this in your configuration YAML to limit issue titles to 64 characters:
+
+```yaml
+branchName: '${issue.number}-${issue.title[0,64]}'
+```
+
+### Lowercase and uppercase substitutions
+
+Substitutions for `${...}` placeholders can be lowercased by putting a `,` before the closing curly. Likewise,
+substitutions can be uppercased by putting a `^` before the closing curly.
+
+For example, issue titles can be lowercased in branch names like this:
+
+```yaml
+branchName: '${issue.number}-${issue.title,}'
+```
+
+or if you want the complete title in uppercase:
+
+```yaml
+branchName: '${issue.number}-${issue.title^}'
+```
+
 ### Configure replacement character and replace arbitrary characters
 
 Characters that are not allowed in Git branch names are replaced by default with an underscore (`_`) character. You can
@@ -237,23 +265,6 @@ gitReplaceChars: 'ab/'
 ```
 
 The above configuration replaces all occurences of the characters 'a', 'b' and '/' in the branch title.
-
-### Lowercase and uppercase substitutions
-
-Substitutions for `${...}` placeholders can be lowercased by putting a `,` before the closing curly. Likewise,
-substitutions can be uppercased by putting a `^` before the closing curly.
-
-For example, issue titles can be lowercased in branch names like this:
-
-```yaml
-branchName: '${issue.number}-${issue.title,}'
-```
-
-or if you want the complete title in uppercase:
-
-```yaml
-branchName: '${issue.number}-${issue.title^}'
-```
 
 ## Automatically close issues after a pull request merge
 

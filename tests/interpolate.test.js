@@ -107,7 +107,7 @@ test('interpolate string with slice operator, only negative start', () => {
 test('interpolate string with slice and uppercase operator', () => {
   const o = { hello: 'hello' }
   // eslint-disable-next-line no-template-curly-in-string
-  const result = interpolate('h${hello[1,3]^}lo', o)
+  const result = interpolate('h${hello[ 1 , 3 ]^}lo', o)
   expect(result).toBe('hELlo')
 })
 
@@ -116,4 +116,35 @@ test('interpolate string with negative slices and lowercase operator', () => {
   // eslint-disable-next-line no-template-curly-in-string
   const result = interpolate('h${hello[-4,-2],}lo', o)
   expect(result).toBe('hello')
+})
+
+test('interpolate string with out-of-bound slice', () => {
+  const o = { hello: 'HELLO' }
+  // eslint-disable-next-line no-template-curly-in-string
+  const result = interpolate('hello${hello[100]}', o)
+  expect(result).toBe('hello')
+})
+
+test('string slice examples', () => {
+  // Source: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/slice
+  // eslint-disable-next-line no-template-curly-in-string
+  expect(interpolate('${text[1, 8]}', { text: 'The morning is upon us.' })).toBe('he morn')
+  // eslint-disable-next-line no-template-curly-in-string
+  expect(interpolate('${text[4, -2]}', { text: 'The morning is upon us.' })).toBe('morning is upon u')
+  // eslint-disable-next-line no-template-curly-in-string
+  expect(interpolate('${text[12]}', { text: 'The morning is upon us.' })).toBe('is upon us.')
+  // eslint-disable-next-line no-template-curly-in-string
+  expect(interpolate('${text[30]}', { text: 'The morning is upon us.' })).toBe('')
+  // eslint-disable-next-line no-template-curly-in-string
+  expect(interpolate('${text[-3]}', { text: 'The morning is upon us.' })).toBe('us.')
+  // eslint-disable-next-line no-template-curly-in-string
+  expect(interpolate('${text[-3, -1]}', { text: 'The morning is upon us.' })).toBe('us')
+  // eslint-disable-next-line no-template-curly-in-string
+  expect(interpolate('${text[0, -1]}', { text: 'The morning is upon us.' })).toBe('The morning is upon us')
+  // eslint-disable-next-line no-template-curly-in-string
+  expect(interpolate('${text[-11, 16]}', { text: 'The morning is upon us.' })).toBe('is u')
+  // eslint-disable-next-line no-template-curly-in-string
+  expect(interpolate('${text[11, -7]}', { text: 'The morning is upon us.' })).toBe(' is u')
+  // eslint-disable-next-line no-template-curly-in-string
+  expect(interpolate('${text[-5, -1]}', { text: 'The morning is upon us.' })).toBe('n us')
 })
