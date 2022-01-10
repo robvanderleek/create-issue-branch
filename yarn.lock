@@ -4750,10 +4750,10 @@ probot@^11.0.6:
     update-notifier "^5.0.1"
     uuid "^8.3.2"
 
-probot@^12.1.1:
-  version "12.1.1"
-  resolved "https://registry.yarnpkg.com/probot/-/probot-12.1.1.tgz#ff29a3b56fdd596f121d8fc4e01c1560a6bfc677"
-  integrity sha512-ETuk/uRldzV58KwLCfXqAfdXTNDwT4NvHoWnigBFXACYO0DhORAxAd0gwK1HpRgl3ROgyPr5f7pKQCP3g3FFVw==
+probot@^12.1.4:
+  version "12.1.4"
+  resolved "https://registry.yarnpkg.com/probot/-/probot-12.1.4.tgz#b5821952961908e5c6419e26f15a186426adf0a5"
+  integrity sha512-pbvXXeZwIdi/vWk0Xtxe78ElDvczhzEzOjWjfxINyHCAA5cHaXF7+yX/bnDRZ9O0mEJB472H/NcMrT81Uy7kVg==
   dependencies:
     "@octokit/core" "^3.2.4"
     "@octokit/plugin-enterprise-compatibility" "^1.2.8"
