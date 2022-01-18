@@ -38,7 +38,7 @@
   "devDependencies": {
     "@vercel/ncc": "^0.31",
     "jest": "^27.4.7",
-    "nock": "^13.1.4",
+    "nock": "^13.2.2",
     "nodemon": "^2.0.14",
     "smee-client": "^1.2.2",
     "standard": "^16.0.4"
