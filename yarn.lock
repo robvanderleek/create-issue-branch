@@ -950,15 +950,6 @@
   resolved "https://registry.yarnpkg.com/@octokit/webhooks-types/-/webhooks-types-4.12.0.tgz#add8b98d60ab42e965c4ba31040097f810e222de"
   integrity sha512-G0k7CoS9bK+OI7kPHgqi1KqK4WhrjDQSjy0wJI+0OTx/xvbHUIZDeqatY60ceeRINP/1ExEk6kTARboP0xavEw==
 
-"@octokit/webhooks@7.21.0":
-  version "7.21.0"
-  resolved "https://registry.yarnpkg.com/@octokit/webhooks/-/webhooks-7.21.0.tgz#2aee3404aa311740a5f4ea37b070268752e21b02"
-  integrity sha512-Mj7Pa6JZgSjfzQfYF3Bf5KpyhzEBv4kHbj2EjCB/vMQiZCiiW30j5rS6t/d0ZN0FBrlSOuJIT+YU8IJt30VyWA==
-  dependencies:
-    "@octokit/request-error" "^2.0.2"
-    aggregate-error "^3.1.0"
-    debug "^4.0.0"
-
 "@octokit/webhooks@^9.8.4":
   version "9.17.0"
   resolved "https://registry.yarnpkg.com/@octokit/webhooks/-/webhooks-9.17.0.tgz#81140b2e127157aa9817d085cd8758545e4a72e4"
@@ -969,14 +960,14 @@
     "@octokit/webhooks-types" "4.12.0"
     aggregate-error "^3.1.0"
 
-"@probot/adapter-github-actions@^3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@probot/adapter-github-actions/-/adapter-github-actions-3.0.1.tgz#25ba1a47c241aeb96f20ec6ff5a7610a650bd892"
-  integrity sha512-RIn7H0UF9ngR+rz9gLjY602Tub+01NjDaTvNa0MXlnCKHLnX6O8KxTs0bVTIsk6W5Y2H8+ITzY8QJK0KOaNowA==
+"@probot/adapter-github-actions@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@probot/adapter-github-actions/-/adapter-github-actions-3.1.0.tgz#67b83cd9e43ec87bc6498d7505385e4dbded9e80"
+  integrity sha512-2pxOy15UuqQifEB5/EpNLHbdGEeAyO8xHmRXLZ684xOWha02XhKRx/5Zw5Ier8mkXiLSDx+suzSK5zQb4pmfcw==
   dependencies:
     "@actions/core" "^1.2.6"
     pino "^6.11.0"
-    probot "^11.0.6"
+    probot "^12.1.4"
     through2 "^4.0.2"
 
 "@probot/get-private-key@^1.1.0":
@@ -1194,7 +1185,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/ioredis@^4.17.8", "@types/ioredis@^4.27.1":
+"@types/ioredis@^4.27.1":
   version "4.28.1"
   resolved "https://registry.yarnpkg.com/@types/ioredis/-/ioredis-4.28.1.tgz#27d66f4c0540145826d984b6d0a5b54bbb88c32a"
   integrity sha512-raYHPqRWrfnEoym94BY28mG1+tcZqh3dsp2q7x5IyMAAEvIdu+H0X8diASMpncIm+oHyH9dalOeOnGOL/YnuOA==
@@ -2125,7 +2116,7 @@ debug@2.6.9, debug@^2.6.9:
   dependencies:
     ms "2.0.0"
 
-debug@4, debug@^4.0.0, debug@^4.0.1, debug@^4.1.0, debug@^4.1.1, debug@^4.3.1:
+debug@4, debug@^4.0.1, debug@^4.1.0, debug@^4.1.1, debug@^4.3.1:
   version "4.3.2"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.2.tgz#f0a49c18ac8779e31d4a0c6029dfb76873c7428b"
   integrity sha512-mOp8wKcvj7XxC78zLgw/ZA+6TSgkoE2C/ienthhRD298T7UNwAg9diBpLRxC0mOezLl4B0xV7M0cCO6P/O0Xhw==
@@ -3253,7 +3244,7 @@ internal-slot@^1.0.3:
     has "^1.0.3"
     side-channel "^1.0.4"
 
-ioredis@^4.19.2, ioredis@^4.27.8:
+ioredis@^4.27.8:
   version "4.28.0"
   resolved "https://registry.yarnpkg.com/ioredis/-/ioredis-4.28.0.tgz#5a2be3f37ff2075e2332f280eaeb02ab4d9ff0d3"
   integrity sha512-I+zkeeWp3XFgPT2CtJKxvaF5FjGBGt4yGYljRjQecdQKteThuAsKqffeF1lgHVlYnuNeozRbPOCDNZ7tDWPeig==
@@ -4887,51 +4878,10 @@ pretty-format@^27.4.6:
     ansi-styles "^5.0.0"
     react-is "^17.0.1"
 
-probot@^11.0.6:
-  version "11.4.1"
-  resolved "https://registry.yarnpkg.com/probot/-/probot-11.4.1.tgz#c21c6483a41594917f636bddf6a253b0600e5b95"
-  integrity sha512-kxNImVNZIheWtDUFbQSp0F1Qb7EEi4MvZRtKFBQPS3GSklC+u4oqnILfH4GsmXs0g+brrIX7g8qf/SUyDkw2sw==
-  dependencies:
-    "@octokit/core" "^3.2.4"
-    "@octokit/plugin-enterprise-compatibility" "^1.2.8"
-    "@octokit/plugin-paginate-rest" "^2.6.2"
-    "@octokit/plugin-rest-endpoint-methods" "^5.0.1"
-    "@octokit/plugin-retry" "^3.0.6"
-    "@octokit/plugin-throttling" "^3.3.4"
-    "@octokit/types" "^6.1.1"
-    "@octokit/webhooks" "7.21.0"
-    "@probot/get-private-key" "^1.1.0"
-    "@probot/octokit-plugin-config" "^1.0.0"
-    "@probot/pino" "^2.2.0"
-    "@types/express" "^4.17.9"
-    "@types/ioredis" "^4.17.8"
-    "@types/pino" "^6.3.4"
-    "@types/pino-http" "^5.0.6"
-    "@types/update-notifier" "^5.0.0"
-    commander "^6.2.0"
-    deepmerge "^4.2.2"
-    deprecation "^2.3.1"
-    dotenv "^8.2.0"
-    eventsource "^1.0.7"
-    express "^4.17.1"
-    hbs "^4.1.1"
-    ioredis "^4.19.2"
-    js-yaml "^3.14.1"
-    lru-cache "^6.0.0"
-    octokit-auth-probot "^1.2.2"
-    pino "^6.7.0"
-    pino-http "^5.3.0"
-    pkg-conf "^3.1.0"
-    resolve "^1.19.0"
-    semver "^7.3.4"
-    update-dotenv "^1.1.1"
-    update-notifier "^5.0.1"
-    uuid "^8.3.2"
-
-probot@^12.1.1:
-  version "12.1.1"
-  resolved "https://registry.yarnpkg.com/probot/-/probot-12.1.1.tgz#ff29a3b56fdd596f121d8fc4e01c1560a6bfc677"
-  integrity sha512-ETuk/uRldzV58KwLCfXqAfdXTNDwT4NvHoWnigBFXACYO0DhORAxAd0gwK1HpRgl3ROgyPr5f7pKQCP3g3FFVw==
+probot@^12.1.1, probot@^12.1.4:
+  version "12.1.4"
+  resolved "https://registry.yarnpkg.com/probot/-/probot-12.1.4.tgz#b5821952961908e5c6419e26f15a186426adf0a5"
+  integrity sha512-pbvXXeZwIdi/vWk0Xtxe78ElDvczhzEzOjWjfxINyHCAA5cHaXF7+yX/bnDRZ9O0mEJB472H/NcMrT81Uy7kVg==
   dependencies:
     "@octokit/core" "^3.2.4"
     "@octokit/plugin-enterprise-compatibility" "^1.2.8"
