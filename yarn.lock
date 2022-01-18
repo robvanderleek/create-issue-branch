@@ -4878,10 +4878,10 @@ pretty-format@^27.4.6:
     ansi-styles "^5.0.0"
     react-is "^17.0.1"
 
-probot@^12.1.1, probot@^12.1.4:
-  version "12.1.4"
-  resolved "https://registry.yarnpkg.com/probot/-/probot-12.1.4.tgz#b5821952961908e5c6419e26f15a186426adf0a5"
-  integrity sha512-pbvXXeZwIdi/vWk0Xtxe78ElDvczhzEzOjWjfxINyHCAA5cHaXF7+yX/bnDRZ9O0mEJB472H/NcMrT81Uy7kVg==
+probot@^12.1.4, probot@^12.2.0:
+  version "12.2.0"
+  resolved "https://registry.yarnpkg.com/probot/-/probot-12.2.0.tgz#9411ec36a96082c6487076366db1e076da1852b8"
+  integrity sha512-8QO0G82Pf5ksMaT+3sWdiP7C3Gd2H23h+BwkvqHlpVnxRLc96KWdwdjKuergpg3DK4661VLjUQa35uiMGctoZQ==
   dependencies:
     "@octokit/core" "^3.2.4"
     "@octokit/plugin-enterprise-compatibility" "^1.2.8"
