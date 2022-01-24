@@ -2841,7 +2841,7 @@ has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
-hbs@^4.1.1:
+hbs@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/hbs/-/hbs-4.2.0.tgz#10e40dcc24d5be7342df9636316896617542a32b"
   integrity sha512-dQwHnrfWlTk5PvG9+a45GYpg0VpX47ryKF8dULVd6DtwOE6TEcYQXQ5QM6nyOx/h7v3bvEQbdn19EDAcfUAgZg==
@@ -4620,10 +4620,10 @@ pretty-format@^27.4.6:
     ansi-styles "^5.0.0"
     react-is "^17.0.1"
 
-probot@^12.1.4, probot@^12.2.0:
-  version "12.2.0"
-  resolved "https://registry.yarnpkg.com/probot/-/probot-12.2.0.tgz#9411ec36a96082c6487076366db1e076da1852b8"
-  integrity sha512-8QO0G82Pf5ksMaT+3sWdiP7C3Gd2H23h+BwkvqHlpVnxRLc96KWdwdjKuergpg3DK4661VLjUQa35uiMGctoZQ==
+probot@^12.1.4, probot@^12.2.1:
+  version "12.2.1"
+  resolved "https://registry.yarnpkg.com/probot/-/probot-12.2.1.tgz#8328b3283957f094bd5f5123c56bbf4cf63d3a20"
+  integrity sha512-CpqulMQFwfkh/3J+TcizxQgXeTgIVhw8ZpYq4TU4uHoo1iSC8Xmyrfv2BHRNI1OWRQhCnpJXIWh5EzhpX24Fvw==
   dependencies:
     "@octokit/core" "^3.2.4"
     "@octokit/plugin-enterprise-compatibility" "^1.2.8"
@@ -4647,7 +4647,7 @@ probot@^12.1.4, probot@^12.2.0:
     dotenv "^8.2.0"
     eventsource "^1.0.7"
     express "^4.17.1"
-    hbs "^4.1.1"
+    hbs "^4.2.0"
     ioredis "^4.27.8"
     js-yaml "^3.14.1"
     lru-cache "^6.0.0"
