@@ -434,7 +434,7 @@ Be aware that draft pull requests are not available in all repositories types, s
 the [GitHub documentation](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/about-pull-requests#draft-pull-requests)
 for details.
 
-## Pull Request target branch based on issue label
+### Pull Request target branch based on issue label
 
 You can override the pull request target branch based on the issue label.
 
