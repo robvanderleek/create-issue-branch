@@ -25,13 +25,13 @@
   },
   "dependencies": {
     "@analytics/google-analytics": "^0.5.3",
-    "@probot/adapter-github-actions": "^3.1.0",
-    "@sentry/node": "^6.16.1",
+    "@probot/adapter-github-actions": "^3.1.1",
+    "@sentry/node": "^6.17.3",
     "@types/dlv": "^1.0.0",
     "analytics": "^0.7.21",
     "bunyan-sentry-stream": "^1.2.1",
     "js-tokens": "^7.0.0",
-    "probot": "^12.2.0",
+    "probot": "^12.2.1",
     "slice": "^1.0.0",
     "wildcard-match": "^5.1.2"
   },
