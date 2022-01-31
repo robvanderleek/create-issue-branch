@@ -25,6 +25,7 @@ discussion [continuous here](https://github.com/github/feedback/discussions/3441
 > - Automatically open a (draft) Pull Request
 > - Copy over attributes (such as labels and milestones) from the issue to the (draft) PR
 > - Configure PR target branch based on issue label
+> 
 > Perhaps the new GitHub button will be sufficient for your development workflow, if not give this App/Action a try. 
 
 * [Installation](#installation)
