@@ -272,6 +272,44 @@ test('use correct source branch', async () => {
   })
 })
 
+test('use configured target branch', async () => {
+  const createPR = jest.fn()
+  const ctx = helpers.getDefaultContext()
+  ctx.octokit.pulls.create = createPR
+  ctx.payload.issue.labels = [{ name: 'enhancement' }]
+  const config = { branches: [{ label: 'enhancement', prTarget: 'develop' }] }
+
+  await github.createPR({ log: () => { } }, ctx, config, 'robvanderleek', 'issue-1')
+  expect(createPR).toHaveBeenCalledWith({
+    owner: 'robvanderleek',
+    repo: 'create-issue-branch',
+    draft: false,
+    base: 'develop',
+    head: 'issue-1',
+    body: 'closes #1',
+    title: 'Hello world'
+  })
+})
+
+test('configured source and target branch', async () => {
+  const createPR = jest.fn()
+  const ctx = helpers.getDefaultContext()
+  ctx.octokit.pulls.create = createPR
+  ctx.payload.issue.labels = [{ name: 'hotfix' }]
+  const config = { branches: [{ label: 'hotfix', name: 'develop', prTarget: 'hotfix' }] }
+
+  await github.createPR({ log: () => { } }, ctx, config, 'robvanderleek', 'issue-1')
+  expect(createPR).toHaveBeenCalledWith({
+    owner: 'robvanderleek',
+    repo: 'create-issue-branch',
+    draft: false,
+    base: 'hotfix',
+    head: 'issue-1',
+    body: 'closes #1',
+    title: 'Hello world'
+  })
+})
+
 test('copy Issue milestone into PR', async () => {
   const updateIssue = jest.fn()
   const createCommit = () => ({ data: { sha: 'abcd1234' } })
