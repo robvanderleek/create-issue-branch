@@ -17,6 +17,17 @@ Built in response to this feature request issue:
 https://github.com/isaacs/github/issues/1125 (that issue is now closed and the
 discussion [continuous here](https://github.com/github/feedback/discussions/3441))
 
+> **UPDATE 31/1/2022**: GitHub will add the "Create a branch" button to the web UI soon 
+> (see the [discussion here](https://github.com/github/feedback/discussions/3441)). This App/Action
+> offers some unique features not available in the new GitHub web UI button, such as:
+> - Configure branch name format
+> - Configure source branch based on label
+> - Automatically open a (draft) Pull Request
+> - Copy over attributes (such as labels and milestones) from the issue to the (draft) PR
+> - Configure PR target branch based on issue label
+> 
+> Perhaps the new GitHub button will be sufficient for your development workflow, if not give this App/Action a try. 
+
 * [Installation](#installation)
 * [Usage](#usage)
 * [Configuration](#configuration)
@@ -221,7 +232,8 @@ branchName: '${issue.number}-${%SOME_VAR}-${issue.title}'
 ### Substitution value slicing
 
 Substitution values can be "sliced" with the slice operator: `[start, end]`. This operator behaves exactly like the
-[JavaScript String `slice()` method](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/slice).
+[JavaScript String `slice()` method](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/slice)
+.
 
 For example, put this in your configuration YAML to limit issue titles to 64 characters:
 
@@ -421,6 +433,20 @@ openPR: true
 Be aware that draft pull requests are not available in all repositories types, see
 the [GitHub documentation](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/about-pull-requests#draft-pull-requests)
 for details.
+
+## Pull Request target branch based on issue label
+
+You can override the pull request target branch based on the issue label.
+
+For example, if you want (draft) pull requests for issues with the `bug` label to have the `development` branch as a
+source and have the pull request target branch set to `hotfix`, add this to your configuration YAML:
+
+```yaml
+branches:
+  - label: bug
+    name: development
+    prTarget: hotfix
+```
 
 ### Copy attributes from issue
 

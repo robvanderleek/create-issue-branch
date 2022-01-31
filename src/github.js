@@ -162,6 +162,17 @@ function getSourceBranch (ctx, config) {
   }
 }
 
+function getPrTargetBranch (ctx, config) {
+  const branchConfig = getIssueBranchConfig(ctx, config)
+  if (branchConfig && branchConfig.prTarget) {
+    return branchConfig.prTarget
+  } else if (branchConfig && branchConfig.name) {
+    return branchConfig.name
+  } else {
+    return getDefaultBranch(ctx, config)
+  }
+}
+
 async function getSourceBranchHeadSha (ctx, config, log) {
   const sourceBranch = getSourceBranch(ctx, config)
   let result = await getBranchHeadSha(ctx, sourceBranch)
@@ -248,7 +259,7 @@ async function createBranch (ctx, config, branchName, sha, log) {
 async function createPR (app, ctx, config, username, branchName) {
   const owner = context.getRepoOwnerLogin(ctx)
   const repo = context.getRepoName(ctx)
-  const base = getSourceBranch(ctx, config, app.log)
+  const base = getPrTargetBranch(ctx, config, app.log)
   const title = context.getIssueTitle(ctx)
   const issueNumber = context.getIssueNumber(ctx)
   const draft = Config.shouldOpenDraftPR(config)
