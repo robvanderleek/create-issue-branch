@@ -17,12 +17,15 @@ Built in response to this feature request issue:
 https://github.com/isaacs/github/issues/1125 (that issue is now closed and the
 discussion [continuous here](https://github.com/github/feedback/discussions/3441))
 
-> **UPDATE 31/1/2022**: GitHub will add a "Create a branch" button to the web UI soon 
-> (see the [discussion here](https://github.com/github/feedback/discussions/3441)). However, this App/Action still
-> has unique features, such as:
-> - Configure branch name 
+> **UPDATE 31/1/2022**: GitHub will add the "Create a branch" button to the web UI soon 
+> (see the [discussion here](https://github.com/github/feedback/discussions/3441)). This App/Action
+> offers some unique features not available in the new GitHub web UI button, such as:
+> - Configure branch name format
 > - Configure source branch based on label
-> - 
+> - Automatically open a (draft) Pull Request
+> - Copy over attributes (such as labels and milestones) from the issue to the (draft) PR
+> - Configure PR target branch based on issue label
+> Perhaps the new GitHub button will be sufficient for your development workflow, if not give this App/Action a try. 
 
 * [Installation](#installation)
 * [Usage](#usage)
