@@ -3,7 +3,7 @@ const googleAnalytics = require('@analytics/google-analytics').default
 const wcMatch = require('wildcard-match')
 
 // Regexp below is a stricter implementation of https://git-scm.com/docs/git-check-ref-format
-const GIT_SAFE_REGEXP = /([.~^:?*[\]@{}\\"'()`,]|\s)+/g
+const GIT_SAFE_REGEXP = /([.~^:?*[\]@{}<>|\\"'()`,]|\s)+/g
 
 function makePrefixGitSafe (s, { replaceChars = '', replacementChar = '_' } = {}) {
   let result = trim(s, ' ').replace(GIT_SAFE_REGEXP, replacementChar)
