@@ -15,11 +15,10 @@ after commenting on an issue with a ChatOps command: `/create-issue-branch` or `
 
 Built in response to this feature request issue:
 https://github.com/isaacs/github/issues/1125 (that issue is now closed and the
-discussion [continuous here](https://github.com/github/feedback/discussions/3441))
+discussion [continuous here](https://github.com/github/feedback/discussions/3441) and [here](https://github.com/github/feedback/discussions/12290))
 
-> **UPDATE 31/1/2022**: GitHub will add the "Create a branch" button to the web UI soon 
-> (see the [discussion here](https://github.com/github/feedback/discussions/3441)). This App/Action
-> offers some unique features not available in the new GitHub web UI button, such as:
+> **UPDATE 2/2/2022**: GitHub added a "Create a branch" button [to the web UI](https://github.blog/changelog/2022-03-02-create-a-branch-for-an-issue/)
+> This App/Action offers some unique features not available in the new GitHub web UI button, such as:
 > - Configure branch name format
 > - Configure source branch based on label
 > - Automatically open a (draft) Pull Request
