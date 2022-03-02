@@ -18,6 +18,7 @@ https://github.com/isaacs/github/issues/1125 (that issue is now closed and the
 discussion [continuous here](https://github.com/github/feedback/discussions/3441) and [here](https://github.com/github/feedback/discussions/12290))
 
 > **UPDATE 2/2/2022**: GitHub added a "Create a branch" button [to the web UI](https://github.blog/changelog/2022-03-02-create-a-branch-for-an-issue/)
+>
 > This App/Action offers some unique features not available in the new GitHub web UI button, such as:
 > - Configure branch name format
 > - Configure source branch based on label
