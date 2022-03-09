@@ -1,4 +1,5 @@
 name: Prod
+concurrency: prod_environment
 on: 
   push:
     branches:
