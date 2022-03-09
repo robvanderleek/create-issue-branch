@@ -20,11 +20,14 @@ discussion [continuous here](https://github.com/github/feedback/discussions/3441
 > **UPDATE 2/2/2022**: GitHub added a "Create a branch" button [to the web UI](https://github.blog/changelog/2022-03-02-create-a-branch-for-an-issue/)
 >
 > This App/Action offers some unique features not available in the new GitHub web UI button, such as:
-> - Configure branch name format
-> - Configure source branch based on label
-> - Automatically open a (draft) Pull Request
-> - Copy over attributes (such as labels and milestones) from the issue to the (draft) PR
-> - Configure PR target branch based on issue label
+> 
+> - [Configure branch name format](https://github.com/robvanderleek/create-issue-branch#branch-names)
+> - [Configure default source branch](https://github.com/robvanderleek/create-issue-branch#default-source-branch)
+> - [Configure source branch based on label](https://github.com/robvanderleek/create-issue-branch#source-branch-based-on-issue-label)
+> - [Automatically open a (draft) Pull Request](https://github.com/robvanderleek/create-issue-branch#automatically-open-a-pull-request)
+> - [Copy over attributes (such as labels and milestones) from the issue to the (draft) PR] (https://github.com/robvanderleek/create-issue-branch#copy-attributes-from-issue)
+> - [Configure PR target branch based on issue label](https://github.com/robvanderleek/create-issue-branch#pull-request-target-branch-based-on-issue-label)
+> - [Feature requests are always welcome!](https://github.com/robvanderleek/create-issue-branch#feedback-suggestions-and-bug-reports)
 > 
 > Perhaps the new GitHub button will be sufficient for your development workflow, if not give this App/Action a try. 
 
