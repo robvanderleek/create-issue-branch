@@ -28,7 +28,7 @@
     "@probot/adapter-github-actions": "^3.1.1",
     "@sentry/node": "^6.18.1",
     "@types/dlv": "^1.0.0",
-    "analytics": "^0.8.0",
+    "analytics": "^0.8.1",
     "bunyan-sentry-stream": "^1.2.1",
     "js-tokens": "^7.0.0",
     "probot": "^12.2.1",
