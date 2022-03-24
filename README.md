@@ -25,7 +25,7 @@ discussion [continuous here](https://github.com/github/feedback/discussions/3441
 > - [Configure default source branch](https://github.com/robvanderleek/create-issue-branch#default-source-branch)
 > - [Configure source branch based on label](https://github.com/robvanderleek/create-issue-branch#source-branch-based-on-issue-label)
 > - [Automatically open a (draft) Pull Request](https://github.com/robvanderleek/create-issue-branch#automatically-open-a-pull-request)
-> - [Copy over attributes (such as labels and milestones) from the issue to the (draft) PR] (https://github.com/robvanderleek/create-issue-branch#copy-attributes-from-issue)
+> - [Copy over attributes (such as labels and milestones) from the issue to the (draft) PR](https://github.com/robvanderleek/create-issue-branch#copy-attributes-from-issue)
 > - [Configure PR target branch based on issue label](https://github.com/robvanderleek/create-issue-branch#pull-request-target-branch-based-on-issue-label)
 > - [Feature requests are always welcome!](https://github.com/robvanderleek/create-issue-branch#feedback-suggestions-and-bug-reports)
 > 
