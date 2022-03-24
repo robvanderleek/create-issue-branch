@@ -147,19 +147,28 @@ _Remember to always pick the simplest issue workflow that fits your poject_.
 
 # Configuration
 
-This app does not require a configuration. However, if you want to override the default behaviour you can do so by
-placing a YAML file in your repository at the location: `.github/issue-branch.yml` with the overrides.
+This app does not require a configuration. However, if you want to override the
+default behaviour you can do so by placing a YAML file in your repository at
+the location: `.github/issue-branch.yml` with the overrides.
 
-If the app has a problem with your configuration YAML (e.g.: invalid content) it will create an issue with the title "
-Error in Create Issue Branch app configuration" in the repo. Subsequent runs with an invalid configuration will not
-create new issues, only one stays open.
+If the app has a problem with your configuration YAML (e.g.: invalid content)
+it will create an issue with the title " Error in Create Issue Branch app
+configuration" in the repo. Subsequent runs with an invalid configuration will
+not create new issues, only one stays open.
 
 ## Organization/User wide configuration
 
-Organization/user wide configuration prevents a configuration in every individual repo and is supported by putting the
-YAML file `.github/issue-branch.yml`
-in a repository called `.github`. So, if your organization/username is `acme`, the full path becomes:
+Organization/user wide configuration prevents a configuration in every
+individual repo and is supported by putting the YAML file
+`.github/issue-branch.yml` in a repository called `.github`. So, if your
+organization/username is `acme`, the full path becomes:
 `https://github.com/acme/.github/blob/main/.github/issue-branch.yml`.
+
+Remember to give the GitHub App access to the `.github` repository, otherwise
+it can't load the organization/user wide configuration.
+
+Reposotory configuration files override the organization/user wide configuration
+file.
 
 ## Mode: auto or chatops
 

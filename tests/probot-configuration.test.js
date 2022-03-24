@@ -355,3 +355,23 @@ test('support .yaml extension for configuration file', async () => {
 
   expect(sourceSha).toBe('abcd1234')
 })
+
+test('support global configuration file in user/org .github repo', async () => {
+  helpers.nockNonExistingBranch('issue-1-Test_issue')
+  helpers.nockExistingBranch('dev', 'abcdef01')
+  helpers.nockExistingBranch('master', '12345678')
+  const ymlConfig = 'silent: true\ndefaultBranch: dev'
+  helpers.nockGlobalConfig(ymlConfig)
+  let sourceSha = ''
+
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/git/refs', (body) => {
+      sourceSha = body.sha
+      return true
+    })
+    .reply(200)
+
+  await probot.receive({ name: 'issues', payload: helpers.issueAssignedWithLabelsPayload('enhancement') })
+
+  expect(sourceSha).toBe('abcdef01')
+})
