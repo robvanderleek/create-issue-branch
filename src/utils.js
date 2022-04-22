@@ -3,7 +3,7 @@ const googleAnalytics = require('@analytics/google-analytics').default
 const wcMatch = require('wildcard-match')
 
 // Regexp below is a stricter implementation of https://git-scm.com/docs/git-check-ref-format
-const GIT_SAFE_REGEXP = /([.~^:?*[\]@{}\\"'()`,]|\s)+/g
+const GIT_SAFE_REGEXP = /([.~^:?*[\]@{}<>|\\"'()`,]|\s)+/g
 
 function makePrefixGitSafe (s, { replaceChars = '', replacementChar = '_' } = {}) {
   let result = trim(s, ' ').replace(GIT_SAFE_REGEXP, replacementChar)
@@ -26,34 +26,6 @@ function trim (str, ch) {
   while (start < end && str[start] === ch) ++start
   while (end > start && str[end - 1] === ch) --end
   return (start > 0 || end < str.length) ? str.substring(start, end) : str
-}
-
-const containsLowerCaseOperator = path => path.length > 0 && path.endsWith(',')
-
-const containsUpperCaseOperator = path => path.length > 0 && path.endsWith('^')
-
-function interpolate (s, obj, env) {
-  return s.replace(/[$]{([^}]+)}/g, function (_, path) {
-    let properties
-    if (containsLowerCaseOperator(path) || containsUpperCaseOperator(path)) {
-      properties = path.substring(0, path.length - 1).split('.')
-    } else {
-      properties = path.split('.')
-    }
-    let interpolated
-    if (properties[0].startsWith('%')) {
-      interpolated = env[properties[0].slice(1)]
-    } else {
-      interpolated = properties.reduce((prev, curr) => prev && prev[curr], obj)
-    }
-    if (containsLowerCaseOperator(path)) {
-      return interpolated.toLowerCase()
-    } else if (containsUpperCaseOperator(path)) {
-      return interpolated.toUpperCase()
-    } else {
-      return interpolated
-    }
-  })
 }
 
 function wildcardMatch (pattern, s) {
@@ -111,7 +83,6 @@ function logMemoryUsage (app) {
 module.exports = {
   makePrefixGitSafe: makePrefixGitSafe,
   makeGitSafe: makeGitSafe,
-  interpolate: interpolate,
   wildcardMatch: wildcardMatch,
   isProduction: isProduction,
   pushMetric: pushMetric,

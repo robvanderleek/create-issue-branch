@@ -25,12 +25,6 @@ function privateOrganizationRepoPayload (payload) {
   return payloadCopy
 }
 
-function nockAccessToken () {
-  nock('https://api.github.com')
-    .post('/app/installations/1296032/access_tokens')
-    .reply(200, { token: 'test' })
-}
-
 function nockEmptyConfig () {
   nock('https://api.github.com')
     .persist()
@@ -48,6 +42,15 @@ function nockConfig (yamlConfig) {
   nock('https://api.github.com')
     .persist()
     .get('/repos/robvanderleek/create-issue-branch/contents/.github%2Fissue-branch.yml')
+    .reply(200, yamlConfig)
+}
+
+function nockGlobalConfig (yamlConfig) {
+  nock('https://api.github.com')
+    .persist()
+    .get('/repos/robvanderleek/create-issue-branch/contents/.github%2Fissue-branch.yml')
+    .reply(404)
+    .get('/repos/robvanderleek/.github/contents/.github%2Fissue-branch.yml')
     .reply(200, yamlConfig)
 }
 
@@ -168,13 +171,19 @@ function initProbot () {
   return result
 }
 
+function nockAccessToken () {
+  nock('https://api.github.com')
+    .post('/app/installations/1296032/access_tokens')
+    .reply(200, { token: 'test' })
+}
+
 module.exports = {
   issueAssignedWithLabelsPayload: issueAssignedWithLabelsPayload,
   commentCreatedWithLabelsPayload: commentCreatedWithLabelsPayload,
   privateOrganizationRepoPayload: privateOrganizationRepoPayload,
-  nockAccessToken: nockAccessToken,
   nockEmptyConfig: nockEmptyConfig,
   nockConfig: nockConfig,
+  nockGlobalConfig: nockGlobalConfig,
   nockInstallation: nockInstallation,
   nockExistingBranch: nockExistingBranch,
   nockNonExistingBranch: nockNonExistingBranch,

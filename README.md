@@ -15,7 +15,21 @@ after commenting on an issue with a ChatOps command: `/create-issue-branch` or `
 
 Built in response to this feature request issue:
 https://github.com/isaacs/github/issues/1125 (that issue is now closed and the
-discussion [continuous here](https://github.com/github/feedback/discussions/3441))
+discussion [continuous here](https://github.com/github/feedback/discussions/3441) and [here](https://github.com/github/feedback/discussions/12290))
+
+> **UPDATE 2/2/2022**: GitHub added a "Create a branch" button [to the web UI](https://github.blog/changelog/2022-03-02-create-a-branch-for-an-issue/)
+>
+> This App/Action offers some unique features not available in the new GitHub web UI button, such as:
+> 
+> - [Configure branch name format](https://github.com/robvanderleek/create-issue-branch#branch-names)
+> - [Configure default source branch](https://github.com/robvanderleek/create-issue-branch#default-source-branch)
+> - [Configure source branch based on label](https://github.com/robvanderleek/create-issue-branch#source-branch-based-on-issue-label)
+> - [Automatically open a (draft) Pull Request](https://github.com/robvanderleek/create-issue-branch#automatically-open-a-pull-request)
+> - [Copy over attributes (such as labels and milestones) from the issue to the (draft) PR](https://github.com/robvanderleek/create-issue-branch#copy-attributes-from-issue)
+> - [Configure PR target branch based on issue label](https://github.com/robvanderleek/create-issue-branch#pull-request-target-branch-based-on-issue-label)
+> - [Feature requests are always welcome!](https://github.com/robvanderleek/create-issue-branch#feedback-suggestions-and-bug-reports)
+> 
+> Perhaps the new GitHub button will be sufficient for your development workflow, if not give this App/Action a try. 
 
 * [Installation](#installation)
 * [Usage](#usage)
@@ -133,19 +147,28 @@ _Remember to always pick the simplest issue workflow that fits your poject_.
 
 # Configuration
 
-This app does not require a configuration. However, if you want to override the default behaviour you can do so by
-placing a YAML file in your repository at the location: `.github/issue-branch.yml` with the overrides.
+This app does not require a configuration. However, if you want to override the
+default behaviour you can do so by placing a YAML file in your repository at
+the location: `.github/issue-branch.yml` with the overrides.
 
-If the app has a problem with your configuration YAML (e.g.: invalid content) it will create an issue with the title "
-Error in Create Issue Branch app configuration" in the repo. Subsequent runs with an invalid configuration will not
-create new issues, only one stays open.
+If the app has a problem with your configuration YAML (e.g.: invalid content)
+it will create an issue with the title " Error in Create Issue Branch app
+configuration" in the repo. Subsequent runs with an invalid configuration will
+not create new issues, only one stays open.
 
 ## Organization/User wide configuration
 
-Organization/user wide configuration prevents a configuration in every individual repo and is supported by putting the
-YAML file `.github/issue-branch.yml`
-in a repository called `.github`. So, if your organization/username is `acme`, the full path becomes:
+Organization/user wide configuration prevents a configuration in every
+individual repo and is supported by putting the YAML file
+`.github/issue-branch.yml` in a repository called `.github`. So, if your
+organization/username is `acme`, the full path becomes:
 `https://github.com/acme/.github/blob/main/.github/issue-branch.yml`.
+
+Remember to give the GitHub App access to the `.github` repository, otherwise
+it can't load the organization/user wide configuration.
+
+Reposotory configuration files override the organization/user wide configuration
+file.
 
 ## Mode: auto or chatops
 
@@ -218,6 +241,35 @@ this:
 branchName: '${issue.number}-${%SOME_VAR}-${issue.title}'
 ```
 
+### Substitution value slicing
+
+Substitution values can be "sliced" with the slice operator: `[start, end]`. This operator behaves exactly like the
+[JavaScript String `slice()` method](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/slice)
+.
+
+For example, put this in your configuration YAML to limit issue titles to 64 characters:
+
+```yaml
+branchName: '${issue.number}-${issue.title[0,64]}'
+```
+
+### Lowercase and uppercase substitutions
+
+Substitutions for `${...}` placeholders can be lowercased by putting a `,` before the closing curly. Likewise,
+substitutions can be uppercased by putting a `^` before the closing curly.
+
+For example, issue titles can be lowercased in branch names like this:
+
+```yaml
+branchName: '${issue.number}-${issue.title,}'
+```
+
+or if you want the complete title in uppercase:
+
+```yaml
+branchName: '${issue.number}-${issue.title^}'
+```
+
 ### Configure replacement character and replace arbitrary characters
 
 Characters that are not allowed in Git branch names are replaced by default with an underscore (`_`) character. You can
@@ -237,23 +289,6 @@ gitReplaceChars: 'ab/'
 ```
 
 The above configuration replaces all occurences of the characters 'a', 'b' and '/' in the branch title.
-
-### Lowercase and uppercase substitutions
-
-Substitutions for `${...}` placeholders can be lowercased by putting a `,` before the closing curly. Likewise,
-substitutions can be uppercased by putting a `^` before the closing curly.
-
-For example, issue titles can be lowercased in branch names like this:
-
-```yaml
-branchName: '${issue.number}-${issue.title,}'
-```
-
-or if you want the complete title in uppercase:
-
-```yaml
-branchName: '${issue.number}-${issue.title^}'
-```
 
 ## Automatically close issues after a pull request merge
 
@@ -410,6 +445,20 @@ openPR: true
 Be aware that draft pull requests are not available in all repositories types, see
 the [GitHub documentation](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/about-pull-requests#draft-pull-requests)
 for details.
+
+### Pull Request target branch based on issue label
+
+You can override the pull request target branch based on the issue label.
+
+For example, if you want (draft) pull requests for issues with the `bug` label to have the `development` branch as a
+source and have the pull request target branch set to `hotfix`, add this to your configuration YAML:
+
+```yaml
+branches:
+  - label: bug
+    name: development
+    prTarget: hotfix
+```
 
 ### Copy attributes from issue
 
