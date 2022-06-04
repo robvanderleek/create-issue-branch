@@ -39,7 +39,7 @@
     "@vercel/ncc": "^0.34",
     "jest": "^27.5.1",
     "nock": "^13.2.4",
-    "nodemon": "^2.0.15",
+    "nodemon": "^2.0.16",
     "smee-client": "^1.2.2",
     "standard": "^16.0.4"
   },
