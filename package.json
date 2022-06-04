@@ -31,12 +31,12 @@
     "analytics": "^0.8.1",
     "bunyan-sentry-stream": "^1.2.1",
     "js-tokens": "^7.0.0",
-    "probot": "^12.2.2",
+    "probot": "^12.2.3",
     "slice": "^1.0.0",
     "wildcard-match": "^5.1.2"
   },
   "devDependencies": {
-    "@vercel/ncc": "^0.33",
+    "@vercel/ncc": "^0.34",
     "jest": "^27.5.1",
     "nock": "^13.2.4",
     "nodemon": "^2.0.15",
