@@ -80,6 +80,16 @@ function logMemoryUsage (app) {
   }
 }
 
+function formatAsExpandingMarkdown (title, content) {
+  let result = ''
+  result += '<details open>\n'
+  result += `<summary><b>${title}</b></summary>\n`
+  result += '\n'
+  result += `${content}\n`
+  result += '</details>\n'
+  return result
+}
+
 module.exports = {
   makePrefixGitSafe: makePrefixGitSafe,
   makeGitSafe: makeGitSafe,
@@ -89,5 +99,6 @@ module.exports = {
   isRunningInGitHubActions: isRunningInGitHubActions,
   getStringLengthInBytes: getStringLengthInBytes,
   trimStringToByteLength: trimStringToByteLength,
-  logMemoryUsage: logMemoryUsage
+  logMemoryUsage: logMemoryUsage,
+  formatAsExpandingMarkdown: formatAsExpandingMarkdown
 }

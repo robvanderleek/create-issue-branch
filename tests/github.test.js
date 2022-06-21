@@ -1,5 +1,6 @@
 const github = require('../src/github')
 const helpers = require('./test-helpers')
+const { formatAsExpandingMarkdown } = require('../src/utils')
 
 test('get issue number from branch name', () => {
   expect(github.getIssueNumberFromBranchName('i12')).toBe(12)
@@ -221,14 +222,15 @@ test('copy Issue description into PR', async () => {
 
   await github.createPR({ log: () => { } }, ctx, { copyIssueDescriptionToPR: true, silent: false }, 'robvanderleek',
     'issue-1')
+
   expect(createPR).toHaveBeenCalledWith({
     owner: 'robvanderleek',
     repo: 'create-issue-branch',
-    draft: false,
-    base: 'master',
     head: 'issue-1',
-    body: 'This is the description\ncloses #1',
-    title: 'Hello world'
+    base: 'master',
+    title: 'Hello world',
+    body: formatAsExpandingMarkdown('Original issue description', 'This is the description') + '\ncloses #1',
+    draft: false
   })
 })
 
