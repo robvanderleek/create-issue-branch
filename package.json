@@ -26,21 +26,21 @@
   "dependencies": {
     "@analytics/google-analytics": "^0.5.3",
     "@probot/adapter-github-actions": "^3.1.1",
-    "@sentry/node": "^6.18.2",
+    "@sentry/node": "^6.19.7",
     "@types/dlv": "^1.0.0",
     "analytics": "^0.8.1",
     "bunyan-sentry-stream": "^1.2.1",
-    "js-tokens": "^7.0.0",
-    "probot": "^12.2.2",
+    "js-tokens": "^8.0.0",
+    "probot": "^12.2.3",
     "slice": "^1.0.0",
     "wildcard-match": "^5.1.2"
   },
   "devDependencies": {
-    "@vercel/ncc": "^0.33",
-    "jest": "^27.5.1",
+    "@vercel/ncc": "^0.34",
+    "jest": "^28.1.0",
     "nock": "^13.2.4",
-    "nodemon": "^2.0.15",
-    "smee-client": "^1.2.2",
+    "nodemon": "^2.0.16",
+    "smee-client": "^1.2.3",
     "standard": "^16.0.4"
   },
   "engines": {
