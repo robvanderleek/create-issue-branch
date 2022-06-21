@@ -102,7 +102,7 @@ test('version', () => {
 
 test('format expanding markdown', () => {
   const result = formatAsExpandingMarkdown('Foo', 'Bar\n- Foo\n- Bar')
-  const expected = `<details open>
+  const expected = `<details>
 <summary><b>Foo</b></summary>
 
 Bar

@@ -82,7 +82,7 @@ function logMemoryUsage (app) {
 
 function formatAsExpandingMarkdown (title, content) {
   let result = ''
-  result += '<details open>\n'
+  result += '<details>\n'
   result += `<summary><b>${title}</b></summary>\n`
   result += '\n'
   result += `${content}\n`
