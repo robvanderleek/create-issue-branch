@@ -272,7 +272,7 @@ async function createPR (app, ctx, config, username, branchName) {
       `Create ${draftText}PR for #${issueNumber}`)
     await updateReference(ctx, branchName, emptyCommitSha)
     const { data: pr } = await ctx.octokit.pulls.create(
-      { owner, repo, head: branchName, base, title, body: getPrBody(ctx, config), draft: draft })
+      { owner, repo, head: branchName, base, title, body: getPrBody(app, ctx, config), draft: draft })
     app.log(`${draft ? 'Created draft' : 'Created'} pull request ${pr.number} for branch ${branchName}`)
     await copyIssueAttributesToPr(app, ctx, config, pr)
   } catch (e) {
@@ -281,10 +281,11 @@ async function createPR (app, ctx, config, username, branchName) {
   }
 }
 
-function getPrBody (ctx, config) {
+function getPrBody (app, ctx, config) {
   const issueNumber = context.getIssueNumber(ctx)
   let result = ''
   if (Config.copyIssueDescriptionToPR(config)) {
+    app.log('Copying issue description to PR')
     const issueDescription = context.getIssueDescription(ctx)
     if (issueDescription) {
       result += formatAsExpandingMarkdown('Original issue description', issueDescription)
