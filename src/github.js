@@ -3,6 +3,7 @@ const utils = require('./utils')
 const context = require('./context')
 const plans = require('./plans')
 const { interpolate } = require('./interpolate')
+const { formatAsExpandingMarkdown } = require('./utils')
 
 async function createIssueBranch (app, ctx, branchName, config) {
   if (await hasValidSubscriptionForRepo(app, ctx)) {
@@ -286,10 +287,11 @@ function getPrBody (ctx, config) {
   if (Config.copyIssueDescriptionToPR(config)) {
     const issueDescription = context.getIssueDescription(ctx)
     if (issueDescription) {
-      result = `${issueDescription}\n`
+      result += formatAsExpandingMarkdown('Original issue description', issueDescription)
+      result += '\n'
     }
   }
-  result = result + `closes #${issueNumber}`
+  result += `closes #${issueNumber}`
   return result
 }
 
