@@ -1,7 +1,7 @@
 /**
- * The code in this file was inspired by (but heavily modified): https://github.com/tcbyrd/probot-report-error
+ * The code in this block was inspired by (but heavily modified): https://github.com/tcbyrd/probot-report-error
  */
-
+/* === */
 const issueTitle = 'Error in Create Issue Branch app configuration'
 
 async function findConfigurationErrorIssue (ctx) {
@@ -35,6 +35,7 @@ async function handleError (ctx, err) {
     return createConfigurationErrorIssue(ctx, err)
   }
 }
+/* === */
 
 async function load (ctx) {
   try {
