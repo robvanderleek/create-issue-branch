@@ -87,3 +87,8 @@ test('copy issue description, labels and assignee to PR', () => {
   expect(Config.copyIssueMilestoneToPR({})).toBeFalsy()
   expect(Config.copyIssueMilestoneToPR({ copyIssueMilestoneToPR: true })).toBeTruthy()
 })
+
+test('PR skip CI', () => {
+  expect(Config.prSkipCI({})).toBeFalsy()
+  expect(Config.prSkipCI({ prSkipCI: true })).toBeTruthy()
+})
