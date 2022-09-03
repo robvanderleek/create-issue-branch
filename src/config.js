@@ -107,6 +107,10 @@ function copyIssueMilestoneToPR (config) {
   return 'copyIssueMilestoneToPR' in config && config.copyIssueMilestoneToPR === true
 }
 
+function prSkipCI (config) {
+  return 'prSkipCI' in config && config.prSkipCI === true
+}
+
 function isChatOpsCommand (s) {
   if (s) {
     const parts = s.trim().toLowerCase().split(/\s/)
@@ -169,5 +173,6 @@ module.exports = {
   copyIssueLabelsToPR: copyIssueLabelsToPR,
   copyIssueAssigneeToPR: copyIssueAssigneeToPR,
   copyIssueProjectsToPR: copyIssueProjectsToPR,
-  copyIssueMilestoneToPR: copyIssueMilestoneToPR
+  copyIssueMilestoneToPR: copyIssueMilestoneToPR,
+  prSkipCI: prSkipCI
 }

@@ -261,22 +261,31 @@ async function createPR (app, ctx, config, username, branchName) {
   const repo = context.getRepoName(ctx)
   const base = getPrTargetBranch(ctx, config, app.log)
   const title = context.getIssueTitle(ctx)
-  const issueNumber = context.getIssueNumber(ctx)
   const draft = Config.shouldOpenDraftPR(config)
-  const draftText = draft ? 'draft ' : ''
   try {
     const commitSha = await getBranchHeadSha(ctx, branchName)
     const treeSha = await getCommitTreeSha(ctx, commitSha)
-    const emptyCommitSha = await createCommit(ctx, commitSha, treeSha, username,
-      `Create ${draftText}PR for #${issueNumber}`)
+    const emptyCommitSha = await createCommit(ctx, commitSha, treeSha, username, getCommitText(ctx, config))
     await updateReference(ctx, branchName, emptyCommitSha)
     const { data: pr } = await ctx.octokit.pulls.create(
       { owner, repo, head: branchName, base, title, body: getPrBody(ctx, config), draft: draft })
     app.log(`${draft ? 'Created draft' : 'Created'} pull request ${pr.number} for branch ${branchName}`)
     await copyIssueAttributesToPr(app, ctx, config, pr)
   } catch (e) {
-    app.log(`Could not create ${draftText}PR (${e.message})`)
-    await addComment(ctx, config, `Could not create ${draftText}PR (${e.message})`)
+    app.log(`Could not create PR (${e.message})`)
+    await addComment(ctx, config, `Could not create PR (${e.message})`)
+  }
+}
+
+function getCommitText (ctx, config) {
+  const draft = Config.shouldOpenDraftPR(config)
+  const draftText = draft ? 'draft ' : ''
+  const issueNumber = context.getIssueNumber(ctx)
+  const text = `Create ${draftText}PR for #${issueNumber}`
+  if (Config.prSkipCI(config)) {
+    return text + '\n[skip ci]'
+  } else {
+    return text
   }
 }
 
