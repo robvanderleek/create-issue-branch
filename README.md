@@ -480,6 +480,16 @@ copyIssueProjectsToPR: true
 copyIssueMilestoneToPR: true
 ```
 
+### Skip CI workflows 
+
+Automatically opening a (draft) PR for an issue requires an empty commit on the newly created branch (this is a 
+requirement by GitHub). This first empty commit might trigger GitHub Actions CI workflows. You can skip these 
+workflows with the following configuration option:
+
+```yaml
+prSkipCI: true
+```
+
 ## Change message in issue comments
 
 The default message displayed in the issue comments after a branch is created (and

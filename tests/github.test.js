@@ -328,3 +328,29 @@ test('copy Issue milestone into PR', async () => {
     owner: 'robvanderleek', repo: 'create-issue-branch', issue_number: 123, milestone: 456
   })
 })
+
+test('empty commit text', async () => {
+  const createCommit = jest.fn()
+  const ctx = helpers.getDefaultContext()
+  ctx.octokit.pulls.create = () => ({ data: { number: 123 } })
+  ctx.octokit.git.createCommit = createCommit
+  ctx.payload.issue.body = 'This is the description'
+  ctx.payload.issue.milestone = { number: 456 }
+
+  await github.createPR({ log: () => { } }, ctx, { }, 'robvanderleek', 'issue-1')
+
+  expect(createCommit.mock.calls[0][0].message).toBe('Create PR for #1')
+})
+
+test('empty commit with skip CI text', async () => {
+  const createCommit = jest.fn()
+  const ctx = helpers.getDefaultContext()
+  ctx.octokit.pulls.create = () => ({ data: { number: 123 } })
+  ctx.octokit.git.createCommit = createCommit
+  ctx.payload.issue.body = 'This is the description'
+  ctx.payload.issue.milestone = { number: 456 }
+
+  await github.createPR({ log: () => { } }, ctx, { prSkipCI: true }, 'robvanderleek', 'issue-1')
+
+  expect(createCommit.mock.calls[0][0].message).toBe('Create PR for #1\n[skip ci]')
+})
