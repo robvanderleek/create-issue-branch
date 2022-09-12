@@ -774,10 +774,10 @@
   resolved "https://registry.yarnpkg.com/@octokit/openapi-types/-/openapi-types-12.11.0.tgz#da5638d64f2b919bca89ce6602d059f1b52d3ef0"
   integrity sha512-VsXyi8peyRq9PqIz/tpqiL2w3w80OgVMwBHltTml3LmVvXiphgeqmY9mvBw9Wu7e0QWk/fqD37ux8yP5uVekyQ==
 
-"@octokit/openapi-types@^13.4.0":
-  version "13.4.0"
-  resolved "https://registry.yarnpkg.com/@octokit/openapi-types/-/openapi-types-13.4.0.tgz#06fe8fda93bf21bdd397fe7ef8805249efda6c06"
-  integrity sha512-2mVzW0X1+HDO3jF80/+QFZNzJiTefELKbhMu6yaBYbp/1gSMkVDm4rT472gJljTokWUlXaaE63m7WrWENhMDLw==
+"@octokit/openapi-types@^13.9.1":
+  version "13.9.1"
+  resolved "https://registry.yarnpkg.com/@octokit/openapi-types/-/openapi-types-13.9.1.tgz#433d8c8f441ef031f625131360fe47324ae28457"
+  integrity sha512-98zOxAAR8MDHjXI2xGKgn/qkZLwfcNjHka0baniuEpN1fCv3kDJeh5qc0mBwim5y31eaPaYer9QikzwOkQq3wQ==
 
 "@octokit/plugin-enterprise-compatibility@^1.2.8":
   version "1.3.0"
@@ -867,12 +867,12 @@
   dependencies:
     "@octokit/openapi-types" "^12.11.0"
 
-"@octokit/types@^7.0.0":
-  version "7.1.1"
-  resolved "https://registry.yarnpkg.com/@octokit/types/-/types-7.1.1.tgz#a30fd6ca3279d59d532fa75583d65d93b7588e6d"
-  integrity sha512-Dx6cNTORyVaKY0Yeb9MbHksk79L8GXsihbG6PtWqTpkyA2TY1qBWE26EQXVG3dHwY9Femdd/WEeRUEiD0+H3TQ==
+"@octokit/types@^7.0.0", "@octokit/types@^7.1.1":
+  version "7.3.1"
+  resolved "https://registry.yarnpkg.com/@octokit/types/-/types-7.3.1.tgz#f25aa9ef3566dac48b7a8527059cfdc962013d0a"
+  integrity sha512-Vefohn8pHGFYWbSc6du0wXMK/Pmy6h0H4lttBw5WqquEuxjdXwyYX07CeZpJDkzSzpdKxBoWRNuDJGTE+FvtqA==
   dependencies:
-    "@octokit/openapi-types" "^13.4.0"
+    "@octokit/openapi-types" "^13.9.1"
 
 "@octokit/webhooks-methods@^2.0.0":
   version "2.0.0"
@@ -4222,10 +4222,10 @@ pretty-format@^29.0.1:
     ansi-styles "^5.0.0"
     react-is "^18.0.0"
 
-probot@^12.2.1, probot@^12.2.5:
-  version "12.2.5"
-  resolved "https://registry.yarnpkg.com/probot/-/probot-12.2.5.tgz#acc3260daa5ba279f7f0e822fcb0ab695f7d0e25"
-  integrity sha512-+cK8tsnPsMF8WqI4CibTeqw5T6wpsQIFXJzGex/IrxqA0grULrd8BC56R/0ZiJYBml7E94gC/nV5IFUd9Zsn6Q==
+probot@^12.2.1, probot@^12.2.8:
+  version "12.2.8"
+  resolved "https://registry.yarnpkg.com/probot/-/probot-12.2.8.tgz#ac8bae43e557dfb89b5b3e5cc8579801cb509465"
+  integrity sha512-O2WqJmgXUijAOTHaIBEW3jC5OU9Rq+eUg/AEBI5zkAUZaxzJMQvXvGvhVsdFE3Zt9Z3ceGN8Z2cgN+NTItSrCQ==
   dependencies:
     "@octokit/core" "^3.2.4"
     "@octokit/plugin-enterprise-compatibility" "^1.2.8"
@@ -4233,7 +4233,7 @@ probot@^12.2.1, probot@^12.2.5:
     "@octokit/plugin-rest-endpoint-methods" "^5.0.1"
     "@octokit/plugin-retry" "^3.0.6"
     "@octokit/plugin-throttling" "^3.3.4"
-    "@octokit/types" "^6.1.1"
+    "@octokit/types" "^7.1.1"
     "@octokit/webhooks" "^9.8.4"
     "@probot/get-private-key" "^1.1.0"
     "@probot/octokit-plugin-config" "^1.0.0"
