@@ -3,6 +3,7 @@ const utils = require('./utils')
 const context = require('./context')
 const plans = require('./plans')
 const { interpolate } = require('./interpolate')
+const { formatAsExpandingMarkdown } = require('./utils')
 
 async function createIssueBranch (app, ctx, branchName, config) {
   if (await hasValidSubscriptionForRepo(app, ctx)) {
@@ -268,7 +269,7 @@ async function createPR (app, ctx, config, username, branchName) {
     const emptyCommitSha = await createCommit(ctx, commitSha, treeSha, username, getCommitText(ctx, config))
     await updateReference(ctx, branchName, emptyCommitSha)
     const { data: pr } = await ctx.octokit.pulls.create(
-      { owner, repo, head: branchName, base, title, body: getPrBody(ctx, config), draft: draft })
+      { owner, repo, head: branchName, base, title, body: getPrBody(app, ctx, config), draft: draft })
     app.log(`${draft ? 'Created draft' : 'Created'} pull request ${pr.number} for branch ${branchName}`)
     await copyIssueAttributesToPr(app, ctx, config, pr)
   } catch (e) {
@@ -289,16 +290,18 @@ function getCommitText (ctx, config) {
   }
 }
 
-function getPrBody (ctx, config) {
+function getPrBody (app, ctx, config) {
   const issueNumber = context.getIssueNumber(ctx)
   let result = ''
   if (Config.copyIssueDescriptionToPR(config)) {
+    app.log('Copying issue description to PR')
     const issueDescription = context.getIssueDescription(ctx)
     if (issueDescription) {
-      result = `${issueDescription}\n`
+      result += formatAsExpandingMarkdown('Original issue description', issueDescription)
+      result += '\n'
     }
   }
-  result = result + `closes #${issueNumber}`
+  result += `closes #${issueNumber}`
   return result
 }
 

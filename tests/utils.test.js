@@ -3,6 +3,7 @@ const standard = require('standard')
 const path = require('path')
 const fs = require('fs')
 const { version } = require('../src/version')
+const { formatAsExpandingMarkdown } = require('../src/utils')
 
 test('git safe replacements', () => {
   expect(utils.makePrefixGitSafe('feature/bug')).toBe('feature/bug')
@@ -97,4 +98,16 @@ test('StandardJS format', () => {
 test('version', () => {
   expect(version.revision).toBeDefined()
   expect(version.date).toBeDefined()
+})
+
+test('format expanding markdown', () => {
+  const result = formatAsExpandingMarkdown('Foo', 'Bar\n- Foo\n- Bar')
+  const expected = `<details>
+<summary><b>Foo</b></summary>
+
+Bar
+- Foo
+- Bar
+</details>\n`
+  expect(result).toBe(expected)
 })
