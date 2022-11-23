@@ -49,26 +49,30 @@ async function addPlansRoute (app, getRouter) {
     const result = {}
     const plans = (await app.state.octokit.apps.listPlans()).data
     for (const plan of plans) {
-      const accounts = (await app.state.octokit.apps.listAccountsForPlan({ per_page: 100, plan_id: plan.id })).data
+      const accounts = await app.state.octokit.paginate(app.state.octokit.apps.listAccountsForPlan,
+        { per_page: 100, plan_id: plan.id }, (response) => response.data)
       if (plan.price_model === 'FLAT_RATE') {
         app.log(`Subscriptions for plan: ${plan.name}`)
-        for (const account of accounts) {
-          const purchase = account.marketplace_purchase
-          const pendingChange = account.marketplace_pending_change
-          if (pendingChange) {
-            app.log(
-              `Org: ${account.login}, free trial: ${purchase.on_free_trial}, billing_cycle: ${purchase.billing_cycle}, ` +
-              `pending change to plan: ${pendingChange.plan.name} on: ${pendingChange.effective_date}`)
-          } else {
-            app.log(
-              `Org: ${account.login}, free trial: ${purchase.on_free_trial}, billing_cycle: ${purchase.billing_cycle}`)
-          }
-        }
+        displayAccounts(app, accounts)
       }
       result[plan.name] = accounts.length
     }
     res.json(result)
   })
+}
+
+function displayAccounts (app, accounts) {
+  for (const account of accounts) {
+    const purchase = account.marketplace_purchase
+    const pendingChange = account.marketplace_pending_change
+    if (pendingChange || purchase.on_free_trial) {
+      app.log(
+        `Org: ${account.login}, free trial: ${purchase.on_free_trial}, billing_cycle: ${purchase.billing_cycle}, ` +
+        `pending change to plan: ${pendingChange.plan.name} on: ${pendingChange.effective_date}`)
+    } else {
+      app.log(`Org: ${account.login}, billing_cycle: ${purchase.billing_cycle}`)
+    }
+  }
 }
 
 function configureSentry (app) {
