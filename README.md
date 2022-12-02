@@ -2,7 +2,7 @@
 
 ![Logo](static/logo.png)
 
-[![BCH compliance](https://bettercodehub.com/edge/badge/robvanderleek/create-issue-branch?branch=main)](https://bettercodehub.com/)
+[![Maintainability](https://api.codeclimate.com/v1/badges/aaa03e6c10ce1ae9941f/maintainability)](https://codeclimate.com/github/robvanderleek/create-issue-branch/maintainability)
 [![Build Status](https://github.com/robvanderleek/create-issue-branch/workflows/Prod/badge.svg)](https://github.com/robvanderleek/create-issue-branch/actions)
 [![codecov](https://codecov.io/gh/robvanderleek/create-issue-branch/branch/main/graph/badge.svg?token=WBKIPs2WEc)](https://codecov.io/gh/robvanderleek/create-issue-branch)
 [![Dependabot](https://badgen.net/badge/Dependabot/enabled/green?icon=dependabot)](https://dependabot.com/)
