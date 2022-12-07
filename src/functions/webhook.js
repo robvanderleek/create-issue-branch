@@ -8,7 +8,7 @@ exports.handler = async function (event, _) {
   try {
     await loadingApp
 
-    // this could will be simpler once we  ship `verifyAndParse()`
+    // this could be simpler once we  ship `verifyAndParse()`
     // see https://github.com/octokit/webhooks.js/issues/379
     await probot.webhooks.verifyAndReceive({
       id: event.headers['X-GitHub-Delivery'] || event.headers['x-github-delivery'],
