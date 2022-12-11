@@ -9,19 +9,13 @@ jobs:
     env:
       CI: true
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/setup-node@v1
-      with:
-        node-version: 16.x
-    - run: yarn install
-    - run: yarn test
-    - run: yarn run lint
-    - run: yarn dist
-    - run: yarn run coverage
-    - run: bash <(curl -s https://codecov.io/bash) -t ${{secrets.CODECOV_SECRET_TOKEN }}
-    - name: Deploy branches to Heroku staging environment
-      env:
-        HEROKU_AUTH_TOKEN: ${{ secrets.HEROKU_AUTH_TOKEN }}
-        HEROKU_STAGING_ENV_NAME: ${{ secrets.HEROKU_STAGING_ENV_NAME}}
-      run: git push https://heroku:$HEROKU_AUTH_TOKEN@$HEROKU_STAGING_ENV_NAME origin/${GITHUB_REF#refs/heads/}:master --force
-      if: job.status == 'success' && github.ref == 'refs/heads/staging'
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+      - run: yarn install
+      - run: yarn test
+      - run: yarn run lint
+      - run: yarn dist
+      - run: yarn run coverage
+      - run: bash <(curl -s https://codecov.io/bash) -t ${{secrets.CODECOV_SECRET_TOKEN }}

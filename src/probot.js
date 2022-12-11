@@ -5,6 +5,7 @@ const IssueAssigned = require('./webhooks/issue-assigned')
 const CommentCreated = require('./webhooks/comment-created')
 const MarketplacePurchase = require('./webhooks/marketplace-purchase')
 const { version } = require('./version')
+const { listAppSubscriptions } = require('./plans')
 
 module.exports = (app, { getRouter }) => {
   app.log(`Create Issue Branch, revision: ${version.revision}, built on: ${version.date}`)
@@ -46,28 +47,8 @@ function addStatsRoute (getRouter) {
 async function addPlansRoute (app, getRouter) {
   const router = getRouter('/probot')
   router.get('/plans', async (req, res) => {
-    const result = {}
-    const plans = (await app.state.octokit.apps.listPlans()).data
-    for (const plan of plans) {
-      const accounts = (await app.state.octokit.apps.listAccountsForPlan({ per_page: 100, plan_id: plan.id })).data
-      if (plan.price_model === 'FLAT_RATE') {
-        app.log(`Subscriptions for plan: ${plan.name}`)
-        for (const account of accounts) {
-          const purchase = account.marketplace_purchase
-          const pendingChange = account.marketplace_pending_change
-          if (pendingChange) {
-            app.log(
-              `Org: ${account.login}, free trial: ${purchase.on_free_trial}, billing_cycle: ${purchase.billing_cycle}, ` +
-              `pending change to plan: ${pendingChange.plan.name} on: ${pendingChange.effective_date}`)
-          } else {
-            app.log(
-              `Org: ${account.login}, free trial: ${purchase.on_free_trial}, billing_cycle: ${purchase.billing_cycle}`)
-          }
-        }
-      }
-      result[plan.name] = accounts.length
-    }
-    res.json(result)
+    const subscriptions = listAppSubscriptions(app)
+    res.json(subscriptions)
   })
 }
 
