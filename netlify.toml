@@ -1,2 +1,5 @@
+[build]
+    publish = "static"
+
 [functions]
     directory = "src/functions/"

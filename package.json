@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "git-info": "node src/generate-versionjs.js > src/version.js",
-    "dev": "nodemon --ignore src/version.js",
+    "dev": "yarn git-info && netlify dev",
     "start": "yarn git-info && NODE_OPTIONS='--max_old_space_size=490' probot run ./src/probot.js",
     "lint": "standard --fix",
     "test": "yarn git-info && jest && standard",
