@@ -7,6 +7,7 @@
 [![codecov](https://codecov.io/gh/robvanderleek/create-issue-branch/branch/main/graph/badge.svg?token=WBKIPs2WEc)](https://codecov.io/gh/robvanderleek/create-issue-branch)
 [![Dependabot](https://badgen.net/badge/Dependabot/enabled/green?icon=dependabot)](https://dependabot.com/)
 [![Sentry](https://img.shields.io/badge/sentry-enabled-green)](https://sentry.io)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/88fb0319-3e73-432a-8c4e-51636578eda1/deploy-status)](https://app.netlify.com/sites/create-issue-branch/deploys)
 
 A GitHub App/Action that automates the creation of issue branches (either automatically after assigning an issue or
 after commenting on an issue with a ChatOps command: `/create-issue-branch` or `/cib`).
@@ -584,8 +585,8 @@ useful for your use-case.
 
 # Contributing
 
-If you have suggestions for how create-issue-branch could be improved, or want to report a bug, open an issue! We'd love
-all and any contributions.
+If you have suggestions for how create-issue-branch could be improved, or want
+to report a bug, open an issue! We'd love all and any contributions.
 
 For more, check out the [Contributing Guide](docs/CONTRIBUTING.md).
 

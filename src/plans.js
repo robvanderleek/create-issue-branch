@@ -55,6 +55,37 @@ async function isActivatedBeforeProPlanIntroduction (app, ctx) {
   return result
 }
 
+async function listAppSubscriptions (app) {
+  const result = {}
+  const plans = (await app.state.octokit.apps.listPlans()).data
+  for (const plan of plans) {
+    if (plan.price_model === 'FLAT_RATE') {
+      const accounts = await app.state.octokit.paginate(app.state.octokit.apps.listAccountsForPlan,
+        { per_page: 100, plan_id: plan.id }, (response) => response.data)
+      app.log(`Subscriptions for plan: ${plan.name}`)
+      displayAccounts(app, accounts)
+      result[plan.name] = accounts.length
+    }
+  }
+  return result
+}
+
+function displayAccounts (app, accounts) {
+  for (const account of accounts) {
+    const purchase = account.marketplace_purchase
+    const pendingChange = account.marketplace_pending_change
+    if (pendingChange || purchase.on_free_trial) {
+      app.log(
+        `Org: ${account.login}, free trial: ${purchase.on_free_trial}, billing_cycle: ${purchase.billing_cycle}, ` +
+        `pending change to plan: ${pendingChange.plan.name} on: ${pendingChange.effective_date}`)
+    } else {
+      app.log(`Org: ${account.login}, billing_cycle: ${purchase.billing_cycle}`)
+    }
+  }
+}
+
 module.exports = {
-  isProPlan: isProPlan, isActivatedBeforeProPlanIntroduction: isActivatedBeforeProPlanIntroduction
+  isProPlan: isProPlan,
+  isActivatedBeforeProPlanIntroduction: isActivatedBeforeProPlanIntroduction,
+  listAppSubscriptions: listAppSubscriptions
 }
