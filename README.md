@@ -569,7 +569,8 @@ dashboard on CodeCov.io:
 
 # Feedback, suggestions and bug reports
 
-Please create an issue here: https://github.com/robvanderleek/create-issue-branch/issues
+Please create an issue here:
+https://github.com/robvanderleek/create-issue-branch/issues
 
 ## Features under consideration
 
@@ -586,10 +587,13 @@ useful for your use-case.
 # Contributing
 
 If you have suggestions for how create-issue-branch could be improved, or want
-to report a bug, open an issue! We'd love all and any contributions.
+to report a bug, [open an
+issue](https://github.com/robvanderleek/create-issue-branch/issues)! All and
+any contributions are appreciated.
 
 For more, check out the [Contributing Guide](docs/CONTRIBUTING.md).
 
 # License
 
-[ISC](LICENSE) © 2019 Rob van der Leek <robvanderleek@gmail.com> (https://twitter.com/robvanderleek)
+[ISC](LICENSE) © 2019 Rob van der Leek <robvanderleek@gmail.com>
+(https://twitter.com/robvanderleek)
