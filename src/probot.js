@@ -6,6 +6,7 @@ const CommentCreated = require('./webhooks/comment-created')
 const MarketplacePurchase = require('./webhooks/marketplace-purchase')
 const { version } = require('./version')
 const { listAppSubscriptions } = require('./plans')
+const IssueLabeled = require('./webhooks/issue-labeled')
 
 module.exports = (app, { getRouter }) => {
   app.log(`Create Issue Branch, revision: ${version.revision}, built on: ${version.date}`)
@@ -30,6 +31,9 @@ module.exports = (app, { getRouter }) => {
   app.on('issues.opened', async ctx => {
     const comment = ctx.payload.issue.body
     await CommentCreated.handle(app, ctx, comment)
+  })
+  app.on('issues.labeled', async ctx => {
+    await IssueLabeled.handle(app, ctx)
   })
   app.on(['marketplace_purchase.purchased', 'marketplace_purchase.changed', 'marketplace_purchase.cancelled',
     'marketplace_purchase.pending_change'], async ctx => {

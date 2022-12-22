@@ -7,6 +7,10 @@ const loadingApp = probot.load(app)
 exports.handler = async function (event, _) {
   try {
     await loadingApp
+    const name = event.headers['X-GitHub-Event'] || event.headers['x-github-event']
+    console.log(name)
+    console.log(JSON.parse(event.body).action)
+    // console.log(event.body)
     await probot.webhooks.verifyAndReceive({
       id: event.headers['X-GitHub-Delivery'] || event.headers['x-github-delivery'],
       name: event.headers['X-GitHub-Event'] || event.headers['x-github-event'],

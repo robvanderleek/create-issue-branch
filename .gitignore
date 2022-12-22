@@ -4,6 +4,7 @@ node_modules/
 .env
 .env.production
 .env.test*
+.env.dev
 .env.staging
 .private-key.pem
 .private-key.staging.pem
