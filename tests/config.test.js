@@ -92,3 +92,10 @@ test('PR skip CI', () => {
   expect(Config.prSkipCI({})).toBeFalsy()
   expect(Config.prSkipCI({ prSkipCI: true })).toBeTruthy()
 })
+
+test('get PR title prefix for issue label', () => {
+  expect(Config.getPrTitlePrefix({}, 'bug')).toBe('fix: :bug:')
+  expect(Config.getPrTitlePrefix({}, 'some-user-defined-label')).toBe('feat: :sparkles:')
+
+  expect(Config.getPrTitlePrefix({ prTitlePrefix: { bug: 'fix: :ambulance:' } }, 'bug')).toBe('fix: :ambulance:')
+})

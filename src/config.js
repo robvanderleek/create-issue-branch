@@ -35,6 +35,7 @@ async function handleError (ctx, err) {
     return createConfigurationErrorIssue(ctx, err)
   }
 }
+
 /* === */
 
 async function load (ctx) {
@@ -154,6 +155,22 @@ function getDefaultBranch (config) {
   }
 }
 
+function getPrTitlePrefix (config, label) {
+  const defaults = {
+    enhancement: 'feat: :sparkles:',
+    bug: 'fix: :bug:',
+    performance: 'perf: :zap:',
+    dependencies: 'build: :arrow_up:',
+    documentation: 'docs: :memo:',
+    security: 'security: :lock:'
+  }
+  if (config && config.prTitlePrefix && config.prTitlePrefix[label]) {
+    return config.prTitlePrefix[label]
+  } else {
+    return defaults[label] || defaults.enhancement
+  }
+}
+
 module.exports = {
   load: load,
   isModeAuto: isModeAuto,
@@ -174,5 +191,6 @@ module.exports = {
   copyIssueAssigneeToPR: copyIssueAssigneeToPR,
   copyIssueProjectsToPR: copyIssueProjectsToPR,
   copyIssueMilestoneToPR: copyIssueMilestoneToPR,
-  prSkipCI: prSkipCI
+  prSkipCI: prSkipCI,
+  getPrTitlePrefix: getPrTitlePrefix
 }

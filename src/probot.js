@@ -32,7 +32,7 @@ module.exports = (app, { getRouter }) => {
     const comment = ctx.payload.issue.body
     await CommentCreated.handle(app, ctx, comment)
   })
-  app.on('issues.labeled', async ctx => {
+  app.on(['issues.labeled', 'issues.unlabeled'], async ctx => {
     await IssueLabeled.handle(app, ctx)
   })
   app.on(['marketplace_purchase.purchased', 'marketplace_purchase.changed', 'marketplace_purchase.cancelled',
