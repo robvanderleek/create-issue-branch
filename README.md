@@ -494,11 +494,10 @@ prSkipCI: true
 ## Conventional Pull Request titles
 
 This feature enables [Conventional Commits](https://www.conventionalcommits.org/) in your Git history
-based on issue/PR labels, so without requiring each commit on the repository to follow this convention. This 
-feature works best when [squash merging](https://docs.github.
-com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring
--pull-request-merges/configuring-commit-squashing-for-pull-requests)
-if configured on your repository.
+based on issue/PR labels, so without requiring each commit on the repository to follow this convention. This
+feature works best
+when [squash merging](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/configuring-commit-squashing-for-pull-requests)
+is configured on your repository.
 
 You can enable conventional Pull Request titles with the following configuration option:
 
@@ -506,8 +505,8 @@ You can enable conventional Pull Request titles with the following configuration
 conventionalPrTitles: true
 ```
 
-When enabled, a conventional prefix is automatically set in the PR title based on issue & PR labels. For example, if 
-there's an issue "Fix nasty bug" and accompanying branch `issue-123-Fix-nasty-bug` then whenever a Pull Request for 
+When enabled, a conventional prefix is automatically set in the PR title based on issue & PR labels. For example, if
+there's an issue "Fix nasty bug" and accompanying branch `issue-123-Fix-nasty-bug` then whenever a Pull Request for
 this branch is opened Create Issue Branch will prepend "fix: :bug: " to the Pull Request title.
 
 ## Change message in issue comments
