@@ -94,8 +94,9 @@ test('PR skip CI', () => {
 })
 
 test('get PR title prefix for issue label', () => {
-  expect(Config.getPrTitlePrefix({}, 'bug')).toBe('fix: :bug:')
-  expect(Config.getPrTitlePrefix({}, 'some-user-defined-label')).toBe('feat: :sparkles:')
+  expect(Config.getSemverPrefix({}, ['bug'])).toBe('fix: :bug:')
+  expect(Config.getSemverPrefix({}, ['some-user-defined-label'])).toBe('feat: :sparkles:')
 
-  expect(Config.getPrTitlePrefix({ prTitlePrefix: { bug: 'fix: :ambulance:' } }, 'bug')).toBe('fix: :ambulance:')
+  expect(Config.getSemverPrefix({ semverEmoji: { fix: { bug: ':ambulance:' } } }, ['bug']))
+    .toBe('fix: :ambulance:')
 })

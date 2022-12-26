@@ -3,7 +3,7 @@ const standard = require('standard')
 const path = require('path')
 const fs = require('fs')
 const { version } = require('../src/version')
-const { formatAsExpandingMarkdown } = require('../src/utils')
+const { formatAsExpandingMarkdown, removeSemverPrefix } = require('../src/utils')
 
 test('git safe replacements', () => {
   expect(utils.makePrefixGitSafe('feature/bug')).toBe('feature/bug')
@@ -110,4 +110,14 @@ Bar
 - Bar
 </details>\n`
   expect(result).toBe(expected)
+})
+
+test('remove semver prefix', () => {
+  expect(removeSemverPrefix('Hello world')).toBe('Hello world')
+  expect(removeSemverPrefix('fix: :bug: Hello world')).toBe('Hello world')
+  expect(removeSemverPrefix('fix!: :bug: Hello world')).toBe('Hello world')
+  expect(removeSemverPrefix('feat: :sparkles: Hello world')).toBe('Hello world')
+  expect(removeSemverPrefix('feat!: :sparkles: Hello world')).toBe('Hello world')
+  expect(removeSemverPrefix('feat: ✨ Hello world')).toBe('Hello world')
+  expect(removeSemverPrefix('feat!: ✨ Hello world')).toBe('Hello world')
 })

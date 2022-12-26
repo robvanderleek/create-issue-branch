@@ -23,7 +23,7 @@ async function handle (app, ctx) {
   if (shouldCreatePR) {
     const assignee = context.getAssignee(ctx)
     app.log(`Creating pull request for user ${assignee}`)
-    await github.createPR(app, ctx, config, assignee, branchName)
+    await github.createPr(app, ctx, config, assignee, branchName)
   }
   utils.logMemoryUsage(app)
 }

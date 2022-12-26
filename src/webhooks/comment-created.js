@@ -44,7 +44,7 @@ async function chatOpsCommandGiven (app, ctx, comment) {
   if (shouldCreatePR) {
     const sender = context.getSender(ctx)
     app.log(`Creating pull request for user ${sender}`)
-    await github.createPR(app, ctx, config, sender, branchName)
+    await github.createPr(app, ctx, config, sender, branchName)
   }
   utils.logMemoryUsage(app)
 }

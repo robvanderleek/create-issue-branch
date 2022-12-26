@@ -155,19 +155,32 @@ function getDefaultBranch (config) {
   }
 }
 
-function getPrTitlePrefix (config, label) {
-  const defaults = {
-    enhancement: 'feat: :sparkles:',
-    bug: 'fix: :bug:',
-    performance: 'perf: :zap:',
-    dependencies: 'build: :arrow_up:',
-    documentation: 'docs: :memo:',
-    security: 'security: :lock:'
+function getSemverPrefix (config, labels) {
+  const mapping = {
+    fix: {
+      bug: ':bug:', dependencies: ':arrow_up:', performance: ':zap:', documentation: ':memo:', security: ':lock:'
+    }, //
+    feature: {
+      enhancement: ':sparkles:'
+    }, //
+    breaking: {
+      'breaking-change': ':boom:'
+    }
   }
-  if (config && config.prTitlePrefix && config.prTitlePrefix[label]) {
-    return config.prTitlePrefix[label]
+  if (config && config.semverEmoji) {
+    Object.assign(mapping.fix, config.semverEmoji.fix)
+    Object.assign(mapping.feature, config.semverEmoji.feature)
+    Object.assign(mapping.breaking, config.semverEmoji.breaking)
+  }
+  const breaking = labels.some(l => l in mapping.breaking)
+  const featureLabels = labels.filter(l => l in mapping.feature)
+  const fixLabels = labels.filter(l => l in mapping.fix)
+  if (featureLabels.length > 0) {
+    return `feat${breaking ? '!' : ''}: ${mapping.feature[featureLabels[0]]}`
+  } else if (fixLabels.length > 0) {
+    return `fix${breaking ? '!' : ''}: ${mapping.fix[fixLabels[0]]}`
   } else {
-    return defaults[label] || defaults.enhancement
+    return `feat${breaking ? '!' : ''}: :sparkles:`
   }
 }
 
@@ -192,5 +205,5 @@ module.exports = {
   copyIssueProjectsToPR: copyIssueProjectsToPR,
   copyIssueMilestoneToPR: copyIssueMilestoneToPR,
   prSkipCI: prSkipCI,
-  getPrTitlePrefix: getPrTitlePrefix
+  getSemverPrefix: getSemverPrefix
 }

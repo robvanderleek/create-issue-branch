@@ -1,5 +1,6 @@
 const Sentry = require('@sentry/node')
 const utils = require('./utils')
+const PullRequest = require('./webhooks/pull-request')
 const PullRequestClosed = require('./webhooks/pull-request-closed')
 const IssueAssigned = require('./webhooks/issue-assigned')
 const CommentCreated = require('./webhooks/comment-created')
@@ -28,6 +29,10 @@ module.exports = (app, { getRouter }) => {
   app.on('pull_request.closed', async ctx => {
     await PullRequestClosed.handle(app, ctx)
   })
+  app.on(['pull_request.opened', 'pull_request.reopened', 'pull_request.labeled', 'pull_request.unlabeled'],
+    async ctx => {
+      await PullRequest.handle(app, ctx)
+    })
   app.on('issues.opened', async ctx => {
     const comment = ctx.payload.issue.body
     await CommentCreated.handle(app, ctx, comment)
