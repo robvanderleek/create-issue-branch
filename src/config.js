@@ -155,6 +155,10 @@ function getDefaultBranch (config) {
   }
 }
 
+function semverPrTitles (config) {
+  return 'semverPrTitles' in config && config.semverPrTitles === true
+}
+
 function getSemverPrefix (config, labels) {
   const mapping = {
     fix: {
@@ -164,7 +168,8 @@ function getSemverPrefix (config, labels) {
       enhancement: ':sparkles:'
     }, //
     breaking: {
-      'breaking-change': ':boom:'
+      'breaking-change': ':boom:',
+      'breaking change': ':boom:'
     }
   }
   if (config && config.semverEmoji) {
@@ -205,5 +210,6 @@ module.exports = {
   copyIssueProjectsToPR: copyIssueProjectsToPR,
   copyIssueMilestoneToPR: copyIssueMilestoneToPR,
   prSkipCI: prSkipCI,
+  semverPrTitles: semverPrTitles,
   getSemverPrefix: getSemverPrefix
 }

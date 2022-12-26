@@ -9,7 +9,6 @@ exports.handler = async function (event, _) {
     await loadingApp
     const eventName = event.headers['X-GitHub-Event'] || event.headers['x-github-event']
     const payload = JSON.parse(event.body)
-    console.log(`Event: ${eventName}, action: ${payload.action}`)
     await probot.webhooks.verifyAndReceive({
       id: event.headers['X-GitHub-Delivery'] || event.headers['x-github-delivery'],
       name: eventName,

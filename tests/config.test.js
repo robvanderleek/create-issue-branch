@@ -93,6 +93,12 @@ test('PR skip CI', () => {
   expect(Config.prSkipCI({ prSkipCI: true })).toBeTruthy()
 })
 
+test('semver PR titles', () => {
+  expect(Config.semverPrTitles({})).toBeFalsy()
+  expect(Config.semverPrTitles({ semverPrTitles: true })).toBeTruthy()
+  expect(Config.semverPrTitles({ semverPrTitles: false })).toBeFalsy()
+})
+
 test('get PR title prefix for issue label', () => {
   expect(Config.getSemverPrefix({}, ['bug'])).toBe('fix: :bug:')
   expect(Config.getSemverPrefix({}, ['some-user-defined-label'])).toBe('feat: :sparkles:')
