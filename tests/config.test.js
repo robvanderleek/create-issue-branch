@@ -93,16 +93,16 @@ test('PR skip CI', () => {
   expect(Config.prSkipCI({ prSkipCI: true })).toBeTruthy()
 })
 
-test('semver PR titles', () => {
-  expect(Config.semverPrTitles({})).toBeFalsy()
-  expect(Config.semverPrTitles({ semverPrTitles: true })).toBeTruthy()
-  expect(Config.semverPrTitles({ semverPrTitles: false })).toBeFalsy()
+test('conventional PR titles', () => {
+  expect(Config.conventionalPrTitles({})).toBeFalsy()
+  expect(Config.conventionalPrTitles({ conventionalPrTitles: true })).toBeTruthy()
+  expect(Config.conventionalPrTitles({ conventionalPrTitles: false })).toBeFalsy()
 })
 
 test('get PR title prefix for issue label', () => {
-  expect(Config.getSemverPrefix({}, ['bug'])).toBe('fix: :bug:')
-  expect(Config.getSemverPrefix({}, ['some-user-defined-label'])).toBe('feat: :sparkles:')
+  expect(Config.getConventionalPrTitlePrefix({}, ['bug'])).toBe('fix: :bug:')
+  expect(Config.getConventionalPrTitlePrefix({}, ['some-user-defined-label'])).toBe('feat: :sparkles:')
 
-  expect(Config.getSemverPrefix({ semverEmoji: { fix: { bug: ':ambulance:' } } }, ['bug']))
+  expect(Config.getConventionalPrTitlePrefix({ semverEmoji: { fix: { bug: ':ambulance:' } } }, ['bug']))
     .toBe('fix: :ambulance:')
 })

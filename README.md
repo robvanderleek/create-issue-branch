@@ -14,12 +14,14 @@ after commenting on an issue with a ChatOps command: `/create-issue-branch` or `
 
 Built in response to this feature request issue:
 https://github.com/isaacs/github/issues/1125 (that issue is now closed and the
-discussion [continuous here](https://github.com/github/feedback/discussions/3441) and [here](https://github.com/github/feedback/discussions/12290))
+discussion [continuous here](https://github.com/github/feedback/discussions/3441)
+and [here](https://github.com/github/feedback/discussions/12290))
 
-> **UPDATE 2/2/2022**: GitHub added a "Create a branch" button [to the web UI](https://github.blog/changelog/2022-03-02-create-a-branch-for-an-issue/)
+> **UPDATE 2/2/2022**: GitHub added a "Create a branch"
+> button [to the web UI](https://github.blog/changelog/2022-03-02-create-a-branch-for-an-issue/)
 >
 > This App/Action offers some unique features not available in the new GitHub web UI button, such as:
-> 
+>
 > - [Configure branch name format](https://github.com/robvanderleek/create-issue-branch#branch-names)
 > - [Configure default source branch](https://github.com/robvanderleek/create-issue-branch#default-source-branch)
 > - [Configure source branch based on label](https://github.com/robvanderleek/create-issue-branch#source-branch-based-on-issue-label)
@@ -27,8 +29,8 @@ discussion [continuous here](https://github.com/github/feedback/discussions/3441
 > - [Copy over attributes (such as labels and milestones) from the issue to the (draft) PR](https://github.com/robvanderleek/create-issue-branch#copy-attributes-from-issue)
 > - [Configure PR target branch based on issue label](https://github.com/robvanderleek/create-issue-branch#pull-request-target-branch-based-on-issue-label)
 > - [Feature requests are always welcome!](https://github.com/robvanderleek/create-issue-branch#feedback-suggestions-and-bug-reports)
-> 
-> Perhaps the new GitHub button will be sufficient for your development workflow, if not give this App/Action a try. 
+>
+> Perhaps the new GitHub button will be sufficient for your development workflow, if not give this App/Action a try.
 
 * [Installation](#installation)
 * [Usage](#usage)
@@ -479,15 +481,34 @@ copyIssueProjectsToPR: true
 copyIssueMilestoneToPR: true
 ```
 
-### Skip CI workflows 
+### Skip CI workflows
 
-Automatically opening a (draft) PR for an issue requires an empty commit on the newly created branch (this is a 
-requirement by GitHub). This first empty commit might trigger GitHub Actions CI workflows. You can skip these 
+Automatically opening a (draft) PR for an issue requires an empty commit on the newly created branch (this is a
+requirement by GitHub). This first empty commit might trigger GitHub Actions CI workflows. You can skip these
 workflows with the following configuration option:
 
 ```yaml
 prSkipCI: true
 ```
+
+## Conventional Pull Request titles
+
+This feature enables [Conventional Commits](https://www.conventionalcommits.org/) in your Git history
+based on issue/PR labels, so without requiring each commit on the repository to follow this convention. This 
+feature works best when [squash merging](https://docs.github.
+com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring
+-pull-request-merges/configuring-commit-squashing-for-pull-requests)
+if configured on your repository.
+
+You can enable conventional Pull Request titles with the following configuration option:
+
+```yaml
+conventionalPrTitles: true
+```
+
+When enabled, a conventional prefix is automatically set in the PR title based on issue & PR labels. For example, if 
+there's an issue "Fix nasty bug" and accompanying branch `issue-123-Fix-nasty-bug` then whenever a Pull Request for 
+this branch is opened Create Issue Branch will prepend "fix: :bug: " to the Pull Request title.
 
 ## Change message in issue comments
 
@@ -538,7 +559,9 @@ The snippet below shows the script which, upon execution, generates a coverage d
 then used by CodeCov to generate a dashboard (*description for CodeCov below the snippet*)
 
 ```javascript 
-"coverage": "jest --collect-coverage"
+"coverage"
+:
+"jest --collect-coverage"
 ```
 
 #### CodeCov

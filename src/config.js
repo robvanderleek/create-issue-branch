@@ -155,11 +155,11 @@ function getDefaultBranch (config) {
   }
 }
 
-function semverPrTitles (config) {
-  return 'semverPrTitles' in config && config.semverPrTitles === true
+function conventionalPrTitles (config) {
+  return 'conventionalPrTitles' in config && config.conventionalPrTitles === true
 }
 
-function getSemverPrefix (config, labels) {
+function getConventionalPrTitlePrefix (config, labels) {
   const mapping = {
     fix: {
       bug: ':bug:', dependencies: ':arrow_up:', performance: ':zap:', documentation: ':memo:', security: ':lock:'
@@ -210,6 +210,6 @@ module.exports = {
   copyIssueProjectsToPR: copyIssueProjectsToPR,
   copyIssueMilestoneToPR: copyIssueMilestoneToPR,
   prSkipCI: prSkipCI,
-  semverPrTitles: semverPrTitles,
-  getSemverPrefix: getSemverPrefix
+  conventionalPrTitles: conventionalPrTitles,
+  getConventionalPrTitlePrefix: getConventionalPrTitlePrefix
 }
