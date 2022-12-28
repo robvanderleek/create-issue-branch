@@ -103,6 +103,6 @@ test('get PR title prefix for issue label', () => {
   expect(Config.getConventionalPrTitlePrefix({}, ['bug'])).toBe('fix: :bug:')
   expect(Config.getConventionalPrTitlePrefix({}, ['some-user-defined-label'])).toBe('feat: :sparkles:')
 
-  expect(Config.getConventionalPrTitlePrefix({ semverEmoji: { fix: { bug: ':ambulance:' } } }, ['bug']))
+  expect(Config.getConventionalPrTitlePrefix({ conventionalLabels: { fix: { bug: ':ambulance:' } } }, ['bug']))
     .toBe('fix: :ambulance:')
 })

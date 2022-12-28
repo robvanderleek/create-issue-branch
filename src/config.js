@@ -172,10 +172,10 @@ function getConventionalPrTitlePrefix (config, labels) {
       'breaking change': ':boom:'
     }
   }
-  if (config && config.semverEmoji) {
-    Object.assign(mapping.fix, config.semverEmoji.fix)
-    Object.assign(mapping.feature, config.semverEmoji.feature)
-    Object.assign(mapping.breaking, config.semverEmoji.breaking)
+  if (config && config.conventionalLabels) {
+    Object.assign(mapping.fix, config.conventionalLabels.fix)
+    Object.assign(mapping.feature, config.conventionalLabels.feature)
+    Object.assign(mapping.breaking, config.conventionalLabels.breaking)
   }
   const breaking = labels.some(l => l in mapping.breaking)
   const featureLabels = labels.filter(l => l in mapping.feature)

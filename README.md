@@ -494,10 +494,9 @@ prSkipCI: true
 ## Conventional Pull Request titles
 
 This feature enables [Conventional Commits](https://www.conventionalcommits.org/) in your Git history
-based on issue/PR labels, so without requiring each commit on the repository to follow this convention. This
-feature works best
-when [squash merging](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/configuring-commit-squashing-for-pull-requests)
-is configured on your repository.
+based on issue/PR labels, so without requiring each commit on the repository to follow this convention.
+Conventional commits make it possible to implement automated [Semantic Versioning](https://semver.org/) of your
+software using tools such as https://semantic-release.gitbook.io/semantic-release/.
 
 You can enable conventional Pull Request titles with the following configuration option:
 
@@ -506,8 +505,51 @@ conventionalPrTitles: true
 ```
 
 When enabled, a conventional prefix is automatically set in the PR title based on issue & PR labels. For example, if
-there's an issue "Fix nasty bug" and accompanying branch `issue-123-Fix-nasty-bug` then whenever a Pull Request for
-this branch is opened Create Issue Branch will prepend "fix: :bug: " to the Pull Request title.
+there's an issue "Fix nasty bug" and accompanying branch `issue-123-Fix-nasty-bug`, where either the issue or the PR
+are labeled as "bug", then whenever a Pull Request for the branch is opened (automatically or manually) Create Issue
+Branch will prepend "fix: :bug: " to the Pull Request title, for example "fix: :bug: isssue 123 Fix nasty bug".
+
+For issues/PRs that are labeled with "breaking change" (or "breaking-change") there will be an exclamation mark
+added to the title, for example: "feat!: Change in API".
+
+By default, the labels "bug", "dependencies", "performance", "documentation" and "security" will prepend "fix:" to
+the PR title, the label "enhancement" will prepend "feat:" to the title and the labels "breaking
+change"/"breaking-change" will add an exclamation mark after bug or feat.
+
+Each label mentioned above also has an accompanying [gitmoji](https://gitmoji.dev/).
+
+Labels and their emoji/gitmoji can be configured through the option `conventionalLabels`. This is the default
+
+```yaml
+conventionalLabels:
+  fix:
+    bug: ':bug:'
+    dependencies: ':arrow_up:'
+    performance: ':zap:'
+    documentation: ':memo:'
+    security: ':lock:'
+  feature:
+    enhancement: ':sparkles:'
+  breaking:
+    breaking-change: ':boom:'
+    breaking change: ':boom:'
+```
+
+For example, to change the gitmoji for label "bug":
+
+```yaml
+conventionalLabels:
+  fix:
+    bug: ':ambulance:'
+```
+
+Or to add a new label type for features:
+
+```yaml
+conventionalLabels:
+  feature:
+    new-stuff: ':rocket:'
+```
 
 ## Change message in issue comments
 
