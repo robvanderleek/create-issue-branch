@@ -6,7 +6,7 @@ async function handle (app, ctx) {
   const action = ctx.payload.action
   app.log.debug(`Issue was ${action}`)
   const config = await Config.load(ctx)
-  if (Config.semverPrTitles(config)) {
+  if (Config.conventionalPrTitles(config)) {
     const owner = context.getRepoOwnerLogin(ctx)
     const repo = context.getRepoName(ctx)
     const branchName = await github.getBranchNameFromIssue(ctx, config)

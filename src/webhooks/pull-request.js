@@ -6,7 +6,7 @@ async function handle (app, ctx) {
   const action = ctx.payload.action
   app.log.debug(`Pull-Request was ${action}`)
   const config = await Config.load(ctx)
-  if (Config.semverPrTitles(config)) {
+  if (Config.conventionalPrTitles(config)) {
     const pr = ctx.payload.pull_request
     const branchName = pr.head.ref
     const issueNumber = github.getIssueNumberFromBranchName(branchName)
