@@ -493,12 +493,15 @@ prSkipCI: true
 
 ## Conventional Pull Request titles
 
-This feature enables [Conventional Commits](https://www.conventionalcommits.org/) in your Git history
-based on issue/PR labels, so without requiring each commit on the repository to follow this convention.
-Conventional commits make it possible to implement automated [Semantic Versioning](https://semver.org/) of your
-software using tools such as https://semantic-release.gitbook.io/semantic-release/.
+This feature enables [Conventional
+Commits](https://www.conventionalcommits.org/) in your Git history based on
+issue/PR labels (so without requiring each commit on the repository to follow
+this convention.) Conventional commits make it possible to implement automated
+[Semantic Versioning](https://semver.org/) of your software using tools such as
+https://semantic-release.gitbook.io/semantic-release/.
 
-You can enable conventional Pull Request titles with the following configuration option:
+You can enable conventional Pull Request titles with the following
+configuration option:
 
 ```yaml
 conventionalPrTitles: true
@@ -512,8 +515,9 @@ Branch will prepend "fix: :bug: " to the Pull Request title, for example "fix: :
 For issues/PRs that are labeled with "breaking change" (or "breaking-change") there will be an exclamation mark
 added to the title, for example: "feat!: Change in API".
 
-By default, the labels "bug", "dependencies", "performance", "documentation" and "security" will prepend "fix:" to
-the PR title, the label "enhancement" will prepend "feat:" to the title and the labels "breaking
+By default, the labels "bug", "dependencies", "performance", "documentation"
+and "security" will prepend "fix:" to the PR title. The label "enhancement"
+will prepend "feat:" to the title, and the labels "breaking
 change"/"breaking-change" will add an exclamation mark after bug or feat.
 
 Each label mentioned above also has an accompanying [gitmoji](https://gitmoji.dev/).
