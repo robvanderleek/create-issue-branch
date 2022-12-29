@@ -90,6 +90,11 @@ function formatAsExpandingMarkdown (title, content) {
   return result
 }
 
+function removeSemverPrefix (title) {
+  const regexp = /^(fix|feat)[!]?[:] ([:][a-zA-Z_]+[:]|\p{Extended_Pictographic}) /u
+  return title.replace(regexp, '')
+}
+
 module.exports = {
   makePrefixGitSafe: makePrefixGitSafe,
   makeGitSafe: makeGitSafe,
@@ -100,5 +105,6 @@ module.exports = {
   getStringLengthInBytes: getStringLengthInBytes,
   trimStringToByteLength: trimStringToByteLength,
   logMemoryUsage: logMemoryUsage,
-  formatAsExpandingMarkdown: formatAsExpandingMarkdown
+  formatAsExpandingMarkdown: formatAsExpandingMarkdown,
+  removeSemverPrefix: removeSemverPrefix
 }

@@ -74,6 +74,18 @@ function nockExistingBranch (name, sha) {
     .reply(200, { object: { sha: sha } })
 }
 
+function nockPulls (branch, result) {
+  nock('https://api.github.com')
+    .get(`/repos/robvanderleek/create-issue-branch/pulls?head=robvanderleek%3A${encodeURIComponent(branch)}`)
+    .reply(200, result)
+}
+
+function nockIssue (number, result) {
+  nock('https://api.github.com')
+    .get(`/repos/robvanderleek/create-issue-branch/issues/${number}`)
+    .reply(200, result)
+}
+
 function nockNonExistingBranch (name) {
   nock('https://api.github.com')
     .get(`/repos/robvanderleek/create-issue-branch/git/ref/heads%2F${encodeURIComponent(name)}`)
@@ -82,6 +94,10 @@ function nockNonExistingBranch (name) {
 
 function nockUpdateBranch (name) {
   nock('https://api.github.com').patch(`/repos/robvanderleek/create-issue-branch/git/refs/heads%2F${name}`).reply(200)
+}
+
+function nockUpdatePull (number) {
+  nock('https://api.github.com').patch(`/repos/robvanderleek/create-issue-branch/pulls/${number}`).reply(200)
 }
 
 function nockCommentCreated () {
@@ -186,8 +202,11 @@ module.exports = {
   nockGlobalConfig: nockGlobalConfig,
   nockInstallation: nockInstallation,
   nockExistingBranch: nockExistingBranch,
+  nockPulls: nockPulls,
+  nockIssue: nockIssue,
   nockNonExistingBranch: nockNonExistingBranch,
   nockUpdateBranch: nockUpdateBranch,
+  nockUpdatePull: nockUpdatePull,
   nockCommitTreeSha: nockCommitTreeSha,
   nockCommit: nockCommit,
   nockCommentCreated: nockCommentCreated,

@@ -35,6 +35,7 @@ async function handleError (ctx, err) {
     return createConfigurationErrorIssue(ctx, err)
   }
 }
+
 /* === */
 
 async function load (ctx) {
@@ -154,6 +155,40 @@ function getDefaultBranch (config) {
   }
 }
 
+function conventionalPrTitles (config) {
+  return 'conventionalPrTitles' in config && config.conventionalPrTitles === true
+}
+
+function getConventionalPrTitlePrefix (config, labels) {
+  const mapping = {
+    fix: {
+      bug: ':bug:', dependencies: ':arrow_up:', performance: ':zap:', documentation: ':memo:', security: ':lock:'
+    }, //
+    feature: {
+      enhancement: ':sparkles:'
+    }, //
+    breaking: {
+      'breaking-change': ':boom:',
+      'breaking change': ':boom:'
+    }
+  }
+  if (config && config.conventionalLabels) {
+    Object.assign(mapping.fix, config.conventionalLabels.fix)
+    Object.assign(mapping.feature, config.conventionalLabels.feature)
+    Object.assign(mapping.breaking, config.conventionalLabels.breaking)
+  }
+  const breaking = labels.some(l => l in mapping.breaking)
+  const featureLabels = labels.filter(l => l in mapping.feature)
+  const fixLabels = labels.filter(l => l in mapping.fix)
+  if (featureLabels.length > 0) {
+    return `feat${breaking ? '!' : ''}: ${mapping.feature[featureLabels[0]]}`
+  } else if (fixLabels.length > 0) {
+    return `fix${breaking ? '!' : ''}: ${mapping.fix[fixLabels[0]]}`
+  } else {
+    return `feat${breaking ? '!' : ''}: :sparkles:`
+  }
+}
+
 module.exports = {
   load: load,
   isModeAuto: isModeAuto,
@@ -174,5 +209,7 @@ module.exports = {
   copyIssueAssigneeToPR: copyIssueAssigneeToPR,
   copyIssueProjectsToPR: copyIssueProjectsToPR,
   copyIssueMilestoneToPR: copyIssueMilestoneToPR,
-  prSkipCI: prSkipCI
+  prSkipCI: prSkipCI,
+  conventionalPrTitles: conventionalPrTitles,
+  getConventionalPrTitlePrefix: getConventionalPrTitlePrefix
 }

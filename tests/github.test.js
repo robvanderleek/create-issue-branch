@@ -188,7 +188,7 @@ test('create (draft) PR', async () => {
   ctx.octokit.pulls.create = createPR
   ctx.octokit.git.createCommit = createCommit
 
-  await github.createPR({ log: () => { } }, ctx, { silent: false }, 'robvanderleek', 'issue-1')
+  await github.createPr({ log: () => { } }, ctx, { silent: false }, 'robvanderleek', 'issue-1')
   expect(createPR).toHaveBeenCalledWith({
     owner: 'robvanderleek',
     repo: 'create-issue-branch',
@@ -199,7 +199,7 @@ test('create (draft) PR', async () => {
     title: 'Hello world'
   })
   expect(capturedCommitMessage).toBe('Create PR for #1')
-  await github.createPR({ log: () => { } }, ctx, { silent: false, openDraftPR: true }, 'robvanderleek', 'issue-1')
+  await github.createPr({ log: () => { } }, ctx, { silent: false, openDraftPR: true }, 'robvanderleek', 'issue-1')
   expect(createPR).toHaveBeenCalledWith({
     owner: 'robvanderleek',
     repo: 'create-issue-branch',
@@ -220,7 +220,7 @@ test('copy Issue description into PR', async () => {
   ctx.octokit.git.createCommit = createCommit
   ctx.payload.issue.body = 'This is the description'
 
-  await github.createPR({ log: () => { } }, ctx, { copyIssueDescriptionToPR: true, silent: false }, 'robvanderleek',
+  await github.createPr({ log: () => { } }, ctx, { copyIssueDescriptionToPR: true, silent: false }, 'robvanderleek',
     'issue-1')
 
   expect(createPR).toHaveBeenCalledWith({
@@ -242,7 +242,7 @@ test('Do not copy undefined Issue description into PR', async () => {
   ctx.octokit.git.createCommit = createCommit
   ctx.payload.issue.body = null
 
-  await github.createPR({ log: () => { } }, ctx, { copyIssueDescriptionToPR: true, silent: false }, 'robvanderleek',
+  await github.createPr({ log: () => { } }, ctx, { copyIssueDescriptionToPR: true, silent: false }, 'robvanderleek',
     'issue-1')
   expect(createPR).toHaveBeenCalledWith({
     owner: 'robvanderleek',
@@ -262,7 +262,7 @@ test('use correct source branch', async () => {
   ctx.payload.issue.labels = [{ name: 'enhancement' }]
   const config = { branches: [{ label: 'enhancement', name: 'develop' }] }
 
-  await github.createPR({ log: () => { } }, ctx, config, 'robvanderleek', 'issue-1')
+  await github.createPr({ log: () => { } }, ctx, config, 'robvanderleek', 'issue-1')
   expect(createPR).toHaveBeenCalledWith({
     owner: 'robvanderleek',
     repo: 'create-issue-branch',
@@ -281,7 +281,7 @@ test('use configured target branch', async () => {
   ctx.payload.issue.labels = [{ name: 'enhancement' }]
   const config = { branches: [{ label: 'enhancement', prTarget: 'develop' }] }
 
-  await github.createPR({ log: () => { } }, ctx, config, 'robvanderleek', 'issue-1')
+  await github.createPr({ log: () => { } }, ctx, config, 'robvanderleek', 'issue-1')
   expect(createPR).toHaveBeenCalledWith({
     owner: 'robvanderleek',
     repo: 'create-issue-branch',
@@ -300,7 +300,7 @@ test('configured source and target branch', async () => {
   ctx.payload.issue.labels = [{ name: 'hotfix' }]
   const config = { branches: [{ label: 'hotfix', name: 'develop', prTarget: 'hotfix' }] }
 
-  await github.createPR({ log: () => { } }, ctx, config, 'robvanderleek', 'issue-1')
+  await github.createPr({ log: () => { } }, ctx, config, 'robvanderleek', 'issue-1')
   expect(createPR).toHaveBeenCalledWith({
     owner: 'robvanderleek',
     repo: 'create-issue-branch',
@@ -322,7 +322,7 @@ test('copy Issue milestone into PR', async () => {
   ctx.payload.issue.body = 'This is the description'
   ctx.payload.issue.milestone = { number: 456 }
 
-  await github.createPR({ log: () => { } }, ctx, { copyIssueMilestoneToPR: true, silent: false }, 'robvanderleek',
+  await github.createPr({ log: () => { } }, ctx, { copyIssueMilestoneToPR: true, silent: false }, 'robvanderleek',
     'issue-1')
   expect(updateIssue).toHaveBeenCalledWith({
     owner: 'robvanderleek', repo: 'create-issue-branch', issue_number: 123, milestone: 456
@@ -337,7 +337,7 @@ test('empty commit text', async () => {
   ctx.payload.issue.body = 'This is the description'
   ctx.payload.issue.milestone = { number: 456 }
 
-  await github.createPR({ log: () => { } }, ctx, { }, 'robvanderleek', 'issue-1')
+  await github.createPr({ log: () => { } }, ctx, { }, 'robvanderleek', 'issue-1')
 
   expect(createCommit.mock.calls[0][0].message).toBe('Create PR for #1')
 })
@@ -350,7 +350,7 @@ test('empty commit with skip CI text', async () => {
   ctx.payload.issue.body = 'This is the description'
   ctx.payload.issue.milestone = { number: 456 }
 
-  await github.createPR({ log: () => { } }, ctx, { prSkipCI: true }, 'robvanderleek', 'issue-1')
+  await github.createPr({ log: () => { } }, ctx, { prSkipCI: true }, 'robvanderleek', 'issue-1')
 
   expect(createCommit.mock.calls[0][0].message).toBe('Create PR for #1\n[skip ci]')
 })

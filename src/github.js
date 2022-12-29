@@ -3,7 +3,7 @@ const utils = require('./utils')
 const context = require('./context')
 const plans = require('./plans')
 const { interpolate } = require('./interpolate')
-const { formatAsExpandingMarkdown } = require('./utils')
+const { formatAsExpandingMarkdown, removeSemverPrefix } = require('./utils')
 
 async function createIssueBranch (app, ctx, branchName, config) {
   if (await hasValidSubscriptionForRepo(app, ctx)) {
@@ -257,7 +257,7 @@ async function createBranch (ctx, config, branchName, sha, log) {
   }
 }
 
-async function createPR (app, ctx, config, username, branchName) {
+async function createPr (app, ctx, config, username, branchName) {
   const owner = context.getRepoOwnerLogin(ctx)
   const repo = context.getRepoName(ctx)
   const base = getPrTargetBranch(ctx, config, app.log)
@@ -401,6 +401,19 @@ async function queryProjectIdsForIssue (ctx) {
   return result
 }
 
+async function updatePrTitle (app, ctx, config, pr, labels) {
+  const owner = context.getRepoOwnerLogin(ctx)
+  const repo = context.getRepoName(ctx)
+  const pullNumber = pr.number
+  const title = pr.title
+  const semverPrefix = Config.getConventionalPrTitlePrefix(config, labels)
+  const updatedTitle = semverPrefix + ' ' + removeSemverPrefix(title)
+  if (updatedTitle !== title) {
+    app.log.info(`Updating prefix for PR #${pullNumber} in ${owner}/${repo} to: ${semverPrefix}`)
+    await ctx.octokit.pulls.update({ owner: owner, repo: repo, pull_number: pullNumber, title: updatedTitle })
+  }
+}
+
 module.exports = {
   createIssueBranch: createIssueBranch,
   addComment: addComment,
@@ -412,5 +425,6 @@ module.exports = {
   getBranchNameFromIssue: getBranchNameFromIssue,
   getBranchName: getBranchName,
   createBranch: createBranch,
-  createPR: createPR
+  createPr: createPr,
+  updatePrTitle: updatePrTitle
 }
