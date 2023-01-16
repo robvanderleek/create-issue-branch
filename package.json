@@ -38,7 +38,7 @@
     "analytics": "^0.8.1",
     "bunyan-sentry-stream": "^1.2.1",
     "js-tokens": "^8.0.0",
-    "probot": "^12.2.5",
+    "probot": "^12.2.9",
     "slice": "^1.0.0",
     "wildcard-match": "^5.1.2"
   },
