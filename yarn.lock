@@ -3480,10 +3480,10 @@ joycon@^3.0.0, joycon@^3.1.1:
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
   integrity sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==
 
-js-tokens@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-8.0.0.tgz#5dbe2cdfa9afc93251d3a77bf18c3ad6fa8a4de4"
-  integrity sha512-PC7MzqInq9OqKyTXfIvQNcjMkODJYC8A17kAaQgeW79yfhqTWSOfjHYQ2mDDcwJ96Iibtwkfh0C7R/OvqPlgVA==
+js-tokens@^8.0.1:
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-8.0.1.tgz#f068fde9bd2f9f4a24ad78f3b4fa787216b433e3"
+  integrity sha512-3AGrZT6tuMm1ZWWn9mLXh7XMfi2YtiLNPALCVxBCiUVq0LD1OQMxV/AdS/s7rLJU5o9i/jBZw/N4vXXL5dm29A==
 
 js-yaml@^3.13.1, js-yaml@^3.14.1:
   version "3.14.1"
