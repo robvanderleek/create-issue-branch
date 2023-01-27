@@ -12,6 +12,7 @@ test('get issue number from branch name', () => {
   expect(github.getIssueNumberFromBranchName('some-prefix-issue-78-Add_more_unit_tests')).toBe(78)
   expect(github.getIssueNumberFromBranchName('feature/some-user/some-prefix-issue-78-Add_more_unit_tests'))
     .toBe(78)
+  expect(github.getIssueNumberFromBranchName('issue-56/add-more-unit-tests')).toBe(56)
 })
 
 test('get branch name from issue', async () => {

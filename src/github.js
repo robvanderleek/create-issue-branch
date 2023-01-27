@@ -84,9 +84,6 @@ async function getBranchName (ctx, config, title) {
 }
 
 function getIssueNumberFromBranchName (branchName) {
-  if (branchName.includes('/')) {
-    branchName = branchName.substring(branchName.lastIndexOf('/') + 1)
-  }
   let match = branchName.match(/^[i]?(\d+)/)
   if (match) {
     return parseInt(match[1])
@@ -94,6 +91,10 @@ function getIssueNumberFromBranchName (branchName) {
   match = branchName.match(/issue-(\d+)/i)
   if (match) {
     return parseInt(match[1])
+  }
+  if (branchName.includes('/')) {
+    branchName = branchName.substring(branchName.lastIndexOf('/') + 1)
+    return getIssueNumberFromBranchName(branchName)
   }
   return undefined
 }
