@@ -1,11 +1,13 @@
 const Sentry = require('@sentry/node')
 const utils = require('./utils')
+const PullRequest = require('./webhooks/pull-request')
 const PullRequestClosed = require('./webhooks/pull-request-closed')
 const IssueAssigned = require('./webhooks/issue-assigned')
 const CommentCreated = require('./webhooks/comment-created')
 const MarketplacePurchase = require('./webhooks/marketplace-purchase')
 const { version } = require('./version')
 const { listAppSubscriptions } = require('./plans')
+const IssueLabeled = require('./webhooks/issue-labeled')
 
 module.exports = (app, { getRouter }) => {
   app.log(`Create Issue Branch, revision: ${version.revision}, built on: ${version.date}`)
@@ -27,9 +29,16 @@ module.exports = (app, { getRouter }) => {
   app.on('pull_request.closed', async ctx => {
     await PullRequestClosed.handle(app, ctx)
   })
+  app.on(['pull_request.opened', 'pull_request.reopened', 'pull_request.labeled', 'pull_request.unlabeled'],
+    async ctx => {
+      await PullRequest.handle(app, ctx)
+    })
   app.on('issues.opened', async ctx => {
     const comment = ctx.payload.issue.body
     await CommentCreated.handle(app, ctx, comment)
+  })
+  app.on(['issues.labeled', 'issues.unlabeled'], async ctx => {
+    await IssueLabeled.handle(app, ctx)
   })
   app.on(['marketplace_purchase.purchased', 'marketplace_purchase.changed', 'marketplace_purchase.cancelled',
     'marketplace_purchase.pending_change'], async ctx => {

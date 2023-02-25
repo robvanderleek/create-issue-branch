@@ -3,3 +3,6 @@
 
 [functions]
     directory = "src/functions/"
+
+[dev]
+    autoLaunch = false

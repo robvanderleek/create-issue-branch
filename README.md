@@ -14,12 +14,14 @@ after commenting on an issue with a ChatOps command: `/create-issue-branch` or `
 
 Built in response to this feature request issue:
 https://github.com/isaacs/github/issues/1125 (that issue is now closed and the
-discussion [continuous here](https://github.com/github/feedback/discussions/3441) and [here](https://github.com/github/feedback/discussions/12290))
+discussion [continuous here](https://github.com/github/feedback/discussions/3441)
+and [here](https://github.com/github/feedback/discussions/12290))
 
-> **UPDATE 2/2/2022**: GitHub added a "Create a branch" button [to the web UI](https://github.blog/changelog/2022-03-02-create-a-branch-for-an-issue/)
+> **UPDATE 2/2/2022**: GitHub added a "Create a branch"
+> button [to the web UI](https://github.blog/changelog/2022-03-02-create-a-branch-for-an-issue/)
 >
 > This App/Action offers some unique features not available in the new GitHub web UI button, such as:
-> 
+>
 > - [Configure branch name format](https://github.com/robvanderleek/create-issue-branch#branch-names)
 > - [Configure default source branch](https://github.com/robvanderleek/create-issue-branch#default-source-branch)
 > - [Configure source branch based on label](https://github.com/robvanderleek/create-issue-branch#source-branch-based-on-issue-label)
@@ -27,8 +29,8 @@ discussion [continuous here](https://github.com/github/feedback/discussions/3441
 > - [Copy over attributes (such as labels and milestones) from the issue to the (draft) PR](https://github.com/robvanderleek/create-issue-branch#copy-attributes-from-issue)
 > - [Configure PR target branch based on issue label](https://github.com/robvanderleek/create-issue-branch#pull-request-target-branch-based-on-issue-label)
 > - [Feature requests are always welcome!](https://github.com/robvanderleek/create-issue-branch#feedback-suggestions-and-bug-reports)
-> 
-> Perhaps the new GitHub button will be sufficient for your development workflow, if not give this App/Action a try. 
+>
+> Perhaps the new GitHub button will be sufficient for your development workflow, if not give this App/Action a try.
 
 * [Installation](#installation)
 * [Usage](#usage)
@@ -479,14 +481,78 @@ copyIssueProjectsToPR: true
 copyIssueMilestoneToPR: true
 ```
 
-### Skip CI workflows 
+### Skip CI workflows
 
-Automatically opening a (draft) PR for an issue requires an empty commit on the newly created branch (this is a 
-requirement by GitHub). This first empty commit might trigger GitHub Actions CI workflows. You can skip these 
+Automatically opening a (draft) PR for an issue requires an empty commit on the newly created branch (this is a
+requirement by GitHub). This first empty commit might trigger GitHub Actions CI workflows. You can skip these
 workflows with the following configuration option:
 
 ```yaml
 prSkipCI: true
+```
+
+## Conventional Pull Request titles
+
+This feature enables [Conventional
+Commits](https://www.conventionalcommits.org/) in your Git history based on
+issue/PR labels (so without requiring each commit on the repository to follow
+this convention.) Conventional commits make it possible to implement automated
+[Semantic Versioning](https://semver.org/) of your software using tools such as
+https://semantic-release.gitbook.io/semantic-release/.
+
+You can enable conventional Pull Request titles with the following
+configuration option:
+
+```yaml
+conventionalPrTitles: true
+```
+
+When enabled, a conventional prefix is automatically set in the PR title based on issue & PR labels. For example, if
+there's an issue "Fix nasty bug" and accompanying branch `issue-123-Fix-nasty-bug`, where either the issue or the PR
+are labeled as "bug", then whenever a Pull Request for the branch is opened (automatically or manually) Create Issue
+Branch will prepend "fix: :bug: " to the Pull Request title, for example "fix: :bug: isssue 123 Fix nasty bug".
+
+For issues/PRs that are labeled with "breaking change" (or "breaking-change") there will be an exclamation mark
+added to the title, for example: "feat!: Change in API".
+
+By default, the labels "bug", "dependencies", "performance", "documentation"
+and "security" will prepend "fix:" to the PR title. The label "enhancement"
+will prepend "feat:" to the title, and the labels "breaking
+change"/"breaking-change" will add an exclamation mark after bug or feat.
+
+Each label mentioned above also has an accompanying [gitmoji](https://gitmoji.dev/).
+
+Labels and their emoji/gitmoji can be configured through the option `conventionalLabels`. This is the default
+
+```yaml
+conventionalLabels:
+  fix:
+    bug: ':bug:'
+    dependencies: ':arrow_up:'
+    performance: ':zap:'
+    documentation: ':memo:'
+    security: ':lock:'
+  feature:
+    enhancement: ':sparkles:'
+  breaking:
+    breaking-change: ':boom:'
+    breaking change: ':boom:'
+```
+
+For example, to change the gitmoji for label "bug":
+
+```yaml
+conventionalLabels:
+  fix:
+    bug: ':ambulance:'
+```
+
+Or to add a new label type for features:
+
+```yaml
+conventionalLabels:
+  feature:
+    new-stuff: ':rocket:'
 ```
 
 ## Change message in issue comments
@@ -538,7 +604,9 @@ The snippet below shows the script which, upon execution, generates a coverage d
 then used by CodeCov to generate a dashboard (*description for CodeCov below the snippet*)
 
 ```javascript 
-"coverage": "jest --collect-coverage"
+"coverage"
+:
+"jest --collect-coverage"
 ```
 
 #### CodeCov
@@ -569,7 +637,8 @@ dashboard on CodeCov.io:
 
 # Feedback, suggestions and bug reports
 
-Please create an issue here: https://github.com/robvanderleek/create-issue-branch/issues
+Please create an issue here:
+https://github.com/robvanderleek/create-issue-branch/issues
 
 ## Features under consideration
 
@@ -586,10 +655,13 @@ useful for your use-case.
 # Contributing
 
 If you have suggestions for how create-issue-branch could be improved, or want
-to report a bug, open an issue! We'd love all and any contributions.
+to report a bug, [open an
+issue](https://github.com/robvanderleek/create-issue-branch/issues)! All and
+any contributions are appreciated.
 
 For more, check out the [Contributing Guide](docs/CONTRIBUTING.md).
 
 # License
 
-[ISC](LICENSE) © 2019 Rob van der Leek <robvanderleek@gmail.com> (https://twitter.com/robvanderleek)
+[ISC](LICENSE) © 2019 Rob van der Leek <robvanderleek@gmail.com>
+(https://twitter.com/robvanderleek)
