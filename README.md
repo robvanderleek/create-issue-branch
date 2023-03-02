@@ -47,8 +47,8 @@ There are two options to run this app as part of your development workflow:
 1. [Install](https://github.com/marketplace/create-issue-branch) it as an *app* for your organization/account/repository
 2. Run it as an *action* in your GitHub action YAML configuration
 
-Option 1 is easiest if you're developing on GitHub.com, option 2 gives you full control how and when the app runs in
-your development workflow.
+Option 1 is easiest if you're developing on GitHub.com, option 2 gives you full
+control how and when the app runs in your development workflow.
 
 The App is free to use for personal, and public organization repositories. There
 is [a paid plan on the GitHub Marketplace](https://github.com/marketplace/create-issue-branch/) if you want to use it
