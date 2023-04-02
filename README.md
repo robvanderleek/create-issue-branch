@@ -271,6 +271,19 @@ or if you want the complete title in uppercase:
 branchName: '${issue.number}-${issue.title^}'
 ```
 
+### Left padding with zeros
+
+Substitutions can be left padded with zeros using the `%n` operator, where `n` is the minimum number of characters 
+of the substitution result.
+
+For example, issue numbers can be left padded with zeros like this:
+
+```yaml
+branchName: 'issue-${issue.number%4}'
+```
+
+In the example above, if the issue number is 123, the resulting branch name will be `issue-0123`.
+
 ### Configure replacement character and replace arbitrary characters
 
 Characters that are not allowed in Git branch names are replaced by default with an underscore (`_`) character. You can
