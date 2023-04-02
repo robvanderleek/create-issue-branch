@@ -6,6 +6,9 @@ const containsLowerCaseOperator = tokens => tokens.length > 0 && tokens[tokens.l
 
 const containsUpperCaseOperator = tokens => tokens.length > 0 && tokens[tokens.length - 1].value === '^'
 
+const containsLeftPadOperator = tokens => tokens.length > 2 && tokens[tokens.length - 2].value === '%' &&
+  tokens[tokens.length - 1].type === 'NumericLiteral'
+
 function interpolate (s, obj, env) {
   return s.replace(/[$]{([^}]+)}/g, (_, expression) => interpolateExpression(expression, obj, env))
 }
@@ -19,7 +22,7 @@ function interpolateExpression (expression, obj, env) {
   } else {
     value = interpolateProperty(property, obj)
   }
-  return checkOperators(tokens, value)
+  return checkOperators(tokens, String(value))
 }
 
 function interpolateEnvironmentVariable (property, env) {
@@ -35,6 +38,9 @@ function checkOperators (tokens, value) {
     value = value.toLowerCase()
   } else if (containsUpperCaseOperator(tokens)) {
     value = value.toUpperCase()
+  } else if (containsLeftPadOperator(tokens)) {
+    const padding = parseInt(tokens[tokens.length - 1].value)
+    value = value.padStart(padding, '0')
   }
   value = slice(tokens, value)
   return value
