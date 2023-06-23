@@ -21,9 +21,10 @@ jobs:
       run: yarn install
       name: 'Build distribution'
     - run: yarn dist
-  testing:
+  test:
     runs-on: ubuntu-latest
     needs: build
+    steps:
     - name: 'Run unit-tests'
       run: yarn test
     - name: 'Run linter'
@@ -34,7 +35,8 @@ jobs:
       run: bash <(curl -s https://codecov.io/bash) -t ${{secrets.CODECOV_SECRET_TOKEN }}
   release:
     runs-on: ubuntu-latest
-    needs: testing
+    needs: test
+    steps:
     - name: 'Semantic Release'
       id: semantic
       uses: cycjimmy/semantic-release-action@v3
