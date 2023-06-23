@@ -4,20 +4,23 @@ on:
   push:
     branches:
       - main
+
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
       CI: true
     steps:
-    - uses: actions/checkout@v2
+    - name: 'Checkout sources'
+      uses: actions/checkout@v3
+    - name: 'Setup NodeJS'
+      uses: actions/setup-node@v3
       with:
-        fetch-depth: 0
-    - uses: actions/setup-node@v1
-      with:
-        node-version: 16.x
-    - run: yarn install
-    - run: yarn test
+        node-version: '16.x'
+    - name: 'Install dependencies'
+      run: yarn install
+    - name: 'Run unit-tests'
+      run: yarn test
     - run: yarn run lint
     - run: yarn dist
     - run: yarn run coverage
@@ -29,11 +32,10 @@ jobs:
         git add dist/index.js
         git commit -m "Build by GitHub Actions" || true
       if: job.status == 'success'
-    - name: Update repo
-      run: git pull --no-rebase
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         branch: ${{ github.ref }}
+        force: true
       if: job.status == 'success'
