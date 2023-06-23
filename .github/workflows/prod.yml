@@ -19,8 +19,8 @@ jobs:
         node-version: '16.x'
     - name: 'Install dependencies'
       run: yarn install
-      name: 'Build distribution'
-    - run: yarn dist
+    - name: 'Build distribution'
+      run: yarn dist
   test:
     runs-on: ubuntu-latest
     needs: build
