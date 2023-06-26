@@ -407,10 +407,10 @@ async function updatePrTitle (app, ctx, config, pr, labels) {
   const repo = context.getRepoName(ctx)
   const pullNumber = pr.number
   const title = pr.title
-  const semverPrefix = Config.getConventionalPrTitlePrefix(config, labels)
-  const updatedTitle = semverPrefix + ' ' + removeSemverPrefix(title)
+  const conventionalPrefix = Config.getConventionalPrTitlePrefix(config, labels)
+  const updatedTitle = conventionalPrefix + ' ' + removeSemverPrefix(title)
   if (updatedTitle !== title) {
-    app.log.info(`Updating prefix for PR #${pullNumber} in ${owner}/${repo} to: ${semverPrefix}`)
+    app.log.info(`Updating prefix for PR #${pullNumber} in ${owner}/${repo} to: ${conventionalPrefix}`)
     await ctx.octokit.pulls.update({ owner: owner, repo: repo, pull_number: pullNumber, title: updatedTitle })
   }
 }
