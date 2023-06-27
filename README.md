@@ -523,6 +523,12 @@ configuration option:
 conventionalPrTitles: true
 ```
 
+Conventional PR titles can create a a clear and beautiful Git history in
+GitHub. For this to work make sure to enable only "Allow squash merging" and
+select "Default to pull request title" on your repository settings page:
+
+![Pull Requests Settings](docs/pull-requests-settings.png)
+
 ## Configuring Semantic Versioning (semver) style
 
 This option enables [Conventional
