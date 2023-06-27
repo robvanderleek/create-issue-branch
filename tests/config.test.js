@@ -100,9 +100,24 @@ test('conventional PR titles', () => {
 })
 
 test('get PR title prefix for issue label', () => {
-  expect(Config.getConventionalPrTitlePrefix({}, ['bug'])).toBe('fix: :bug:')
-  expect(Config.getConventionalPrTitlePrefix({}, ['some-user-defined-label'])).toBe('feat: :sparkles:')
+  expect(Config.getConventionalPrTitlePrefix({}, ['bug'])).toBe(':bug:')
+  expect(Config.getConventionalPrTitlePrefix({}, ['some-user-defined-label'])).toBe(':sparkles:')
 
   expect(Config.getConventionalPrTitlePrefix({ conventionalLabels: { fix: { bug: ':ambulance:' } } }, ['bug']))
+    .toBe(':ambulance:')
+})
+
+test('get PR title prefix for issue label semver style', () => {
+  expect(Config.getConventionalPrTitlePrefix({ conventionalStyle: 'semver' }, ['bug'])).toBe('fix: :bug:')
+  expect(Config.getConventionalPrTitlePrefix({ conventionalStyle: 'semver' }, ['some-user-defined-label']))
+    .toBe('feat: :sparkles:')
+
+  expect(Config.getConventionalPrTitlePrefix(
+    { conventionalStyle: 'semver', conventionalLabels: { fix: { bug: ':ambulance:' } } }, ['bug']))
     .toBe('fix: :ambulance:')
+})
+
+test('Conventional PR style', () => {
+  expect(Config.conventionalStyle({})).toBe('gitmoji')
+  expect(Config.conventionalStyle({ conventionalStyle: 'semver' })).toBe('semver')
 })
