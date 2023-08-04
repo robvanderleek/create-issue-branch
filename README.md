@@ -1,13 +1,13 @@
 # Create Issue Branch
 
-![Logo](static/logo.png)
+![Logo](public/logo.png)
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/aaa03e6c10ce1ae9941f/maintainability)](https://codeclimate.com/github/robvanderleek/create-issue-branch/maintainability)
 [![Build Status](https://github.com/robvanderleek/create-issue-branch/workflows/Prod/badge.svg)](https://github.com/robvanderleek/create-issue-branch/actions)
 [![codecov](https://codecov.io/gh/robvanderleek/create-issue-branch/branch/main/graph/badge.svg?token=WBKIPs2WEc)](https://codecov.io/gh/robvanderleek/create-issue-branch)
 [![Dependabot](https://badgen.net/badge/Dependabot/enabled/green?icon=dependabot)](https://dependabot.com/)
 [![Sentry](https://img.shields.io/badge/sentry-enabled-green)](https://sentry.io)
-[![Netlify Status](https://api.netlify.com/api/v1/badges/88fb0319-3e73-432a-8c4e-51636578eda1/deploy-status)](https://app.netlify.com/sites/create-issue-branch/deploys)
+![Vercel](https://vercelbadge.vercel.app/api/robvanderleek/create-issue-branch)
 
 A GitHub App/Action that automates the creation of issue branches (either automatically after assigning an issue or
 after commenting on an issue with a ChatOps command: `/create-issue-branch` or `/cib`).
@@ -271,6 +271,19 @@ or if you want the complete title in uppercase:
 branchName: '${issue.number}-${issue.title^}'
 ```
 
+### Left padding with zeros
+
+Substitutions can be left padded with zeros using the `%n` operator, where `n` is the minimum number of characters 
+of the substitution result.
+
+For example, issue numbers can be left padded with zeros like this:
+
+```yaml
+branchName: 'issue-${issue.number%4}'
+```
+
+In the example above, if the issue number is 123, the resulting branch name will be `issue-0123`.
+
 ### Configure replacement character and replace arbitrary characters
 
 Characters that are not allowed in Git branch names are replaced by default with an underscore (`_`) character. You can
@@ -384,9 +397,9 @@ branches:
 See
 [test/fixtures/issues.assigned.json](tests/test-fixtures/issues.assigned.json) for all possible placeholder names.
 
-## Skip branch creation based on issue label
+## Skip runs for issues based on issue label
 
-In mode "auto" branch creation can be skipped based on the label of an issue.
+Runs of this App/Action can be skipped based on the label of an issue.
 
 For example, if you don't want to automatically create branches for issues with the
 `question` label, add this to your configuration YAML:
@@ -461,6 +474,23 @@ branches:
     prTarget: hotfix
 ```
 
+### Skip branch creation based on issue label
+
+You can skip the creation of branches based on the issue label. This configuration option is typically used together
+with the `openPR`/`openDraftPR` option to automatically create a (draft)PR between branches.
+
+For example, to automatically open a PR to merge the `develop` branch in the `release` branch when the issue has a 
+`release` label, add this to your configuration YAML:
+
+```yaml
+openPR: true
+branches:
+  - label: release
+    name: develop
+    prTarget: release
+    skipBranch: true
+```
+
 ### Copy attributes from issue
 
 When the App opens a new (draft) Pull Request it can also copy over the following attributes from your issue:
@@ -493,12 +523,15 @@ prSkipCI: true
 
 ## Conventional Pull Request titles
 
-This feature enables [Conventional
-Commits](https://www.conventionalcommits.org/) in your Git history based on
-issue/PR labels (so without requiring each commit on the repository to follow
-this convention.) Conventional commits make it possible to implement automated
-[Semantic Versioning](https://semver.org/) of your software using tools such as
-https://semantic-release.gitbook.io/semantic-release/.
+When this option is enabled, a conventional prefix is automatically set in the
+PR title based on issue & PR labels.  For example, if there's an issue "Fix
+nasty bug" and accompanying branch `issue-123-Fix-nasty-bug`, where either the
+issue or the PR are labeled as "bug", then whenever a Pull Request for the
+branch is opened (automatically or manually) Create Issue Branch will prepend
+":bug: " to the Pull Request title, for example ":bug: isssue 123 Fix nasty
+bug". If the "semantic versioning" (semver) style of this feature is configured
+Create Issue Branch will prepend "fix: :bug: " to the Pull Request title, for
+example "fix: :bug: isssue 123 Fix nasty bug"
 
 You can enable conventional Pull Request titles with the following
 configuration option:
@@ -507,18 +540,38 @@ configuration option:
 conventionalPrTitles: true
 ```
 
-When enabled, a conventional prefix is automatically set in the PR title based on issue & PR labels. For example, if
-there's an issue "Fix nasty bug" and accompanying branch `issue-123-Fix-nasty-bug`, where either the issue or the PR
-are labeled as "bug", then whenever a Pull Request for the branch is opened (automatically or manually) Create Issue
-Branch will prepend "fix: :bug: " to the Pull Request title, for example "fix: :bug: isssue 123 Fix nasty bug".
+Conventional PR titles can create a a clear and beautiful Git history in
+GitHub. For this to work make sure to enable only "Allow squash merging" and
+select "Default to pull request title" on your repository settings page:
 
-For issues/PRs that are labeled with "breaking change" (or "breaking-change") there will be an exclamation mark
-added to the title, for example: "feat!: Change in API".
+![Pull Requests Settings](docs/pull-requests-settings.png)
+
+## Configuring Semantic Versioning (semver) style
+
+This option enables [Conventional
+Commits](https://www.conventionalcommits.org/) in your Git history based on
+issue/PR labels (so without requiring each commit on the repository to follow
+this convention.) Conventional commits make it possible to implement automated
+[Semantic Versioning](https://semver.org/) of your software using tools such as
+https://semantic-release.gitbook.io/semantic-release/.
+
+You can configure semantic versioning (semver) style with the following
+configuration option:
+
+```yaml
+conventionalStyle: semver
+```
+
+For issues/PRs that are labeled with "breaking change" (or "breaking-change")
+there will be an exclamation mark added to the title, for example: "feat!:
+Change in API".
 
 By default, the labels "bug", "dependencies", "performance", "documentation"
 and "security" will prepend "fix:" to the PR title. The label "enhancement"
 will prepend "feat:" to the title, and the labels "breaking
 change"/"breaking-change" will add an exclamation mark after bug or feat.
+
+## Gitmoji configuration
 
 Each label mentioned above also has an accompanying [gitmoji](https://gitmoji.dev/).
 

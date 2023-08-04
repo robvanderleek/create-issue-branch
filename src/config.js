@@ -159,7 +159,37 @@ function conventionalPrTitles (config) {
   return 'conventionalPrTitles' in config && config.conventionalPrTitles === true
 }
 
+function conventionalStyle (config) {
+  return config.conventionalStyle ? config.conventionalStyle : 'gitmoji'
+}
+
 function getConventionalPrTitlePrefix (config, labels) {
+  const mapping = getGitmojiMapping(config)
+  const featureLabels = labels.filter(l => l in mapping.feature)
+  const fixLabels = labels.filter(l => l in mapping.fix)
+  const style = conventionalStyle(config)
+  if (featureLabels.length > 0) {
+    if (style === 'semver') {
+      return `feat${isBreakingPr(labels, mapping) ? '!' : ''}: ${mapping.feature[featureLabels[0]]}`
+    } else {
+      return `${mapping.feature[featureLabels[0]]}`
+    }
+  } else if (fixLabels.length > 0) {
+    if (style === 'semver') {
+      return `fix${isBreakingPr(labels, mapping) ? '!' : ''}: ${mapping.fix[fixLabels[0]]}`
+    } else {
+      return `${mapping.fix[fixLabels[0]]}`
+    }
+  } else {
+    if (style === 'semver') {
+      return `feat${isBreakingPr(labels, mapping) ? '!' : ''}: :sparkles:`
+    } else {
+      return ':sparkles:'
+    }
+  }
+}
+
+function getGitmojiMapping (config) {
   const mapping = {
     fix: {
       bug: ':bug:', dependencies: ':arrow_up:', performance: ':zap:', documentation: ':memo:', security: ':lock:'
@@ -168,8 +198,7 @@ function getConventionalPrTitlePrefix (config, labels) {
       enhancement: ':sparkles:'
     }, //
     breaking: {
-      'breaking-change': ':boom:',
-      'breaking change': ':boom:'
+      'breaking-change': ':boom:', 'breaking change': ':boom:'
     }
   }
   if (config && config.conventionalLabels) {
@@ -177,16 +206,11 @@ function getConventionalPrTitlePrefix (config, labels) {
     Object.assign(mapping.feature, config.conventionalLabels.feature)
     Object.assign(mapping.breaking, config.conventionalLabels.breaking)
   }
-  const breaking = labels.some(l => l in mapping.breaking)
-  const featureLabels = labels.filter(l => l in mapping.feature)
-  const fixLabels = labels.filter(l => l in mapping.fix)
-  if (featureLabels.length > 0) {
-    return `feat${breaking ? '!' : ''}: ${mapping.feature[featureLabels[0]]}`
-  } else if (fixLabels.length > 0) {
-    return `fix${breaking ? '!' : ''}: ${mapping.fix[fixLabels[0]]}`
-  } else {
-    return `feat${breaking ? '!' : ''}: :sparkles:`
-  }
+  return mapping
+}
+
+function isBreakingPr (labels, mapping) {
+  return labels.some(l => l in mapping.breaking)
 }
 
 module.exports = {
@@ -211,5 +235,6 @@ module.exports = {
   copyIssueMilestoneToPR: copyIssueMilestoneToPR,
   prSkipCI: prSkipCI,
   conventionalPrTitles: conventionalPrTitles,
-  getConventionalPrTitlePrefix: getConventionalPrTitlePrefix
+  getConventionalPrTitlePrefix: getConventionalPrTitlePrefix,
+  conventionalStyle: conventionalStyle
 }

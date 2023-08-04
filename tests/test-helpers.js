@@ -165,7 +165,9 @@ function getDefaultContext () {
 
 function initNock () {
   nock.disableNetConnect()
-  const logRequest = (r) => console.log(`No match: ${r.path}, method: ${r.method}, host: ${r.options.host}`)
+  const logRequest = (r) => {
+    throw new Error(`No match: ${r.path}, method: ${r.method}, host: ${r.options.host}`)
+  }
   nock.emitter.on('no match', req => { logRequest(req) })
 }
 

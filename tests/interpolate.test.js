@@ -148,3 +148,11 @@ test('string slice examples', () => {
   // eslint-disable-next-line no-template-curly-in-string
   expect(interpolate('${text[-5, -1]}', { text: 'The morning is upon us.' })).toBe('n us')
 })
+
+test('interpolate number with leading zeros', () => {
+  const o = { count: 123 }
+  // eslint-disable-next-line no-template-curly-in-string
+  const result = interpolate('issue-${count%6}', o)
+
+  expect(result).toBe('issue-000123')
+})

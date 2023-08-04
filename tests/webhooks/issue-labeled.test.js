@@ -1,26 +1,46 @@
 const issueLabeledPayload = require('../test-fixtures/issues.labeled.json')
-const helpers = require('../test-helpers')
+const testHelpers = require('../test-helpers')
 
 let probot
 
 beforeAll(() => {
-  helpers.initNock()
+  testHelpers.initNock()
 })
 
 beforeEach(() => {
-  probot = helpers.initProbot()
+  probot = testHelpers.initProbot()
 })
 
 test('do nothing if not configured', async () => {
-  helpers.nockEmptyConfig()
+  testHelpers.nockEmptyConfig()
 
   await probot.receive({ name: 'issues', payload: issueLabeledPayload })
 })
 
 test('prefix PR title', async () => {
-  helpers.nockConfig('conventionalPrTitles: true')
-  helpers.nockPulls('issue-44-New_issue', [{ number: 45, title: 'New issue', labels: [] }])
-  helpers.nockUpdatePull(45)
+  testHelpers.nockConfig('conventionalPrTitles: true')
+  testHelpers.nockPulls('issue-44-New_issue', [{ number: 45, title: 'New issue', labels: [] }])
+  testHelpers.nockUpdatePull(45)
+  const updatePr = jest.fn()
+  probot.state.octokit.pulls.update = updatePr
 
   await probot.receive({ name: 'issues', payload: issueLabeledPayload })
+
+  expect(updatePr).toHaveBeenCalledWith({
+    pull_number: 45, title: ':bug: New issue', owner: 'robvanderleek', repo: 'create-issue-branch'
+  })
+})
+
+test('prefix PR title semver style', async () => {
+  testHelpers.nockConfig('conventionalPrTitles: true\nconventionalStyle: semver')
+  testHelpers.nockPulls('issue-44-New_issue', [{ number: 45, title: 'New issue', labels: [] }])
+  testHelpers.nockUpdatePull(45)
+  const updatePr = jest.fn()
+  probot.state.octokit.pulls.update = updatePr
+
+  await probot.receive({ name: 'issues', payload: issueLabeledPayload })
+
+  expect(updatePr).toHaveBeenCalledWith({
+    pull_number: 45, title: 'fix: :bug: New issue', owner: 'robvanderleek', repo: 'create-issue-branch'
+  })
 })

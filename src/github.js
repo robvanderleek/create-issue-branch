@@ -125,10 +125,19 @@ function allLabelsMatchIssueLabels (labels, issueLabels) {
   return labels.every(label => issueLabels.some(issueLabel => utils.wildcardMatch(label, issueLabel)))
 }
 
-function skipBranchCreationForIssue (ctx, config) {
+function skipForIssue (ctx, config) {
   const branchConfig = getIssueBranchConfig(ctx, config)
   if (branchConfig) {
     return branchConfig.skip === true
+  } else {
+    return false
+  }
+}
+
+function skipBranchCreationForIssue (ctx, config) {
+  const branchConfig = getIssueBranchConfig(ctx, config)
+  if (branchConfig) {
+    return branchConfig.skipBranch === true
   } else {
     return false
   }
@@ -407,10 +416,10 @@ async function updatePrTitle (app, ctx, config, pr, labels) {
   const repo = context.getRepoName(ctx)
   const pullNumber = pr.number
   const title = pr.title
-  const semverPrefix = Config.getConventionalPrTitlePrefix(config, labels)
-  const updatedTitle = semverPrefix + ' ' + removeSemverPrefix(title)
+  const conventionalPrefix = Config.getConventionalPrTitlePrefix(config, labels)
+  const updatedTitle = conventionalPrefix + ' ' + removeSemverPrefix(title)
   if (updatedTitle !== title) {
-    app.log.info(`Updating prefix for PR #${pullNumber} in ${owner}/${repo} to: ${semverPrefix}`)
+    app.log.info(`Updating prefix for PR #${pullNumber} in ${owner}/${repo} to: ${conventionalPrefix}`)
     await ctx.octokit.pulls.update({ owner: owner, repo: repo, pull_number: pullNumber, title: updatedTitle })
   }
 }
@@ -421,9 +430,11 @@ module.exports = {
   branchExists: branchExists,
   getIssueNumberFromBranchName: getIssueNumberFromBranchName,
   getIssueBranchConfig: getIssueBranchConfig,
+  skipForIssue: skipForIssue,
   skipBranchCreationForIssue: skipBranchCreationForIssue,
   getIssueBranchPrefix: getIssueBranchPrefix,
   getBranchNameFromIssue: getBranchNameFromIssue,
+  getSourceBranch: getSourceBranch,
   getBranchName: getBranchName,
   createBranch: createBranch,
   createPr: createPr,
