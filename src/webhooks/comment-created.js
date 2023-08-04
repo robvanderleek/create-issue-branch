@@ -29,17 +29,23 @@ async function chatOpsCommandGiven (app, ctx, comment) {
     app.log('Received ChatOps command but current mode is not `chatops`, exiting')
     return
   }
+  if (github.skipForIssue(ctx, config)) {
+    app.log(`Skipping run for issue: ${context.getIssueTitle(ctx)}`)
+    return
+  }
+  let branchName
   if (github.skipBranchCreationForIssue(ctx, config)) {
     app.log(`Skipping branch creation for issue: ${context.getIssueTitle(ctx)}`)
-    return
+    branchName = await github.getSourceBranch(ctx, config)
+  } else {
+    branchName = await getBranchName(ctx, config, comment)
+    if (await github.branchExists(ctx, branchName)) {
+      app.log('Could not create branch as it already exists')
+      await github.addComment(ctx, config, 'Branch already exists')
+      return
+    }
+    await github.createIssueBranch(app, ctx, branchName, config)
   }
-  const branchName = await getBranchName(ctx, config, comment)
-  if (await github.branchExists(ctx, branchName)) {
-    app.log('Could not create branch as it already exists')
-    await github.addComment(ctx, config, 'Branch already exists')
-    return
-  }
-  await github.createIssueBranch(app, ctx, branchName, config)
   const shouldCreatePR = Config.shouldOpenPR(config)
   if (shouldCreatePR) {
     const sender = context.getSender(ctx)

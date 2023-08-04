@@ -397,9 +397,9 @@ branches:
 See
 [test/fixtures/issues.assigned.json](tests/test-fixtures/issues.assigned.json) for all possible placeholder names.
 
-## Skip branch creation based on issue label
+## Skip runs for issues based on issue label
 
-In mode "auto" branch creation can be skipped based on the label of an issue.
+Runs of this App/Action can be skipped based on the label of an issue.
 
 For example, if you don't want to automatically create branches for issues with the
 `question` label, add this to your configuration YAML:
@@ -472,6 +472,23 @@ branches:
   - label: bug
     name: development
     prTarget: hotfix
+```
+
+### Skip branch creation based on issue label
+
+You can skip the creation of branches based on the issue label. This configuration option is typically used together
+with the `openPR`/`openDraftPR` option to automatically create a (draft)PR between branches.
+
+For example, to automatically open a PR to merge the `develop` branch in the `release` branch when the issue has a 
+`release` label, add this to your configuration YAML:
+
+```yaml
+openPR: true
+branches:
+  - label: release
+    name: develop
+    prTarget: release
+    skipBranch: true
 ```
 
 ### Copy attributes from issue

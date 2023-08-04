@@ -9,16 +9,22 @@ async function handle (app, ctx) {
   if (!Config.isModeAuto(config)) {
     return
   }
+  if (github.skipForIssue(ctx, config)) {
+    app.log(`Skipping run for issue: ${context.getIssueTitle(ctx)}`)
+    return
+  }
+  let branchName
   if (github.skipBranchCreationForIssue(ctx, config)) {
     app.log(`Skipping branch creation for issue: ${context.getIssueTitle(ctx)}`)
-    return
+    branchName = await github.getSourceBranch(ctx, config)
+  } else {
+    branchName = await github.getBranchNameFromIssue(ctx, config)
+    if (await github.branchExists(ctx, branchName)) {
+      app.log('Could not create branch as it already exists')
+      return
+    }
+    await github.createIssueBranch(app, ctx, branchName, config)
   }
-  const branchName = await github.getBranchNameFromIssue(ctx, config)
-  if (await github.branchExists(ctx, branchName)) {
-    app.log('Could not create branch as it already exists')
-    return
-  }
-  await github.createIssueBranch(app, ctx, branchName, config)
   const shouldCreatePR = Config.shouldOpenPR(config)
   if (shouldCreatePR) {
     const assignee = context.getAssignee(ctx)

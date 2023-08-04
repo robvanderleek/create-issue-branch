@@ -125,10 +125,19 @@ function allLabelsMatchIssueLabels (labels, issueLabels) {
   return labels.every(label => issueLabels.some(issueLabel => utils.wildcardMatch(label, issueLabel)))
 }
 
-function skipBranchCreationForIssue (ctx, config) {
+function skipForIssue (ctx, config) {
   const branchConfig = getIssueBranchConfig(ctx, config)
   if (branchConfig) {
     return branchConfig.skip === true
+  } else {
+    return false
+  }
+}
+
+function skipBranchCreationForIssue (ctx, config) {
+  const branchConfig = getIssueBranchConfig(ctx, config)
+  if (branchConfig) {
+    return branchConfig.skipBranch === true
   } else {
     return false
   }
@@ -421,9 +430,11 @@ module.exports = {
   branchExists: branchExists,
   getIssueNumberFromBranchName: getIssueNumberFromBranchName,
   getIssueBranchConfig: getIssueBranchConfig,
+  skipForIssue: skipForIssue,
   skipBranchCreationForIssue: skipBranchCreationForIssue,
   getIssueBranchPrefix: getIssueBranchPrefix,
   getBranchNameFromIssue: getBranchNameFromIssue,
+  getSourceBranch: getSourceBranch,
   getBranchName: getBranchName,
   createBranch: createBranch,
   createPr: createPr,
