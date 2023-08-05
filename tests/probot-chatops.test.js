@@ -224,6 +224,7 @@ test('warn about existing branches', async () => {
 test('open a pull request when a chatops command is given', async () => {
   helpers.nockNonExistingBranch('issue-1-Test_issue')
   helpers.nockExistingBranch('master', 12345678)
+  helpers.nockExistingBranch('master', 12345678)
   helpers.nockConfig('mode: chatops\nopenPR: true')
   helpers.nockCreateBranch()
   helpers.nockCommentCreated()
@@ -239,6 +240,7 @@ test('open a pull request when a chatops command is given', async () => {
 test('open a pull request but do not create a branch for issue with release label', async () => {
   helpers.nockNonExistingBranch('issue-1-Test_issue')
   helpers.nockExistingBranch('master', 12345678)
+  helpers.nockExistingBranch('release', 98765432)
   let config = ''
   config += 'mode: chatops\n'
   config += 'openPR: true\n'
@@ -260,6 +262,7 @@ test('open a pull request but do not create a branch for issue with release labe
 
 test('open a pull request, copy labels and assignee from issue', async () => {
   helpers.nockNonExistingBranch('issue-1-Test_issue')
+  helpers.nockExistingBranch('master', 12345678)
   helpers.nockExistingBranch('master', 12345678)
   helpers.nockConfig(`
     mode: chatops
