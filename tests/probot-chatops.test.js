@@ -224,6 +224,7 @@ test('warn about existing branches', async () => {
 test('open a pull request when a chatops command is given', async () => {
   helpers.nockNonExistingBranch('issue-1-Test_issue')
   helpers.nockExistingBranch('master', 12345678)
+  helpers.nockExistingBranch('master', 12345678)
   helpers.nockConfig('mode: chatops\nopenPR: true')
   helpers.nockCreateBranch()
   helpers.nockCommentCreated()
@@ -236,8 +237,32 @@ test('open a pull request when a chatops command is given', async () => {
   await probot.receive({ name: 'issue_comment', payload: commentCreatedPayload })
 })
 
+test('open a pull request but do not create a branch for issue with release label', async () => {
+  helpers.nockNonExistingBranch('issue-1-Test_issue')
+  helpers.nockExistingBranch('master', 12345678)
+  helpers.nockExistingBranch('release', 98765432)
+  let config = ''
+  config += 'mode: chatops\n'
+  config += 'openPR: true\n'
+  config += 'branches:\n'
+  config += '- label: "release"\n'
+  config += '  name: develop\n'
+  config += '  prTarget: release\n'
+  config += '  skipBranch: true\n'
+  helpers.nockConfig(config)
+  helpers.nockCommentCreated()
+  helpers.nockExistingBranch('develop', 87654321)
+  helpers.nockCommitTreeSha(87654321, 12344321)
+  helpers.nockCommit()
+  helpers.nockUpdateBranch('develop')
+  helpers.nockCreatePR()
+
+  await probot.receive({ name: 'issue_comment', payload: helpers.commentCreatedWithLabelsPayload('release') })
+})
+
 test('open a pull request, copy labels and assignee from issue', async () => {
   helpers.nockNonExistingBranch('issue-1-Test_issue')
+  helpers.nockExistingBranch('master', 12345678)
   helpers.nockExistingBranch('master', 12345678)
   helpers.nockConfig(`
     mode: chatops

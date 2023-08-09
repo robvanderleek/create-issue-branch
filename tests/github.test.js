@@ -100,8 +100,8 @@ test('skip branch creation for issue', () => {
   const questionIssue = { payload: { issue: { labels: [{ name: 'question' }] } } }
   const bugIssue = { payload: { issue: { labels: [{ name: 'bug' }] } } }
   const config = { branches: [{ label: 'question', skip: true }] }
-  expect(github.skipBranchCreationForIssue(questionIssue, config)).toBe(true)
-  expect(github.skipBranchCreationForIssue(bugIssue, config)).toBe(false)
+  expect(github.skipForIssue(questionIssue, config)).toBe(true)
+  expect(github.skipForIssue(bugIssue, config)).toBe(false)
 })
 
 test('get branch configuration for issue with all matching wildcard fallthrough', () => {

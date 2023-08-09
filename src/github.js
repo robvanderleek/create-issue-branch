@@ -125,10 +125,19 @@ function allLabelsMatchIssueLabels (labels, issueLabels) {
   return labels.every(label => issueLabels.some(issueLabel => utils.wildcardMatch(label, issueLabel)))
 }
 
-function skipBranchCreationForIssue (ctx, config) {
+function skipForIssue (ctx, config) {
   const branchConfig = getIssueBranchConfig(ctx, config)
   if (branchConfig) {
     return branchConfig.skip === true
+  } else {
+    return false
+  }
+}
+
+function skipBranchCreationForIssue (ctx, config) {
+  const branchConfig = getIssueBranchConfig(ctx, config)
+  if (branchConfig) {
+    return branchConfig.skipBranch === true
   } else {
     return false
   }
@@ -265,10 +274,14 @@ async function createPr (app, ctx, config, username, branchName) {
   const title = context.getIssueTitle(ctx)
   const draft = Config.shouldOpenDraftPR(config)
   try {
-    const commitSha = await getBranchHeadSha(ctx, branchName)
-    const treeSha = await getCommitTreeSha(ctx, commitSha)
-    const emptyCommitSha = await createCommit(ctx, commitSha, treeSha, username, getCommitText(ctx, config))
-    await updateReference(ctx, branchName, emptyCommitSha)
+    const baseHeadSha = await getBranchHeadSha(ctx, base)
+    const branchHeadSha = await getBranchHeadSha(ctx, branchName)
+    if (branchHeadSha === baseHeadSha) {
+      app.log('Branch and base heads are equal, creating empty commit for PR')
+      const treeSha = await getCommitTreeSha(ctx, branchHeadSha)
+      const emptyCommitSha = await createCommit(ctx, branchHeadSha, treeSha, username, getCommitText(ctx, config))
+      await updateReference(ctx, branchName, emptyCommitSha)
+    }
     const { data: pr } = await ctx.octokit.pulls.create(
       { owner, repo, head: branchName, base, title, body: getPrBody(app, ctx, config), draft: draft })
     app.log(`${draft ? 'Created draft' : 'Created'} pull request ${pr.number} for branch ${branchName}`)
@@ -421,9 +434,11 @@ module.exports = {
   branchExists: branchExists,
   getIssueNumberFromBranchName: getIssueNumberFromBranchName,
   getIssueBranchConfig: getIssueBranchConfig,
+  skipForIssue: skipForIssue,
   skipBranchCreationForIssue: skipBranchCreationForIssue,
   getIssueBranchPrefix: getIssueBranchPrefix,
   getBranchNameFromIssue: getBranchNameFromIssue,
+  getSourceBranch: getSourceBranch,
   getBranchName: getBranchName,
   createBranch: createBranch,
   createPr: createPr,
