@@ -3,14 +3,15 @@
 ![Logo](public/logo.png)
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/aaa03e6c10ce1ae9941f/maintainability)](https://codeclimate.com/github/robvanderleek/create-issue-branch/maintainability)
-[![Build Status](https://github.com/robvanderleek/create-issue-branch/workflows/Prod/badge.svg)](https://github.com/robvanderleek/create-issue-branch/actions)
+[![Build Status](https://github.com/robvanderleek/create-issue-branch/workflows/main/badge.svg)](https://github.com/robvanderleek/create-issue-branch/actions)
 [![codecov](https://codecov.io/gh/robvanderleek/create-issue-branch/branch/main/graph/badge.svg?token=WBKIPs2WEc)](https://codecov.io/gh/robvanderleek/create-issue-branch)
 [![Dependabot](https://badgen.net/badge/Dependabot/enabled/green?icon=dependabot)](https://dependabot.com/)
 [![Sentry](https://img.shields.io/badge/sentry-enabled-green)](https://sentry.io)
 ![Vercel](https://vercelbadge.vercel.app/api/robvanderleek/create-issue-branch)
 
-A GitHub App/Action that automates the creation of issue branches (either automatically after assigning an issue or
-after commenting on an issue with a ChatOps command: `/create-issue-branch` or `/cib`).
+A GitHub App/Action that automates the creation of issue branches (either
+automatically after assigning an issue or after commenting on an issue with a
+ChatOps command: `/create-issue-branch` or `/cib`).
 
 Built in response to this feature request issue:
 https://github.com/isaacs/github/issues/1125 (that issue is now closed and the
