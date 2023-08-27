@@ -21,6 +21,9 @@ async function handle (app, ctx) {
     branchName = await github.getBranchNameFromIssue(ctx, config)
     if (await github.branchExists(ctx, branchName)) {
       app.log('Could not create branch as it already exists')
+      if (utils.isRunningInGitHubActions()) {
+        process.stdout.write(`::set-output name=branchName::${branchName}\n`)
+      }
       return
     }
     await github.createIssueBranch(app, ctx, branchName, config)
