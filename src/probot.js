@@ -64,7 +64,7 @@ async function addPlansRoute (app, getRouter) {
 function configureSentry (app) {
   if (process.env.SENTRY_DSN) {
     app.log('Setting up Sentry.io logging...')
-    Sentry.init({ dsn: process.env.SENTRY_DSN })
+    Sentry.init({ dsn: process.env.SENTRY_DSN, attachStacktrace: true })
   } else {
     app.log('Skipping Sentry.io setup')
   }
