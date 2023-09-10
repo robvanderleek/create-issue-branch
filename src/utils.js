@@ -95,6 +95,10 @@ function removeSemverPrefix (title) {
   return title.replace(regexp, '')
 }
 
+function setOutput (name, value) {
+  process.stdout.write(`echo "${name}=${value}" >> $GITHUB_OUTPUT\n`)
+}
+
 module.exports = {
   makePrefixGitSafe: makePrefixGitSafe,
   makeGitSafe: makeGitSafe,
@@ -106,5 +110,6 @@ module.exports = {
   trimStringToByteLength: trimStringToByteLength,
   logMemoryUsage: logMemoryUsage,
   formatAsExpandingMarkdown: formatAsExpandingMarkdown,
-  removeSemverPrefix: removeSemverPrefix
+  removeSemverPrefix: removeSemverPrefix,
+  setOutput: setOutput
 }

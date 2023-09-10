@@ -3,7 +3,7 @@ const utils = require('./utils')
 const context = require('./context')
 const plans = require('./plans')
 const { interpolate } = require('./interpolate')
-const { formatAsExpandingMarkdown, removeSemverPrefix } = require('./utils')
+const { formatAsExpandingMarkdown, removeSemverPrefix, setOutput } = require('./utils')
 
 async function createIssueBranch (app, ctx, branchName, config) {
   if (await hasValidSubscriptionForRepo(app, ctx)) {
@@ -250,7 +250,7 @@ async function createBranch (ctx, config, branchName, sha, log) {
     })
     log(`Branch created: ${branchName}`)
     if (utils.isRunningInGitHubActions()) {
-      process.stdout.write(`::set-output name=branchName::${branchName}\n`)
+      setOutput('branchName', branchName)
     }
     const commentMessage = interpolate(Config.getCommentMessage(config), { ...ctx.payload, branchName: branchName })
     await addComment(ctx, config, commentMessage)
