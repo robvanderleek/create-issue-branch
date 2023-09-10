@@ -96,6 +96,7 @@ function removeSemverPrefix (title) {
 }
 
 function setOutput (name, value) {
+  process.stdout.write(`::set-output name=${name}::${value}\n`)
   process.stdout.write(`echo "${name}=${value}" >> $GITHUB_OUTPUT\n`)
 }
 
