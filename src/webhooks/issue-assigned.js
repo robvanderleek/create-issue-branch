@@ -2,6 +2,7 @@ const Config = require('./../config')
 const context = require('./../context')
 const github = require('./../github')
 const utils = require('./../utils')
+const core = require('@actions/core')
 
 async function handle (app, ctx) {
   app.log.debug('Issue was assigned')
@@ -22,7 +23,7 @@ async function handle (app, ctx) {
     if (await github.branchExists(ctx, branchName)) {
       app.log('Could not create branch as it already exists')
       if (utils.isRunningInGitHubActions()) {
-        process.stdout.write(`::set-output name=branchName::${branchName}\n`)
+        core.setOutput('branchName', branchName)
       }
       return
     }
