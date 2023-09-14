@@ -9,11 +9,12 @@ async function handle (app, ctx) {
   if (Config.conventionalPrTitles(config)) {
     const owner = context.getRepoOwnerLogin(ctx)
     const repo = context.getRepoName(ctx)
+    const issueTitle = context.getIssueTitle(ctx)
     const branchName = await github.getBranchNameFromIssue(ctx, config)
     const { data: pull } = await ctx.octokit.pulls.list({ owner: owner, repo: repo, head: `${owner}:${branchName}` })
     if (pull && pull.length === 1) {
       const labels = ctx.payload.issue.labels.concat(pull[0].labels).map(l => l.name)
-      await github.updatePrTitle(app, ctx, config, pull[0], labels)
+      await github.updatePrTitle(app, ctx, config, pull[0], issueTitle, labels)
     }
   }
 }
