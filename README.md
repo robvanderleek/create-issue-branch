@@ -146,7 +146,7 @@ To get inspired of what is possible with Actions workflows,
 see [this configuration](https://github.com/takeshape/.github/blob/4ecfb2fb54164934ad70822c709ab1917541114d/.github/workflows/_pm_issues.yml)
 .
 
-_Remember to always pick the simplest issue workflow that fits your poject_.
+_Remember to always pick the simplest issue workflow that fits your project_.
 
 # Configuration
 
@@ -526,7 +526,7 @@ prSkipCI: true
 ## Conventional Pull Request titles
 
 When this option is enabled, a conventional prefix is automatically set in the
-PR title based on issue & PR labels.  For example, if there's an issue "Fix
+PR title based on issue & PR labels. For example, if there's an issue "Fix
 nasty bug" and accompanying branch `issue-123-Fix-nasty-bug`, where either the
 issue or the PR are labeled as "bug", then whenever a Pull Request for the
 branch is opened (automatically or manually) Create Issue Branch will prepend
@@ -548,7 +548,7 @@ select "Default to pull request title" on your repository settings page:
 
 ![Pull Requests Settings](docs/pull-requests-settings.png)
 
-## Configuring Semantic Versioning (semver) style
+### Configuring Semantic Versioning (semver) style
 
 This option enables [Conventional
 Commits](https://www.conventionalcommits.org/) in your Git history based on
@@ -564,37 +564,45 @@ configuration option:
 conventionalStyle: semver
 ```
 
-For issues/PRs that are labeled with "breaking change" (or "breaking-change")
-there will be an exclamation mark added to the title, for example: "feat!:
-Change in API".
+By default, for issues/PRs that are labeled with "breaking change" (or
+"breaking-change") there will be an exclamation mark added to the title, for
+example: "feat!: Change in API".
 
-By default, the labels "bug", "dependencies", "performance", "documentation"
-and "security" will prepend "fix:" to the PR title. The label "enhancement"
-will prepend "feat:" to the title, and the labels "breaking
-change"/"breaking-change" will add an exclamation mark after bug or feat.
+### Configuring Conventional Pull Request prefixes
 
-## Gitmoji configuration
-
-Each label mentioned above also has an accompanying [gitmoji](https://gitmoji.dev/).
-
-Labels and their emoji/gitmoji can be configured through the option `conventionalLabels`. This is the default
+Prefixes and emoji's for labels can be configured through the option
+`conventionalLabels`. This is the default:
 
 ```yaml
 conventionalLabels:
   fix:
     bug: ':bug:'
     dependencies: ':arrow_up:'
-    performance: ':zap:'
-    documentation: ':memo:'
     security: ':lock:'
-  feature:
+  feat:
     enhancement: ':sparkles:'
+  build:
+    build: ':wrench:'
+  chore:
+    chore: ':recycle:'
+  ci:
+    ci: ':construction_worker:'
+  docs:
+    documentation: ':memo:'
+  style:
+    style: ':gem:'
+  refactor:
+    refactor: ':recycle:'
+  perf:
+    performance: ':zap:'
+  test:
+    test: ':white_check_mark:'
   breaking:
     breaking-change: ':boom:'
     breaking change: ':boom:'
 ```
 
-For example, to change the gitmoji for label "bug":
+For example, to change the emoji for label "bug":
 
 ```yaml
 conventionalLabels:
@@ -606,8 +614,16 @@ Or to add a new label type for features:
 
 ```yaml
 conventionalLabels:
-  feature:
+  feat:
     new-stuff: ':rocket:'
+```
+
+Or to add a new prefix:
+
+```yaml
+conventionalLabels:
+  my-prefix:
+    my-label: ':my-emoji:'
 ```
 
 ## Change message in issue comments
