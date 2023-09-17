@@ -542,8 +542,7 @@ configuration option:
 conventionalPrTitles: true
 ```
 
-Conventional PR titles can create a a clear and beautiful Git history in
-GitHub. 
+Conventional PR titles create a clear and beautiful Git history in GitHub. 
 
 This feature works best if you enable only "Allow squash merging" on your
 repository settings page:
