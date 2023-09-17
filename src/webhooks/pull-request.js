@@ -16,7 +16,7 @@ async function handle (app, ctx) {
       const { data: issue } = await ctx.octokit.issues.get({ owner: owner, repo: repo, issue_number: issueNumber })
       if (issue) {
         const labels = issue.labels.concat(pr.labels).map(l => l.name)
-        await github.updatePrTitle(app, ctx, config, pr, labels)
+        await github.updatePrTitle(app, ctx, config, pr, issue.title, labels)
       }
     }
   }

@@ -164,21 +164,23 @@ function conventionalStyle (config) {
 }
 
 function getConventionalPrTitlePrefix (config, labels) {
-  const mapping = getGitmojiMapping(config)
-  const featureLabels = labels.filter(l => l in mapping.feature)
-  const fixLabels = labels.filter(l => l in mapping.fix)
+  const mapping = getConventionalLabelMapping(config)
+  const conventionalLabels = labels.filter(l => l in mapping)
+  const featureLabels = conventionalLabels.filter(cl => cl.prefix === 'feat')
   const style = conventionalStyle(config)
   if (featureLabels.length > 0) {
+    const emoji = mapping[featureLabels[0]].emoji
     if (style === 'semver') {
-      return `feat${isBreakingPr(labels, mapping) ? '!' : ''}: ${mapping.feature[featureLabels[0]]}`
+      return `feat${isBreakingPr(labels, mapping) ? '!' : ''}: ${emoji}`
     } else {
-      return `${mapping.feature[featureLabels[0]]}`
+      return emoji
     }
-  } else if (fixLabels.length > 0) {
+  } else if (conventionalLabels.length > 0) {
+    const emoji = mapping[conventionalLabels[0]].emoji
     if (style === 'semver') {
-      return `fix${isBreakingPr(labels, mapping) ? '!' : ''}: ${mapping.fix[fixLabels[0]]}`
+      return `${mapping[conventionalLabels[0]].prefix}${isBreakingPr(labels, mapping) ? '!' : ''}: ${emoji}`
     } else {
-      return `${mapping.fix[fixLabels[0]]}`
+      return emoji
     }
   } else {
     if (style === 'semver') {
@@ -189,28 +191,37 @@ function getConventionalPrTitlePrefix (config, labels) {
   }
 }
 
-function getGitmojiMapping (config) {
+function getConventionalLabelMapping (config) {
   const mapping = {
-    fix: {
-      bug: ':bug:', dependencies: ':arrow_up:', performance: ':zap:', documentation: ':memo:', security: ':lock:'
-    }, //
-    feature: {
-      enhancement: ':sparkles:'
-    }, //
-    breaking: {
-      'breaking-change': ':boom:', 'breaking change': ':boom:'
-    }
+    bug: { prefix: 'fix', emoji: ':bug:', breaking: false },
+    dependencies: { prefix: 'fix', emoji: ':arrow_up:', breaking: false },
+    security: { prefix: 'fix', emoji: ':lock:', breaking: false },
+    enhancement: { prefix: 'feat', emoji: ':sparkles:', breaking: false },
+    build: { prefix: 'build', emoji: ':wrench:', breaking: false },
+    chore: { prefix: 'chore', emoji: ':recycle:', breaking: false },
+    ci: { prefix: 'ci', emoji: ':construction_worker:', breaking: false },
+    documentation: { prefix: 'docs', emoji: ':memo:', breaking: false },
+    style: { prefix: 'style', emoji: ':gem:', breaking: false },
+    refactor: { prefix: 'refactor', emoji: ':recycle:', breaking: false },
+    performance: { prefix: 'perf', emoji: ':zap:', breaking: false },
+    test: { prefix: 'test', emoji: ':white_check_mark:' },
+    'breaking-change': { prefix: 'feat', emoji: ':boom:', breaking: true },
+    'breaking change': { prefix: 'feat', emoji: ':boom:', breaking: true }
   }
   if (config && config.conventionalLabels) {
-    Object.assign(mapping.fix, config.conventionalLabels.fix)
-    Object.assign(mapping.feature, config.conventionalLabels.feature)
-    Object.assign(mapping.breaking, config.conventionalLabels.breaking)
+    Object.keys(config.conventionalLabels).forEach(prefix => {
+      Object.keys(config.conventionalLabels[prefix]).forEach(label => {
+        const emoji = config.conventionalLabels[prefix][label]
+        const breaking = config.conventionalLabels[prefix].breaking === true
+        mapping[label] = { prefix: prefix, emoji: emoji, breaking: breaking }
+      })
+    })
   }
   return mapping
 }
 
 function isBreakingPr (labels, mapping) {
-  return labels.some(l => l in mapping.breaking)
+  return labels.some(l => l in mapping && mapping[l].breaking)
 }
 
 module.exports = {
@@ -236,5 +247,6 @@ module.exports = {
   prSkipCI: prSkipCI,
   conventionalPrTitles: conventionalPrTitles,
   getConventionalPrTitlePrefix: getConventionalPrTitlePrefix,
-  conventionalStyle: conventionalStyle
+  conventionalStyle: conventionalStyle,
+  getConventionalLabelMapping: getConventionalLabelMapping
 }

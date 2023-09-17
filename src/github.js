@@ -3,7 +3,7 @@ const utils = require('./utils')
 const context = require('./context')
 const plans = require('./plans')
 const { interpolate } = require('./interpolate')
-const { formatAsExpandingMarkdown, removeSemverPrefix } = require('./utils')
+const { formatAsExpandingMarkdown } = require('./utils')
 const core = require('@actions/core')
 
 async function createIssueBranch (app, ctx, branchName, config) {
@@ -416,14 +416,13 @@ async function queryProjectIdsForIssue (ctx) {
   return result
 }
 
-async function updatePrTitle (app, ctx, config, pr, labels) {
+async function updatePrTitle (app, ctx, config, pr, issueTitle, labels) {
   const owner = context.getRepoOwnerLogin(ctx)
   const repo = context.getRepoName(ctx)
   const pullNumber = pr.number
-  const title = pr.title
   const conventionalPrefix = Config.getConventionalPrTitlePrefix(config, labels)
-  const updatedTitle = conventionalPrefix + ' ' + removeSemverPrefix(title)
-  if (updatedTitle !== title) {
+  const updatedTitle = conventionalPrefix + ' ' + issueTitle
+  if (updatedTitle !== pr.title) {
     app.log.info(`Updating prefix for PR #${pullNumber} in ${owner}/${repo} to: ${conventionalPrefix}`)
     await ctx.octokit.pulls.update({ owner: owner, repo: repo, pull_number: pullNumber, title: updatedTitle })
   }

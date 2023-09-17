@@ -121,3 +121,34 @@ test('Conventional PR style', () => {
   expect(Config.conventionalStyle({})).toBe('gitmoji')
   expect(Config.conventionalStyle({ conventionalStyle: 'semver' })).toBe('semver')
 })
+
+test('get default conventional label mapping', () => {
+  const defaultMapping = Config.getConventionalLabelMapping({})
+  expect(defaultMapping.enhancement).toBeDefined()
+  expect(defaultMapping.enhancement.prefix).toBe('feat')
+  expect(defaultMapping.enhancement.emoji).toBe(':sparkles:')
+  expect(defaultMapping.enhancement.breaking).toBeFalsy()
+  expect(defaultMapping.bug.prefix).toBe('fix')
+  expect(defaultMapping.bug.emoji).toBe(':bug:')
+  expect(defaultMapping.bug.breaking).toBeFalsy()
+  expect(defaultMapping['breaking-change'].prefix).toBe('feat')
+  expect(defaultMapping['breaking-change'].breaking).toBeTruthy()
+})
+
+test('get custom conventional label mapping', () => {
+  const defaultMapping = Config.getConventionalLabelMapping({
+    conventionalLabels: {
+      fix: { bug: ':ambulance:' },
+      foo: { bar: ':ghost:' },
+      bar: { foo: ':foo:', breaking: true }
+    }
+  })
+  expect(defaultMapping.bug.prefix).toBe('fix')
+  expect(defaultMapping.bug.emoji).toBe(':ambulance:')
+  expect(defaultMapping.bar.prefix).toBe('foo')
+  expect(defaultMapping.bar.emoji).toBe(':ghost:')
+  expect(defaultMapping.bar.breaking).toBeFalsy()
+  expect(defaultMapping.foo.prefix).toBe('bar')
+  expect(defaultMapping.foo.emoji).toBe(':foo:')
+  expect(defaultMapping.foo.breaking).toBeTruthy()
+})
