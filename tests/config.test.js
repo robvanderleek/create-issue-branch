@@ -136,19 +136,27 @@ test('get default conventional label mapping', () => {
 })
 
 test('get custom conventional label mapping', () => {
-  const defaultMapping = Config.getConventionalLabelMapping({
+  const mapping = Config.getConventionalLabelMapping({
     conventionalLabels: {
-      fix: { bug: ':ambulance:' },
-      foo: { bar: ':ghost:' },
-      bar: { foo: ':foo:', breaking: true }
+      fix: { bug: ':ambulance:' }, foo: { bar: ':ghost:' }, bar: { foo: ':foo:', breaking: true }
     }
   })
-  expect(defaultMapping.bug.prefix).toBe('fix')
-  expect(defaultMapping.bug.emoji).toBe(':ambulance:')
-  expect(defaultMapping.bar.prefix).toBe('foo')
-  expect(defaultMapping.bar.emoji).toBe(':ghost:')
-  expect(defaultMapping.bar.breaking).toBeFalsy()
-  expect(defaultMapping.foo.prefix).toBe('bar')
-  expect(defaultMapping.foo.emoji).toBe(':foo:')
-  expect(defaultMapping.foo.breaking).toBeTruthy()
+  expect(mapping.bug.prefix).toBe('fix')
+  expect(mapping.bug.emoji).toBe(':ambulance:')
+  expect(mapping.bar.prefix).toBe('foo')
+  expect(mapping.bar.emoji).toBe(':ghost:')
+  expect(mapping.bar.breaking).toBeFalsy()
+  expect(mapping.foo.prefix).toBe('bar')
+  expect(mapping.foo.emoji).toBe(':foo:')
+  expect(mapping.foo.breaking).toBeTruthy()
+})
+
+test('support both features and feat', () => {
+  const mapping = Config.getConventionalLabelMapping({
+    conventionalLabels: {
+      feat: { foo: ':ghost:' }, features: { bar: ':bar:' }
+    }
+  })
+  expect(mapping.foo.prefix).toBe('feat')
+  expect(mapping.bar.prefix).toBe('feat')
 })

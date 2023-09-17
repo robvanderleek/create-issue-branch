@@ -626,7 +626,11 @@ Or to add a new prefix:
 conventionalLabels:
   my-prefix:
     my-label: ':my-emoji:'
+    breaking: true
 ```
+
+Note: for backwards compatibility, `features` and `feat` will both result in a
+prefix `feat`.
 
 ## Change message in issue comments
 

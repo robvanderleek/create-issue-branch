@@ -213,6 +213,9 @@ function getConventionalLabelMapping (config) {
       Object.keys(config.conventionalLabels[prefix]).forEach(label => {
         const emoji = config.conventionalLabels[prefix][label]
         const breaking = config.conventionalLabels[prefix].breaking === true
+        if (prefix === 'features') {
+          prefix = 'feat'
+        }
         mapping[label] = { prefix: prefix, emoji: emoji, breaking: breaking }
       })
     })
