@@ -3,7 +3,7 @@ const utils = require('./utils')
 const context = require('./context')
 const plans = require('./plans')
 const { interpolate } = require('./interpolate')
-const { formatAsExpandingMarkdown } = require('./utils')
+const { formatAsExpandingMarkdown, sleep } = require('./utils')
 const core = require('@actions/core')
 
 async function createIssueBranch (app, ctx, branchName, config) {
@@ -148,7 +148,17 @@ async function addComment (ctx, config, comment) {
   const silent = Config.isSilent(config)
   if (!silent) {
     const params = ctx.issue({ body: comment })
-    await ctx.octokit.issues.createComment(params)
+    try {
+      await ctx.octokit.issues.createComment(params)
+    } catch (e) {
+      console.info('Creating comment failed, retrying in 1 second')
+      await sleep(1000)
+      try {
+        await ctx.octokit.issues.createComment(params)
+      } catch (e) {
+        console.error('Creating comment failed')
+      }
+    }
   }
 }
 

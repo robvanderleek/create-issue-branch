@@ -178,6 +178,28 @@ test('log branch create errors with error level', async () => {
   expect(createComment).toBeCalled()
 })
 
+test('Retry create comment when it fails', async () => {
+  let hasBeenCalled = false
+  const createComment = jest.fn().mockImplementation(() => {
+    if (!hasBeenCalled) {
+      hasBeenCalled = true
+      throw new Error()
+    }
+  })
+  const createRef = () => {
+    // eslint-disable-next-line no-throw-literal
+    throw { message: 'Oops, something is wrong' }
+  }
+  const ctx = helpers.getDefaultContext()
+  ctx.octokit.issues.createComment = createComment
+  ctx.octokit.git.createRef = createRef
+
+  await github.createBranch(ctx, { silent: false }, 'robvanderleek', 'create-issue-branch', 'issue-1', '1234abcd',
+    () => {})
+
+  expect(createComment).toBeCalled()
+})
+
 test('create (draft) PR', async () => {
   const createPR = jest.fn()
   let capturedCommitMessage = ''
@@ -338,7 +360,7 @@ test('empty commit text', async () => {
   ctx.payload.issue.body = 'This is the description'
   ctx.payload.issue.milestone = { number: 456 }
 
-  await github.createPr({ log: () => { } }, ctx, { }, 'robvanderleek', 'issue-1')
+  await github.createPr({ log: () => { } }, ctx, {}, 'robvanderleek', 'issue-1')
 
   expect(createCommit.mock.calls[0][0].message).toBe('Create PR for #1')
 })

@@ -90,6 +90,10 @@ function formatAsExpandingMarkdown (title, content) {
   return result
 }
 
+async function sleep (ms) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
 module.exports = {
   makePrefixGitSafe: makePrefixGitSafe,
   makeGitSafe: makeGitSafe,
@@ -100,5 +104,6 @@ module.exports = {
   getStringLengthInBytes: getStringLengthInBytes,
   trimStringToByteLength: trimStringToByteLength,
   logMemoryUsage: logMemoryUsage,
-  formatAsExpandingMarkdown: formatAsExpandingMarkdown
+  formatAsExpandingMarkdown: formatAsExpandingMarkdown,
+  sleep: sleep
 }
