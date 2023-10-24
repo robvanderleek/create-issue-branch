@@ -716,6 +716,12 @@ dashboard on CodeCov.io:
 Please create an issue here:
 https://github.com/robvanderleek/create-issue-branch/issues
 
+If you like this Action/App, please star :star: it.
+
+## Star history
+
+[![Star History Chart](https://api.star-history.com/svg?repos=robvanderleek/create-issue-branch&type=Date)](https://star-history.com/#robvanderleek/create-issue-branch&Date)
+
 ## Features under consideration
 
 The list below contains features that might or might not be implemented in the future. Comment or +1 if this feature is
