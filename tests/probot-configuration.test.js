@@ -305,6 +305,7 @@ test('configuration with label field missing', async () => {
 })
 
 test('configuration with invalid YAML', async () => {
+  const mockExit = jest.spyOn(process, 'exit').mockImplementation(() => {})
   const ymlConfig = `branches:
   - label: Type: Feature
     prefix: feature/`
@@ -325,6 +326,7 @@ test('configuration with invalid YAML', async () => {
 
   await probot.receive({ name: 'issues', payload: helpers.issueAssignedWithLabelsPayload('bug', 'enhancement') })
   expect(issueTitle).toBe('Error in Create Issue Branch app configuration')
+  mockExit.mockRestore()
 })
 
 test('support .yaml extension for configuration file', async () => {

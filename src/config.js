@@ -55,7 +55,7 @@ async function load (ctx) {
     return result
   } catch (e) {
     await handleError(ctx, `Exception while parsing configuration YAML: ${e.message}`)
-    return undefined
+    process.exit(1)
   }
 }
 

@@ -44,6 +44,9 @@ module.exports = (app, { getRouter }) => {
     'marketplace_purchase.pending_change'], async ctx => {
     await MarketplacePurchase.handle(app, ctx)
   })
+  app.onAny(async ctx => {
+    app.log(`Received webhook event: ${ctx.name}.${ctx.payload.action}`)
+  })
 }
 
 function addStatsRoute (getRouter) {
