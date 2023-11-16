@@ -19,7 +19,8 @@ discussion [continuous
 here](https://github.com/github/feedback/discussions/3441) and
 [here](https://github.com/github/feedback/discussions/12290))
 
-> [!TIP] UPDATE 2/2/2022**: GitHub added a "Create a branch" button [to the web
+> [!TIP] 
+> UPDATE 2/2/2022**: GitHub added a "Create a branch" button [to the web
 > UI](https://github.blog/changelog/2022-03-02-create-a-branch-for-an-issue/)
 >
 > This App/Action offers some unique features not available in the new GitHub
