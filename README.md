@@ -537,17 +537,24 @@ prSkipCI: true
 ## Conventional Pull Request titles
 
 When this option is enabled, a [Conventional
-Commit](https://www.conventionalcommits.org/) prefix is automatically set in
-the PR title based on issue & PR labels. For example, if there's an issue "Fix
-nasty bug" and accompanying branch `issue-123-Fix-nasty-bug`, where either the
-issue or the PR are labeled as "bug", then whenever a Pull Request for the
-branch is opened (automatically or manually) Create Issue Branch will prepend
-"fix: " to the Pull Request title, for example "fix: isssue 123 Fix nasty bug". 
+Commit](https://www.conventionalcommits.org/) prefix (including a
+[gitmoji](https://gitmoji.dev/)) is automatically added to the PR title based
+on issue & PR labels.
 
-Conventional PR titles create a clear Git history in GitHub. They also make it
-possible to implement automated [Semantic Versioning](https://semver.org/) of
-your software using tools such as [Semantic
+For example, if there's an issue "Fix nasty bug" and accompanying branch
+`issue-123-Fix-nasty-bug`, where either the issue or the PR are labeled as
+"bug", then whenever a Pull Request for the branch is opened (automatically or
+manually) Create Issue Branch will prepend "fix: 🐛" to the Pull Request title,
+for example "fix: 🐛 isssue 123 Fix nasty bug". 
+
+Conventional PR titles create a clear and beautiful Git history. They also make
+it possible to implement automated [Semantic Versioning](https://semver.org/)
+of your software using tools such as [Semantic
 Release](https://semantic-release.gitbook.io/semantic-release/).
+
+By default, for issues/PRs that are labeled with "breaking change" (or
+"breaking-change") there will be an exclamation mark added to the title, for
+example: "feat!: ✨ Change in API".
 
 You can enable conventional Pull Request titles with the following
 configuration option:
@@ -561,11 +568,11 @@ repository settings page:
 
 ![Pull Requests Settings](docs/pull-requests-settings.png)
 
-
 ### Configuring Conventional Pull Requests style
 
-There are two prefix styles you can select: semver (default), and emoji. You
-can configure the prefix style with the following configuration option:
+There are three prefix styles you can select: semver (default),
+semver-no-gitmoji, and gitmoji. You can configure the prefix style with the
+following configuration option:
 
 ```yaml
 conventionalStyle: semver
@@ -574,19 +581,22 @@ conventionalStyle: semver
 or:
 
 ```yaml
+conventionalStyle: semver-no-gitmoji
+```
+
+or:
+
+```yaml
 conventionalStyle: emoji
 ```
 
-#### semver (default)
+#### semver (default) example
 
 With the "semantic versioning" (semver) style, Create Issue Branch will prepend
 "fix: " to the Pull Request title, for example "fix: isssue 123 Fix nasty bug"
 
-By default, for issues/PRs that are labeled with "breaking change" (or
-"breaking-change") there will be an exclamation mark added to the title, for
-example: "feat!: Change in API".
 
-#### emoji
+#### emoji example
 
 With the emoji style Create Issue Branch will prepend ":bug: " to the Pull
 Request title, for example ":bug: isssue 123 Fix nasty bug"
