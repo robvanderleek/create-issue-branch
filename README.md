@@ -536,15 +536,25 @@ prSkipCI: true
 
 ## Conventional Pull Request titles
 
-When this option is enabled, a conventional prefix is automatically set in the
-PR title based on issue & PR labels. For example, if there's an issue "Fix
-nasty bug" and accompanying branch `issue-123-Fix-nasty-bug`, where either the
-issue or the PR are labeled as "bug", then whenever a Pull Request for the
-branch is opened (automatically or manually) Create Issue Branch will prepend
-":bug: " to the Pull Request title, for example ":bug: isssue 123 Fix nasty
-bug". If the "semantic versioning" (semver) style of this feature is configured
-Create Issue Branch will prepend "fix: :bug: " to the Pull Request title, for
-example "fix: :bug: isssue 123 Fix nasty bug"
+When this option is enabled, a [Conventional
+Commit](https://www.conventionalcommits.org/) prefix (including a
+[gitmoji](https://gitmoji.dev/)) is automatically added to the PR title based
+on issue & PR labels.
+
+For example, if there's an issue "Fix nasty bug" and accompanying branch
+`issue-123-Fix-nasty-bug`, where either the issue or the PR are labeled as
+"bug", then whenever a Pull Request for the branch is opened (automatically or
+manually) Create Issue Branch will prepend "fix: 🐛" to the Pull Request title,
+for example "fix: 🐛 isssue 123 Fix nasty bug". 
+
+Conventional PR titles create a clear and beautiful Git history. They also make
+it possible to implement automated [Semantic Versioning](https://semver.org/)
+of your software using tools such as [Semantic
+Release](https://semantic-release.gitbook.io/semantic-release/).
+
+By default, for issues/PRs that are labeled with "breaking change" (or
+"breaking-change") there will be an exclamation mark added to the title, for
+example: "feat!: ✨ Change in API".
 
 You can enable conventional Pull Request titles with the following
 configuration option:
@@ -553,32 +563,49 @@ configuration option:
 conventionalPrTitles: true
 ```
 
-Conventional PR titles create a clear and beautiful Git history in GitHub. 
-
 This feature works best if you enable only "Allow squash merging" on your
 repository settings page:
 
 ![Pull Requests Settings](docs/pull-requests-settings.png)
 
-### Configuring Semantic Versioning (semver) style
+### Configuring Conventional Pull Requests style
 
-This option enables [Conventional
-Commits](https://www.conventionalcommits.org/) in your Git history based on
-issue/PR labels (so without requiring each commit on the repository to follow
-this convention.) Conventional commits make it possible to implement automated
-[Semantic Versioning](https://semver.org/) of your software using tools such as
-https://semantic-release.gitbook.io/semantic-release/.
-
-You can configure semantic versioning (semver) style with the following
-configuration option:
+There are three prefix styles you can select: semver (default),
+semver-no-gitmoji, and gitmoji. You can configure the prefix style with the
+following configuration option:
 
 ```yaml
 conventionalStyle: semver
 ```
 
-By default, for issues/PRs that are labeled with "breaking change" (or
-"breaking-change") there will be an exclamation mark added to the title, for
-example: "feat!: Change in API".
+or:
+
+```yaml
+conventionalStyle: semver-no-gitmoji
+```
+
+or:
+
+```yaml
+conventionalStyle: gitmoji
+```
+
+#### semver (default) example
+
+With the "semantic versioning" (`semver`) style, Create Issue Branch will
+prepend "fix: 🐛" to the Pull Request title, for example "fix: 🐛 isssue 123
+Fix nasty bug"
+
+#### semver-no-gitmoji example
+
+With the `semver-no-gitmoji` style, Create Issue Branch will prepend "fix: " to
+the Pull Request title, for example "fix: isssue 123 Fix nasty bug"
+
+#### gitmoji example
+
+With the `gitmoji` style, Create Issue Branch will prepend "🐛 " to the Pull
+Request title, for example "🐛 isssue 123 Fix nasty bug"
+
 
 ### Configuring Conventional Pull Request prefixes
 
@@ -588,30 +615,30 @@ Prefixes and emoji's for labels can be configured through the option
 ```yaml
 conventionalLabels:
   fix:
-    bug: ':bug:'
-    dependencies: ':arrow_up:'
-    security: ':lock:'
+    bug: '🐛'
+    dependencies: '⬆️'
+    security: '🔒'
   feat:
-    enhancement: ':sparkles:'
+    enhancement: '✨'
   build:
-    build: ':wrench:'
+    build: '🔧'
   chore:
-    chore: ':recycle:'
+    chore: '♻️'
   ci:
-    ci: ':construction_worker:'
+    ci: '👷'
   docs:
-    documentation: ':memo:'
+    documentation: '📝'
   style:
-    style: ':gem:'
+    style: '💎'
   refactor:
-    refactor: ':recycle:'
+    refactor: '♻️'
   perf:
-    performance: ':zap:'
+    performance: '⚡️'
   test:
-    test: ':white_check_mark:'
+    test: '✅'
   breaking:
-    breaking-change: ':boom:'
-    breaking change: ':boom:'
+    breaking-change: '💥'
+    breaking change: '💥'
 ```
 
 For example, to change the emoji for label "bug":
@@ -619,7 +646,7 @@ For example, to change the emoji for label "bug":
 ```yaml
 conventionalLabels:
   fix:
-    bug: ':ambulance:'
+    bug: '🚑'
 ```
 
 Or to add a new label type for features:
@@ -627,7 +654,7 @@ Or to add a new label type for features:
 ```yaml
 conventionalLabels:
   feat:
-    new-stuff: ':rocket:'
+    new-stuff: '🚀'
 ```
 
 Or to add a new prefix:
@@ -635,7 +662,7 @@ Or to add a new prefix:
 ```yaml
 conventionalLabels:
   my-prefix:
-    my-label: ':my-emoji:'
+    my-label: '🏷️'
     breaking: true
 ```
 

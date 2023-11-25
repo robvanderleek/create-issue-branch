@@ -100,36 +100,55 @@ test('conventional PR titles', () => {
 })
 
 test('get PR title prefix for issue label', () => {
-  expect(Config.getConventionalPrTitlePrefix({}, ['bug'])).toBe(':bug:')
-  expect(Config.getConventionalPrTitlePrefix({}, ['some-user-defined-label'])).toBe(':sparkles:')
+  expect(Config.getConventionalPrTitlePrefix({}, ['bug'])).toBe('fix: 🐛')
+  expect(Config.getConventionalPrTitlePrefix({}, ['some-user-defined-label'])).toBe('feat: ✨')
 
-  expect(Config.getConventionalPrTitlePrefix({ conventionalLabels: { fix: { bug: ':ambulance:' } } }, ['bug']))
-    .toBe(':ambulance:')
+  expect(Config.getConventionalPrTitlePrefix({ conventionalLabels: { fix: { bug: '🚑' } } }, ['bug']))
+    .toBe('fix: 🚑')
 })
 
 test('get PR title prefix for issue label semver style', () => {
-  expect(Config.getConventionalPrTitlePrefix({ conventionalStyle: 'semver' }, ['bug'])).toBe('fix: :bug:')
+  expect(Config.getConventionalPrTitlePrefix({ conventionalStyle: 'semver' }, ['bug'])).toBe('fix: 🐛')
   expect(Config.getConventionalPrTitlePrefix({ conventionalStyle: 'semver' }, ['some-user-defined-label']))
-    .toBe('feat: :sparkles:')
+    .toBe('feat: ✨')
+  expect(Config.getConventionalPrTitlePrefix({ conventionalStyle: 'semver' }, ['bug'])).toBe('fix: 🐛')
 
   expect(Config.getConventionalPrTitlePrefix(
     { conventionalStyle: 'semver', conventionalLabels: { fix: { bug: ':ambulance:' } } }, ['bug']))
     .toBe('fix: :ambulance:')
 })
 
+test('get PR title prefix for issue label semver-no-gitmoji style', () => {
+  expect(Config.getConventionalPrTitlePrefix({ conventionalStyle: 'semver-no-gitmoji' }, ['bug'])).toBe('fix:')
+  expect(Config.getConventionalPrTitlePrefix({ conventionalStyle: 'semver-no-gitmoji' }, ['some-user-defined-label']))
+    .toBe('feat:')
+  expect(Config.getConventionalPrTitlePrefix(
+    { conventionalStyle: 'semver-no-gitmoji', conventionalLabels: { fix: { bug: ':ambulance:' } } }, ['bug']))
+    .toBe('fix:')
+})
+
+test('get PR title prefix for issue label gitmoji style', () => {
+  expect(Config.getConventionalPrTitlePrefix({ conventionalStyle: 'gitmoji' }, ['bug'])).toBe('🐛')
+  expect(Config.getConventionalPrTitlePrefix({ conventionalStyle: 'gitmoji' }, ['some-user-defined-label']))
+    .toBe('✨')
+  expect(Config.getConventionalPrTitlePrefix(
+    { conventionalStyle: 'gitmoji', conventionalLabels: { fix: { bug: ':ambulance:' } } }, ['bug']))
+    .toBe(':ambulance:')
+})
+
 test('Conventional PR style', () => {
-  expect(Config.conventionalStyle({})).toBe('gitmoji')
-  expect(Config.conventionalStyle({ conventionalStyle: 'semver' })).toBe('semver')
+  expect(Config.conventionalStyle({})).toBe('semver')
+  expect(Config.conventionalStyle({ conventionalStyle: 'gitmoji' })).toBe('gitmoji')
 })
 
 test('get default conventional label mapping', () => {
   const defaultMapping = Config.getConventionalLabelMapping({})
   expect(defaultMapping.enhancement).toBeDefined()
   expect(defaultMapping.enhancement.prefix).toBe('feat')
-  expect(defaultMapping.enhancement.emoji).toBe(':sparkles:')
+  expect(defaultMapping.enhancement.emoji).toBe('✨')
   expect(defaultMapping.enhancement.breaking).toBeFalsy()
   expect(defaultMapping.bug.prefix).toBe('fix')
-  expect(defaultMapping.bug.emoji).toBe(':bug:')
+  expect(defaultMapping.bug.emoji).toBe('🐛')
   expect(defaultMapping.bug.breaking).toBeFalsy()
   expect(defaultMapping['breaking-change'].prefix).toBe('feat')
   expect(defaultMapping['breaking-change'].breaking).toBeTruthy()
