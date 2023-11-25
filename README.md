@@ -646,7 +646,7 @@ For example, to change the emoji for label "bug":
 ```yaml
 conventionalLabels:
   fix:
-    bug: ':ambulance:'
+    bug: '🚑'
 ```
 
 Or to add a new label type for features:
@@ -654,7 +654,7 @@ Or to add a new label type for features:
 ```yaml
 conventionalLabels:
   feat:
-    new-stuff: ':rocket:'
+    new-stuff: '🚀'
 ```
 
 Or to add a new prefix:
@@ -662,7 +662,7 @@ Or to add a new prefix:
 ```yaml
 conventionalLabels:
   my-prefix:
-    my-label: ':my-emoji:'
+    my-label: '🏷️'
     breaking: true
 ```
 
