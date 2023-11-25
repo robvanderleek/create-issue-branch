@@ -603,7 +603,7 @@ the Pull Request title, for example "fix: isssue 123 Fix nasty bug"
 
 #### gitmoji example
 
-With the `gitmoji` style Create Issue Branch will prepend "🐛 " to the Pull
+With the `gitmoji` style, Create Issue Branch will prepend "🐛 " to the Pull
 Request title, for example "🐛 isssue 123 Fix nasty bug"
 
 
@@ -615,30 +615,30 @@ Prefixes and emoji's for labels can be configured through the option
 ```yaml
 conventionalLabels:
   fix:
-    bug: ':bug:'
-    dependencies: ':arrow_up:'
-    security: ':lock:'
+    bug: '🐛'
+    dependencies: '⬆️'
+    security: '🔒'
   feat:
-    enhancement: ':sparkles:'
+    enhancement: '✨'
   build:
-    build: ':wrench:'
+    build: '🔧'
   chore:
-    chore: ':recycle:'
+    chore: '♻️'
   ci:
-    ci: ':construction_worker:'
+    ci: '👷'
   docs:
-    documentation: ':memo:'
+    documentation: '📝'
   style:
-    style: ':gem:'
+    style: '💎'
   refactor:
-    refactor: ':recycle:'
+    refactor: '♻️'
   perf:
-    performance: ':zap:'
+    performance: '⚡️'
   test:
-    test: ':white_check_mark:'
+    test: '✅'
   breaking:
-    breaking-change: ':boom:'
-    breaking change: ':boom:'
+    breaking-change: '💥'
+    breaking change: '💥'
 ```
 
 For example, to change the emoji for label "bug":

@@ -27,12 +27,12 @@ test('prefix PR title', async () => {
   await probot.receive({ name: 'issues', payload: issueLabeledPayload })
 
   expect(updatePr).toHaveBeenCalledWith({
-    pull_number: 45, title: ':bug: New issue', owner: 'robvanderleek', repo: 'create-issue-branch'
+    pull_number: 45, title: 'fix: 🐛 New issue', owner: 'robvanderleek', repo: 'create-issue-branch'
   })
 })
 
-test('prefix PR title semver style', async () => {
-  testHelpers.nockConfig('conventionalPrTitles: true\nconventionalStyle: semver')
+test('prefix PR title semver-no-gitmoji style', async () => {
+  testHelpers.nockConfig('conventionalPrTitles: true\nconventionalStyle: semver-no-gitmoji')
   testHelpers.nockPulls('issue-44-New_issue', [{ number: 45, title: 'New issue', labels: [] }])
   testHelpers.nockUpdatePull(45)
   const updatePr = jest.fn()
@@ -41,6 +41,6 @@ test('prefix PR title semver style', async () => {
   await probot.receive({ name: 'issues', payload: issueLabeledPayload })
 
   expect(updatePr).toHaveBeenCalledWith({
-    pull_number: 45, title: 'fix: :bug: New issue', owner: 'robvanderleek', repo: 'create-issue-branch'
+    pull_number: 45, title: 'fix: New issue', owner: 'robvanderleek', repo: 'create-issue-branch'
   })
 })
