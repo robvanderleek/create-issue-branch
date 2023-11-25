@@ -587,19 +587,24 @@ conventionalStyle: semver-no-gitmoji
 or:
 
 ```yaml
-conventionalStyle: emoji
+conventionalStyle: gitmoji
 ```
 
 #### semver (default) example
 
-With the "semantic versioning" (semver) style, Create Issue Branch will prepend
-"fix: " to the Pull Request title, for example "fix: isssue 123 Fix nasty bug"
+With the "semantic versioning" (`semver`) style, Create Issue Branch will
+prepend "fix: 🐛" to the Pull Request title, for example "fix: 🐛 isssue 123
+Fix nasty bug"
 
+#### semver-no-gitmoji example
 
-#### emoji example
+With the `semver-no-gitmoji` style, Create Issue Branch will prepend "fix: " to
+the Pull Request title, for example "fix: isssue 123 Fix nasty bug"
 
-With the emoji style Create Issue Branch will prepend ":bug: " to the Pull
-Request title, for example ":bug: isssue 123 Fix nasty bug"
+#### gitmoji example
+
+With the `gitmoji` style Create Issue Branch will prepend "🐛 " to the Pull
+Request title, for example "🐛 isssue 123 Fix nasty bug"
 
 
 ### Configuring Conventional Pull Request prefixes
