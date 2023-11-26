@@ -10,8 +10,8 @@
 ![Vercel](https://vercelbadge.vercel.app/api/robvanderleek/create-issue-branch)
 
 A GitHub App/Action that automates the creation of issue branches (either
-automatically after assigning an issue or after commenting on an issue with a
-ChatOps command: `/create-issue-branch` or `/cib`).
+automatically, or after assigning an issue, or after commenting on an issue
+with a ChatOps command: `/create-issue-branch` or `/cib`).
 
 Built in response to this feature request issue:
 https://github.com/isaacs/github/issues/1125 (that issue is now closed and the
@@ -112,15 +112,18 @@ workflow](https://github.com/robvanderleek/robvanderleek.github.io/blob/2af5f90d
 
 ## Uninstall
 
-Uninstall the App by navigating to: `Settings > Applications > Installed GitHub Apps > Create Issue Branch > Configure`.
-At the bottom of that page there's a button to uninstall the Create Issue Branch app.
+Uninstall the App by navigating to: `Settings > Applications > Installed GitHub
+Apps > Create Issue Branch > Configure`.  At the bottom of that page there's a
+button to uninstall the Create Issue Branch app.
 
-You can also use [this link](https://github.com/settings/installations/7740930) to navigate to the configuration page
-mentioned above.
+You can also use [this link](https://github.com/settings/installations/7740930)
+to navigate to the configuration page mentioned above.
+
 
 # Usage
 
-This app can support your development workflow in two ways (modes): auto and chatops.
+This app can support your development workflow in three ways (modes): auto,
+immediate, and chatops.
 
 In "auto" mode the typical development workflow is:
 
@@ -132,21 +135,29 @@ In "auto" mode the typical development workflow is:
 3. When the issue is assigned this app will create a new issue branch
    (for the example issue this branch will be called `issue-15-Fix_nasty_bug`)
 
+In "immediate" mode the typical development workflow is:
+
+1. An issue is created, for example: Issue 15: Fix nasty bug!
+2. Immediately after creation, this app will create a new issue branch (for the
+   example issue this branch will be called `issue-15-Fix_nasty_bug`)
+
 In "chatops" mode the typical development workflow is:
 
 1. An issue is created, for example: Issue 15: Fix nasty bug!
 
 *some time may pass*
 
-2. A developer that wants to work on this issue gives the ChatOps command `/cib` as a comment on the issue
-3. This app will create a new issue branch
-   (for the example issue this branch will be called `issue-15-Fix_nasty_bug`)
-   By default the app notifies creation is completed with a comment on the issue.
+2. A developer that wants to work on this issue gives the ChatOps command
+   `/cib` as a comment on the issue
+3. This app will create a new issue branch (for the example issue this branch
+   will be called `issue-15-Fix_nasty_bug`) By default the app notifies
+   creation is completed with a comment on the issue.
 
 ## Advanced usage with other Apps & Actions
 
-GitHub Apps & Actions allow you to define custom and advanced automated workflows. Examples of Apps & Actions that can
-be used alongside this app to compose tailored issue workflows are:
+GitHub Apps & Actions allow you to define custom and advanced automated
+workflows. Examples of Apps & Actions that can be used alongside this app to
+compose tailored issue workflows are:
 
 - [project-bot](https://github.com/philschatz/project-bot): App for project automation
 - [github-actions-automate-projects](https://github.com/takanabe/github-actions-automate-projects): Action for project
@@ -158,6 +169,7 @@ see [this configuration](https://github.com/takeshape/.github/blob/4ecfb2fb54164
 .
 
 _Remember to always pick the simplest issue workflow that fits your project_.
+
 
 # Configuration
 
@@ -181,15 +193,25 @@ organization/username is `acme`, the full path becomes:
 Remember to give the GitHub App access to the `.github` repository, otherwise
 it can't load the organization/user wide configuration.
 
-Reposotory configuration files override the organization/user wide configuration
-file.
+Repository configuration files override the organization/user wide
+configuration file.
 
-## Mode: auto or chatops
+## Mode: auto, immediate, or chatops
 
-The default mode is "auto", meaning a new issue branch is created after an issue is assigned.
+The default mode is "auto", meaning a new issue branch is created after an
+issue is assigned.
 
-You can change the mode to "chatops", meaning a new issue branch is created after commenting on an issue
-with `/create-issue-branch` or `/cib`, by putting the following line in your `issue-branch.yml`:
+You can change the mode to "immediate", meaning a new issue branch is created
+immediately after creating an issue, by putting the following line in your
+`issue-branch.yml`:
+
+```yaml
+mode: immediate
+```
+
+You can change the mode to "chatops", meaning a new issue branch is created
+after commenting on an issue with `/create-issue-branch` or `/cib`, by putting
+the following line in your `issue-branch.yml`:
 
 ```yaml
 mode: chatops
