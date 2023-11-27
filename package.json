@@ -48,6 +48,7 @@
     "@types/dlv": "^1.1.4",
     "analytics": "^0.8.1",
     "js-tokens": "^8.0.1",
+    "node-fetch": "^2.6.1",
     "probot": "^12.3.3",
     "slice": "^1.0.0",
     "wildcard-match": "^5.1.2"
