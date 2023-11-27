@@ -1,10 +1,14 @@
+const { message } = require('../discord')
+
 async function handle (app, ctx) {
   const {
     action, marketplace_purchase: { account, plan }, previous_marketplace_purchase: previous
   } = ctx.payload
   const changeEmoji = getChangeEmoji(action, plan, previous)
   const change = action === 'changed' ? 'changed to' : action
-  app.log(`${changeEmoji} ${account.type} ${account.login} ${change} ${plan.name}`)
+  const msg = `${changeEmoji} ${account.type} ${account.login} ${change} ${plan.name}`
+  app.log(msg)
+  await message(msg)
 }
 
 function getChangeEmoji (action, plan, previous) {
