@@ -67,7 +67,32 @@ test('creates a branch when a chatops command is given when issue is created', a
     'Branch [issue-1-Test_issue](https://github.com/robvanderleek/create-issue-branch/tree/issue-1-Test_issue) created!')
 })
 
-test('do nothing when a chatops command is given and mode is not chatops', async () => {
+test('creates a branch when mode is immediate and an issue is created', async () => {
+  helpers.nockNonExistingBranch('issue-1-Test_issue')
+  helpers.nockExistingBranch('master', 12345678)
+  helpers.nockConfig('mode: immediate')
+  let createEndpointCalled = false
+
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/git/refs', () => {
+      createEndpointCalled = true
+      return true
+    })
+    .reply(200)
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/issues/1/comments', (data) => {
+      return true
+    })
+    .reply(200)
+
+  await probot.receive({ name: 'issues', payload: issueCreatedPayload })
+
+  expect(createEndpointCalled).toBeTruthy()
+})
+
+test('create branch anyway when a chatops command is given and mode is not chatops', async () => {
+  helpers.nockNonExistingBranch('issue-1-Test_issue')
+  helpers.nockExistingBranch('master', 12345678)
   helpers.nockConfig('mode: auto')
   let createEndpointCalled = false
 
@@ -77,10 +102,15 @@ test('do nothing when a chatops command is given and mode is not chatops', async
       return true
     })
     .reply(200)
+  nock('https://api.github.com')
+    .post('/repos/robvanderleek/create-issue-branch/issues/1/comments', () => {
+      return true
+    })
+    .reply(200)
 
   await probot.receive({ name: 'issue_comment', payload: commentCreatedPayload })
 
-  expect(createEndpointCalled).toBeFalsy()
+  expect(createEndpointCalled).toBeTruthy()
 })
 
 test('creates a branch when a chatops command is given, no comment', async () => {

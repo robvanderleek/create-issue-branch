@@ -78,16 +78,16 @@ Add this to your workflow YAML configuration:
 
 ```yaml
 on:
-  # The issues event below is only needed for the default (auto) mode,
-  # you can remove it otherwise
+  # The issue.opened event below is only needed for the "immediate" mode.
+  # The issue.assigned event below is only needed for the default ("auto") mode.
   issues:
-    types: [ assigned ]
-  # The issue_comment event below is only needed for the ChatOps mode,
-  # you can remove it otherwise
+    types: [ opened, assigned ]
+  # The issue_comment.created event below is only needed for the ChatOps mode.
   issue_comment:
     types: [ created ]
+  # The pull_request events below are only needed for pull-request related features.
   pull_request:
-    types: [ closed ]
+    types: [ opened, closed ]
 
 jobs:
   create_issue_branch_job:

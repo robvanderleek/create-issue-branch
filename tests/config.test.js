@@ -28,6 +28,7 @@ test('get ChatOps command argument', () => {
 test('is mode ChatOps', () => {
   expect(Config.isModeChatOps(undefined)).toBeFalsy()
   expect(Config.isModeChatOps({ mode: 'auto' })).toBeFalsy()
+  expect(Config.isModeChatOps({ mode: 'immediate' })).toBeFalsy()
   expect(Config.isModeChatOps({ mode: 'chatops' })).toBeTruthy()
 })
 
@@ -35,6 +36,14 @@ test('is mode auto', () => {
   expect(Config.isModeAuto(undefined)).toBeFalsy()
   expect(Config.isModeAuto({ mode: 'auto' })).toBeTruthy()
   expect(Config.isModeAuto({ mode: 'chatops' })).toBeFalsy()
+  expect(Config.isModeAuto({ mode: 'immediate' })).toBeFalsy()
+})
+
+test('is mode immediate', () => {
+  expect(Config.isModeImmediate(undefined)).toBeFalsy()
+  expect(Config.isModeImmediate({ mode: 'auto' })).toBeFalsy()
+  expect(Config.isModeImmediate({ mode: 'chatops' })).toBeFalsy()
+  expect(Config.isModeImmediate({ mode: 'immediate' })).toBeTruthy()
 })
 
 test('experimental feature flag', () => {

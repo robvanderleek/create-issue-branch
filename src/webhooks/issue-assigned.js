@@ -10,6 +10,11 @@ async function handle (app, ctx) {
   if (!Config.isModeAuto(config)) {
     return
   }
+  await issueAssigned(app, ctx, config)
+  utils.logMemoryUsage(app)
+}
+
+async function issueAssigned (app, ctx, config) {
   if (github.skipForIssue(ctx, config)) {
     app.log(`Skipping run for issue: ${context.getIssueTitle(ctx)}`)
     return
@@ -35,9 +40,9 @@ async function handle (app, ctx) {
     app.log(`Creating pull request for user ${assignee}`)
     await github.createPr(app, ctx, config, assignee, branchName)
   }
-  utils.logMemoryUsage(app)
 }
 
 module.exports = {
-  handle: handle
+  handle: handle,
+  issueAssigned: issueAssigned
 }
