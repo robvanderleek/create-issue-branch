@@ -5,7 +5,8 @@ const utils = require('./../utils')
 
 async function handle (app, ctx, comment) {
   if (Config.isChatOpsCommand(comment)) {
-    await chatOpsCommandGiven(app, ctx, comment)
+    const config = await Config.load(ctx)
+    await chatOpsCommandGiven(app, ctx, config, comment)
   }
 }
 
@@ -22,12 +23,10 @@ async function getBranchName (ctx, config, comment) {
   }
 }
 
-async function chatOpsCommandGiven (app, ctx, comment) {
+async function chatOpsCommandGiven (app, ctx, config, comment) {
   app.log.debug('ChatOps command received')
-  const config = await Config.load(ctx)
   if (!Config.isModeChatOps(config)) {
-    app.log('Received ChatOps command but current mode is not `chatops`, exiting')
-    return
+    app.log('Received ChatOps command but current mode is not `chatops`')
   }
   if (github.skipForIssue(ctx, config)) {
     app.log(`Skipping run for issue: ${context.getIssueTitle(ctx)}`)
@@ -56,5 +55,6 @@ async function chatOpsCommandGiven (app, ctx, comment) {
 }
 
 module.exports = {
-  handle: handle
+  handle: handle,
+  chatOpsCommandGiven: chatOpsCommandGiven
 }

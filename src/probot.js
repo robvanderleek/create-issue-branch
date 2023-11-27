@@ -3,6 +3,7 @@ const utils = require('./utils')
 const PullRequest = require('./webhooks/pull-request')
 const PullRequestClosed = require('./webhooks/pull-request-closed')
 const IssueAssigned = require('./webhooks/issue-assigned')
+const IssueOpened = require('./webhooks/issue-opened')
 const CommentCreated = require('./webhooks/comment-created')
 const MarketplacePurchase = require('./webhooks/marketplace-purchase')
 const { version } = require('./version')
@@ -35,7 +36,7 @@ module.exports = (app, { getRouter }) => {
     })
   app.on('issues.opened', async ctx => {
     const comment = ctx.payload.issue.body
-    await CommentCreated.handle(app, ctx, comment)
+    await IssueOpened.handle(app, ctx, comment)
   })
   app.on(['issues.labeled', 'issues.unlabeled'], async ctx => {
     await IssueLabeled.handle(app, ctx)
