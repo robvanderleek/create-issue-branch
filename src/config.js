@@ -60,7 +60,11 @@ async function load (ctx) {
 }
 
 function isModeAuto (config) {
-  return (config && !isModeChatOps(config))
+  return (config && !isModeChatOps(config) && !isModeImmediate(config))
+}
+
+function isModeImmediate (config) {
+  return (config && config.mode && config.mode === 'immediate')
 }
 
 function isModeChatOps (config) {
@@ -236,6 +240,7 @@ function isBreakingPr (labels, mapping) {
 module.exports = {
   load: load,
   isModeAuto: isModeAuto,
+  isModeImmediate: isModeImmediate,
   isModeChatOps: isModeChatOps,
   getChatOpsCommandArgument: getChatOpsCommandArgument,
   autoCloseIssue: autoCloseIssue,
