@@ -76,6 +76,10 @@ function isExperimentalBranchNameArgument (config) {
     config.experimental.branchNameArgument === true)
 }
 
+function autoLinkIssue (config) {
+  return 'autoLinkIssue' in config && config.autoLinkIssue === true
+}
+
 function autoCloseIssue (config) {
   return 'autoCloseIssue' in config && config.autoCloseIssue === true
 }
@@ -243,6 +247,7 @@ module.exports = {
   isModeImmediate: isModeImmediate,
   isModeChatOps: isModeChatOps,
   getChatOpsCommandArgument: getChatOpsCommandArgument,
+  autoLinkIssue: autoLinkIssue,
   autoCloseIssue: autoCloseIssue,
   isSilent: isSilent,
   isChatOpsCommand: isChatOpsCommand,

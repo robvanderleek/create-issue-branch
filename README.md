@@ -339,23 +339,43 @@ gitReplaceChars: 'ab/'
 
 The above configuration replaces all occurences of the characters 'a', 'b' and '/' in the branch title.
 
+## Automatically link pull request with issue
+
+This app can automatically link a pull request to the issue for which the issue
+branch (of the pull request) was created. You can enable this feature with:
+
+```yaml
+autoLinkIssue: true
+```
+
+Be aware that the app needs to be able to find the issue number in the branch
+name, otherwise this feature will not work. This feature only works if one of
+the following is true for your app configuration:
+
+- You use the default `branchName` setting
+- Your `branchName` setting is `tiny`, `short` or `full`
+- Your branch name starts with the issue number
+- Your branch name contains the string `issue-` (case insensitive) followed by
+  the issue number, for example: `Project-A-Issue-123-Rewrite_in_Clojure`
+
 ## Automatically close issues after a pull request merge
 
-This app can close issues automatically for you when a pull request for an issue branch is merged. You can enable this
-feature with:
+This app can close issues automatically for you when a pull request for an
+issue branch is merged. You can enable this feature with:
 
 ```yaml
 autoCloseIssue: true
 ```
 
-Be aware that the app needs to be able to find the issue number in the branch name, otherwise this feature will not
-work. This feature only works if one of the following is true for your app configuration:
+Be aware that the app needs to be able to find the issue number in the branch
+name, otherwise this feature will not work. This feature only works if one of
+the following is true for your app configuration:
 
 - You use the default `branchName` setting
 - Your `branchName` setting is `tiny`, `short` or `full`
 - Your branch name starts with the issue number
-- Your branch name contains the string `issue-` (case insensitive) followed by the issue number, for
-  example: `Project-A-Issue-123-Rewrite_in_Clojure`
+- Your branch name contains the string `issue-` (case insensitive) followed by
+  the issue number, for example: `Project-A-Issue-123-Rewrite_in_Clojure`
 
 ## Default source branch
 
