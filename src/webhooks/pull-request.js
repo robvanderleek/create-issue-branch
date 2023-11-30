@@ -20,6 +20,21 @@ async function handle (app, ctx) {
       }
     }
   }
+  if (Config.autoLinkIssue(config)) {
+    const pr = ctx.payload.pull_request
+    const branchName = pr.head.ref
+    const issueNumber = github.getIssueNumberFromBranchName(branchName)
+    if (issueNumber) {
+      const body = pr.body
+      const linkText = `closes #${issueNumber}`
+      if (!body) {
+        await github.updatePrBody(app, ctx, config, pr, linkText)
+      } else if (!body.includes(`closes #${issueNumber}`)) {
+        const updatedBody = body.length === 0 ? linkText : `${body}\n${linkText}`
+        await github.updatePrBody(app, ctx, config, pr, updatedBody)
+      }
+    }
+  }
 }
 
 module.exports = {

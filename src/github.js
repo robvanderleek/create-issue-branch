@@ -438,6 +438,14 @@ async function updatePrTitle (app, ctx, config, pr, issueTitle, labels) {
   }
 }
 
+async function updatePrBody (app, ctx, config, pr, body) {
+  const owner = context.getRepoOwnerLogin(ctx)
+  const repo = context.getRepoName(ctx)
+  const pullNumber = pr.number
+  app.log.info(`Updating body for PR #${pullNumber} in ${owner}/${repo}`)
+  await ctx.octokit.pulls.update({ owner: owner, repo: repo, pull_number: pullNumber, body: body })
+}
+
 module.exports = {
   createIssueBranch: createIssueBranch,
   addComment: addComment,
@@ -452,5 +460,6 @@ module.exports = {
   getBranchName: getBranchName,
   createBranch: createBranch,
   createPr: createPr,
-  updatePrTitle: updatePrTitle
+  updatePrTitle: updatePrTitle,
+  updatePrBody: updatePrBody
 }
