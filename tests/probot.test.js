@@ -5,7 +5,6 @@ const issueOpenedPayload = require('./test-fixtures/issues.opened.json')
 const issueAssignedPayload = require('./test-fixtures/issues.assigned.json')
 const pullRequestClosedPayload = require('./test-fixtures/pull_request.closed.json')
 const marketplaceFreePlan = require('./test-fixtures/marketplace_free_plan.json')
-const commentCreatedPayload = require('./test-fixtures/issue_comment.created.json')
 
 let probot
 
