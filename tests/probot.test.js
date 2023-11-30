@@ -1,6 +1,7 @@
 const nock = require('nock')
 const helpers = require('./test-helpers')
 const utils = require('./../src/utils')
+const issueOpenedPayload = require('./test-fixtures/issues.opened.json')
 const issueAssignedPayload = require('./test-fixtures/issues.assigned.json')
 const pullRequestClosedPayload = require('./test-fixtures/pull_request.closed.json')
 const marketplaceFreePlan = require('./test-fixtures/marketplace_free_plan.json')
@@ -327,4 +328,20 @@ test('Buy Pro message in comment for subscriptions activated after Pro plan intr
 
   expect(comment).toBeDefined()
   expect(comment.toLowerCase().indexOf('buy')).toBeGreaterThan(0)
+})
+
+test('open a pull request when mode is immediate', async () => {
+  helpers.nockNonExistingBranch('issue-1-Test_issue')
+  helpers.nockExistingBranch('master', 12345678)
+  helpers.nockExistingBranch('master', 12345678)
+  helpers.nockConfig('mode: immediate\nopenPR: true')
+  helpers.nockCreateBranch()
+  helpers.nockCommentCreated()
+  helpers.nockExistingBranch('issue-1-Test_issue', 87654321)
+  helpers.nockCommitTreeSha(87654321, 12344321)
+  helpers.nockCommit()
+  helpers.nockUpdateBranch('issue-1-Test_issue')
+  helpers.nockCreatePR()
+
+  await probot.receive({ name: 'issues', payload: issueOpenedPayload })
 })
