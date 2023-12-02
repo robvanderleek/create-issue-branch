@@ -225,33 +225,6 @@ async function getBranchHeadSha (ctx, branch) {
   }
 }
 
-async function getCommitTreeSha (ctx, commitSha) {
-  const owner = context.getRepoOwnerLogin(ctx)
-  const repo = context.getRepoName(ctx)
-  const res = await ctx.octokit.git.getCommit({ owner, repo, commit_sha: commitSha })
-  return res.data.tree.sha
-}
-
-async function createCommit (ctx, commitSha, treeSha, username, message) {
-  const owner = context.getRepoOwnerLogin(ctx)
-  const repo = context.getRepoName(ctx)
-  const res = await ctx.octokit.git.createCommit({
-    owner,
-    repo,
-    message,
-    tree: treeSha,
-    parents: [commitSha],
-    author: { name: username, email: `${username}@users.noreply.github.com` }
-  })
-  return res.data.sha
-}
-
-async function updateReference (ctx, branchName, sha) {
-  const owner = context.getRepoOwnerLogin(ctx)
-  const repo = context.getRepoName(ctx)
-  await ctx.octokit.git.updateRef({ owner, repo, ref: `heads/${branchName}`, sha })
-}
-
 async function createBranch (ctx, config, branchName, sha, log) {
   const owner = context.getRepoOwnerLogin(ctx)
   const repo = context.getRepoName(ctx)
@@ -289,9 +262,7 @@ async function createPr (app, ctx, config, username, branchName) {
     const branchHeadSha = await getBranchHeadSha(ctx, branchName)
     if (branchHeadSha === baseHeadSha) {
       app.log('Branch and base heads are equal, creating empty commit for PR')
-      const treeSha = await getCommitTreeSha(ctx, branchHeadSha)
-      const emptyCommitSha = await createCommit(ctx, branchHeadSha, treeSha, username, getCommitText(ctx, config))
-      await updateReference(ctx, branchName, emptyCommitSha)
+      await createEmptyCommit(ctx, branchName, getCommitText(ctx, config), branchHeadSha)
     }
     const { data: pr } = await ctx.octokit.pulls.create(
       { owner, repo, head: branchName, base, title, body: getPrBody(app, ctx, config), draft: draft })
@@ -301,6 +272,29 @@ async function createPr (app, ctx, config, username, branchName) {
     app.log(`Could not create PR (${e.message})`)
     await addComment(ctx, config, `Could not create PR (${e.message})`)
   }
+}
+
+async function createEmptyCommit (ctx, branchName, message, headSha) {
+  const owner = context.getRepoOwnerLogin(ctx)
+  const repo = context.getRepoName(ctx)
+  const createEptyCommitMutation = `
+  mutation($repositoryNameWithOwner: String!, $branchName: String!, $message: String!, $headSha: GitObjectID!)  {
+    createCommitOnBranch(
+        input: {
+          branch: {repositoryNameWithOwner: $repositoryNameWithOwner, branchName: $branchName},
+          message: {headline: $message},
+          fileChanges: {},
+          expectedHeadOid: $headSha
+        }
+    ) {
+      commit {
+        url
+      }
+    }
+  }`
+  await ctx.octokit.graphql(createEptyCommitMutation, {
+    repositoryNameWithOwner: `${owner}/${repo}`, branchName: branchName, message: message, headSha: headSha
+  })
 }
 
 function getCommitText (ctx, config) {
