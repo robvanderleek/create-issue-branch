@@ -203,13 +203,11 @@ test('Retry create comment when it fails', async () => {
 test('create (draft) PR', async () => {
   const createPR = jest.fn()
   let capturedCommitMessage = ''
-  const createCommit = ({ message }) => {
-    capturedCommitMessage = message
-    return ({ data: { sha: 'abcd1234' } })
-  }
   const ctx = helpers.getDefaultContext()
   ctx.octokit.pulls.create = createPR
-  ctx.octokit.git.createCommit = createCommit
+  ctx.octokit.graphql = (_, { message }) => {
+    capturedCommitMessage = message
+  }
 
   await github.createPr({ log: () => { } }, ctx, { silent: false }, 'robvanderleek', 'issue-1')
   expect(createPR).toHaveBeenCalledWith({
@@ -237,11 +235,10 @@ test('create (draft) PR', async () => {
 
 test('copy Issue description into PR', async () => {
   const createPR = jest.fn()
-  const createCommit = () => ({ data: { sha: 'abcd1234' } })
   const ctx = helpers.getDefaultContext()
   ctx.octokit.pulls.create = createPR
-  ctx.octokit.git.createCommit = createCommit
   ctx.payload.issue.body = 'This is the description'
+  ctx.octokit.graphql = jest.fn()
 
   await github.createPr({ log: () => { } }, ctx, { copyIssueDescriptionToPR: true, silent: false }, 'robvanderleek',
     'issue-1')
@@ -259,11 +256,10 @@ test('copy Issue description into PR', async () => {
 
 test('Do not copy undefined Issue description into PR', async () => {
   const createPR = jest.fn()
-  const createCommit = () => ({ data: { sha: 'abcd1234' } })
   const ctx = helpers.getDefaultContext()
   ctx.octokit.pulls.create = createPR
-  ctx.octokit.git.createCommit = createCommit
   ctx.payload.issue.body = null
+  ctx.octokit.graphql = jest.fn()
 
   await github.createPr({ log: () => { } }, ctx, { copyIssueDescriptionToPR: true, silent: false }, 'robvanderleek',
     'issue-1')
@@ -282,6 +278,7 @@ test('use correct source branch', async () => {
   const createPR = jest.fn()
   const ctx = helpers.getDefaultContext()
   ctx.octokit.pulls.create = createPR
+  ctx.octokit.graphql = jest.fn()
   ctx.payload.issue.labels = [{ name: 'enhancement' }]
   const config = { branches: [{ label: 'enhancement', name: 'develop' }] }
 
@@ -301,6 +298,7 @@ test('use configured target branch', async () => {
   const createPR = jest.fn()
   const ctx = helpers.getDefaultContext()
   ctx.octokit.pulls.create = createPR
+  ctx.octokit.graphql = jest.fn()
   ctx.payload.issue.labels = [{ name: 'enhancement' }]
   const config = { branches: [{ label: 'enhancement', prTarget: 'develop' }] }
 
@@ -320,6 +318,7 @@ test('configured source and target branch', async () => {
   const createPR = jest.fn()
   const ctx = helpers.getDefaultContext()
   ctx.octokit.pulls.create = createPR
+  ctx.octokit.graphql = jest.fn()
   ctx.payload.issue.labels = [{ name: 'hotfix' }]
   const config = { branches: [{ label: 'hotfix', name: 'develop', prTarget: 'hotfix' }] }
 
@@ -337,11 +336,10 @@ test('configured source and target branch', async () => {
 
 test('copy Issue milestone into PR', async () => {
   const updateIssue = jest.fn()
-  const createCommit = () => ({ data: { sha: 'abcd1234' } })
   const ctx = helpers.getDefaultContext()
   ctx.octokit.pulls.create = () => ({ data: { number: 123 } })
   ctx.octokit.issues.update = updateIssue
-  ctx.octokit.git.createCommit = createCommit
+  ctx.octokit.graphql = jest.fn()
   ctx.payload.issue.body = 'This is the description'
   ctx.payload.issue.milestone = { number: 456 }
 
@@ -353,27 +351,31 @@ test('copy Issue milestone into PR', async () => {
 })
 
 test('empty commit text', async () => {
-  const createCommit = jest.fn()
   const ctx = helpers.getDefaultContext()
   ctx.octokit.pulls.create = () => ({ data: { number: 123 } })
-  ctx.octokit.git.createCommit = createCommit
+  let capturedCommitMessage = ''
+  ctx.octokit.graphql = (_, { message }) => {
+    capturedCommitMessage = message
+  }
   ctx.payload.issue.body = 'This is the description'
   ctx.payload.issue.milestone = { number: 456 }
 
   await github.createPr({ log: () => { } }, ctx, {}, 'robvanderleek', 'issue-1')
 
-  expect(createCommit.mock.calls[0][0].message).toBe('Create PR for #1')
+  expect(capturedCommitMessage).toBe('Create PR for #1')
 })
 
 test('empty commit with skip CI text', async () => {
-  const createCommit = jest.fn()
   const ctx = helpers.getDefaultContext()
   ctx.octokit.pulls.create = () => ({ data: { number: 123 } })
-  ctx.octokit.git.createCommit = createCommit
+  let capturedCommitMessage = ''
+  ctx.octokit.graphql = (_, { message }) => {
+    capturedCommitMessage = message
+  }
   ctx.payload.issue.body = 'This is the description'
   ctx.payload.issue.milestone = { number: 456 }
 
   await github.createPr({ log: () => { } }, ctx, { prSkipCI: true }, 'robvanderleek', 'issue-1')
 
-  expect(createCommit.mock.calls[0][0].message).toBe('Create PR for #1\n[skip ci]')
+  expect(capturedCommitMessage).toBe('Create PR for #1\n[skip ci]')
 })
