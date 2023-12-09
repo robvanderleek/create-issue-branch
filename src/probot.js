@@ -60,8 +60,8 @@ function addStatsRoute (getRouter) {
 async function addPlansRoute (app, getRouter) {
   const router = getRouter('/probot')
   router.get('/plans', async (req, res) => {
-    const subscriptions = listAppSubscriptions(app)
-    res.json(subscriptions)
+    const subscriptions = await listAppSubscriptions(app)
+    res.send(`<html lang="en"><body><pre>${subscriptions}</pre></body></html>`)
   })
 }
 

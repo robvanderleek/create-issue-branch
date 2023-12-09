@@ -56,32 +56,36 @@ async function isActivatedBeforeProPlanIntroduction (app, ctx) {
 }
 
 async function listAppSubscriptions (app) {
-  const result = {}
+  let result = ''
   const plans = (await app.state.octokit.apps.listPlans()).data
   for (const plan of plans) {
     if (plan.price_model === 'FLAT_RATE') {
       const accounts = await app.state.octokit.paginate(app.state.octokit.apps.listAccountsForPlan,
         { per_page: 100, plan_id: plan.id }, (response) => response.data)
-      app.log(`Subscriptions for plan: ${plan.name}`)
-      displayAccounts(app, accounts)
-      result[plan.name] = accounts.length
+      result += `Subscriptions for plan: ${plan.name}\n`
+      result += '--------------------------------------------------\n'
+      result += listFreeTrialAccounts(app, accounts)
+      result += '--------------------------------------------------\n'
+      result += `Total: ${accounts.length}\n`
     }
   }
   return result
 }
 
-function displayAccounts (app, accounts) {
+function listFreeTrialAccounts (app, accounts) {
+  let result = ''
   for (const account of accounts) {
     const purchase = account.marketplace_purchase
     const pendingChange = account.marketplace_pending_change
     if (pendingChange || purchase.on_free_trial) {
-      app.log(
+      result +=
         `Org: ${account.login}, free trial: ${purchase.on_free_trial}, billing_cycle: ${purchase.billing_cycle}, ` +
-        `pending change to plan: ${pendingChange.plan.name} on: ${pendingChange.effective_date}`)
+        `pending change to plan: ${pendingChange.plan.name} on: ${pendingChange.effective_date}\n`
     } else {
-      app.log(`Org: ${account.login}, billing_cycle: ${purchase.billing_cycle}`)
+      result += `Org: ${account.login}, billing_cycle: ${purchase.billing_cycle}\n`
     }
   }
+  return result
 }
 
 module.exports = {
