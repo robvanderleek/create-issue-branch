@@ -5,8 +5,8 @@ const Config = require('../config')
 async function handle (app, ctx) {
   const action = ctx.payload.action
   app.log.debug(`Issue was ${action}`)
-  const config = await Config.load(ctx)
-  if (Config.conventionalPrTitles(config)) {
+  const config = await Config.loadConfig(ctx)
+  if (config && config.conventionalPrTitles) {
     const owner = context.getRepoOwnerLogin(ctx)
     const repo = context.getRepoName(ctx)
     const issueTitle = context.getIssueTitle(ctx)

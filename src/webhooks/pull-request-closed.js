@@ -1,11 +1,11 @@
-const Config = require('./../config')
+const Config = require('../config')
 const context = require('./../context')
 const github = require('./../github')
 
 async function handle (app, ctx) {
   if (ctx.payload.pull_request.merged === true) {
-    const config = await Config.load(ctx)
-    if (config && Config.autoCloseIssue(config)) {
+    const config = await Config.loadConfig(ctx)
+    if (config && config.autoCloseIssue) {
       const branchName = ctx.payload.pull_request.head.ref
       const issueNumber = github.getIssueNumberFromBranchName(branchName)
       if (issueNumber) {

@@ -1,6 +1,7 @@
 const github = require('../src/github')
 const helpers = require('./test-helpers')
 const { formatAsExpandingMarkdown } = require('../src/utils')
+const {getDefaultConfig} = require("../src/entities/Config");
 
 test('get issue number from branch name', () => {
   expect(github.getIssueNumberFromBranchName('i12')).toBe(12)
@@ -17,41 +18,44 @@ test('get issue number from branch name', () => {
 
 test('get branch name from issue', async () => {
   const ctx = { payload: { issue: { number: 12, title: 'Hello world', labels: [{ name: 'bug' }] } } }
-  let config = { branchName: 'tiny' }
+  const config = getDefaultConfig();
+  config.branchName = 'tiny';
   expect(await github.getBranchNameFromIssue(ctx, config)).toBe('i12')
 
-  config = { branchName: 'short' }
+  config.branchName = 'short';
   expect(await github.getBranchNameFromIssue(ctx, config)).toBe('issue-12')
 
-  config = { branchName: 'full' }
+  config.branchName = 'full';
   expect(await github.getBranchNameFromIssue(ctx, config)).toBe('issue-12-Hello_world')
 
-  config = { branches: [{ label: 'bug', prefix: 'bug/' }] }
+  config.branches = [{ label: 'bug', prefix: 'bug/' }];
   expect(await github.getBranchNameFromIssue(ctx, config)).toBe('bug/issue-12-Hello_world')
 
-  config = { branches: [{ label: 'bug', prefix: 'Some bugs here/' }] }
+  config.branches = [{ label: 'bug', prefix: 'Some bugs here/' }];
   expect(await github.getBranchNameFromIssue(ctx, config)).toBe('Some_bugs_here/issue-12-Hello_world')
 
-  config = { branches: [{ label: 'bug', prefix: 'feature-2019-12-17T10:16:25Z' }] }
+  config.branches = [{ label: 'bug', prefix: 'feature-2019-12-17T10:16:25Z' }];
   expect(await github.getBranchNameFromIssue(ctx, config)).toBe('feature-2019-12-17T10_16_25Zissue-12-Hello_world')
 
-  config = { branches: [{ label: 'bug', prefix: 'feature\\' }] }
+  config.branches = [{ label: 'bug', prefix: 'feature\\' }];
   expect(await github.getBranchNameFromIssue(ctx, config)).toBe('feature_issue-12-Hello_world')
 
   // eslint-disable-next-line no-template-curly-in-string
-  config = { branchName: '${issue.title}-${issue.number}' }
+  config.branches = [];
+  config.branchName = '${issue.title}-${issue.number}';
   expect(await github.getBranchNameFromIssue(ctx, config)).toBe('Hello_world-12')
 
   // eslint-disable-next-line
   process.env['SOME_VAR'] = 'Hello world'
   // eslint-disable-next-line no-template-curly-in-string
-  config = { branchName: '${issue.number}-${%SOME_VAR}' }
+  config.branchName = '${issue.number}-${%SOME_VAR}';
   expect(await github.getBranchNameFromIssue(ctx, config)).toBe('12-Hello_world')
 })
 
 test('get branch name from issue, reported issues', async () => {
   const ctx = { payload: { issue: { number: 12, title: 'Hello world', labels: [{ name: 'bug' }] } } }
-  const config = { branchName: 'full' }
+  const config = getDefaultConfig();
+  config.branchName = 'full';
 
   ctx.payload.issue.title = '"Error: Mysqli statement execute error : Cannot add or update a child row: a ' +
     'foreign key constraint fails (`omeka`.`omeka_super_eight_festivals_filmmaker_films`, CONSTRAINT ' +
@@ -208,8 +212,9 @@ test('create (draft) PR', async () => {
   ctx.octokit.graphql = (_, { message }) => {
     capturedCommitMessage = message
   }
+  const config = getDefaultConfig();
 
-  await github.createPr({ log: () => { } }, ctx, { silent: false }, 'robvanderleek', 'issue-1')
+  await github.createPr({ log: () => { } }, ctx, config, 'robvanderleek', 'issue-1')
   expect(createPR).toHaveBeenCalledWith({
     owner: 'robvanderleek',
     repo: 'create-issue-branch',
@@ -219,8 +224,12 @@ test('create (draft) PR', async () => {
     body: 'closes #1',
     title: 'Hello world'
   })
+
   expect(capturedCommitMessage).toBe('Create PR for #1')
-  await github.createPr({ log: () => { } }, ctx, { silent: false, openDraftPR: true }, 'robvanderleek', 'issue-1')
+
+  config.openDraftPR = true;
+  await github.createPr({ log: () => { } }, ctx, config, 'robvanderleek', 'issue-1')
+
   expect(createPR).toHaveBeenCalledWith({
     owner: 'robvanderleek',
     repo: 'create-issue-branch',
@@ -239,9 +248,10 @@ test('copy Issue description into PR', async () => {
   ctx.octokit.pulls.create = createPR
   ctx.payload.issue.body = 'This is the description'
   ctx.octokit.graphql = jest.fn()
+  const config = getDefaultConfig();
+  config.copyIssueDescriptionToPR = true;
 
-  await github.createPr({ log: () => { } }, ctx, { copyIssueDescriptionToPR: true, silent: false }, 'robvanderleek',
-    'issue-1')
+  await github.createPr({ log: () => { } }, ctx, config, 'robvanderleek', 'issue-1')
 
   expect(createPR).toHaveBeenCalledWith({
     owner: 'robvanderleek',
@@ -260,9 +270,10 @@ test('Do not copy undefined Issue description into PR', async () => {
   ctx.octokit.pulls.create = createPR
   ctx.payload.issue.body = null
   ctx.octokit.graphql = jest.fn()
+  const config = getDefaultConfig();
+  config.copyIssueDescriptionToPR = true;
 
-  await github.createPr({ log: () => { } }, ctx, { copyIssueDescriptionToPR: true, silent: false }, 'robvanderleek',
-    'issue-1')
+  await github.createPr({ log: () => { } }, ctx, config, 'robvanderleek', 'issue-1')
   expect(createPR).toHaveBeenCalledWith({
     owner: 'robvanderleek',
     repo: 'create-issue-branch',
@@ -279,8 +290,9 @@ test('use correct source branch', async () => {
   const ctx = helpers.getDefaultContext()
   ctx.octokit.pulls.create = createPR
   ctx.octokit.graphql = jest.fn()
-  ctx.payload.issue.labels = [{ name: 'enhancement' }]
-  const config = { branches: [{ label: 'enhancement', name: 'develop' }] }
+  ctx.payload.issue.labels = [{ name: 'enhancement' }];
+  const config = getDefaultConfig();
+  config.branches = [{ label: 'enhancement', name: 'develop' }];
 
   await github.createPr({ log: () => { } }, ctx, config, 'robvanderleek', 'issue-1')
   expect(createPR).toHaveBeenCalledWith({
@@ -300,7 +312,8 @@ test('use configured target branch', async () => {
   ctx.octokit.pulls.create = createPR
   ctx.octokit.graphql = jest.fn()
   ctx.payload.issue.labels = [{ name: 'enhancement' }]
-  const config = { branches: [{ label: 'enhancement', prTarget: 'develop' }] }
+  const config = getDefaultConfig();
+  config.branches = [{ label: 'enhancement', prTarget: 'develop' }];
 
   await github.createPr({ log: () => { } }, ctx, config, 'robvanderleek', 'issue-1')
   expect(createPR).toHaveBeenCalledWith({
@@ -320,7 +333,8 @@ test('configured source and target branch', async () => {
   ctx.octokit.pulls.create = createPR
   ctx.octokit.graphql = jest.fn()
   ctx.payload.issue.labels = [{ name: 'hotfix' }]
-  const config = { branches: [{ label: 'hotfix', name: 'develop', prTarget: 'hotfix' }] }
+  const config = getDefaultConfig();
+  config.branches = [{ label: 'hotfix', name: 'develop', prTarget: 'hotfix' }];
 
   await github.createPr({ log: () => { } }, ctx, config, 'robvanderleek', 'issue-1')
   expect(createPR).toHaveBeenCalledWith({
@@ -341,10 +355,11 @@ test('copy Issue milestone into PR', async () => {
   ctx.octokit.issues.update = updateIssue
   ctx.octokit.graphql = jest.fn()
   ctx.payload.issue.body = 'This is the description'
-  ctx.payload.issue.milestone = { number: 456 }
+  ctx.payload.issue.milestone = { number: 456 };
+  const config = getDefaultConfig();
+  config.copyIssueMilestoneToPR = true;
 
-  await github.createPr({ log: () => { } }, ctx, { copyIssueMilestoneToPR: true, silent: false }, 'robvanderleek',
-    'issue-1')
+  await github.createPr({ log: () => { } }, ctx, config, 'robvanderleek', 'issue-1')
   expect(updateIssue).toHaveBeenCalledWith({
     owner: 'robvanderleek', repo: 'create-issue-branch', issue_number: 123, milestone: 456
   })
@@ -358,9 +373,10 @@ test('empty commit text', async () => {
     capturedCommitMessage = message
   }
   ctx.payload.issue.body = 'This is the description'
-  ctx.payload.issue.milestone = { number: 456 }
+  ctx.payload.issue.milestone = { number: 456 };
+  const config = getDefaultConfig();
 
-  await github.createPr({ log: () => { } }, ctx, {}, 'robvanderleek', 'issue-1')
+  await github.createPr({ log: () => { } }, ctx, config, 'robvanderleek', 'issue-1')
 
   expect(capturedCommitMessage).toBe('Create PR for #1')
 })
@@ -373,9 +389,11 @@ test('empty commit with skip CI text', async () => {
     capturedCommitMessage = message
   }
   ctx.payload.issue.body = 'This is the description'
-  ctx.payload.issue.milestone = { number: 456 }
+  ctx.payload.issue.milestone = { number: 456 };
+  const config = getDefaultConfig();
+  config.prSkipCI = true;
 
-  await github.createPr({ log: () => { } }, ctx, { prSkipCI: true }, 'robvanderleek', 'issue-1')
+  await github.createPr({ log: () => { } }, ctx, config, 'robvanderleek', 'issue-1')
 
   expect(capturedCommitMessage).toBe('Create PR for #1\n[skip ci]')
 })

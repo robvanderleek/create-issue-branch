@@ -76,8 +76,8 @@ async function getBranchName (ctx, config, title) {
   } else {
     result = `issue-${number}-${title}`
   }
-  const replacementChar = Config.getGitSafeReplacementChar(config)
-  const replaceChars = Config.getGitReplaceChars(config)
+  const replacementChar = config.gitSafeReplacementChar;
+  const replaceChars = config.gitReplaceChars;
   return utils.makePrefixGitSafe(getIssueBranchPrefix(ctx, config), {
     replaceChars: replaceChars, //
     replacementChar: replacementChar //
@@ -110,7 +110,7 @@ function getIssueBranchPrefix (ctx, config) {
 }
 
 function getIssueBranchConfig (ctx, config) {
-  if (config.branches) {
+  if (config.branches.length > 0) {
     const issueLabels = context.getIssueLabelsForMatching(ctx)
     for (const branchConfig of config.branches) {
       const labels = branchConfig.label instanceof Array ? branchConfig.label : [branchConfig.label]
@@ -145,8 +145,7 @@ function skipBranchCreationForIssue (ctx, config) {
 }
 
 async function addComment (ctx, config, comment) {
-  const silent = Config.isSilent(config)
-  if (!silent) {
+  if (!config.silent) {
     const params = ctx.issue({ body: comment })
     try {
       await ctx.octokit.issues.createComment(params)
@@ -256,7 +255,7 @@ async function createPr (app, ctx, config, username, branchName) {
   const repo = context.getRepoName(ctx)
   const base = getPrTargetBranch(ctx, config, app.log)
   const title = context.getIssueTitle(ctx)
-  const draft = Config.shouldOpenDraftPR(config)
+  const draft = config.openDraftPR;
   try {
     const baseHeadSha = await getBranchHeadSha(ctx, base)
     const branchHeadSha = await getBranchHeadSha(ctx, branchName)
@@ -298,7 +297,7 @@ async function createEmptyCommit (ctx, branchName, message, headSha) {
 }
 
 function getCommitText (ctx, config) {
-  const draft = Config.shouldOpenDraftPR(config)
+  const draft = config.openDraftPR;
   const draftText = draft ? 'draft ' : ''
   const issueNumber = context.getIssueNumber(ctx)
   const text = `Create ${draftText}PR for #${issueNumber}`
@@ -312,7 +311,7 @@ function getCommitText (ctx, config) {
 function getPrBody (app, ctx, config) {
   const issueNumber = context.getIssueNumber(ctx)
   let result = ''
-  if (Config.copyIssueDescriptionToPR(config)) {
+  if (config.copyIssueDescriptionToPR) {
     app.log('Copying issue description to PR')
     const issueDescription = context.getIssueDescription(ctx)
     if (issueDescription) {
@@ -326,19 +325,19 @@ function getPrBody (app, ctx, config) {
 
 async function copyIssueAttributesToPr (app, ctx, config, pr) {
   try {
-    if (Config.copyIssueLabelsToPR(config)) {
+    if (config.copyIssueLabelsToPR) {
       app.log('Copying issue labels to PR')
       await copyIssueLabelsToPr(ctx, pr)
     }
-    if (Config.copyIssueAssigneeToPR(config)) {
+    if (config.copyIssueAssigneeToPR) {
       app.log('Copying issue assignee to PR')
       await copyIssueAssigneeToPr(ctx, pr)
     }
-    if (Config.copyIssueProjectsToPR(config)) {
+    if (config.copyIssueProjectsToPR) {
       app.log('Copying issue projects to PR')
       await copyIssueProjectsToPr(ctx, pr)
     }
-    if (Config.copyIssueMilestoneToPR(config)) {
+    if (config.copyIssueMilestoneToPR) {
       app.log('Copying issue milestone to PR')
       await copyIssueMilestoneToPr(ctx, pr)
     }
