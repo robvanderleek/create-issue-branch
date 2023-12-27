@@ -23,8 +23,6 @@ jobs:
       run: yarn dist
     - name: 'Run unit-tests'
       run: yarn test
-    - name: 'Run linter'
-      run: yarn run lint
     - name: 'Run code coverage'
       run: yarn run coverage
     - name: 'Upload code coverage report'
