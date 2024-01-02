@@ -1,23 +1,24 @@
-const Config = require('../config')
-const context = require('./../context')
-const github = require('./../github')
-const utils = require('./../utils')
-const core = require('@actions/core')
+import {Context, Probot} from "probot";
+import {isChatOpsCommand, isModeImmediate, loadConfig, shouldOpenPR} from "../config";
+import context from "./../context";
+import core from "@actions/core";
+import {Config} from "../entities/Config";
+import {chatOpsCommandGiven} from "./comment-created";
+import github from "./../github";
+import utils from "./../utils";
 
-const {chatOpsCommandGiven} = require('./comment-created')
-
-async function handle(app, ctx, comment) {
-    const config = await Config.loadConfig(ctx);
+export async function handle(app: Probot, ctx: Context<any>, comment: string) {
+    const config = await loadConfig(ctx);
     if (config) {
-        if (Config.isModeImmediate(config)) {
+        if (isModeImmediate(config)) {
             await issueOpened(app, ctx, config);
-        } else if (Config.isChatOpsCommand(comment)) {
+        } else if (isChatOpsCommand(comment)) {
             await chatOpsCommandGiven(app, ctx, config, comment);
         }
     }
 }
 
-async function issueOpened(app, ctx, config) {
+async function issueOpened(app: Probot, ctx: Context<any>, config: Config) {
     if (github.skipForIssue(ctx, config)) {
         app.log(`Skipping run for issue: ${context.getIssueTitle(ctx)}`)
         return
@@ -37,14 +38,10 @@ async function issueOpened(app, ctx, config) {
         }
         await github.createIssueBranch(app, ctx, branchName, config)
     }
-    const shouldCreatePR = Config.shouldOpenPR(config)
+    const shouldCreatePR = shouldOpenPR(config);
     if (shouldCreatePR) {
-        const assignee = context.getSender(ctx)
-        app.log(`Creating pull request for user ${assignee}`)
-        await github.createPr(app, ctx, config, assignee, branchName)
+        const assignee = context.getSender(ctx);
+        app.log(`Creating pull request for user ${assignee}`);
+        await github.createPr(app, ctx, config, assignee, branchName);
     }
-}
-
-module.exports = {
-    handle: handle
 }
