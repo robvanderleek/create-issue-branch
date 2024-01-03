@@ -7,18 +7,18 @@ import {chatOpsCommandGiven} from "./comment-created";
 import github from "./../github";
 import utils from "./../utils";
 
-export async function handle(app: Probot, ctx: Context<any>, comment: string) {
+export async function issueOpened(app: Probot, ctx: Context<any>, comment: string | null) {
     const config = await loadConfig(ctx);
     if (config) {
         if (isModeImmediate(config)) {
-            await issueOpened(app, ctx, config);
-        } else if (isChatOpsCommand(comment)) {
+            await handle(app, ctx, config);
+        } else if (comment && isChatOpsCommand(comment)) {
             await chatOpsCommandGiven(app, ctx, config, comment);
         }
     }
 }
 
-async function issueOpened(app: Probot, ctx: Context<any>, config: Config) {
+async function handle(app: Probot, ctx: Context<any>, config: Config) {
     if (github.skipForIssue(ctx, config)) {
         app.log(`Skipping run for issue: ${context.getIssueTitle(ctx)}`)
         return

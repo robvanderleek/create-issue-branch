@@ -3,7 +3,7 @@ import context from "../context";
 import github from "../github";
 import {loadConfig} from "../config";
 
-export async function handle(app: Probot, ctx: Context<any>) {
+export async function issueLabeled(app: Probot, ctx: Context<any>) {
     const action = ctx.payload.action;
     app.log.debug(`Issue was ${action}`);
     const config = await loadConfig(ctx);

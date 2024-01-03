@@ -7,19 +7,19 @@ const github = require('./../github')
 const utils = require('./../utils')
 const core = require('@actions/core')
 
-export async function handle (app: Probot, ctx: Context<any>) {
+export async function issueAssigned (app: Probot, ctx: Context<any>) {
   app.log.debug('Issue was assigned');
   const config = await loadConfig(ctx);
   if (config) {
     if (!isModeAuto(config)) {
       return;
     }
-    await issueAssigned(app, ctx, config);
+    await handle(app, ctx, config);
     utils.logMemoryUsage(app);
   }
 }
 
-async function issueAssigned (app: Probot, ctx: Context<any>, config: Config) {
+async function handle (app: Probot, ctx: Context<any>, config: Config) {
   if (github.skipForIssue(ctx, config)) {
     app.log(`Skipping run for issue: ${context.getIssueTitle(ctx)}`)
     return
