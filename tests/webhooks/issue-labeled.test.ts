@@ -1,27 +1,27 @@
 import {Probot} from "probot";
-import testHelpers from "../test-helpers";
 import issueLabeledPayload from "../test-fixtures/issues.labeled.json";
+import {initNock, initProbot, nockConfig, nockEmptyConfig, nockPulls, nockUpdatePull} from "../test-helpers";
 
 let probot: Probot
 
 beforeAll(() => {
-    testHelpers.initNock()
+    initNock()
 })
 
 beforeEach(() => {
-    probot = testHelpers.initProbot()
+    probot = initProbot()
 })
 
 test('do nothing if not configured', async () => {
-    testHelpers.nockEmptyConfig()
+    nockEmptyConfig()
 
     await probot.receive({id: '', name: 'issues', payload: issueLabeledPayload as any})
 })
 
 test('prefix PR title', async () => {
-    testHelpers.nockConfig('conventionalPrTitles: true')
-    testHelpers.nockPulls('issue-44-New_issue', [{number: 45, title: 'New issue', labels: []}])
-    testHelpers.nockUpdatePull(45)
+    nockConfig('conventionalPrTitles: true')
+    nockPulls('issue-44-New_issue', [{number: 45, title: 'New issue', labels: []}])
+    nockUpdatePull(45)
     const updatePr = jest.fn()
     // @ts-ignore
     probot.state.octokit.pulls.update = updatePr
@@ -34,9 +34,9 @@ test('prefix PR title', async () => {
 })
 
 test('prefix PR title semver-no-gitmoji style', async () => {
-    testHelpers.nockConfig('conventionalPrTitles: true\nconventionalStyle: semver-no-gitmoji')
-    testHelpers.nockPulls('issue-44-New_issue', [{number: 45, title: 'New issue', labels: []}])
-    testHelpers.nockUpdatePull(45)
+    nockConfig('conventionalPrTitles: true\nconventionalStyle: semver-no-gitmoji')
+    nockPulls('issue-44-New_issue', [{number: 45, title: 'New issue', labels: []}])
+    nockUpdatePull(45)
     const updatePr = jest.fn()
     // @ts-ignore
     probot.state.octokit.pulls.update = updatePr

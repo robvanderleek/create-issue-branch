@@ -14,7 +14,7 @@ import {pullRequestClosed} from "./webhooks/pull-request-closed";
 
 const {version} = require('./version')
 
-module.exports = (app: Probot, {getRouter}: ApplicationFunctionOptions) => {
+export default (app: Probot, {getRouter}: ApplicationFunctionOptions) => {
     app.log(`Create Issue Branch, revision: ${version.revision}, built on: ${version.date}`)
     if (getRouter) {
         addStatsRoute(getRouter)

@@ -1,9 +1,10 @@
 {
   "include": [
-    "src/**/*"
+    "src/**/*",
+    // "tests/**/*"
   ],
   "compilerOptions": {
-    "rootDir": "src",
+    "rootDirs": ["src", "tests"],
     "outDir": "dist",
     "strict": true,
     "target": "es6",

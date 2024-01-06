@@ -1,13 +1,15 @@
 export interface Config {
     mode: 'immediate' | 'auto' | 'chatops';
+    branchName: string;
     autoLinkIssue: boolean;
     autoCloseIssue: boolean;
     defaultBranch?: string;
-    branches: Array<{ label: string, name: string }>;
+    branches: Array<BranchConfig>;
     copyIssueLabelsToPR: boolean;
     copyIssueAssigneeToPR: boolean;
     copyIssueProjectsToPR: boolean;
     copyIssueMilestoneToPR: boolean;
+    copyIssueDescriptionToPR: boolean;
     gitReplaceChars: string;
     gitSafeReplacementChar: string;
     commentMessage?: string;
@@ -23,9 +25,17 @@ export interface Config {
     }
 }
 
+export interface BranchConfig {
+    label: string;
+    name?: string;
+    prefix?: string;
+    prTarget?: string;
+}
+
 export function getDefaultConfig(): Config {
     return {
         mode: 'auto',
+        branchName: 'full',
         autoLinkIssue: false,
         autoCloseIssue: false,
         branches: [],
@@ -33,6 +43,7 @@ export function getDefaultConfig(): Config {
         copyIssueAssigneeToPR: false,
         copyIssueProjectsToPR: false,
         copyIssueMilestoneToPR: false,
+        copyIssueDescriptionToPR: false,
         gitReplaceChars: '',
         gitSafeReplacementChar: '_',
         silent: false,
