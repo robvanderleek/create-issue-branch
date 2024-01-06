@@ -1,8 +1,7 @@
 import github from "../github";
-import context from "../context";
-import {Probot} from "probot";
-import {Context} from "probot";
+import {Context, Probot} from "probot";
 import {loadConfig} from "../config";
+import {getRepoName, getRepoOwnerLogin} from "../context";
 
 export async function pullRequest(app: Probot, ctx: Context<any>) {
     const action = ctx.payload.action
@@ -16,8 +15,8 @@ export async function pullRequest(app: Probot, ctx: Context<any>) {
         const branchName = pr.head.ref
         const issueNumber = github.getIssueNumberFromBranchName(branchName)
         if (issueNumber) {
-            const owner = context.getRepoOwnerLogin(ctx)
-            const repo = context.getRepoName(ctx)
+            const owner = getRepoOwnerLogin(ctx)
+            const repo = getRepoName(ctx)
             const {data: issue} = await ctx.octokit.issues.get({owner: owner, repo: repo, issue_number: issueNumber})
             if (issue) {
                 // @ts-ignore

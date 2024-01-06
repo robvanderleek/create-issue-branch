@@ -5,7 +5,7 @@
   ],
   "compilerOptions": {
     "rootDirs": ["src", "tests"],
-    "outDir": "dist",
+    "outDir": "build",
     "strict": true,
     "target": "es6",
     "allowJs": true,

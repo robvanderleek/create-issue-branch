@@ -3141,6 +3141,11 @@ minimist@^1.2.5, minimist@^1.2.6:
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.8.tgz#c1a464e7693302e082a075cee0c057741ac4772c"
   integrity sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==
 
+mkver@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/mkver/-/mkver-2.1.0.tgz#3f47b08810ba78ed5f301f6dd9d05e7677c506b6"
+  integrity sha512-a5tfefhIVPqHgy98IAyVU2Tn45knQ5Um44j68EdtfXKikfbRoxOsO+0wjJCsl4k0VgSEnqWx3VuItcBynb78Pw==
+
 mri@1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/mri/-/mri-1.1.4.tgz#7cb1dd1b9b40905f1fac053abe25b6720f44744a"

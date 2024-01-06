@@ -2,9 +2,9 @@ import {Context, Probot} from "probot";
 import {Config} from "../entities/Config";
 import {isModeAuto, loadConfig, shouldOpenPR} from "../config";
 
-const context = require('./../context')
+const context = require('../context')
 const github = require('./../github')
-const utils = require('./../utils')
+const utils = require('../utils')
 const core = require('@actions/core')
 
 export async function issueAssigned (app: Probot, ctx: Context<any>) {

@@ -1,5 +1,5 @@
-import {interpolate} from "../src/interpolate";
 import issueAssignedPayload from "./test-fixtures/issues.assigned.json";
+import {interpolate} from "../src/interpolate";
 
 test('interpolate string with object field expression', () => {
     const o = {hello: 'world'}

@@ -22,7 +22,7 @@ import {
 } from "./test-helpers";
 
 const nock = require('nock')
-const utils = require('./../src/utils')
+const utils = require('../src/utils')
 let probot: Probot
 
 beforeAll(() => {

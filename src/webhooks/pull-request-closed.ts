@@ -1,7 +1,7 @@
 import {Context, Probot} from "probot";
-import context from "./../context";
 import github from "./../github";
 import {loadConfig} from "../config";
+import {getRepoName, getRepoOwnerLogin} from "../context";
 
 export async function pullRequestClosed(_: Probot, ctx: Context<any>) {
     if (ctx.payload.pull_request.merged === true) {
@@ -10,8 +10,8 @@ export async function pullRequestClosed(_: Probot, ctx: Context<any>) {
             const branchName = ctx.payload.pull_request.head.ref
             const issueNumber = github.getIssueNumberFromBranchName(branchName);
             if (issueNumber) {
-                const owner = context.getRepoOwnerLogin(ctx);
-                const repo = context.getRepoName(ctx);
+                const owner = getRepoOwnerLogin(ctx);
+                const repo = getRepoName(ctx);
                 const issueForBranch = await ctx.octokit.issues.get({
                     owner: owner,
                     repo: repo,

@@ -1,16 +1,16 @@
 import {Context, Probot} from "probot";
-import context from "../context";
 import github from "../github";
 import {loadConfig} from "../config";
+import {getIssueTitle, getRepoName, getRepoOwnerLogin} from "../context";
 
 export async function issueLabeled(app: Probot, ctx: Context<any>) {
     const action = ctx.payload.action;
     app.log.debug(`Issue was ${action}`);
     const config = await loadConfig(ctx);
     if (config && config.conventionalPrTitles) {
-        const owner = context.getRepoOwnerLogin(ctx);
-        const repo = context.getRepoName(ctx);
-        const issueTitle = context.getIssueTitle(ctx);
+        const owner = getRepoOwnerLogin(ctx);
+        const repo = getRepoName(ctx);
+        const issueTitle = getIssueTitle(ctx);
         const branchName = await github.getBranchNameFromIssue(ctx, config);
         const {data: pull} = await ctx.octokit.pulls.list({owner: owner, repo: repo, head: `${owner}:${branchName}`});
         if (pull && pull.length === 1) {

@@ -1,7 +1,6 @@
 import {Probot} from "probot";
 import {ApplicationFunctionOptions} from "probot/lib/types";
 import express from "express";
-import utils from "./utils";
 import {issueAssigned} from "./webhooks/issue-assigned";
 import {issueLabeled} from "./webhooks/issue-labeled";
 import {issueOpened} from "./webhooks/issue-opened";
@@ -11,19 +10,21 @@ import {commentCreated} from "./webhooks/comment-created";
 import {marketplacePurchase} from "./webhooks/marketplace-purchase";
 import {pullRequest} from "./webhooks/pull-request";
 import {pullRequestClosed} from "./webhooks/pull-request-closed";
+import {gitDate, gitSha, version} from "./version";
+import {isRunningInGitHubActions, logMemoryUsage} from "./utils";
 
-const {version} = require('./version')
 
 export default (app: Probot, {getRouter}: ApplicationFunctionOptions) => {
-    app.log(`Create Issue Branch, revision: ${version.revision}, built on: ${version.date}`)
+    const buildDate = gitDate.toISOString().substring(0, 10);
+    app.log(`Create Issue Branch, version: ${version}, revison: ${gitSha.substring(0, 8)}, built on: ${buildDate}`);
     if (getRouter) {
         addStatsRoute(getRouter)
         addPlansRoute(app, getRouter)
-    } else if (!utils.isRunningInGitHubActions()) {
+    } else if (!isRunningInGitHubActions()) {
         app.log('Custom routes not available!')
     }
     configureSentry(app)
-    utils.logMemoryUsage(app)
+    logMemoryUsage(app)
     app.on('issues.assigned', async ctx => {
         await issueAssigned(app, ctx)
     })

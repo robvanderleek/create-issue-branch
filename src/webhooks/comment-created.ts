@@ -1,15 +1,16 @@
 import {Context, Probot} from "probot";
 import {Config} from "../entities/Config";
-import context from "./../context";
 import github from "./../github";
-import utils from "./../utils";
 import {
     getChatOpsCommandArgument,
     isChatOpsCommand,
     isExperimentalBranchNameArgument,
     isModeChatOps,
-    loadConfig, shouldOpenPR
+    loadConfig,
+    shouldOpenPR
 } from "../config";
+import {logMemoryUsage} from "../utils";
+import {getIssueTitle, getSender} from "../context";
 
 export async function commentCreated(app: Probot, ctx: Context<any>, comment: string) {
     if (isChatOpsCommand(comment)) {
@@ -39,12 +40,12 @@ export async function chatOpsCommandGiven(app: Probot, ctx: Context<any>, config
         app.log('Received ChatOps command but current mode is not `chatops`');
     }
     if (github.skipForIssue(ctx, config)) {
-        app.log(`Skipping run for issue: ${context.getIssueTitle(ctx)}`);
+        app.log(`Skipping run for issue: ${getIssueTitle(ctx)}`);
         return;
     }
     let branchName
     if (github.skipBranchCreationForIssue(ctx, config)) {
-        app.log(`Skipping branch creation for issue: ${context.getIssueTitle(ctx)}`);
+        app.log(`Skipping branch creation for issue: ${getIssueTitle(ctx)}`);
         branchName = await github.getSourceBranch(ctx, config);
     } else {
         branchName = await getBranchName(ctx, config, comment);
@@ -57,9 +58,9 @@ export async function chatOpsCommandGiven(app: Probot, ctx: Context<any>, config
     }
     const shouldCreatePR = shouldOpenPR(config);
     if (shouldCreatePR) {
-        const sender = context.getSender(ctx);
+        const sender = getSender(ctx);
         app.log(`Creating pull request for user ${sender}`);
         await github.createPr(app, ctx, config, sender, branchName);
     }
-    utils.logMemoryUsage(app)
+    logMemoryUsage(app)
 }

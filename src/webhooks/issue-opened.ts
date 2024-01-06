@@ -1,11 +1,11 @@
 import {Context, Probot} from "probot";
 import {isChatOpsCommand, isModeImmediate, loadConfig, shouldOpenPR} from "../config";
-import context from "./../context";
 import core from "@actions/core";
 import {Config} from "../entities/Config";
 import {chatOpsCommandGiven} from "./comment-created";
 import github from "./../github";
-import utils from "./../utils";
+import {isRunningInGitHubActions} from "../utils";
+import {getIssueTitle, getSender} from "../context";
 
 export async function issueOpened(app: Probot, ctx: Context<any>, comment: string | null) {
     const config = await loadConfig(ctx);
@@ -20,18 +20,18 @@ export async function issueOpened(app: Probot, ctx: Context<any>, comment: strin
 
 async function handle(app: Probot, ctx: Context<any>, config: Config) {
     if (github.skipForIssue(ctx, config)) {
-        app.log(`Skipping run for issue: ${context.getIssueTitle(ctx)}`)
+        app.log(`Skipping run for issue: ${getIssueTitle(ctx)}`)
         return
     }
     let branchName
     if (github.skipBranchCreationForIssue(ctx, config)) {
-        app.log(`Skipping branch creation for issue: ${context.getIssueTitle(ctx)}`)
+        app.log(`Skipping branch creation for issue: ${getIssueTitle(ctx)}`)
         branchName = await github.getSourceBranch(ctx, config)
     } else {
         branchName = await github.getBranchNameFromIssue(ctx, config)
         if (await github.branchExists(ctx, branchName)) {
             app.log('Could not create branch as it already exists')
-            if (utils.isRunningInGitHubActions()) {
+            if (isRunningInGitHubActions()) {
                 core.setOutput('branchName', branchName)
             }
             return
@@ -40,7 +40,7 @@ async function handle(app: Probot, ctx: Context<any>, config: Config) {
     }
     const shouldCreatePR = shouldOpenPR(config);
     if (shouldCreatePR) {
-        const assignee = context.getSender(ctx);
+        const assignee = getSender(ctx);
         app.log(`Creating pull request for user ${assignee}`);
         await github.createPr(app, ctx, config, assignee, branchName);
     }
