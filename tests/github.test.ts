@@ -1,7 +1,18 @@
-import github from "../src/github";
+import * as github from "../src/github";
 import {formatAsExpandingMarkdown} from "../src/utils";
 import {getDefaultConfig} from "../src/entities/Config";
-import {getDefaultContext} from "./test-helpers";
+import {getDefaultContext, initNock, initProbot} from "./test-helpers";
+import {Probot} from "probot";
+
+let probot: Probot
+
+beforeAll(() => {
+    initNock()
+})
+
+beforeEach(() => {
+    probot = initProbot()
+})
 
 test('get issue number from branch name', () => {
     expect(github.getIssueNumberFromBranchName('i12')).toBe(12)
@@ -20,36 +31,36 @@ test('get branch name from issue', async () => {
     const ctx = {payload: {issue: {number: 12, title: 'Hello world', labels: [{name: 'bug'}]}}}
     const config = getDefaultConfig();
     config.branchName = 'tiny';
-    expect(await github.getBranchNameFromIssue(ctx, config)).toBe('i12')
+    expect(await github.getBranchNameFromIssue(ctx as any, config)).toBe('i12')
 
     config.branchName = 'short';
-    expect(await github.getBranchNameFromIssue(ctx, config)).toBe('issue-12')
+    expect(await github.getBranchNameFromIssue(ctx as any, config)).toBe('issue-12')
 
     config.branchName = 'full';
-    expect(await github.getBranchNameFromIssue(ctx, config)).toBe('issue-12-Hello_world')
+    expect(await github.getBranchNameFromIssue(ctx as any, config)).toBe('issue-12-Hello_world')
 
     config.branches = [{label: 'bug', prefix: 'bug/'}];
-    expect(await github.getBranchNameFromIssue(ctx, config)).toBe('bug/issue-12-Hello_world')
+    expect(await github.getBranchNameFromIssue(ctx as any, config)).toBe('bug/issue-12-Hello_world')
 
     config.branches = [{label: 'bug', prefix: 'Some bugs here/'}];
-    expect(await github.getBranchNameFromIssue(ctx, config)).toBe('Some_bugs_here/issue-12-Hello_world')
+    expect(await github.getBranchNameFromIssue(ctx as any, config)).toBe('Some_bugs_here/issue-12-Hello_world')
 
     config.branches = [{label: 'bug', prefix: 'feature-2019-12-17T10:16:25Z'}];
-    expect(await github.getBranchNameFromIssue(ctx, config)).toBe('feature-2019-12-17T10_16_25Zissue-12-Hello_world')
+    expect(await github.getBranchNameFromIssue(ctx as any, config)).toBe('feature-2019-12-17T10_16_25Zissue-12-Hello_world')
 
     config.branches = [{label: 'bug', prefix: 'feature\\'}];
-    expect(await github.getBranchNameFromIssue(ctx, config)).toBe('feature_issue-12-Hello_world')
+    expect(await github.getBranchNameFromIssue(ctx as any, config)).toBe('feature_issue-12-Hello_world')
 
     // eslint-disable-next-line no-template-curly-in-string
     config.branches = [];
     config.branchName = '${issue.title}-${issue.number}';
-    expect(await github.getBranchNameFromIssue(ctx, config)).toBe('Hello_world-12')
+    expect(await github.getBranchNameFromIssue(ctx as any, config)).toBe('Hello_world-12')
 
     // eslint-disable-next-line
     process.env['SOME_VAR'] = 'Hello world'
     // eslint-disable-next-line no-template-curly-in-string
     config.branchName = '${issue.number}-${%SOME_VAR}';
-    expect(await github.getBranchNameFromIssue(ctx, config)).toBe('12-Hello_world')
+    expect(await github.getBranchNameFromIssue(ctx as any, config)).toBe('12-Hello_world')
 })
 
 test('get branch name from issue, reported issues', async () => {
@@ -61,94 +72,113 @@ test('get branch name from issue, reported issues', async () => {
         'foreign key constraint fails (`omeka`.`omeka_super_eight_festivals_filmmaker_films`, CONSTRAINT ' +
         '`omeka_super_eight_festivals_filmmaker_films_ibfk_1` FOREIGN KEY (`filmmaker_id`) REFERENCES ' +
         '`omeka_super_eight_festivals_peop)" when adding filmmaker film #20'
-    expect(await github.getBranchNameFromIssue(ctx, config)).toBe(
+    expect(await github.getBranchNameFromIssue(ctx as any, config)).toBe(
         'issue-12-_Error_Mysqli_statement_execute_error_Cannot_add_or_update_a_child_row_a_foreign_key_constraint_fails' +
         '_omeka_omeka_super_eight_festivals_filmmaker_films_CONSTRAINT_omeka_super_eight_festivals_filmmaker_films_' +
         'ibfk_1_FOREIGN_KEY_filmmake')
 
     ctx.payload.issue.title = '全是中文的名字'
-    expect(await github.getBranchNameFromIssue(ctx, config)).toBe('issue-12-全是中文的名字')
+    expect(await github.getBranchNameFromIssue(ctx as any, config)).toBe('issue-12-全是中文的名字')
 
     ctx.payload.issue.title = '半中文half english'
-    expect(await github.getBranchNameFromIssue(ctx, config)).toBe('issue-12-半中文half_english')
+    expect(await github.getBranchNameFromIssue(ctx as any, config)).toBe('issue-12-半中文half_english')
 })
 
 test('get branch configuration for issue', () => {
     const ctx = {payload: {issue: {labels: [{name: 'enhancement'}]}}}
-    const config = {branches: [{label: 'enhancement', prefix: 'feature/'}]}
-    const branchConfig = github.getIssueBranchConfig(ctx, config)
-    expect(branchConfig).toBeDefined()
-    expect(branchConfig.prefix).toBe('feature/')
+    const config = getDefaultConfig();
+    config.branches = [{label: 'enhancement', prefix: 'feature/'}]
+    const branchConfig = github.getIssueBranchConfig(ctx as any, config)
+    expect(branchConfig).toBeDefined();
+    if (branchConfig) {
+        expect(branchConfig.prefix).toBe('feature/')
+    }
 })
 
 test('get branch configuration with multiple labels for issue', () => {
     const ctx = {payload: {issue: {labels: [{name: 'enhancement'}, {name: 'documentation'}]}}}
-    const config = {
-        branches: [{label: ['enhancement', 'documentation'], prefix: 'docs/'},
-            {label: 'enhancement', prefix: 'feature/'}]
+    const config = getDefaultConfig();
+    config.branches = [{label: ['enhancement', 'documentation'], prefix: 'docs/'}, {
+        label: 'enhancement',
+        prefix: 'feature/'
+    }]
+    const branchConfig = github.getIssueBranchConfig(ctx as any, config)
+    expect(branchConfig).toBeDefined();
+    if (branchConfig) {
+        expect(branchConfig.prefix).toBe('docs/')
     }
-    const branchConfig = github.getIssueBranchConfig(ctx, config)
-    expect(branchConfig).toBeDefined()
-    expect(branchConfig.prefix).toBe('docs/')
 })
 
 test('get skip is true branch configuration for issue', () => {
     const ctx = {payload: {issue: {labels: [{name: 'question'}]}}}
-    const config = {branches: [{label: 'question', skip: true}]}
-    const branchConfig = github.getIssueBranchConfig(ctx, config)
-    expect(branchConfig).toBeDefined()
-    expect(branchConfig.skip).toBe(true)
+    const config = getDefaultConfig();
+    config.branches = [{label: 'question', skip: true}]
+    const branchConfig = github.getIssueBranchConfig(ctx as any, config)
+    expect(branchConfig).toBeDefined();
+    if (branchConfig) {
+        expect(branchConfig.skip).toBe(true);
+    }
 })
 
 test('skip branch creation for issue', () => {
     const questionIssue = {payload: {issue: {labels: [{name: 'question'}]}}}
     const bugIssue = {payload: {issue: {labels: [{name: 'bug'}]}}}
-    const config = {branches: [{label: 'question', skip: true}]}
-    expect(github.skipForIssue(questionIssue, config)).toBe(true)
-    expect(github.skipForIssue(bugIssue, config)).toBe(false)
+    const config = getDefaultConfig();
+    config.branches = [{label: 'question', skip: true}]
+    expect(github.skipForIssue(questionIssue as any, config)).toBe(true)
+    expect(github.skipForIssue(bugIssue as any, config)).toBe(false)
 })
 
 test('get branch configuration for issue with all matching wildcard fallthrough', () => {
     const ctx = {payload: {issue: {labels: [{name: 'mylabel'}]}}}
-    const config = {branches: [{label: 'enhancement', prefix: 'feature/'}, {label: '*', prefix: 'issues/'}]}
-    const branchConfig = github.getIssueBranchConfig(ctx, config)
-    expect(branchConfig).toBeDefined()
-    expect(branchConfig.prefix).toBe('issues/')
+    const config = getDefaultConfig();
+    config.branches = [{label: 'enhancement', prefix: 'feature/'}, {label: '*', prefix: 'issues/'}];
+    const branchConfig = github.getIssueBranchConfig(ctx as any, config)
+    expect(branchConfig).toBeDefined();
+    if (branchConfig) {
+        expect(branchConfig.prefix).toBe('issues/');
+    }
 })
 
 test('issue has no branch configuration', () => {
     const ctx = {payload: {issue: {labels: [{name: 'bug'}]}}}
-    const config = {branches: [{label: 'enhancement', prefix: 'feature/'}]}
-    const branchConfig = github.getIssueBranchConfig(ctx, config)
+    const config = getDefaultConfig();
+    config.branches = [{label: 'enhancement', prefix: 'feature/'}]
+    const branchConfig = github.getIssueBranchConfig(ctx as any, config)
     expect(branchConfig).toBeUndefined()
 })
 
 test('get issue branch prefix', () => {
     const ctx = {payload: {issue: {labels: [{name: 'enhancement'}]}}}
-    const config = {branches: [{label: 'enhancement', prefix: 'feature/'}]}
-    const prefix = github.getIssueBranchPrefix(ctx, config)
+    const config = getDefaultConfig();
+    config.branches = [{label: 'enhancement', prefix: 'feature/'}];
+    const prefix = github.getIssueBranchPrefix(ctx as any, config)
     expect(prefix).toBe('feature/')
 })
 
 test('get issue branch prefix for issue that has no branch configuration', () => {
     const ctx = {payload: {issue: {labels: [{name: 'bug'}]}}}
-    const config = {branches: [{label: 'enhancement', prefix: 'feature/'}]}
-    const prefix = github.getIssueBranchPrefix(ctx, config)
+    const config = getDefaultConfig();
+    config.branches = [{label: 'enhancement', prefix: 'feature/'}];
+    const prefix = github.getIssueBranchPrefix(ctx as any, config)
     expect(prefix).toBe('')
 })
 
 test('get issue branch prefix with context expression interpolation', () => {
     const ctx = {payload: {issue: {labels: [{name: 'enhancement'}], user: {login: 'robvanderleek'}}}}
     // eslint-disable-next-line no-template-curly-in-string
-    const config = {branches: [{label: 'enhancement', prefix: 'feature/${issue.user.login}/'}]}
-    const prefix = github.getIssueBranchPrefix(ctx, config)
+    const config = getDefaultConfig();
+    config.branches = [{label: 'enhancement', prefix: 'feature/${issue.user.login}/'}];
+    const prefix = github.getIssueBranchPrefix(ctx as any, config);
     expect(prefix).toBe('feature/robvanderleek/')
 })
 
 test('get branch name from issue with only branch prefix configured', async () => {
-    const ctx = {payload: {issue: {number: 12, title: 'Hello world', labels: [{name: 'enhancement'}]}}}
-    const config = {branchName: 'short', branches: [{label: 'enhancement', prefix: 'feature/'}]}
-    expect(await github.getBranchNameFromIssue(ctx, config)).toBe('feature/issue-12')
+    const ctx = {payload: {issue: {number: 12, title: 'Hello world', labels: [{name: 'enhancement'}]}}};
+    const config = getDefaultConfig();
+    config.branchName = 'short';
+    config.branches = [{label: 'enhancement', prefix: 'feature/'}];
+    expect(await github.getBranchNameFromIssue(ctx as any, config)).toBe('feature/issue-12')
 })
 
 test('handle branch already exist, log message to info level', async () => {
@@ -159,8 +189,9 @@ test('handle branch already exist, log message to info level', async () => {
     const ctx = getDefaultContext()
     ctx.octokit.git.createRef = createRef
     const log = {info: jest.fn()}
+    const config = getDefaultConfig();
 
-    await github.createBranch(ctx, {}, 'issue-1', '1234abcd', log)
+    await github.createBranch(ctx, config, 'issue-1', '1234abcd', log)
 
     expect(log.info).toBeCalled()
 })
@@ -174,8 +205,10 @@ test('log branch create errors with error level', async () => {
     const ctx = getDefaultContext()
     ctx.octokit.issues.createComment = createComment
     ctx.octokit.git.createRef = createRef
+    const config = getDefaultConfig();
+    config.silent = false;
 
-    await github.createBranch(ctx, {silent: false}, 'issue-1', '1234abcd',
+    await github.createBranch(ctx, config, 'issue-1', '1234abcd',
         () => {
         })
 
@@ -197,8 +230,10 @@ test('Retry create comment when it fails', async () => {
     const ctx = getDefaultContext()
     ctx.octokit.issues.createComment = createComment
     ctx.octokit.git.createRef = createRef
+    const config = getDefaultConfig();
+    config.silent = false;
 
-    await github.createBranch(ctx, {silent: false}, 'issue-1', '1234abcd', () => {
+    await github.createBranch(ctx, config, 'issue-1', '1234abcd', () => {
     });
 
     expect(createComment).toBeCalled();
@@ -214,10 +249,7 @@ test('create (draft) PR', async () => {
     }
     const config = getDefaultConfig();
 
-    await github.createPr({
-        log: () => {
-        }
-    }, ctx, config, 'robvanderleek', 'issue-1')
+    await github.createPr(probot, ctx, config, 'robvanderleek', 'issue-1')
     expect(createPR).toHaveBeenCalledWith({
         owner: 'robvanderleek',
         repo: 'create-issue-branch',
@@ -231,10 +263,7 @@ test('create (draft) PR', async () => {
     expect(capturedCommitMessage).toBe('Create PR for #1')
 
     config.openDraftPR = true;
-    await github.createPr({
-        log: () => {
-        }
-    }, ctx, config, 'robvanderleek', 'issue-1')
+    await github.createPr(probot, ctx, config, 'robvanderleek', 'issue-1')
 
     expect(createPR).toHaveBeenCalledWith({
         owner: 'robvanderleek',
@@ -257,10 +286,7 @@ test('copy Issue description into PR', async () => {
     const config = getDefaultConfig();
     config.copyIssueDescriptionToPR = true;
 
-    await github.createPr({
-        log: () => {
-        }
-    }, ctx, config, 'robvanderleek', 'issue-1')
+    await github.createPr(probot, ctx, config, 'robvanderleek', 'issue-1')
 
     expect(createPR).toHaveBeenCalledWith({
         owner: 'robvanderleek',
@@ -274,18 +300,15 @@ test('copy Issue description into PR', async () => {
 })
 
 test('Do not copy undefined Issue description into PR', async () => {
-  const createPR = jest.fn()
-  const ctx = getDefaultContext()
-  ctx.octokit.pulls.create = createPR
-  ctx.payload.issue.body = null
-  ctx.octokit.graphql = jest.fn()
-  const config = getDefaultConfig();
-  config.copyIssueDescriptionToPR = true;
+    const createPR = jest.fn()
+    const ctx = getDefaultContext()
+    ctx.octokit.pulls.create = createPR
+    ctx.payload.issue.body = null
+    ctx.octokit.graphql = jest.fn()
+    const config = getDefaultConfig();
+    config.copyIssueDescriptionToPR = true;
 
-    await github.createPr({
-        log: () => {
-        }
-    }, ctx, config, 'robvanderleek', 'issue-1')
+    await github.createPr(probot, ctx, config, 'robvanderleek', 'issue-1')
     expect(createPR).toHaveBeenCalledWith({
         owner: 'robvanderleek',
         repo: 'create-issue-branch',
@@ -306,10 +329,7 @@ test('use correct source branch', async () => {
     const config = getDefaultConfig();
     config.branches = [{label: 'enhancement', name: 'develop'}];
 
-    await github.createPr({
-        log: () => {
-        }
-    }, ctx, config, 'robvanderleek', 'issue-1')
+    await github.createPr(probot, ctx, config, 'robvanderleek', 'issue-1')
     expect(createPR).toHaveBeenCalledWith({
         owner: 'robvanderleek',
         repo: 'create-issue-branch',
@@ -330,10 +350,7 @@ test('use configured target branch', async () => {
     const config = getDefaultConfig();
     config.branches = [{label: 'enhancement', prTarget: 'develop'}];
 
-    await github.createPr({
-        log: () => {
-        }
-    }, ctx, config, 'robvanderleek', 'issue-1')
+    await github.createPr(probot, ctx, config, 'robvanderleek', 'issue-1')
     expect(createPR).toHaveBeenCalledWith({
         owner: 'robvanderleek',
         repo: 'create-issue-branch',
@@ -354,10 +371,7 @@ test('configured source and target branch', async () => {
     const config = getDefaultConfig();
     config.branches = [{label: 'hotfix', name: 'develop', prTarget: 'hotfix'}];
 
-    await github.createPr({
-        log: () => {
-        }
-    }, ctx, config, 'robvanderleek', 'issue-1')
+    await github.createPr(probot, ctx, config, 'robvanderleek', 'issue-1')
     expect(createPR).toHaveBeenCalledWith({
         owner: 'robvanderleek',
         repo: 'create-issue-branch',
@@ -380,10 +394,7 @@ test('copy Issue milestone into PR', async () => {
     const config = getDefaultConfig();
     config.copyIssueMilestoneToPR = true;
 
-    await github.createPr({
-        log: () => {
-        }
-    }, ctx, config, 'robvanderleek', 'issue-1')
+    await github.createPr(probot, ctx, config, 'robvanderleek', 'issue-1')
     expect(updateIssue).toHaveBeenCalledWith({
         owner: 'robvanderleek', repo: 'create-issue-branch', issue_number: 123, milestone: 456
     })
@@ -400,10 +411,7 @@ test('empty commit text', async () => {
     ctx.payload.issue.milestone = {number: 456};
     const config = getDefaultConfig();
 
-    await github.createPr({
-        log: () => {
-        }
-    }, ctx, config, 'robvanderleek', 'issue-1')
+    await github.createPr(probot, ctx, config, 'robvanderleek', 'issue-1')
 
     expect(capturedCommitMessage).toBe('Create PR for #1')
 })
@@ -420,10 +428,7 @@ test('empty commit with skip CI text', async () => {
     const config = getDefaultConfig();
     config.prSkipCI = true;
 
-    await github.createPr({
-        log: () => {
-        }
-    }, ctx, config, 'robvanderleek', 'issue-1')
+    await github.createPr(probot, ctx, config, 'robvanderleek', 'issue-1')
 
     expect(capturedCommitMessage).toBe('Create PR for #1\n[skip ci]')
 })

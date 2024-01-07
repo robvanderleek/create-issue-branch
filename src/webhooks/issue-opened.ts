@@ -3,7 +3,7 @@ import {isChatOpsCommand, isModeImmediate, loadConfig, shouldOpenPR} from "../co
 import core from "@actions/core";
 import {Config} from "../entities/Config";
 import {chatOpsCommandGiven} from "./comment-created";
-import github from "./../github";
+import * as github from "../github";
 import {isRunningInGitHubActions} from "../utils";
 import {getIssueTitle, getSender} from "../context";
 

@@ -1,5 +1,5 @@
 import {Context, Probot} from "probot";
-import github from "./../github";
+import * as github from "../github";
 import {loadConfig} from "../config";
 import {getRepoName, getRepoOwnerLogin} from "../context";
 

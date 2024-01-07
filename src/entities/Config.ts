@@ -26,10 +26,12 @@ export interface Config {
 }
 
 export interface BranchConfig {
-    label: string;
+    label: string | Array<string>;
     name?: string;
     prefix?: string;
     prTarget?: string;
+    skip?: boolean;
+    skipBranch?: boolean;
 }
 
 export function getDefaultConfig(): Config {

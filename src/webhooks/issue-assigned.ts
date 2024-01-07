@@ -3,7 +3,7 @@ import {Config} from "../entities/Config";
 import {isModeAuto, loadConfig, shouldOpenPR} from "../config";
 
 const context = require('../context')
-const github = require('./../github')
+const github = require('../github')
 const utils = require('../utils')
 const core = require('@actions/core')
 

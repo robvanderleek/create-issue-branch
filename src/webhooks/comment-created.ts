@@ -1,6 +1,6 @@
 import {Context, Probot} from "probot";
 import {Config} from "../entities/Config";
-import github from "./../github";
+import * as github from "../github";
 import {
     getChatOpsCommandArgument,
     isChatOpsCommand,
