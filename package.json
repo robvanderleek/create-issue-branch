@@ -37,7 +37,7 @@
     "test": "jest",
     "coverage": "jest --collect-coverage",
     "test:docker": "docker-compose up",
-    "dist": "ncc build src/action.js"
+    "dist": "yarn build && ncc build build/action.js"
   },
   "dependencies": {
     "@actions/core": "^1.10.0",
