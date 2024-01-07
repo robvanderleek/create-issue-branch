@@ -53,7 +53,9 @@ export function pushMetric(owner: string, log: any) {
 }
 
 export function isRunningInGitHubActions() {
-    return process.env.GITHUB_ACTIONS === 'true'
+    const result = process.env.GITHUB_ACTIONS === 'true';
+    console.log(`isRunningInGitHubActions: ${result}`);
+    return result;
 }
 
 export function getStringLengthInBytes(str: string) {
