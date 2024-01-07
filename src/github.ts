@@ -1,4 +1,3 @@
-import core from "@actions/core";
 import {
     getAssignee,
     getDefaultBranch as getDefaultBranchFromContext,
@@ -23,6 +22,7 @@ import {
     getDefaultBranch as getDefaultBranchFromConfig,
     prSkipCI
 } from "./config";
+import {setOutput} from "@actions/core";
 
 export async function createIssueBranch(app: Probot, ctx: Context<any>, branchName: string, config: Config) {
     if (await hasValidSubscriptionForRepo(app, ctx, config)) {
@@ -252,7 +252,7 @@ export async function createBranch(ctx: Context<any>, config: Config, branchName
         })
         log(`Branch created: ${branchName}`)
         if (utils.isRunningInGitHubActions()) {
-            core.setOutput('branchName', branchName)
+            setOutput('branchName', branchName)
         }
         const commentMessage = interpolate(getCommentMessage(config), {...ctx.payload, branchName: branchName})
         await addComment(ctx, config, commentMessage)
