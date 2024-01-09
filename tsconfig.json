@@ -1,0 +1,18 @@
+{
+  "include": [
+    "src/**/*",
+    // "tests/**/*"
+  ],
+  "compilerOptions": {
+    "rootDirs": ["src", "tests"],
+    "outDir": "build",
+    "strict": true,
+    "target": "es6",
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "module": "CommonJS",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true
+  }
+}

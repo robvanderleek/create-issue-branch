@@ -11,8 +11,9 @@ node_modules/
 coverage/
 dist/static/
 dist/views/
-src/version.js
+src/version.ts
 
 # Local Netlify folder
 .netlify
 .vercel
+build/
