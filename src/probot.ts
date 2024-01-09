@@ -5,7 +5,7 @@ import {issueAssigned} from "./webhooks/issue-assigned";
 import {issueLabeled} from "./webhooks/issue-labeled";
 import {issueOpened} from "./webhooks/issue-opened";
 import {listAppSubscriptions} from "./plans";
-import Sentry from "@sentry/node";
+import * as Sentry from "@sentry/node";
 import {commentCreated} from "./webhooks/comment-created";
 import {marketplacePurchase} from "./webhooks/marketplace-purchase";
 import {pullRequest} from "./webhooks/pull-request";
@@ -73,7 +73,7 @@ async function addPlansRoute(app: Probot, getRouter: (path?: string) => express.
 function configureSentry(app: Probot) {
     if (process.env.SENTRY_DSN) {
         app.log('Setting up Sentry.io logging...')
-        Sentry.init({dsn: process.env.SENTRY_DSN, attachStacktrace: true})
+        Sentry.init({dsn: process.env.SENTRY_DSN, attachStacktrace: true});
     } else {
         app.log('Skipping Sentry.io setup')
     }
