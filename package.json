@@ -1,6 +1,6 @@
 {
   "name": "create-issue-branch",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Creates a new branch after assigning an issue",
   "author": "Rob van der Leek <robvanderleek@gmail.com> (https://twitter.com/robvanderleek)",
   "license": "ISC",
@@ -19,6 +19,12 @@
     ],
     "plugins": [
       "@semantic-release/commit-analyzer",
+      [
+        "@semantic-release/npm",
+        {
+            "npmPublish": false
+        }
+      ],
       [
         "@semantic-release/git",
         {

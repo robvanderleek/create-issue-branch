@@ -1,0 +1,46 @@
+name: 'release'
+concurrency: release_environment
+on: 
+  push:
+    branches: main
+jobs:
+  release:
+    name: Semantic Release
+    runs-on: ubuntu-latest
+    steps:
+    - name: 'Checkout sources'
+      uses: actions/checkout@v3
+    - name: 'Setup NodeJS'
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20.x'
+    - name: 'Install dependencies'
+      run: yarn install
+    - name: 'Run unit-tests'
+      run: yarn test
+    - name: 'Build distribution'
+      run: yarn dist
+    - name: 'Semantic Release'
+      id: semantic
+      uses: cycjimmy/semantic-release-action@v3
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: 'GitHub release'
+      if: steps.semantic.outputs.new_release_published == 'true'
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ steps.semantic.outputs.new_release_version }}
+    - name: 'Commit GitHub Action distribution'
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add dist/index.js
+        git commit -m "Build by GitHub Actions" || true
+      if: job.status == 'success'
+    - name: 'Push changes'
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ github.ref }}
+        force: true
+      if: job.status == 'success'
