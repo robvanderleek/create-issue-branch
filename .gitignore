@@ -12,8 +12,5 @@ coverage/
 dist/static/
 dist/views/
 src/version.ts
-
-# Local Netlify folder
-.netlify
 .vercel
 build/
