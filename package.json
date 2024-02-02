@@ -38,13 +38,13 @@
   },
   "scripts": {
     "prepare": "mkver ./src/version.ts",
-    "build": "tsc",
-    "start": "yarn build && NODE_OPTIONS='--max_old_space_size=490' probot run ./build/src/probot.js",
+    "build": "tsc --noemit false",
+    "start": "yarn build && NODE_OPTIONS='--max_old_space_size=490' probot run ./build/probot.js",
     "dev": "next dev",
     "test": "jest",
     "coverage": "jest --collect-coverage",
     "test:docker": "docker-compose up",
-    "dist": "yarn build && ncc build build/src/action.js"
+    "dist": "yarn build && ncc build build/action.js"
   },
   "dependencies": {
     "@actions/core": "^1.10.0",
