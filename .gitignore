@@ -12,5 +12,6 @@ coverage/
 dist/static/
 dist/views/
 src/version.ts
-.vercel
+.vercel/
+.next/
 build/

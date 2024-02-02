@@ -1,19 +1,29 @@
 {
-  "include": [
-    "src/**/*",
-    "api/*",
-    // "tests/**/*"
-  ],
   "compilerOptions": {
-    "rootDirs": ["src", "tests"],
-    "outDir": "build",
-    "strict": true,
     "target": "es6",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
-    "resolveJsonModule": true,
-    "module": "CommonJS",
+    "skipLibCheck": true,
     "esModuleInterop": true,
+    "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true
-  }
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "outDir": "build",
+    "jsx": "preserve",
+    "incremental": true
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
