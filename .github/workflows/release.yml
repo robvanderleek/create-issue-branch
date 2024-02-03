@@ -19,7 +19,7 @@ jobs:
     - name: 'Run unit-tests'
       run: yarn test
     - name: 'Build distribution'
-      run: yarn dist
+      run: yarn action:dist
     - name: 'Semantic Release'
       id: semantic
       uses: cycjimmy/semantic-release-action@v3
