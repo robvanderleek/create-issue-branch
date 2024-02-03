@@ -46,7 +46,7 @@
     "coverage": "jest --collect-coverage",
     "probot:start": "yarn build && NODE_OPTIONS='--max_old_space_size=490' probot run ./build/probot.js",
     "action:build": "tsc --noemit false",
-    "action:dist": "yarn build && ncc build build/action.js"
+    "action:dist": "yarn action:build && ncc build build/action.js"
   },
   "dependencies": {
     "@actions/core": "^1.10.0",

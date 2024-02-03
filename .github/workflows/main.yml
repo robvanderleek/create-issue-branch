@@ -20,7 +20,7 @@ jobs:
     - name: 'Install dependencies'
       run: yarn install
     - name: 'Build distribution'
-      run: yarn dist
+      run: yarn action:dist
     - name: 'Run unit-tests'
       run: yarn test
     - name: 'Run code coverage'
