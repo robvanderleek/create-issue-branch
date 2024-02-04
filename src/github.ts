@@ -12,7 +12,6 @@ import {
     isPrivateOrgRepo
 } from "./context";
 import {Context, Probot} from "probot";
-import * as utils from "./utils";
 import {isProPlan} from "./plans";
 import {interpolate} from "./interpolate";
 import {Config} from "./entities/Config";
@@ -23,6 +22,14 @@ import {
     prSkipCI
 } from "./config";
 import {setOutput} from "@actions/core";
+import {
+    formatAsExpandingMarkdown,
+    getStringLengthInBytes,
+    isProduction,
+    isRunningInGitHubActions, makeGitSafe, makePrefixGitSafe,
+    pushMetric, sleep,
+    trimStringToByteLength, wildcardMatch
+} from "./utils";
 
 export async function createIssueBranch(app: Probot, ctx: Context<any>, branchName: string, config: Config) {
     if (await hasValidSubscriptionForRepo(app, ctx, config)) {
@@ -36,7 +43,7 @@ export async function createIssueBranch(app: Probot, ctx: Context<any>, branchNa
 }
 
 async function hasValidSubscriptionForRepo(app: Probot, ctx: Context<any>, config: Config) {
-    if (utils.isRunningInGitHubActions()) {
+    if (isRunningInGitHubActions()) {
         return true
     }
     if (isPrivateOrgRepo(ctx)) {
@@ -71,8 +78,8 @@ export async function getBranchNameFromIssue(ctx: Context<any>, config: Config) 
     // For magic number below see:
     // https://stackoverflow.com/questions/60045157/what-is-the-maximum-length-of-a-github-branch-name
     const MAX_BYTES_GITHUB_BRANCH_NAME = 243
-    if (utils.getStringLengthInBytes(result) > MAX_BYTES_GITHUB_BRANCH_NAME) {
-        return utils.trimStringToByteLength(result, MAX_BYTES_GITHUB_BRANCH_NAME)
+    if (getStringLengthInBytes(result) > MAX_BYTES_GITHUB_BRANCH_NAME) {
+        return trimStringToByteLength(result, MAX_BYTES_GITHUB_BRANCH_NAME)
     } else {
         return result
     }
@@ -97,10 +104,10 @@ export async function getBranchName(ctx: Context<any>, config: Config, title: st
     }
     const replacementChar = config.gitSafeReplacementChar;
     const replaceChars = config.gitReplaceChars;
-    return utils.makePrefixGitSafe(getIssueBranchPrefix(ctx, config), {
+    return makePrefixGitSafe(getIssueBranchPrefix(ctx, config), {
         replaceChars: replaceChars, //
         replacementChar: replacementChar //
-    }) + utils.makeGitSafe(result, {replaceChars: replaceChars, replacementChar: replacementChar})
+    }) + makeGitSafe(result, {replaceChars: replaceChars, replacementChar: replacementChar})
 }
 
 export function getIssueNumberFromBranchName(branchName: string): number | undefined {
@@ -142,7 +149,7 @@ export function getIssueBranchConfig(ctx: Context<any>, config: Config) {
 }
 
 function allLabelsMatchIssueLabels(labels: Array<string>, issueLabels: Array<string>) {
-    return labels.every(label => issueLabels.some(issueLabel => utils.wildcardMatch(label, issueLabel)))
+    return labels.every(label => issueLabels.some(issueLabel => wildcardMatch(label, issueLabel)))
 }
 
 export function skipForIssue(ctx: Context<any>, config: Config) {
@@ -170,7 +177,7 @@ export async function addComment(ctx: Context<any>, config: Config, comment: str
             await ctx.octokit.issues.createComment(params)
         } catch (e) {
             console.info('Creating comment failed, retrying in 1 second')
-            await utils.sleep(1000)
+            await sleep(1000)
             try {
                 await ctx.octokit.issues.createComment(params)
             } catch (e) {
@@ -251,13 +258,13 @@ export async function createBranch(ctx: Context<any>, config: Config, branchName
             owner: owner, repo: repo, ref: `refs/heads/${branchName}`, sha: sha
         })
         log(`Branch created: ${branchName}`)
-        if (utils.isRunningInGitHubActions()) {
+        if (isRunningInGitHubActions()) {
             setOutput('branchName', branchName)
         }
         const commentMessage = interpolate(getCommentMessage(config), {...ctx.payload, branchName: branchName})
         await addComment(ctx, config, commentMessage)
-        if (utils.isProduction()) {
-            utils.pushMetric(owner, log)
+        if (isProduction()) {
+            pushMetric(owner, log)
         }
         return res
     } catch (e: any) {
@@ -334,7 +341,7 @@ function getPrBody(app: Probot, ctx: Context<any>, config: Config) {
         app.log('Copying issue description to PR')
         const issueDescription = getIssueDescription(ctx)
         if (issueDescription) {
-            result += utils.formatAsExpandingMarkdown('Original issue description', issueDescription)
+            result += formatAsExpandingMarkdown('Original issue description', issueDescription)
             result += '\n'
         }
     }

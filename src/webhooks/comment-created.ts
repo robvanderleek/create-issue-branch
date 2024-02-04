@@ -1,6 +1,5 @@
 import {Context, Probot} from "probot";
 import {Config} from "../entities/Config";
-import * as github from "../github";
 import {
     getChatOpsCommandArgument,
     isChatOpsCommand,
@@ -11,6 +10,16 @@ import {
 } from "../config";
 import {logMemoryUsage} from "../utils";
 import {getIssueTitle, getSender} from "../context";
+import {
+    addComment,
+    branchExists,
+    createIssueBranch,
+    createPr, getBranchNameFromIssue,
+    getSourceBranch,
+    skipBranchCreationForIssue,
+    skipForIssue,
+    getBranchName as githubGetBranchName
+} from "../github";
 
 export async function commentCreated(app: Probot, ctx: Context<any>, comment: string) {
     if (isChatOpsCommand(comment)) {
@@ -25,12 +34,12 @@ async function getBranchName(ctx: Context<any>, config: Config, comment: string)
     if (isExperimentalBranchNameArgument(config)) {
         const commandArgument = getChatOpsCommandArgument(comment);
         if (commandArgument) {
-            return await github.getBranchName(ctx, config, commandArgument);
+            return await githubGetBranchName(ctx, config, commandArgument);
         } else {
-            return await github.getBranchNameFromIssue(ctx, config);
+            return await getBranchNameFromIssue(ctx, config);
         }
     } else {
-        return await github.getBranchNameFromIssue(ctx, config);
+        return await getBranchNameFromIssue(ctx, config);
     }
 }
 
@@ -39,28 +48,28 @@ export async function chatOpsCommandGiven(app: Probot, ctx: Context<any>, config
     if (!isModeChatOps(config)) {
         app.log('Received ChatOps command but current mode is not `chatops`');
     }
-    if (github.skipForIssue(ctx, config)) {
+    if (skipForIssue(ctx, config)) {
         app.log(`Skipping run for issue: ${getIssueTitle(ctx)}`);
         return;
     }
     let branchName
-    if (github.skipBranchCreationForIssue(ctx, config)) {
+    if (skipBranchCreationForIssue(ctx, config)) {
         app.log(`Skipping branch creation for issue: ${getIssueTitle(ctx)}`);
-        branchName = await github.getSourceBranch(ctx, config);
+        branchName = await getSourceBranch(ctx, config);
     } else {
         branchName = await getBranchName(ctx, config, comment);
-        if (await github.branchExists(ctx, branchName)) {
+        if (await branchExists(ctx, branchName)) {
             app.log('Could not create branch as it already exists');
-            await github.addComment(ctx, config, 'Branch already exists');
+            await addComment(ctx, config, 'Branch already exists');
             return
         }
-        await github.createIssueBranch(app, ctx, branchName, config)
+        await createIssueBranch(app, ctx, branchName, config)
     }
     const shouldCreatePR = shouldOpenPR(config);
     if (shouldCreatePR) {
         const sender = getSender(ctx);
         app.log(`Creating pull request for user ${sender}`);
-        await github.createPr(app, ctx, config, sender, branchName);
+        await createPr(app, ctx, config, sender, branchName);
     }
     logMemoryUsage(app)
 }

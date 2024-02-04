@@ -3,9 +3,17 @@ import {isChatOpsCommand, isModeImmediate, loadConfig, shouldOpenPR} from "../co
 import core from "@actions/core";
 import {Config} from "../entities/Config";
 import {chatOpsCommandGiven} from "./comment-created";
-import * as github from "../github";
 import {isRunningInGitHubActions} from "../utils";
 import {getIssueTitle, getSender} from "../context";
+import {
+    branchExists,
+    createIssueBranch,
+    createPr,
+    getBranchNameFromIssue,
+    getSourceBranch,
+    skipBranchCreationForIssue,
+    skipForIssue
+} from "../github";
 
 export async function issueOpened(app: Probot, ctx: Context<any>, comment: string | null) {
     const config = await loadConfig(ctx);
@@ -19,29 +27,29 @@ export async function issueOpened(app: Probot, ctx: Context<any>, comment: strin
 }
 
 async function handle(app: Probot, ctx: Context<any>, config: Config) {
-    if (github.skipForIssue(ctx, config)) {
+    if (skipForIssue(ctx, config)) {
         app.log(`Skipping run for issue: ${getIssueTitle(ctx)}`)
         return
     }
     let branchName
-    if (github.skipBranchCreationForIssue(ctx, config)) {
+    if (skipBranchCreationForIssue(ctx, config)) {
         app.log(`Skipping branch creation for issue: ${getIssueTitle(ctx)}`)
-        branchName = await github.getSourceBranch(ctx, config)
+        branchName = await getSourceBranch(ctx, config)
     } else {
-        branchName = await github.getBranchNameFromIssue(ctx, config)
-        if (await github.branchExists(ctx, branchName)) {
+        branchName = await getBranchNameFromIssue(ctx, config)
+        if (await branchExists(ctx, branchName)) {
             app.log('Could not create branch as it already exists')
             if (isRunningInGitHubActions()) {
                 core.setOutput('branchName', branchName)
             }
             return
         }
-        await github.createIssueBranch(app, ctx, branchName, config)
+        await createIssueBranch(app, ctx, branchName, config)
     }
     const shouldCreatePR = shouldOpenPR(config);
     if (shouldCreatePR) {
         const assignee = getSender(ctx);
         app.log(`Creating pull request for user ${assignee}`);
-        await github.createPr(app, ctx, config, assignee, branchName);
+        await createPr(app, ctx, config, assignee, branchName);
     }
 }

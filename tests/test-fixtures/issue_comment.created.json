@@ -32,7 +32,15 @@
       "site_admin": false
     },
     "labels": [
-
+      {
+        "id": 2890444475,
+        "node_id": "MDU6TGFiZWwyODkwNDQ0NDc1",
+        "url": "https://api.github.com/repos/robvanderleek/create-issue-branch/labels/bug",
+        "name": "bug",
+        "color": "d73a4a",
+        "default": true,
+        "description": "Something isn't working"
+      }
     ],
     "state": "open",
     "locked": false,
