@@ -11,9 +11,8 @@ import {
     skipBranchCreationForIssue,
     skipForIssue
 } from "../github";
-
-const utils = require('../utils')
-const core = require('@actions/core')
+import {isRunningInGitHubActions, logMemoryUsage} from "../utils";
+import core from "@actions/core";
 
 export async function issueAssigned(app: Probot, ctx: Context<any>) {
     app.log.debug('Issue was assigned');
@@ -23,7 +22,7 @@ export async function issueAssigned(app: Probot, ctx: Context<any>) {
             return;
         }
         await handle(app, ctx, config);
-        utils.logMemoryUsage(app);
+        logMemoryUsage(app);
     }
 }
 
@@ -40,7 +39,7 @@ async function handle(app: Probot, ctx: Context<any>, config: Config) {
         branchName = await getBranchNameFromIssue(ctx, config)
         if (await branchExists(ctx, branchName)) {
             app.log('Could not create branch as it already exists')
-            if (utils.isRunningInGitHubActions()) {
+            if (isRunningInGitHubActions()) {
                 core.setOutput('branchName', branchName)
             }
             return

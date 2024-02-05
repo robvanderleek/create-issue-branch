@@ -13,7 +13,6 @@ import {pullRequestClosed} from "./webhooks/pull-request-closed";
 import {gitDate, gitSha, version} from "./version";
 import {isRunningInGitHubActions, logMemoryUsage} from "./utils";
 
-
 export default (app: Probot, {getRouter}: ApplicationFunctionOptions) => {
     const buildDate = gitDate.toISOString().substring(0, 10);
     app.log(`Create Issue Branch, version: ${version}, revison: ${gitSha.substring(0, 8)}, built on: ${buildDate}`);
