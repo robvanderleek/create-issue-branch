@@ -1,4 +1,4 @@
-export function getRepoOwnerLogin(ctx: any) {
+export function getRepoOwnerLogin(ctx: any): string {
     return ctx.payload.repository.owner.login
 }
 
@@ -6,7 +6,7 @@ export function getRepoOwnerId(ctx: any) {
     return ctx.payload.repository.owner.id
 }
 
-export function getRepoName(ctx: any) {
+export function getRepoName(ctx: any): string {
     return ctx.payload.repository.name
 }
 

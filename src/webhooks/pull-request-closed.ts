@@ -18,14 +18,22 @@ export async function pullRequestClosed(_: Probot, ctx: Context<any>) {
                     issue_number: issueNumber
                 });
                 if (issueForBranch) {
-                    await ctx.octokit.issues.update({
-                        owner: owner,
-                        repo: repo,
-                        issue_number: issueNumber,
-                        state: 'closed'
-                    })
+                    await closeIssue(ctx, owner, repo, issueNumber);
                 }
             }
         }
+    }
+}
+
+async function closeIssue(ctx: Context<any>, owner: string, repo: string, issueNumber: number) {
+    try {
+        await ctx.octokit.issues.update({
+            owner: owner,
+            repo: repo,
+            issue_number: issueNumber,
+            state: 'closed'
+        } as any)
+    } catch (e) {
+        return;
     }
 }
