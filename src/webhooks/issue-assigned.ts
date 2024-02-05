@@ -12,7 +12,7 @@ import {
     skipForIssue
 } from "../github";
 import {isRunningInGitHubActions, logMemoryUsage} from "../utils";
-import core from "@actions/core";
+import {setOutput} from "@actions/core";
 
 export async function issueAssigned(app: Probot, ctx: Context<any>) {
     app.log.debug('Issue was assigned');
@@ -40,7 +40,7 @@ async function handle(app: Probot, ctx: Context<any>, config: Config) {
         if (await branchExists(ctx, branchName)) {
             app.log('Could not create branch as it already exists')
             if (isRunningInGitHubActions()) {
-                core.setOutput('branchName', branchName)
+                setOutput('branchName', branchName)
             }
             return
         }
