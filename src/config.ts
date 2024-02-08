@@ -24,9 +24,13 @@ async function createConfigurationErrorIssue(ctx: Context<any>, err: string) {
   Please check the syntax of your \`.issue-branch.yml\`
 `
     }
-    return ctx.octokit.issues.create(ctx.repo({
-        title: issueTitle, body: errorBody(err)
-    }))
+    try {
+        await ctx.octokit.issues.create(ctx.repo({
+            title: issueTitle, body: errorBody(err)
+        }));
+    } catch (e: any) {
+        ctx.log.error(`Error creating configuration error issue: ${e.message}`)
+    }
 }
 
 async function handleError(ctx: Context<any>, err: string) {
@@ -35,7 +39,7 @@ async function handleError(ctx: Context<any>, err: string) {
     if (issues.length > 0) {
         ctx.log(`Error issue already exists for repo: ${ctx.payload.repository.full_name}`)
     } else {
-        return createConfigurationErrorIssue(ctx, err)
+        await createConfigurationErrorIssue(ctx, err)
     }
 }
 
