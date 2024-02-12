@@ -41,7 +41,7 @@ async function updatePullRequestTitle(ctx: Context<any>, issueNumber: number, pr
             await updatePrTitle(app, ctx, config, pr, issue.title, labels);
         }
     } catch (e) {
-        app.log.error(`Error updating PR title: ${e}`);
+        app.log(`Error updating PR title: ${e}`);
     }
 }
 
