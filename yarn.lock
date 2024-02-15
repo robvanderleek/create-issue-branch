@@ -378,39 +378,32 @@
   dependencies:
     "@jridgewell/trace-mapping" "0.3.9"
 
-"@edge-runtime/cookies@3.4.1":
-  version "3.4.1"
-  resolved "https://registry.yarnpkg.com/@edge-runtime/cookies/-/cookies-3.4.1.tgz#c725e7ae92c89d11ee7c6a316d8d5b1445dfe33c"
-  integrity sha512-z27BvgPxI73CgSlxU/NAUf1Q/shnqi6cobHEowf6VuLdSjGR3NjI2Y5dZUIBbK2zOJVZbXcHsVzJjz8LklteFQ==
-
-"@edge-runtime/format@2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@edge-runtime/format/-/format-2.2.0.tgz#00b54a2b659f9ec835e1f995d58bb3dcc0b5ccef"
-  integrity sha512-gPrS6AVw/qJJL0vcxMXv4kFXCU3ZTCD1uuJpwX15YxHV8BgU9OG5v9LrkkXcr96PBT/9epypfNJMhlWADuEziw==
-
-"@edge-runtime/node-utils@2.2.1":
+"@edge-runtime/format@2.2.1":
   version "2.2.1"
-  resolved "https://registry.yarnpkg.com/@edge-runtime/node-utils/-/node-utils-2.2.1.tgz#c6e59d498c49be91d3baf05bab94cad5506547fe"
-  integrity sha512-RUl/439BHKshkhSGFRlZ1kzy68wL4mn8VNKDSZr3p0tciyZ33Mjfpl+vofqnHqXRmDI6nLnZpfJvhY3D88o0pA==
+  resolved "https://registry.yarnpkg.com/@edge-runtime/format/-/format-2.2.1.tgz#10dcedb0d7c2063c9ee360fbab23846c8720f986"
+  integrity sha512-JQTRVuiusQLNNLe2W9tnzBlV/GvSVcozLl4XZHk5swnRZ/v6jp8TqR8P7sqmJsQqblDZ3EztcWmLDbhRje/+8g==
+
+"@edge-runtime/node-utils@2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@edge-runtime/node-utils/-/node-utils-2.3.0.tgz#17ac98dd8a39e194c4fd49d66f3579ec5b125a78"
+  integrity sha512-uUtx8BFoO1hNxtHjp3eqVPC/mWImGb2exOfGjMLUoipuWgjej+f4o/VP4bUI8U40gu7Teogd5VTeZUkGvJSPOQ==
+
+"@edge-runtime/ponyfill@2.4.2":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@edge-runtime/ponyfill/-/ponyfill-2.4.2.tgz#9bec9feff18623f9f3ebe2f4ad8f0475c644ed07"
+  integrity sha512-oN17GjFr69chu6sDLvXxdhg0Qe8EZviGSuqzR9qOiKh4MhFYGdBBcqRNzdmYeAdeRzOW2mM9yil4RftUQ7sUOA==
+
+"@edge-runtime/primitives@4.1.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@edge-runtime/primitives/-/primitives-4.1.0.tgz#43c6e793362f3333acf0955a75b5735b34035494"
+  integrity sha512-Vw0lbJ2lvRUqc7/soqygUX216Xb8T3WBZ987oywz6aJqRxcwSVWwr9e+Nqo2m9bxobA9mdbWNNoRY6S9eko1EQ==
+
+"@edge-runtime/vm@3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@edge-runtime/vm/-/vm-3.2.0.tgz#8a735241d14e9fdad85497b8b17d0ea157df4710"
+  integrity sha512-0dEVyRLM/lG4gp1R/Ik5bfPl/1wX00xFwd5KcNH602tzBa09oF7pbTKETEhR1GjZ75K6OJnYFu8II2dyMhONMw==
   dependencies:
-    "@edge-runtime/cookies" "3.4.1"
-
-"@edge-runtime/ponyfill@2.4.1":
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/@edge-runtime/ponyfill/-/ponyfill-2.4.1.tgz#0fbe567c8dd40d63c2d716c04e6df77636f3feaf"
-  integrity sha512-ZbR/EViY3gg2rmEAQTKPa6mXl4aR1/+cFcQe4r1segCjEbTAxT6PWu40odbu/KlZKSysEb2O/BWIC2lJgSJOMQ==
-
-"@edge-runtime/primitives@4.0.5":
-  version "4.0.5"
-  resolved "https://registry.yarnpkg.com/@edge-runtime/primitives/-/primitives-4.0.5.tgz#67b4f555816d7c8cb32a05da0b3c2cac32a70f1c"
-  integrity sha512-t7QiN5d/KpXgCvIfSt6Nm9Hj3WVdNgc5CpOD73jasY+9EvTI7Ngdj5cXvjcHrPcmYWJZMySPgeEeoL/1N/Llag==
-
-"@edge-runtime/vm@3.1.7":
-  version "3.1.7"
-  resolved "https://registry.yarnpkg.com/@edge-runtime/vm/-/vm-3.1.7.tgz#74f3bc64220c07ca0c760e5686726651a3835dc4"
-  integrity sha512-hUMFbDQ/nZN+1TLMi6iMO1QFz9RSV8yGG8S42WFPFma1d7VSNE0eMdJUmwjmtav22/iQkzHMmu6oTSfAvRGS8g==
-  dependencies:
-    "@edge-runtime/primitives" "4.0.5"
+    "@edge-runtime/primitives" "4.1.0"
 
 "@fastify/busboy@^2.0.0":
   version "2.1.0"
@@ -1438,10 +1431,10 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@vercel/build-utils@7.5.1":
-  version "7.5.1"
-  resolved "https://registry.yarnpkg.com/@vercel/build-utils/-/build-utils-7.5.1.tgz#89ad1cc1cebdef1cd15f4c31483e45e3c9837ec7"
-  integrity sha512-RyTG951QZQgYn0JL5OoObsCppxHSQApZAqn82GCpAyuQPW7clqcjq7aY7KLD7esHbs0zdzL0KeDEBkGBKaTcTg==
+"@vercel/build-utils@7.7.0":
+  version "7.7.0"
+  resolved "https://registry.yarnpkg.com/@vercel/build-utils/-/build-utils-7.7.0.tgz#a3b38b60025013f71d567a5ee4ba677a67fe6818"
+  integrity sha512-dYE0QKnRj9tN1F2AAKHagh3QkgQhz7AWcrRqnp5gjEp74EnxBKJIcZe5qqyKANMCLQ1e96RYy1pQB3zPMGeEzg==
 
 "@vercel/error-utils@2.0.2":
   version "2.0.2"
@@ -1453,10 +1446,10 @@
   resolved "https://registry.yarnpkg.com/@vercel/ncc/-/ncc-0.38.1.tgz#13f08738111e1d9e8a22fd6141f3590e54d9a60e"
   integrity sha512-IBBb+iI2NLu4VQn3Vwldyi2QwaXt5+hTyh58ggAMoCGE6DJmPvwL3KPBWcJl1m9LYPChBLE980Jw+CS4Wokqxw==
 
-"@vercel/nft@0.26.2":
-  version "0.26.2"
-  resolved "https://registry.yarnpkg.com/@vercel/nft/-/nft-0.26.2.tgz#c5018201dbb324d7fac455be6cee03d34ebd9ce8"
-  integrity sha512-bxe2iShmKZi7476xYamyKvhhKwQ6JPEtQ2FSq1AjMUH2buMd8LQMkdoHinTqZYc+1sMTh3G0ARdjzNvV1FEisA==
+"@vercel/nft@0.26.3":
+  version "0.26.3"
+  resolved "https://registry.yarnpkg.com/@vercel/nft/-/nft-0.26.3.tgz#9d8f5195565d67e0fc478a9d611e3236e1512c68"
+  integrity sha512-h1z/NN9ppS4YOKwSgBoopJlhm7tS2Qb/9Ld1HXjDpvvTE7mY0xVD8nllXs+RihD9uTGJISOIMzp18Eg0EApaMA==
   dependencies:
     "@mapbox/node-pre-gyp" "^1.0.5"
     "@rollup/pluginutils" "^4.0.0"
@@ -1471,21 +1464,23 @@
     node-gyp-build "^4.2.2"
     resolve-from "^5.0.0"
 
-"@vercel/node@^3.0.15":
-  version "3.0.17"
-  resolved "https://registry.yarnpkg.com/@vercel/node/-/node-3.0.17.tgz#6105b493aa773884d29157219d18699202bda3f6"
-  integrity sha512-HgIDxVAG/cEGLcSYdatGwk/zraN2aDP3ZQxy0I9eFsG8+rgC5eh3mFpNYEcBDkikpMr1jW/zpesf43s/A77/GQ==
+"@vercel/node@^3.0.19":
+  version "3.0.19"
+  resolved "https://registry.yarnpkg.com/@vercel/node/-/node-3.0.19.tgz#f16a43186edaaf5d12ab4b653e2d9ae7e5bddccd"
+  integrity sha512-geiAo2QjkNyWZSMbNKgaCvUvqg44tWDF0XDhEc6D+2H+2553Ea/RFpJNY7oSruuR1Rk43GUOKbxnVEDft/2JhQ==
   dependencies:
-    "@edge-runtime/node-utils" "2.2.1"
-    "@edge-runtime/primitives" "4.0.5"
-    "@edge-runtime/vm" "3.1.7"
+    "@edge-runtime/node-utils" "2.3.0"
+    "@edge-runtime/primitives" "4.1.0"
+    "@edge-runtime/vm" "3.2.0"
     "@types/node" "14.18.33"
-    "@vercel/build-utils" "7.5.1"
+    "@vercel/build-utils" "7.7.0"
     "@vercel/error-utils" "2.0.2"
-    "@vercel/nft" "0.26.2"
+    "@vercel/nft" "0.26.3"
     "@vercel/static-config" "3.0.0"
     async-listen "3.0.0"
-    edge-runtime "2.5.7"
+    cjs-module-lexer "1.2.3"
+    edge-runtime "2.5.9"
+    es-module-lexer "1.4.1"
     esbuild "0.14.47"
     etag "1.8.1"
     node-fetch "2.6.9"
@@ -1961,7 +1956,7 @@ ci-info@^3.2.0:
   resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-3.9.0.tgz#4279a62028a7b1f262f3473fc9605f5e218c59b4"
   integrity sha512-NIxF55hv4nSqQswkAeiOi1r83xy8JldOFDTWiug55KBu9Jnblncd2U6ViHmYgHf01TPZS77NJBhBMKdWj9HQMQ==
 
-cjs-module-lexer@^1.0.0:
+cjs-module-lexer@1.2.3, cjs-module-lexer@^1.0.0:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/cjs-module-lexer/-/cjs-module-lexer-1.2.3.tgz#6c370ab19f8a3394e318fe682686ec0ac684d107"
   integrity sha512-0TNiGstbQmCFwt4akjjBg5pLRTSyj/PkWQ1ZoO2zntmg9yLqSRxwEa4iCfQLGjqhiqBfOJa7W/E8wfGrTDmlZQ==
@@ -2264,14 +2259,14 @@ ecdsa-sig-formatter@1.0.11:
   dependencies:
     safe-buffer "^5.0.1"
 
-edge-runtime@2.5.7:
-  version "2.5.7"
-  resolved "https://registry.yarnpkg.com/edge-runtime/-/edge-runtime-2.5.7.tgz#12638b86e00811cd1f2b4ca0d70330ca71281423"
-  integrity sha512-gA4qSVP0sNwJlkdQ2nahDPASlSl8twUd17o+JolPa1EtXpLTGzIpOETvodgJwXIxa+zaD8bnAXCdsWrx2PhlVQ==
+edge-runtime@2.5.9:
+  version "2.5.9"
+  resolved "https://registry.yarnpkg.com/edge-runtime/-/edge-runtime-2.5.9.tgz#9daeb329f0339b8377483f230789b3d68f45f1d9"
+  integrity sha512-pk+k0oK0PVXdlT4oRp4lwh+unuKB7Ng4iZ2HB+EZ7QCEQizX360Rp/F4aRpgpRgdP2ufB35N+1KppHmYjqIGSg==
   dependencies:
-    "@edge-runtime/format" "2.2.0"
-    "@edge-runtime/ponyfill" "2.4.1"
-    "@edge-runtime/vm" "3.1.7"
+    "@edge-runtime/format" "2.2.1"
+    "@edge-runtime/ponyfill" "2.4.2"
+    "@edge-runtime/vm" "3.2.0"
     async-listen "3.0.1"
     mri "1.2.0"
     picocolors "1.0.0"
@@ -2317,6 +2312,11 @@ error-ex@^1.3.1:
   integrity sha512-7dFHNmqeFSEt2ZBsCriorKnn3Z2pj+fd9kmI6QoWw4//DL+icEBfc0U7qJCisqrTsKTjw4fNFy2pW9OqStD84g==
   dependencies:
     is-arrayish "^0.2.1"
+
+es-module-lexer@1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/es-module-lexer/-/es-module-lexer-1.4.1.tgz#41ea21b43908fe6a287ffcbe4300f790555331f5"
+  integrity sha512-cXLGjP0c4T3flZJKQSuziYoq7MlT+rnvfZjfp7h+I7K9BNX54kP9nyWvdbwjQ4u1iWbOL4u96fgeZLToQlZC7w==
 
 esbuild-android-64@0.14.47:
   version "0.14.47"
