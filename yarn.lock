@@ -2051,10 +2051,10 @@ combined-stream@^1.0.8:
   dependencies:
     delayed-stream "~1.0.0"
 
-commander@^11.1.0:
-  version "11.1.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-11.1.0.tgz#62fdce76006a68e5c1ab3314dc92e800eb83d906"
-  integrity sha512-yPVavfyCcRhmorC7rWlkHn15b4wDVgVmBA7kV4QVBsF7kv/9TKJAbAXVTxvTnwP8HHKjRCJDClKbciiYS7p0DQ==
+commander@^12.0.0:
+  version "12.0.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-12.0.0.tgz#b929db6df8546080adfd004ab215ed48cf6f2592"
+  integrity sha512-MwVNWlYjDTtOjX5PiD7o5pK0UrFU/OYgcJfjjK4RaHZETNtjJqrZa9Y9ds88+A+f+d5lv+561eZ+yCKoS3gbAA==
 
 commander@^6.2.0:
   version "6.2.1"
@@ -4679,12 +4679,12 @@ slice@^1.0.0:
   dependencies:
     dot-json "^1.0.4"
 
-smee-client@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/smee-client/-/smee-client-2.0.0.tgz#47c839ed0f9270fbd9d428ae97b5ef519a9d6686"
-  integrity sha512-LqJAAU4uayG909u8q3lBQZma9TDsQl2pOoXCqrsAda58oxy2o81yQAeBvFc2ilexgQDJc3YPDoPgViBM26M8vw==
+smee-client@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/smee-client/-/smee-client-2.0.1.tgz#348a644c3499cc7687fcb42fbbaeeeb3211a365d"
+  integrity sha512-s2+eG9vNMWQQvu8Jz+SfAiihpYsmaMtcyPnHtBuZEhaAAQOQV63xSSL9StWv2p08xKgvSC8pEZ28rXoy41FhLg==
   dependencies:
-    commander "^11.1.0"
+    commander "^12.0.0"
     eventsource "^2.0.2"
     validator "^13.11.0"
 
