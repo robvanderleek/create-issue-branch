@@ -5190,10 +5190,10 @@ wide-align@^1.1.2:
   dependencies:
     string-width "^1.0.2 || 2 || 3 || 4"
 
-wildcard-match@^5.1.2:
-  version "5.1.2"
-  resolved "https://registry.yarnpkg.com/wildcard-match/-/wildcard-match-5.1.2.tgz#66b438001391674d8599b45da051e0bd9f33cd2a"
-  integrity sha512-qNXwI591Z88c8bWxp+yjV60Ch4F8Riawe3iGxbzquhy8Xs9m+0+SLFBGb/0yCTIDElawtaImC37fYZ+dr32KqQ==
+wildcard-match@^5.1.3:
+  version "5.1.3"
+  resolved "https://registry.yarnpkg.com/wildcard-match/-/wildcard-match-5.1.3.tgz#7420e57a17307afed9e51eee36aa1dcc1b73ce11"
+  integrity sha512-a95hPUk+BNzSGLntNXYxsjz2Hooi5oL7xOfJR6CKwSsSALh7vUNuTlzsrZowtYy38JNduYFRVhFv19ocqNOZlg==
 
 wordwrap@^1.0.0:
   version "1.0.0"
