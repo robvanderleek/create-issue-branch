@@ -1,10 +1,12 @@
 version: 2
 updates:
-- package-ecosystem: npm
+- package-ecosystem: "npm"
   directory: "/"
   schedule:
     interval: weekly
+    day: thursday
     time: "04:00"
+    timezone: Europe/Amsterdam
   open-pull-requests-limit: 10
   commit-message:
     prefix: "build"
