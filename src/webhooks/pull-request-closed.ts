@@ -12,14 +12,7 @@ export async function pullRequestClosed(_: Probot, ctx: Context<any>) {
             if (issueNumber) {
                 const owner = getRepoOwnerLogin(ctx);
                 const repo = getRepoName(ctx);
-                const issueForBranch = await ctx.octokit.issues.get({
-                    owner: owner,
-                    repo: repo,
-                    issue_number: issueNumber
-                });
-                if (issueForBranch) {
-                    await closeIssue(ctx, owner, repo, issueNumber);
-                }
+                await closeIssue(ctx, owner, repo, issueNumber);
             }
         }
     }
@@ -27,12 +20,19 @@ export async function pullRequestClosed(_: Probot, ctx: Context<any>) {
 
 async function closeIssue(ctx: Context<any>, owner: string, repo: string, issueNumber: number) {
     try {
-        await ctx.octokit.issues.update({
+        const issueForBranch = await ctx.octokit.issues.get({
             owner: owner,
             repo: repo,
-            issue_number: issueNumber,
-            state: 'closed'
-        } as any)
+            issue_number: issueNumber
+        });
+        if (issueForBranch) {
+            await ctx.octokit.issues.update({
+                owner: owner,
+                repo: repo,
+                issue_number: issueNumber,
+                state: 'closed'
+            } as any);
+        }
     } catch (e) {
         return;
     }

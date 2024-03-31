@@ -172,16 +172,16 @@ export function skipBranchCreationForIssue(ctx: Context<any>, config: Config) {
 
 export async function addComment(ctx: Context<any>, config: Config, comment: string) {
     if (!config.silent) {
-        const params = ctx.issue({body: comment})
+        const params = ctx.issue({body: comment});
         try {
-            await ctx.octokit.issues.createComment(params)
+            await ctx.octokit.issues.createComment(params);
         } catch (e) {
-            console.info('Creating comment failed, retrying in 1 second')
-            await sleep(1000)
+            console.info('Creating comment failed, retrying in 1 second');
+            await sleep(1000);
             try {
-                await ctx.octokit.issues.createComment(params)
+                await ctx.octokit.issues.createComment(params);
             } catch (e) {
-                console.error('Creating comment failed')
+                console.info('Creating comment failed');
             }
         }
     }
