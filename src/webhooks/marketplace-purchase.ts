@@ -8,7 +8,7 @@ export async function marketplacePurchase(app: Probot, ctx: Context<any>) {
     const changeEmoji = getChangeEmoji(action, plan, previous);
     const change = action === 'changed' ? 'changed to' : action;
     const msg = `${changeEmoji} ${account.type} ${account.login} ${change} ${plan.name}`;
-    app.log(msg);
+    app.log.info(msg);
     await message(msg);
 }
 

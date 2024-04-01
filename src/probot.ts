@@ -15,12 +15,12 @@ import {isRunningInGitHubActions, logMemoryUsage} from "./utils";
 
 export default (app: Probot, {getRouter}: ApplicationFunctionOptions) => {
     const buildDate = gitDate.toISOString().substring(0, 10);
-    app.log(`Create Issue Branch, version: ${version}, revison: ${gitSha.substring(0, 8)}, built on: ${buildDate}`);
+    app.log.info(`Create Issue Branch, version: ${version}, revison: ${gitSha.substring(0, 8)}, built on: ${buildDate}`);
     if (getRouter) {
         addStatsRoute(getRouter)
         addPlansRoute(app, getRouter)
     } else if (!isRunningInGitHubActions()) {
-        app.log('Custom routes not available!')
+        app.log.info('Custom routes not available!')
     }
     configureSentry(app)
     logMemoryUsage(app)
@@ -50,7 +50,7 @@ export default (app: Probot, {getRouter}: ApplicationFunctionOptions) => {
         await marketplacePurchase(app, ctx);
     })
     app.onAny(async (ctx: any) => {
-        app.log(`Received webhook event: ${ctx.name}.${ctx.payload.action}`)
+        app.log.info(`Received webhook event: ${ctx.name}.${ctx.payload.action}`)
     })
 }
 
@@ -71,9 +71,9 @@ async function addPlansRoute(app: Probot, getRouter: (path?: string) => express.
 
 function configureSentry(app: Probot) {
     if (process.env.SENTRY_DSN) {
-        app.log('Setting up Sentry.io logging...')
+        app.log.info('Setting up Sentry.io logging...')
         Sentry.init({dsn: process.env.SENTRY_DSN, attachStacktrace: true});
     } else {
-        app.log('Skipping Sentry.io setup')
+        app.log.info('Skipping Sentry.io setup')
     }
 }

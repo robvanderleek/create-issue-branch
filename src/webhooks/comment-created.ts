@@ -46,20 +46,20 @@ async function getBranchName(ctx: Context<any>, config: Config, comment: string)
 export async function chatOpsCommandGiven(app: Probot, ctx: Context<any>, config: Config, comment: string) {
     app.log.debug('ChatOps command received');
     if (!isModeChatOps(config)) {
-        app.log('Received ChatOps command but current mode is not `chatops`');
+        app.log.info('Received ChatOps command but current mode is not `chatops`');
     }
     if (skipForIssue(ctx, config)) {
-        app.log(`Skipping run for issue: ${getIssueTitle(ctx)}`);
+        app.log.info(`Skipping run for issue: ${getIssueTitle(ctx)}`);
         return;
     }
     let branchName
     if (skipBranchCreationForIssue(ctx, config)) {
-        app.log(`Skipping branch creation for issue: ${getIssueTitle(ctx)}`);
+        app.log.info(`Skipping branch creation for issue: ${getIssueTitle(ctx)}`);
         branchName = await getSourceBranch(ctx, config);
     } else {
         branchName = await getBranchName(ctx, config, comment);
         if (await branchExists(ctx, branchName)) {
-            app.log('Could not create branch as it already exists');
+            app.log.info('Could not create branch as it already exists');
             await addComment(ctx, config, 'Branch already exists');
             return
         }
@@ -68,7 +68,7 @@ export async function chatOpsCommandGiven(app: Probot, ctx: Context<any>, config
     const shouldCreatePR = shouldOpenPR(config);
     if (shouldCreatePR) {
         const sender = getSender(ctx);
-        app.log(`Creating pull request for user ${sender}`);
+        app.log.info(`Creating pull request for user ${sender}`);
         await createPr(app, ctx, config, sender, branchName);
     }
     logMemoryUsage(app)
