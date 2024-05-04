@@ -60,10 +60,15 @@ export default (app: Probot, {getRouter}: ApplicationFunctionOptions) => {
             owner: ctx.payload.repository.owner.login,
             repo: ctx.payload.repository.name
         }
-        const dbService = new MongoDbService();
-        app.log(`Inserting event into database: ${JSON.stringify(webhookEvent)}`);
-        await dbService.storeEvent(webhookEvent);
-        dbService.disconnect();
+        const connectionString = process.env.CREATE_ISSUE_BRANCH_MONGODB;
+        if (!connectionString) {
+            app.log('Environment variable CREATE_ISSUE_BRANCH_MONGODB not set, skipping database insert')
+        } else {
+            const dbService = new MongoDbService(connectionString);
+            app.log(`Inserting event into database: ${JSON.stringify(webhookEvent)}`);
+            await dbService.storeEvent(webhookEvent);
+            dbService.disconnect();
+        }
     });
 }
 

@@ -2,19 +2,19 @@ import {MongoClient, MongoClientOptions} from "mongodb";
 import {WebhookEvent} from "../entities/WebhookEvent";
 
 export class MongoDbService {
+    connectionString: string;
     client?: MongoClient = undefined;
+
+    constructor(connectionString: string) {
+        this.connectionString = connectionString;
+    }
 
     async getDatabase() {
         if (!this.client) {
             const options: MongoClientOptions = {
                 authSource: 'admin',
             };
-            const connectionString = process.env.CREATE_ISSUE_BRANCH_MONGODB;
-            if (!connectionString) {
-                throw new Error('Environment variable CREATE_ISSUE_BRANCH_MONGODB not set');
-            } else {
-                this.client = await MongoClient.connect(connectionString, options);
-            }
+            this.client = await MongoClient.connect(this.connectionString, options);
         }
         return this.client.db('create-issue-branch');
     }
@@ -28,5 +28,4 @@ export class MongoDbService {
     disconnect() {
         this.client?.close();
     }
-
 }
