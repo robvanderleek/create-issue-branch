@@ -12,6 +12,8 @@ import {pullRequest} from "./webhooks/pull-request";
 import {pullRequestClosed} from "./webhooks/pull-request-closed";
 import {gitDate, gitSha, version} from "./version";
 import {isRunningInGitHubActions, logMemoryUsage} from "./utils";
+import {MongoDbService} from "./services/MongoDbService";
+import {WebhookEvent} from "./entities/WebhookEvent";
 
 export default (app: Probot, {getRouter}: ApplicationFunctionOptions) => {
     const buildDate = gitDate.toISOString().substring(0, 10);
@@ -51,7 +53,18 @@ export default (app: Probot, {getRouter}: ApplicationFunctionOptions) => {
     })
     app.onAny(async (ctx: any) => {
         app.log(`Received webhook event: ${ctx.name}.${ctx.payload.action}`)
-    })
+        const webhookEvent: WebhookEvent = {
+            timestamp: new Date(),
+            name: ctx.name,
+            action: ctx.payload.action,
+            owner: ctx.payload.repository.owner.login,
+            repo: ctx.payload.repository.name
+        }
+        const dbService = new MongoDbService();
+        app.log(`Inserting event into database: ${JSON.stringify(webhookEvent)}`);
+        await dbService.storeEvent(webhookEvent);
+        dbService.disconnect();
+    });
 }
 
 function addStatsRoute(getRouter: (path?: string) => express.Router) {
