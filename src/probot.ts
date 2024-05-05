@@ -52,24 +52,32 @@ export default (app: Probot, {getRouter}: ApplicationFunctionOptions) => {
         await marketplacePurchase(app, ctx);
     })
     app.onAny(async (ctx: any) => {
-        app.log(`Received webhook event: ${ctx.name}.${ctx.payload.action}`)
-        const webhookEvent: WebhookEvent = {
-            timestamp: new Date(),
-            name: ctx.name,
-            action: ctx.payload.action,
-            owner: ctx.payload.repository.owner.login,
-            repo: ctx.payload.repository.name
-        }
-        const connectionString = process.env.CREATE_ISSUE_BRANCH_MONGODB;
-        if (!connectionString) {
-            app.log('Environment variable CREATE_ISSUE_BRANCH_MONGODB not set, skipping database insert')
-        } else {
-            const dbService = new MongoDbService(connectionString);
-            app.log(`Inserting event into database: ${JSON.stringify(webhookEvent)}`);
-            await dbService.storeEvent(webhookEvent);
-            dbService.disconnect();
-        }
+        app.log(`Received webhook event: ${ctx.name}.${ctx.payload.action}`);
+        await insertEventIntoDatabase(app, ctx);
     });
+}
+
+async function insertEventIntoDatabase(app: Probot, ctx: any) {
+    const repository = ctx.payload.repository;
+    if (!repository) {
+        return;
+    }
+    const webhookEvent: WebhookEvent = {
+        timestamp: new Date(),
+        name: ctx.name,
+        action: ctx.payload.action,
+        owner: repository.owner.login,
+        repo: repository.name
+    }
+    const connectionString = process.env.CREATE_ISSUE_BRANCH_MONGODB;
+    if (!connectionString) {
+        app.log('Environment variable CREATE_ISSUE_BRANCH_MONGODB not set, skipping database insert');
+    } else {
+        const dbService = new MongoDbService(connectionString);
+        app.log(`Inserting event into database: ${JSON.stringify(webhookEvent)}`);
+        await dbService.storeEvent(webhookEvent);
+        dbService.disconnect();
+    }
 }
 
 function addStatsRoute(getRouter: (path?: string) => express.Router) {
