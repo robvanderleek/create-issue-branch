@@ -1335,10 +1335,10 @@
   dependencies:
     undici-types "~5.26.4"
 
-"@types/node@14.18.33":
-  version "14.18.33"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.18.33.tgz#8c29a0036771569662e4635790ffa9e057db379b"
-  integrity sha512-qelS/Ra6sacc4loe/3MSjXNL1dNQ/GjxNHVzuChwMfmk7HuycRLVQN2qNY3XahK+fZc5E2szqQSKUyAF0E+2bg==
+"@types/node@16.18.11":
+  version "16.18.11"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.18.11.tgz#cbb15c12ca7c16c85a72b6bdc4d4b01151bb3cae"
+  integrity sha512-3oJbGBUWuS6ahSnEq1eN2XrCyf4YsWI8OyCvo7c64zQJNplk3mO84t53o8lfTk+2ji59g5ycfc6qQ3fdHliHuA==
 
 "@types/pino-http@^5.0.6":
   version "5.8.4"
@@ -1440,10 +1440,10 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@vercel/build-utils@7.10.0":
-  version "7.10.0"
-  resolved "https://registry.yarnpkg.com/@vercel/build-utils/-/build-utils-7.10.0.tgz#c6ae950bf996fd13a59d3d7431855019c066d2f5"
-  integrity sha512-Lgt95xovRE/9ISevWiToDjt0l9NX8mlMUJKLQ6b7hjMB9ARkT3y+cgdx6TJJg4qmunIS8RKRxqTjzYXMPJLnmg==
+"@vercel/build-utils@8.2.0":
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/@vercel/build-utils/-/build-utils-8.2.0.tgz#0e50e8f25baf1d6dad757c6b6f6015f5284c90e5"
+  integrity sha512-yDr/zp/SX45mIy6DO8IRD6hmEs6gIr33/ajT3y8efUt/crQvgNtaSkbx9ubbwkR4RV/qKL213v6kXxj+EpsnlQ==
 
 "@vercel/error-utils@2.0.2":
   version "2.0.2"
@@ -1455,15 +1455,15 @@
   resolved "https://registry.yarnpkg.com/@vercel/ncc/-/ncc-0.38.1.tgz#13f08738111e1d9e8a22fd6141f3590e54d9a60e"
   integrity sha512-IBBb+iI2NLu4VQn3Vwldyi2QwaXt5+hTyh58ggAMoCGE6DJmPvwL3KPBWcJl1m9LYPChBLE980Jw+CS4Wokqxw==
 
-"@vercel/nft@0.26.4":
-  version "0.26.4"
-  resolved "https://registry.yarnpkg.com/@vercel/nft/-/nft-0.26.4.tgz#d7e8ebb91567d25240e8cb996152ea77392cea7f"
-  integrity sha512-j4jCOOXke2t8cHZCIxu1dzKLHLcFmYzC3yqAK6MfZznOL1QIJKd0xcFsXK3zcqzU7ScsE2zWkiMMNHGMHgp+FA==
+"@vercel/nft@0.27.0":
+  version "0.27.0"
+  resolved "https://registry.yarnpkg.com/@vercel/nft/-/nft-0.27.0.tgz#b305f8c5fd5484ea40348de7cc62881aebc432b5"
+  integrity sha512-W5pValyhToK9hbgEUAM6sLRUIl1I++RsFnXKHXtND50P1+vZ+OYPCzq1OOz0Ok6ghK6aOwae8G/rEAXkLedC+w==
   dependencies:
     "@mapbox/node-pre-gyp" "^1.0.5"
     "@rollup/pluginutils" "^4.0.0"
     acorn "^8.6.0"
-    acorn-import-attributes "^1.9.2"
+    acorn-import-attributes "^1.9.5"
     async-sema "^3.1.1"
     bindings "^1.4.0"
     estree-walker "2.0.2"
@@ -1473,18 +1473,18 @@
     node-gyp-build "^4.2.2"
     resolve-from "^5.0.0"
 
-"@vercel/node@^3.0.25":
-  version "3.0.25"
-  resolved "https://registry.yarnpkg.com/@vercel/node/-/node-3.0.25.tgz#91baff058b08589361e702d3c11a00a47815e7ec"
-  integrity sha512-P1Q79xSNyxQ1a6B+x6A3icpSkgtRzOp8VF90REARB1FwfCVYOFPiwU8s0tq92XsKQ0KXnw4eokkebEp3wERr8Q==
+"@vercel/node@^3.1.5":
+  version "3.1.5"
+  resolved "https://registry.yarnpkg.com/@vercel/node/-/node-3.1.5.tgz#3938c615f9d60b179b29d170dd8f248dd9a5d94d"
+  integrity sha512-1LVqdL/HKrfuLGIWEHm7O/zA6admKRClIuJOVsasvW0PHrrwUUfcoKvgHj/sH6HUEzgE9WIelqFLe8/j/tzA4A==
   dependencies:
     "@edge-runtime/node-utils" "2.3.0"
     "@edge-runtime/primitives" "4.1.0"
     "@edge-runtime/vm" "3.2.0"
-    "@types/node" "14.18.33"
-    "@vercel/build-utils" "7.10.0"
+    "@types/node" "16.18.11"
+    "@vercel/build-utils" "8.2.0"
     "@vercel/error-utils" "2.0.2"
-    "@vercel/nft" "0.26.4"
+    "@vercel/nft" "0.27.0"
     "@vercel/static-config" "3.0.0"
     async-listen "3.0.0"
     cjs-module-lexer "1.2.3"
@@ -1528,7 +1528,7 @@ accepts@~1.3.8:
     mime-types "~2.1.34"
     negotiator "0.6.3"
 
-acorn-import-attributes@^1.9.2:
+acorn-import-attributes@^1.9.5:
   version "1.9.5"
   resolved "https://registry.yarnpkg.com/acorn-import-attributes/-/acorn-import-attributes-1.9.5.tgz#7eb1557b1ba05ef18b5ed0ec67591bfab04688ef"
   integrity sha512-n02Vykv5uA3eHGM/Z2dQrcD56kL8TyDb2p1+0P83PClMnC/nc+anbQRhIOWnSq4Ke/KvDPrY3C9hDtC/A3eHnQ==
