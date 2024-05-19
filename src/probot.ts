@@ -15,42 +15,57 @@ import {isRunningInGitHubActions, logMemoryUsage} from "./utils";
 import {MongoDbService} from "./services/MongoDbService";
 import {WebhookEvent} from "./entities/WebhookEvent";
 
+
 export default (app: Probot, {getRouter}: ApplicationFunctionOptions) => {
     const buildDate = gitDate.toISOString().substring(0, 10);
     app.log(`Create Issue Branch, version: ${version}, revison: ${gitSha.substring(0, 8)}, built on: ${buildDate}`);
     if (getRouter) {
-        addStatsRoute(getRouter)
-        addPlansRoute(app, getRouter)
+        addStatsRoute(getRouter);
+        addPlansRoute(app, getRouter);
     } else if (!isRunningInGitHubActions()) {
-        app.log('Custom routes not available!')
+        app.log('Custom routes not available!');
     }
-    configureSentry(app)
-    logMemoryUsage(app)
+    configureSentry(app);
+    logMemoryUsage(app);
+    setupEventHandlers(app);
+}
+
+function setupEventHandlers(app: Probot) {
     app.on('issues.assigned', async ctx => {
-        await issueAssigned(app, ctx)
-    })
+        await issueAssigned(app, ctx);
+    });
     app.on('issue_comment.created', async ctx => {
-        const comment = ctx.payload.comment.body
-        await commentCreated(app, ctx, comment)
-    })
+        const comment = ctx.payload.comment.body;
+        await commentCreated(app, ctx, comment);
+    });
     app.on('pull_request.closed', async ctx => {
-        await pullRequestClosed(app, ctx)
-    })
+        try {
+            await pullRequestClosed(app, ctx);
+        } catch (e) {
+            if (e instanceof Error) {
+                if (e.message.startsWith('Although you appear to have the correct')) {
+                    app.log.info(`Error can not be prevented: ${e.message}`);
+                    return;
+                }
+            }
+            throw e;
+        }
+    });
     app.on(['pull_request.opened', 'pull_request.reopened', 'pull_request.labeled', 'pull_request.unlabeled'],
         async ctx => {
-            await pullRequest(app, ctx)
+            await pullRequest(app, ctx);
         })
     app.on('issues.opened', async ctx => {
         const comment = ctx.payload.issue.body;
         await issueOpened(app, ctx, comment);
-    })
+    });
     app.on(['issues.labeled', 'issues.unlabeled'], async ctx => {
         await issueLabeled(app, ctx);
-    })
+    });
     app.on(['marketplace_purchase.purchased', 'marketplace_purchase.changed', 'marketplace_purchase.cancelled',
         'marketplace_purchase.pending_change'], async ctx => {
         await marketplacePurchase(app, ctx);
-    })
+    });
     app.onAny(async (ctx: any) => {
         app.log(`Received webhook event: ${ctx.name}.${ctx.payload.action}`);
         await insertEventIntoDatabase(app, ctx);
