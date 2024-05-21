@@ -53,7 +53,17 @@ function setupEventHandlers(app: Probot) {
     });
     app.on(['pull_request.opened', 'pull_request.reopened', 'pull_request.labeled', 'pull_request.unlabeled'],
         async ctx => {
-            await pullRequest(app, ctx);
+            try {
+                await pullRequest(app, ctx);
+            } catch (e) {
+                if (e instanceof Error) {
+                    if (e.message.startsWith('Although you appear to have the correct')) {
+                        app.log.info(`Error can not be prevented: ${e.message}`);
+                        return;
+                    }
+                }
+                throw e;
+            }
         })
     app.on('issues.opened', async ctx => {
         const comment = ctx.payload.issue.body;
