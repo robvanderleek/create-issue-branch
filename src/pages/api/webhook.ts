@@ -17,7 +17,7 @@ export default async function (request: VercelRequest, response: VercelResponse)
         } as any);
         response.status(200).json({ok: 'true'});
     } catch (error: any) {
-        probot.log(error);
+        probot.log.info(error);
         response.status(error.status || 500);
     }
 }
