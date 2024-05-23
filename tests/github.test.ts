@@ -188,12 +188,12 @@ test('handle branch already exist, log message to info level', async () => {
     }
     const ctx = getDefaultContext()
     ctx.octokit.git.createRef = createRef
-    const log = {info: jest.fn()}
+    probot.log.info = jest.fn();
     const config = getDefaultConfig();
 
     await github.createBranch(probot, ctx, config, 'issue-1', '1234abcd');
 
-    expect(log.info).toBeCalled()
+    expect(probot.log.info).toBeCalled();
 })
 
 test('log branch create errors with error level', async () => {

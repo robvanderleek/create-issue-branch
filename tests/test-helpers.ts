@@ -193,10 +193,9 @@ export function initProbot() {
     app.app = {
         getInstallationAccessToken: () => Promise.resolve('test')
     }
-    nock.cleanAll()
-    jest.setTimeout(10000)
-    nockAccessToken()
-    return result
+    nock.cleanAll();
+    nockAccessToken();
+    return result;
 }
 
 function nockAccessToken() {
