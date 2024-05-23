@@ -1388,7 +1388,7 @@
     node-gyp-build "^4.2.2"
     resolve-from "^5.0.0"
 
-"@vercel/node@^3.0.25":
+"@vercel/node@^3.1.5":
   version "3.1.5"
   resolved "https://registry.yarnpkg.com/@vercel/node/-/node-3.1.5.tgz#3938c615f9d60b179b29d170dd8f248dd9a5d94d"
   integrity sha512-1LVqdL/HKrfuLGIWEHm7O/zA6admKRClIuJOVsasvW0PHrrwUUfcoKvgHj/sH6HUEzgE9WIelqFLe8/j/tzA4A==
@@ -2199,9 +2199,9 @@ ee-first@1.1.1:
   integrity sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==
 
 electron-to-chromium@^1.4.668:
-  version "1.4.779"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.779.tgz#bb6f08b93092a564421adcadcc4b92c5055c7a77"
-  integrity sha512-oaTiIcszNfySXVJzKcjxd2YjPxziAd+GmXyb2HbidCeFo6Z88ygOT7EimlrEQhM2U08VhSrbKhLOXP0kKUCZ6g==
+  version "1.4.780"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.780.tgz#8c6d7ff82b56b4219f2ae7918ee271ae25654f07"
+  integrity sha512-NPtACGFe7vunRYzvYqVRhQvsDrTevxpgDKxG/Vcbe0BTNOY+5+/2mOXSw2ls7ToNbE5Bf/+uQbjTxcmwMozpCw==
 
 emittery@^0.13.1:
   version "0.13.1"
@@ -4690,9 +4690,9 @@ thread-stream@^2.6.0:
     real-require "^0.2.0"
 
 thread-stream@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/thread-stream/-/thread-stream-3.0.0.tgz#3548327972fe1f5d3c78049d35aeacdce8c21771"
-  integrity sha512-oUIFjxaUT6knhPtWgDMc29zF1FcSl0yXpapkyrQrCGEfYA2HUZXCilUtKyYIv6HkCyqSPAMkY+EG0GbyIrNDQg==
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/thread-stream/-/thread-stream-3.0.1.tgz#8c41fdfbb8ba3a9a2325e600c8be20ca048f5033"
+  integrity sha512-O5O/RbdV3CjhtwFa4slXvrb/26lzsf4/NMts3QFIRniIsi+584QSneJXaHXasqcZO+B7pWZkr+4h9knhnAQevg==
   dependencies:
     real-require "^0.2.0"
 
