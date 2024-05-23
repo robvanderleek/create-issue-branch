@@ -4107,7 +4107,7 @@ pretty-ms@7.0.1:
   dependencies:
     parse-ms "^2.1.0"
 
-probot@^13.0.2, probot@^13.1.2:
+probot@^13.0.2, probot@^13.2.2:
   version "13.2.2"
   resolved "https://registry.yarnpkg.com/probot/-/probot-13.2.2.tgz#41040ab58afa4f44f9a38b1a522df5878e99c22f"
   integrity sha512-wx8VoNb0ujn2k3nq0MSIUd4r7/RUn2Di3ZY07F6O5IYm3z3HNGDDX2XEreJnaZDOFjQaZ6XJbYGmiaD4SovAVQ==
