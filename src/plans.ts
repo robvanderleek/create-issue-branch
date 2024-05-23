@@ -7,22 +7,22 @@ export async function isProPlan(app: Probot, ctx: Context<any>) {
     try {
         const id = getRepoOwnerId(ctx)
         const login = getRepoOwnerLogin(ctx)
-        app.log(`Checking Marketplace for organization: https://github.com/${login} ...`)
+        app.log.info(`Checking Marketplace for organization: https://github.com/${login} ...`)
         if (freeProSubscription(login)) {
-            app.log('Found free Pro ❤️  plan')
+            app.log.info('Found free Pro ❤️  plan')
             return true
         }
         const res = await ctx.octokit.apps.getSubscriptionPlanForAccount({account_id: id})
         const purchase = res.data.marketplace_purchase
         if (purchase.plan && purchase.plan.price_model === 'FREE') {
-            app.log('Found Free plan')
+            app.log.info('Found Free plan')
             return false
         } else {
-            app.log('Found Pro 💰 plan')
+            app.log.info('Found Pro 💰 plan')
             return true
         }
     } catch (error) {
-        app.log('Marketplace purchase not found')
+        app.log.info('Marketplace purchase not found')
         return false
     }
 }
@@ -55,7 +55,7 @@ export async function isActivatedBeforeProPlanIntroduction(app: Probot, ctx: Con
     }
     const installationDate = new Date(datestring)
     const result = installationDate < PRO_PLAN_INTRODUCTION_DATE
-    app.log(`Installation date is ${result ? 'before' : 'after'} Pro plan introduction date`)
+    app.log.info(`Installation date is ${result ? 'before' : 'after'} Pro plan introduction date`)
     return result
 }
 
