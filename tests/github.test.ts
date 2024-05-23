@@ -191,7 +191,7 @@ test('handle branch already exist, log message to info level', async () => {
     const log = {info: jest.fn()}
     const config = getDefaultConfig();
 
-    await github.createBranch(ctx, config, 'issue-1', '1234abcd', log)
+    await github.createBranch(probot, ctx, config, 'issue-1', '1234abcd');
 
     expect(log.info).toBeCalled()
 })
@@ -208,9 +208,7 @@ test('log branch create errors with error level', async () => {
     const config = getDefaultConfig();
     config.silent = false;
 
-    await github.createBranch(ctx, config, 'issue-1', '1234abcd',
-        () => {
-        })
+    await github.createBranch(probot, ctx, config, 'issue-1', '1234abcd');
 
     expect(createComment).toBeCalled()
 })
@@ -233,8 +231,7 @@ test('Retry create comment when it fails', async () => {
     const config = getDefaultConfig();
     config.silent = false;
 
-    await github.createBranch(ctx, config, 'issue-1', '1234abcd', () => {
-    });
+    await github.createBranch(probot, ctx, config, 'issue-1', '1234abcd');
 
     expect(createComment).toBeCalled();
 })

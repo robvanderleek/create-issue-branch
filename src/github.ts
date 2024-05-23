@@ -35,7 +35,7 @@ export async function createIssueBranch(app: Probot, ctx: Context<any>, branchNa
     if (await hasValidSubscriptionForRepo(app, ctx, config)) {
         const sha = await getSourceBranchHeadSha(ctx, config, app.log)
         if (sha) {
-            await createBranch(ctx, config, branchName, sha, app.log)
+            await createBranch(app, ctx, config, branchName, sha);
         } else {
             await addComment(ctx, config, 'Could not find source branch for new issue branch')
         }
@@ -250,26 +250,26 @@ async function getBranchHeadSha(ctx: Context<any>, branch: string) {
     }
 }
 
-export async function createBranch(ctx: Context<any>, config: Config, branchName: string, sha: string, log: any) {
+export async function createBranch(app: Probot, ctx: Context<any>, config: Config, branchName: string, sha: string) {
     const owner = getRepoOwnerLogin(ctx)
     const repo = getRepoName(ctx)
     try {
         const res = await ctx.octokit.git.createRef({
             owner: owner, repo: repo, ref: `refs/heads/${branchName}`, sha: sha
         })
-        log(`Branch created: ${branchName}`)
+        app.log.info(`Branch created: ${branchName}`)
         if (isRunningInGitHubActions()) {
             setOutput('branchName', branchName)
         }
         const commentMessage = interpolate(getCommentMessage(config), {...ctx.payload, branchName: branchName})
         await addComment(ctx, config, commentMessage)
         if (isProduction()) {
-            pushMetric(owner, log)
+            pushMetric(app, owner);
         }
         return res
     } catch (e: any) {
         if (e.message === 'Reference already exists') {
-            log.info('Could not create branch as it already exists')
+            app.log.info('Could not create branch as it already exists')
         } else {
             await addComment(ctx, config, `Could not create branch \`${branchName}\` due to: ${e.message}`)
         }
