@@ -188,12 +188,12 @@ test('handle branch already exist, log message to info level', async () => {
     }
     const ctx = getDefaultContext()
     ctx.octokit.git.createRef = createRef
-    const log = {info: jest.fn()}
+    probot.log.info = jest.fn();
     const config = getDefaultConfig();
 
-    await github.createBranch(ctx, config, 'issue-1', '1234abcd', log)
+    await github.createBranch(probot, ctx, config, 'issue-1', '1234abcd');
 
-    expect(log.info).toBeCalled()
+    expect(probot.log.info).toBeCalled();
 })
 
 test('log branch create errors with error level', async () => {
@@ -208,9 +208,7 @@ test('log branch create errors with error level', async () => {
     const config = getDefaultConfig();
     config.silent = false;
 
-    await github.createBranch(ctx, config, 'issue-1', '1234abcd',
-        () => {
-        })
+    await github.createBranch(probot, ctx, config, 'issue-1', '1234abcd');
 
     expect(createComment).toBeCalled()
 })
@@ -233,8 +231,7 @@ test('Retry create comment when it fails', async () => {
     const config = getDefaultConfig();
     config.silent = false;
 
-    await github.createBranch(ctx, config, 'issue-1', '1234abcd', () => {
-    });
+    await github.createBranch(probot, ctx, config, 'issue-1', '1234abcd');
 
     expect(createComment).toBeCalled();
 })

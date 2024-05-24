@@ -34,10 +34,10 @@ async function createConfigurationErrorIssue(ctx: Context<any>, err: string) {
 }
 
 async function handleError(ctx: Context<any>, err: string) {
-    ctx.log(`Error in app configuration: ${err}`)
+    ctx.log.info(`Error in app configuration: ${err}`)
     const issues = await findConfigurationErrorIssue(ctx)
     if (issues.length > 0) {
-        ctx.log(`Error issue already exists for repo: ${ctx.payload.repository.full_name}`)
+        ctx.log.info(`Error issue already exists for repo: ${ctx.payload.repository.full_name}`)
     } else {
         await createConfigurationErrorIssue(ctx, err)
     }

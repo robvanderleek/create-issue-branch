@@ -35,7 +35,7 @@ export async function createIssueBranch(app: Probot, ctx: Context<any>, branchNa
     if (await hasValidSubscriptionForRepo(app, ctx, config)) {
         const sha = await getSourceBranchHeadSha(ctx, config, app.log)
         if (sha) {
-            await createBranch(ctx, config, branchName, sha, app.log)
+            await createBranch(app, ctx, config, branchName, sha);
         } else {
             await addComment(ctx, config, 'Could not find source branch for new issue branch')
         }
@@ -50,14 +50,14 @@ async function hasValidSubscriptionForRepo(app: Probot, ctx: Context<any>, confi
         const isProPan = await isProPlan(app, ctx)
         if (!isProPan) {
             await addBuyProComment(ctx, config)
-            app.log('Added comment to buy Pro 🙏 plan')
+            app.log.info('Added comment to buy Pro 🙏 plan')
             return false
         } else {
             return true
         }
     } else {
         const login = getRepoOwnerLogin(ctx)
-        app.log(`Creating branch in public repository from user/org: https://github.com/${login} ...`)
+        app.log.info(`Creating branch in public repository from user/org: https://github.com/${login} ...`)
         return true
     }
 }
@@ -250,26 +250,26 @@ async function getBranchHeadSha(ctx: Context<any>, branch: string) {
     }
 }
 
-export async function createBranch(ctx: Context<any>, config: Config, branchName: string, sha: string, log: any) {
+export async function createBranch(app: Probot, ctx: Context<any>, config: Config, branchName: string, sha: string) {
     const owner = getRepoOwnerLogin(ctx)
     const repo = getRepoName(ctx)
     try {
         const res = await ctx.octokit.git.createRef({
             owner: owner, repo: repo, ref: `refs/heads/${branchName}`, sha: sha
         })
-        log(`Branch created: ${branchName}`)
+        app.log.info(`Branch created: ${branchName}`)
         if (isRunningInGitHubActions()) {
             setOutput('branchName', branchName)
         }
         const commentMessage = interpolate(getCommentMessage(config), {...ctx.payload, branchName: branchName})
         await addComment(ctx, config, commentMessage)
         if (isProduction()) {
-            pushMetric(owner, log)
+            pushMetric(app, owner);
         }
         return res
     } catch (e: any) {
         if (e.message === 'Reference already exists') {
-            log.info('Could not create branch as it already exists')
+            app.log.info('Could not create branch as it already exists')
         } else {
             await addComment(ctx, config, `Could not create branch \`${branchName}\` due to: ${e.message}`)
         }
@@ -286,15 +286,15 @@ export async function createPr(app: Probot, ctx: Context<any>, config: Config, u
         const baseHeadSha = await getBranchHeadSha(ctx, base)
         const branchHeadSha = await getBranchHeadSha(ctx, branchName)
         if (branchHeadSha === baseHeadSha) {
-            app.log('Branch and base heads are equal, creating empty commit for PR')
+            app.log.info('Branch and base heads are equal, creating empty commit for PR')
             await createEmptyCommit(ctx, branchName, getCommitText(ctx, config), String(branchHeadSha))
         }
         const {data: pr} = await ctx.octokit.pulls.create(
             {owner, repo, head: branchName, base, title, body: getPrBody(app, ctx, config), draft: draft})
-        app.log(`${draft ? 'Created draft' : 'Created'} pull request ${pr.number} for branch ${branchName}`)
+        app.log.info(`${draft ? 'Created draft' : 'Created'} pull request ${pr.number} for branch ${branchName}`)
         await copyIssueAttributesToPr(app, ctx, config, pr)
     } catch (e: any) {
-        app.log(`Could not create PR (${e.message})`)
+        app.log.info(`Could not create PR (${e.message})`)
         await addComment(ctx, config, `Could not create PR (${e.message})`)
     }
 }
@@ -338,7 +338,7 @@ function getPrBody(app: Probot, ctx: Context<any>, config: Config) {
     const issueNumber = getIssueNumber(ctx)
     let result = ''
     if (config.copyIssueDescriptionToPR) {
-        app.log('Copying issue description to PR')
+        app.log.info('Copying issue description to PR')
         const issueDescription = getIssueDescription(ctx)
         if (issueDescription) {
             result += formatAsExpandingMarkdown('Original issue description', issueDescription)
@@ -352,23 +352,23 @@ function getPrBody(app: Probot, ctx: Context<any>, config: Config) {
 async function copyIssueAttributesToPr(app: Probot, ctx: Context<any>, config: Config, pr: any) {
     try {
         if (config.copyIssueLabelsToPR) {
-            app.log('Copying issue labels to PR')
+            app.log.info('Copying issue labels to PR')
             await copyIssueLabelsToPr(ctx, pr)
         }
         if (config.copyIssueAssigneeToPR) {
-            app.log('Copying issue assignee to PR')
+            app.log.info('Copying issue assignee to PR')
             await copyIssueAssigneeToPr(ctx, pr)
         }
         if (config.copyIssueProjectsToPR) {
-            app.log('Copying issue projects to PR')
+            app.log.info('Copying issue projects to PR')
             await copyIssueProjectsToPr(ctx, pr)
         }
         if (config.copyIssueMilestoneToPR) {
-            app.log('Copying issue milestone to PR')
+            app.log.info('Copying issue milestone to PR')
             await copyIssueMilestoneToPr(ctx, pr)
         }
     } catch (e: any) {
-        app.log(`Could not copy issue attributes (${e.message})`)
+        app.log.info(`Could not copy issue attributes (${e.message})`)
         await addComment(ctx, config, `Could not copy issue attributes (${e.message})`)
     }
 }

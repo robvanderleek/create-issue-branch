@@ -45,11 +45,11 @@ const analytics = Analytics({
     })]
 })
 
-export function pushMetric(owner: string, log: any) {
+export function pushMetric(app: Probot, owner: string) {
     analytics.identify(owner, () => {
-        analytics.track('branch_created', {category: 'Branches'}, () => log.info('Pushed metric to Google Analytics'))
-            .catch(err => log.error('Could not push metric to Google Analytics: ' + err))
-    }).catch(err => log.error('Could not identify user: ' + err))
+        analytics.track('branch_created', {category: 'Branches'}, () => app.log.info('Pushed metric to Google Analytics'))
+            .catch(err => app.log.error('Could not push metric to Google Analytics: ' + err))
+    }).catch(err => app.log.error('Could not identify user: ' + err))
 }
 
 export function isRunningInGitHubActions() {
