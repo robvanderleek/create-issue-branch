@@ -1,6 +1,6 @@
 {
   "name": "create-issue-branch",
-  "version": "1.6.3",
+  "version": "1.7.0",
   "description": "Creates a new branch after assigning an issue",
   "author": "Rob van der Leek <robvanderleek@gmail.com> (https://twitter.com/robvanderleek)",
   "license": "ISC",
