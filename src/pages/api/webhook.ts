@@ -16,16 +16,18 @@ export default async function (request: VercelRequest, response: VercelResponse)
         await loadingApp;
         console.log(request.headers);
         console.log(typeof request.body);
+        const payload = JSON.stringify(request.body);
+        console.log(payload);
         console.log(request.headers['X-Hub-Signature-256'] || request.headers['x-hub-signature-256']);
         console.log(request.headers['X-GitHub-Delivery'] || request.headers['x-github-delivery']);
         const eventName = request.headers['X-GitHub-Event'] || request.headers['x-github-event'];
         console.log(eventName);
-        // await probot.webhooks.verifyAndReceive({
-        //     id: request.headers['X-GitHub-Delivery'] || request.headers['x-github-delivery'],
-        //     name: eventName,
-        //     signature: request.headers['X-Hub-Signature-256'] || request.headers['x-hub-signature-256'],
-        //     payload: request.body
-        // } as any);
+        await probot.webhooks.verifyAndReceive({
+            id: request.headers['X-GitHub-Delivery'] || request.headers['x-github-delivery'],
+            name: eventName,
+            signature: request.headers['X-Hub-Signature-256'] || request.headers['x-hub-signature-256'],
+            payload: payload
+        } as any);
         response.status(200).json({ok: 'true'});
     } catch (error: any) {
         probot.log.info(error);
