@@ -2,11 +2,11 @@ import {createProbot} from "probot";
 import app from "../../probot";
 import {VercelRequest, VercelResponse} from "@vercel/node";
 
-export const config = {
-    api: {
-        bodyParser: false,
-    },
-};
+// export const config = {
+//     api: {
+//         bodyParser: false,
+//     },
+// };
 
 const probot = createProbot()
 const loadingApp = probot.load(app)
