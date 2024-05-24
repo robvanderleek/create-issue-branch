@@ -3,6 +3,7 @@ import issueAssignedPayload from "./test-fixtures/issues.assigned.json";
 import commentCreatedPayload from "./test-fixtures/issue_comment.created.json";
 import myProbotApp from "../src/probot";
 import {Probot, ProbotOctokit} from "probot";
+import {OctokitOptions} from "probot/lib/types";
 
 export function nockInstallation(installation: object) {
     nock('https://api.github.com')
@@ -184,11 +185,15 @@ export function initProbot() {
     const result = new Probot({
         appId: 1, //
         githubToken: 'test', // Disable throttling & retrying requests for easier testing
-        Octokit: ProbotOctokit.defaults({
-            retry: {enabled: false}, throttle: {enabled: false}
+        Octokit: ProbotOctokit.defaults((instanceOptions: OctokitOptions) => {
+            return {
+                ...instanceOptions,
+                retry: {enabled: false},
+                throttle: {enabled: false}
+            }
         })
-    })
-    const app = result.load(myProbotApp)
+    });
+    const app = result.load(myProbotApp);
     // @ts-ignore
     app.app = {
         getInstallationAccessToken: () => Promise.resolve('test')
