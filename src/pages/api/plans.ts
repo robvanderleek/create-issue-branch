@@ -4,6 +4,12 @@ import {listAppSubscriptions} from "../../plans";
 import {message} from "../../discord";
 import {VercelRequest, VercelResponse} from "@vercel/node";
 
+export const config = {
+    api: {
+        bodyParser: false,
+    },
+};
+
 const probot = createProbot()
 const loadingApp = probot.load(app)
 
