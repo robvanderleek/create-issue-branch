@@ -74,7 +74,7 @@
     "jest": "^29.7.0",
     "mkver": "^2.1.0",
     "nock": "14.0.0-beta.6",
-    "nodemon": "^3.1.0",
+    "nodemon": "^3.1.2",
     "smee-client": "^2.0.1",
     "ts-jest": "^29.1.1",
     "typescript": "^5.4.3"
