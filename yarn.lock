@@ -33,10 +33,10 @@
   dependencies:
     "@analytics/global-storage-utils" "^0.1.7"
 
-"@analytics/core@^0.12.9":
-  version "0.12.9"
-  resolved "https://registry.yarnpkg.com/@analytics/core/-/core-0.12.9.tgz#aae7813878f6d76d183ef1614a61ba9e5f5902d9"
-  integrity sha512-jac5Q8iapeDiURFu6BXqT9FCHOENaazKgWXNdlr5lqE9X70XRDi+96weNVNUmkUoAjcP9Yf+xFwGy2dhP5+BnQ==
+"@analytics/core@^0.12.14":
+  version "0.12.14"
+  resolved "https://registry.yarnpkg.com/@analytics/core/-/core-0.12.14.tgz#ca7215ebd5bfaa733ec1d7c6edbb632dc5fd18a8"
+  integrity sha512-pIO60PXmTHHMNU+mFF8PcKHqwbm/z3JJdyFffpc+dq6vj6bDv2RrvwV3B0Fc+wUshRXvyBqK1syLsSCs6cXPjA==
   dependencies:
     "@analytics/global-storage-utils" "^0.1.7"
     "@analytics/type-utils" "^0.6.2"
@@ -1490,12 +1490,12 @@ analytics-utils@^1.0.12:
     "@analytics/type-utils" "^0.6.2"
     dlv "^1.1.3"
 
-analytics@^0.8.11:
-  version "0.8.11"
-  resolved "https://registry.yarnpkg.com/analytics/-/analytics-0.8.11.tgz#9216463acdc124718d96f18cd39990e50f986f0e"
-  integrity sha512-gNLaprOiuZSviP8rC99E5uk+AWQZJk1OHS350v3XdpPDnsGyxHlNo7s9ZQJeOhvMbG5XOBY3fgZY/tpOl7hiGw==
+analytics@^0.8.13:
+  version "0.8.13"
+  resolved "https://registry.yarnpkg.com/analytics/-/analytics-0.8.13.tgz#38f7abc5e2218ef28a9e385096ff58065ae8d35b"
+  integrity sha512-AypJ84VSzAH+5t2ll7VYzgI12Krf8+XEPAGLYTZ9XU6SNidV6iEt2zrmZXyAp/tobLmyi5gNpOGGwwBbAhVWTQ==
   dependencies:
-    "@analytics/core" "^0.12.9"
+    "@analytics/core" "^0.12.14"
     "@analytics/storage-utils" "^0.4.2"
 
 ansi-escapes@^4.2.1:
