@@ -1,10 +1,12 @@
+export const dynamic = 'force-dynamic';
+
 import {createProbot} from "probot";
 import app from "../../probot";
 
 const probot = createProbot()
 const loadingApp = probot.load(app)
 
-export default async function GET(request: Request) {
+export async function GET(request: Request) {
     try {
         await loadingApp;
         const payload = await request.text()
