@@ -1,27 +1,29 @@
-export const dynamic = 'force-dynamic';
-
 import {createProbot} from "probot";
 import app from "../../probot";
+import {VercelRequest, VercelResponse} from "@vercel/node";
 
 const probot = createProbot()
 const loadingApp = probot.load(app)
 
-export async function GET(request: Request) {
+export default async function (request: VercelRequest, response: VercelResponse) {
     try {
         await loadingApp;
-        const payload = await request.text()
-        const id = request.headers.get('X-GitHub-Delivery') || request.headers.get('x-github-delivery');
-        const eventName = request.headers.get('X-GitHub-Event') || request.headers.get('x-github-event');
-        const signature = request.headers.get('X-Hub-Signature-256') || request.headers.get('x-hub-signature-256');
+        const payload = JSON.stringify(request.body);
+        const id = request.headers['X-GitHub-Delivery'] || request.headers['x-github-delivery'];
+        const eventName = request.headers['X-GitHub-Event'] || request.headers['x-github-event'];
+        const signature = request.headers['X-Hub-Signature-256'] || request.headers['x-hub-signature-256'];
+        probot.webhooks.onError((error) => {
+            probot.log.info(error.message);
+        });
         await probot.webhooks.verifyAndReceive({
             id: id,
             name: eventName,
             signature: signature,
             payload: payload
         } as any);
-        return Response.json({ok: 'true'}, {status: 200});
+        response.status(200).json({ok: 'true'});
     } catch (error: any) {
         probot.log.info(error);
-        return new Response(null, {status: error.status || 500});
+        response.status(error.status || 500);
     }
 }
