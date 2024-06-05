@@ -4,7 +4,7 @@ import app from "../../probot";
 const probot = createProbot()
 const loadingApp = probot.load(app)
 
-export async function GET(request: Request) {
+export default async function GET(request: Request) {
     try {
         await loadingApp;
         const payload = await request.text()
