@@ -4111,10 +4111,10 @@ pretty-ms@7.0.1:
   dependencies:
     parse-ms "^2.1.0"
 
-probot@^13.0.2, probot@^13.2.2:
-  version "13.3.0"
-  resolved "https://registry.yarnpkg.com/probot/-/probot-13.3.0.tgz#2154c4dad9609cb1ef82c0d4959c3a2ddf553d1a"
-  integrity sha512-X9xb96WvaycsPiNj1QOte4ABKb6mSwHpWHJKq/dTjFSMpLT4kC5SRN4wKQi1zwZHsnIW/twbOeOZespGfkNkYA==
+probot@^13.0.2, probot@^13.3.6:
+  version "13.3.6"
+  resolved "https://registry.yarnpkg.com/probot/-/probot-13.3.6.tgz#7178f0d9684a128c93d53718bd7b48bad7cb4dd2"
+  integrity sha512-bgNu5p6rcAbaXwX/il6Y6zYtjN7VKPBKFENAAOp0v4Z5ysiwyX6si/agxO8MP4RPU2A0DazNZP2FVnYaqb54FQ==
   dependencies:
     "@octokit/core" "^5.0.2"
     "@octokit/plugin-enterprise-compatibility" "^4.0.1"
@@ -4133,7 +4133,6 @@ probot@^13.0.2, probot@^13.2.2:
     commander "^12.0.0"
     deepmerge "^4.3.1"
     dotenv "^16.3.1"
-    eventsource "^2.0.2"
     express "^4.18.2"
     ioredis "^5.3.2"
     js-yaml "^4.1.0"
@@ -4142,7 +4141,6 @@ probot@^13.0.2, probot@^13.2.2:
     pino "^9.0.0"
     pino-http "^10.0.0"
     pkg-conf "^3.1.0"
-    resolve "^1.22.8"
     update-dotenv "^1.1.1"
 
 process-warning@^3.0.0:
@@ -4322,7 +4320,7 @@ resolve.exports@^2.0.0:
   resolved "https://registry.yarnpkg.com/resolve.exports/-/resolve.exports-2.0.2.tgz#f8c934b8e6a13f539e38b7098e2e36134f01e800"
   integrity sha512-X2UW6Nw3n/aMgDVy+0rSqgHlv39WZAlZrXCdnbyEiKm17DSqHX4MmQMaST3FbeWR5FTuRcUwYAziZajji0Y7mg==
 
-resolve@^1.20.0, resolve@^1.22.8:
+resolve@^1.20.0:
   version "1.22.8"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.22.8.tgz#b6c87a9f2aa06dfab52e3d70ac8cde321fa5a48d"
   integrity sha512-oKWePCxqpd6FlLvGV1VU0x7bkPmmCNolxzjMf4NczoDnQcIWrAF+cPtZn5i6n+RfD2d9i0tzpKnG6Yk168yIyw==
