@@ -27,7 +27,6 @@ export const config = {
 export default async function (request: VercelRequest, response: VercelResponse) {
     try {
         await loadingApp;
-        // const payload = JSON.stringify(request.body);
         const payload = await getBody(request);
         const id = request.headers['X-GitHub-Delivery'] || request.headers['x-github-delivery'];
         const eventName = request.headers['X-GitHub-Event'] || request.headers['x-github-event'];
