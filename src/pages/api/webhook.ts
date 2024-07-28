@@ -11,12 +11,18 @@ function getBody(request: VercelRequest): Promise<string> {
         let body;
         request.on('data', (chunk) => {
             bodyParts.push(chunk);
-        }).on('end', () => {
+        }).on('end', async () => {
             body = Buffer.concat(bodyParts).toString();
             resolve(body)
         });
     });
 }
+
+export const config = {
+    api: {
+        bodyParser: false
+    }
+};
 
 export default async function (request: VercelRequest, response: VercelResponse) {
     try {
