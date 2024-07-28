@@ -18,11 +18,11 @@ function getBody(request: VercelRequest): Promise<string> {
     });
 }
 
-// export const config = {
-//     api: {
-//         bodyParser: false
-//     }
-// };
+export const config = {
+    api: {
+        bodyParser: false
+    }
+};
 
 export default async function (request: VercelRequest, response: VercelResponse) {
     try {
