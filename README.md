@@ -377,6 +377,19 @@ the following is true for your app configuration:
 - Your branch name contains the string `issue-` (case insensitive) followed by
   the issue number, for example: `Project-A-Issue-123-Rewrite_in_Clojure`
 
+## Automatically delete issue branch after closing an issue
+
+This app can delete issue branches for you when a related issue is closed. You
+can enable this feature with:
+
+```yaml
+autoDeleteBranch: true
+```
+
+Be aware that the app needs to be able to find the issue number in the branch
+name, otherwise this feature will not work. See also the explanation in [this
+section](#Automatically-close-issues-after-a-pull-request-merge).
+
 ## Default source branch
 
 You can override the source branch (by default
