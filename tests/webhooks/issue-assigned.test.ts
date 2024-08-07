@@ -26,5 +26,5 @@ test('do nothing if configured to skip', async () => {
         "description": "Something isn't working"
     }] as any;
 
-    await probot.receive({id: '', name: 'issues', payload: issueAssignedPayload as any});
+    await probot.receive({id: '', name: 'issues', payload: payload as any});
 });
