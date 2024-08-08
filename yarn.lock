@@ -4127,10 +4127,10 @@ pretty-ms@7.0.1:
   dependencies:
     parse-ms "^2.1.0"
 
-probot@^13.0.2, probot@^13.2.2:
-  version "13.3.6"
-  resolved "https://registry.yarnpkg.com/probot/-/probot-13.3.6.tgz#7178f0d9684a128c93d53718bd7b48bad7cb4dd2"
-  integrity sha512-bgNu5p6rcAbaXwX/il6Y6zYtjN7VKPBKFENAAOp0v4Z5ysiwyX6si/agxO8MP4RPU2A0DazNZP2FVnYaqb54FQ==
+probot@^13.0.2, probot@^13.3.7:
+  version "13.3.7"
+  resolved "https://registry.yarnpkg.com/probot/-/probot-13.3.7.tgz#4cdbd5ce24bc04bd53747b8b102da5639bee4b56"
+  integrity sha512-aqePJLDQWRwd/dcA6ssjzv8U9ySAkgZasjG/xz65KlLepIY8vy2k66Z6SBJJMlyZb/dznNZUMDM0GCbmsXILyQ==
   dependencies:
     "@octokit/core" "^5.0.2"
     "@octokit/plugin-enterprise-compatibility" "^4.0.1"
