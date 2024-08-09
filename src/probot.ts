@@ -14,6 +14,7 @@ import {gitDate, gitSha, version} from "./version";
 import {isRunningInGitHubActions, logMemoryUsage} from "./utils";
 import {MongoDbService} from "./services/MongoDbService";
 import {WebhookEvent} from "./entities/WebhookEvent";
+import {issueClosed} from "./webhooks/issue-closed";
 
 
 export default (app: Probot, {getRouter}: ApplicationFunctionOptions) => {
@@ -33,6 +34,9 @@ export default (app: Probot, {getRouter}: ApplicationFunctionOptions) => {
 function setupEventHandlers(app: Probot) {
     app.on('issues.assigned', async ctx => {
         await issueAssigned(app, ctx);
+    });
+    app.on('issues.closed', async ctx => {
+        await issueClosed(app, ctx);
     });
     app.on('issue_comment.created', async ctx => {
         const comment = ctx.payload.comment.body;

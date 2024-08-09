@@ -3,6 +3,7 @@ export interface Config {
     branchName: string;
     autoLinkIssue: boolean;
     autoCloseIssue: boolean;
+    autoDeleteBranch: boolean;
     defaultBranch?: string;
     branches: Array<BranchConfig>;
     copyIssueLabelsToPR: boolean;
@@ -40,6 +41,7 @@ export function getDefaultConfig(): Config {
         branchName: 'full',
         autoLinkIssue: false,
         autoCloseIssue: false,
+        autoDeleteBranch: false,
         branches: [],
         copyIssueLabelsToPR: false,
         copyIssueAssigneeToPR: false,

@@ -200,6 +200,19 @@ export async function branchExists(ctx: Context<any>, branchName: string) {
     }
 }
 
+export async function deleteBranch(ctx: Context<any>, branchName: string) {
+    const owner = getRepoOwnerLogin(ctx)
+    const repo = getRepoName(ctx)
+    try {
+        await ctx.octokit.git.deleteRef({
+            owner: owner, repo: repo, ref: `heads/${branchName}`
+        })
+        return true
+    } catch (err) {
+        return false
+    }
+}
+
 export function getSourceBranch(ctx: Context<any>, config: Config) {
     const branchConfig = getIssueBranchConfig(ctx, config)
     if (branchConfig && branchConfig.name) {
