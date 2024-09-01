@@ -42,7 +42,6 @@
     "dev": "next dev",
     "build": "next build",
     "test": "jest",
-    "test:docker": "docker-compose up",
     "coverage": "jest --collect-coverage",
     "probot:start": "yarn action:build && NODE_OPTIONS='--max_old_space_size=490' probot run ./build/probot.js",
     "action:build": "tsc --noemit false",
