@@ -12,18 +12,24 @@ jobs:
       CI: true
     steps:
     - name: 'Checkout sources'
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
+
     - name: 'Setup NodeJS'
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: '20.x'
+
     - name: 'Install dependencies'
       run: yarn install
+
     - name: 'Build distribution'
       run: yarn action:dist
+
     - name: 'Run unit-tests'
       run: yarn test
+
     - name: 'Run code coverage'
       run: yarn run coverage
+
     - name: 'Upload code coverage report'
       run: bash <(curl -s https://codecov.io/bash) -t ${{secrets.CODECOV_SECRET_TOKEN }}
