@@ -1,6 +1,14 @@
 # Create Issue Branch
 
-![Logo](public/logo.png)
+<p align="center">
+  <img src="public/logo.png"/>
+</p>
+
+<p align="center">
+  <em>Boost your GitHub workflow 🚀</em>
+</p>
+
+<div align="center">
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/aaa03e6c10ce1ae9941f/maintainability)](https://codeclimate.com/github/robvanderleek/create-issue-branch/maintainability)
 [![Build Status](https://github.com/robvanderleek/create-issue-branch/workflows/main/badge.svg)](https://github.com/robvanderleek/create-issue-branch/actions)
@@ -9,41 +17,32 @@
 [![Sentry](https://img.shields.io/badge/sentry-enabled-green)](https://sentry.io)
 ![Vercel](https://vercelbadge.vercel.app/api/robvanderleek/create-issue-branch)
 
-A GitHub App/Action that automates the creation of issue branches (either
-automatically, or after assigning an issue, or after commenting on an issue
-with a ChatOps command: `/create-issue-branch` or `/cib`).
+</div>
 
-Built in response to this feature request issue:
-https://github.com/isaacs/github/issues/1125 (that issue is now closed and the
-discussion [continuous
-here](https://github.com/github/feedback/discussions/3441) and
-[here](https://github.com/github/feedback/discussions/12290))
+# Introduction
 
-> [!TIP] 
-> UPDATE 2/2/2022**: GitHub added a "Create a branch" button [to the web
-> UI](https://github.blog/changelog/2022-03-02-create-a-branch-for-an-issue/)
->
-> This App/Action offers some unique features not available in the new GitHub
-> web UI button, such as:
->
-> - [Configure branch name
->   format](https://github.com/robvanderleek/create-issue-branch#branch-names)
-> - [Configure default source
->   branch](https://github.com/robvanderleek/create-issue-branch#default-source-branch)
-> - [Configure source branch based on
->   label](https://github.com/robvanderleek/create-issue-branch#source-branch-based-on-issue-label)
-> - [Automatically open a (draft) Pull
->   Request](https://github.com/robvanderleek/create-issue-branch#automatically-open-a-pull-request)
-> - [Copy over attributes (such as labels and milestones) from the issue to the
->   (draft)
->   PR](https://github.com/robvanderleek/create-issue-branch#copy-attributes-from-issue)
-> - [Configure PR target branch based on issue
->   label](https://github.com/robvanderleek/create-issue-branch#pull-request-target-branch-based-on-issue-label)
-> - [Feature requests are always
->   welcome!](https://github.com/robvanderleek/create-issue-branch#feedback-suggestions-and-bug-reports)
->
-> Perhaps the new GitHub button will be sufficient for your development
-> workflow, if not give this App/Action a try.
+A GitHub App/Action that boosts your GitHub workflow by automating the creation
+of issue branches (and many more things!)
+
+Unique features offered by this app that are not available on GitHub:
+
+- [Configure branch name
+  format](https://github.com/robvanderleek/create-issue-branch#branch-names)
+- [Configure default source
+  branch](https://github.com/robvanderleek/create-issue-branch#default-source-branch)
+- [Configure source branch based on
+  label](https://github.com/robvanderleek/create-issue-branch#source-branch-based-on-issue-label)
+- [Automatically open a (draft) Pull
+  Request](https://github.com/robvanderleek/create-issue-branch#automatically-open-a-pull-request)
+- [Copy over attributes (such as labels and milestones) from the issue to the
+  (draft)
+  PR](https://github.com/robvanderleek/create-issue-branch#copy-attributes-from-issue)
+- [Configure PR target branch based on issue
+  label](https://github.com/robvanderleek/create-issue-branch#pull-request-target-branch-based-on-issue-label)
+- [Feature requests are always
+  welcome!](https://github.com/robvanderleek/create-issue-branch#feedback-suggestions-and-bug-reports)
+
+# Table of Contents
 
 * [Installation](#installation)
 * [Usage](#usage)
@@ -810,6 +809,19 @@ Please create an issue here:
 https://github.com/robvanderleek/create-issue-branch/issues
 
 If you like this Action/App, please star :star: it.
+
+## Project history
+
+Create Issue Branch was Built in response to this feature request issue:
+https://github.com/isaacs/github/issues/1125 (that issue is now closed and the
+discussion [continuous
+here](https://github.com/github/feedback/discussions/3441) and
+[here](https://github.com/github/feedback/discussions/12290))
+
+Early 2022 GitHub added a "Create a branch" button [to the web
+UI](https://github.blog/changelog/2022-03-02-create-a-branch-for-an-issue/)
+Perhaps the new GitHub button will be sufficient for your development workflow,
+if not give this App/Action a try.
 
 ## Star history
 
