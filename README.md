@@ -1,12 +1,16 @@
 # Create Issue Branch
 
-<p align="center">
-  <img src="public/logo.png"/>
-</p>
+<div align="center">
 
-<p align="center">
-  <em>Boost your GitHub workflow 🚀</em>
-</p>
+![Logo](public/logo.png)
+
+</div>
+
+<div align="center">
+
+*Boost your GitHub workflow 🚀*
+
+</div>
 
 <div align="center">
 
@@ -18,8 +22,6 @@
 ![Vercel](https://vercelbadge.vercel.app/api/robvanderleek/create-issue-branch)
 
 </div>
-
-# Introduction
 
 A GitHub App/Action that boosts your GitHub workflow by automating the creation
 of issue branches (and many more things!)
