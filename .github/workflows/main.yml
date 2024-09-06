@@ -61,13 +61,13 @@ jobs:
     - name: 'Tag image for PR and push to ECR'
       if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
       run: |
-        docker tag pp ${{ secrets.AWS_ECR_ENDPOINT }}:pr-${GITHUB_SHA::8}
+        docker tag cib ${{ secrets.AWS_ECR_ENDPOINT }}:pr-${GITHUB_SHA::8}
         docker push ${{ secrets.AWS_ECR_ENDPOINT }}:pr-${GITHUB_SHA::8}
 
     - name: 'Tag image for main and push to ECR'
       if: ${{ github.event_name == 'push' && github.actor != 'dependabot[bot]'  }}
       run: |
-        docker tag pp ${{ secrets.AWS_ECR_ENDPOINT }}:main-${GITHUB_SHA::8}
-        docker tag pp ${{ secrets.AWS_ECR_ENDPOINT }}:main-latest
+        docker tag cib ${{ secrets.AWS_ECR_ENDPOINT }}:main-${GITHUB_SHA::8}
+        docker tag cib ${{ secrets.AWS_ECR_ENDPOINT }}:main-latest
         docker push ${{ secrets.AWS_ECR_ENDPOINT }}:main-${GITHUB_SHA::8}
         docker push ${{ secrets.AWS_ECR_ENDPOINT }}:main-latest
