@@ -1,10 +1,14 @@
 name: 'main'
 concurrency: main_environment
+
 on: 
   push:
-    branches: main
+    branches: 
+      - main
   pull_request:
-    branches: main
+    branches: 
+      - main
+
 jobs:
   tests:
     runs-on: ubuntu-latest
@@ -33,3 +37,34 @@ jobs:
 
     - name: 'Upload code coverage report'
       run: bash <(curl -s https://codecov.io/bash) -t ${{secrets.CODECOV_SECRET_TOKEN }}
+
+    - name: 'Build docker image'
+      run: docker build -t cib .
+
+    - name: 'Configure AWS credentials'
+      if: ${{ github.actor != 'dependabot[bot]' }}
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+
+    - name: 'Login to Amazon ECR'
+      if: ${{ github.actor != 'dependabot[bot]' }}
+      uses: aws-actions/amazon-ecr-login@v2
+      with:
+        mask-password: 'true'
+
+    - name: 'Tag image for PR and push to ECR'
+      if: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' }}
+      run: |
+        docker tag pp ${{ secrets.AWS_ECR_ENDPOINT }}:pr-${GITHUB_SHA::8}
+        docker push ${{ secrets.AWS_ECR_ENDPOINT }}:pr-${GITHUB_SHA::8}
+
+    - name: 'Tag image for main and push to ECR'
+      if: ${{ github.event_name == 'push' && github.actor != 'dependabot[bot]'  }}
+      run: |
+        docker tag pp ${{ secrets.AWS_ECR_ENDPOINT }}:main-${GITHUB_SHA::8}
+        docker tag pp ${{ secrets.AWS_ECR_ENDPOINT }}:main-latest
+        docker push ${{ secrets.AWS_ECR_ENDPOINT }}:main-${GITHUB_SHA::8}
+        docker push ${{ secrets.AWS_ECR_ENDPOINT }}:main-latest
