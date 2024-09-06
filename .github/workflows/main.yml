@@ -10,7 +10,7 @@ on:
       - main
 
 jobs:
-  tests:
+  cicd:
     runs-on: ubuntu-latest
     env:
       CI: true
@@ -37,6 +37,9 @@ jobs:
 
     - name: 'Upload code coverage report'
       run: bash <(curl -s https://codecov.io/bash) -t ${{secrets.CODECOV_SECRET_TOKEN }}
+
+    - name: 'Build server dist'
+      run: yarn server:dist
 
     - name: 'Build docker image'
       run: docker build -t cib .
