@@ -1,4 +1,4 @@
-FROM node:20
+FROM node:20-alpine
 RUN mkdir /app
 COPY server-dist /app/server-dist
 WORKDIR /app
