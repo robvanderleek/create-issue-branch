@@ -2,7 +2,7 @@ name: App Stats
 
 on:
   schedule:
-    - cron:  '0 6 * * *'
+    - cron:  '0 6 0 * *'
 
 jobs:
   log:
@@ -11,22 +11,26 @@ jobs:
       - name: 'Checkout sources'
         uses: actions/checkout@v4
 
-      - uses: gr2m/app-stats-action@v1.x
+      - name: 'Collect stats'
+        uses: gr2m/app-stats-action@v1.x
         id: stats
         with:
           id: ${{ secrets.APP_ID }}
           private_key: ${{ secrets.PRIVATE_KEY }}
       - run: "echo '{\"installations\": ${{ steps.stats.outputs.installations }}, \"repositories\": ${{ steps.stats.outputs.repositories }}, \"suspended\": ${{ steps.stats.outputs.suspended_installations }}, \"popular\": ${{ steps.stats.outputs.popular_repositories }} }' > public/stats.json"
-      - name: Commit Action Installation Statistics
+
+      - name: 'Commit Action Installation Statistics'
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add public/stats.json
           git commit -m "Build by GitHub Actions" || true
         if: job.status == 'success'
-      - name: Update repo
+
+      - name: 'Update repo'
         run: git pull --no-rebase
-      - name: Push changes
+
+      - name: 'Push changes'
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
