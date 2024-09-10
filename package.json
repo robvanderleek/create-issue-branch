@@ -41,12 +41,13 @@
     "start": "next start",
     "dev": "next dev",
     "build": "next build",
+    "compile": "tsc --noemit false",
     "test": "jest",
-    "test:docker": "docker-compose up",
     "coverage": "jest --collect-coverage",
-    "probot:start": "yarn action:build && NODE_OPTIONS='--max_old_space_size=490' probot run ./build/probot.js",
-    "action:build": "tsc --noemit false",
-    "action:dist": "yarn action:build && ncc build build/action.js"
+    "probot:start": "yarn compile && NODE_OPTIONS='--max_old_space_size=490' probot run ./build/probot.js",
+    "server:start": "yarn compile && NODE_OPTIONS='--max_old_space_size=490' node ./build/server.js",
+    "action:dist": "yarn compile && esbuild build/action.js --bundle --platform=node --outfile=action-dist/index.js",
+    "server:dist": "yarn compile && esbuild build/server.js --bundle --platform=node --outfile=server-dist/index.js"
   },
   "dependencies": {
     "@actions/core": "^1.10.0",
@@ -69,7 +70,7 @@
     "@types/jest": "^29.5.11",
     "@types/node-fetch": "^2.6.10",
     "@types/react": "18.3.3",
-    "@vercel/ncc": "^0.38",
+    "esbuild": "^0.23.1",
     "@vercel/node": "^3.2.0",
     "jest": "^29.7.0",
     "mkver": "^2.1.0",

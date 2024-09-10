@@ -8,4 +8,4 @@ outputs:
     description: 'Name of the branch that was created'
 runs:
   using: 'node20'
-  main: 'dist/index.js'
+  main: 'action-dist/index.js'
