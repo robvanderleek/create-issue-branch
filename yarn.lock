@@ -2653,7 +2653,7 @@ expect@^29.0.0, expect@^29.7.0:
     jest-message-util "^29.7.0"
     jest-util "^29.7.0"
 
-express@^4.18.2:
+express@^4.21.0:
   version "4.21.0"
   resolved "https://registry.yarnpkg.com/express/-/express-4.21.0.tgz#d57cb706d49623d4ac27833f1cbc466b668eb915"
   integrity sha512-VqcNGcj/Id5ZT1LZ/cfihi3ttTn+NJmkli2eZADigjq29qTlWi/hAQ43t/VLPq8+UX06FCEx3ByOYet6ZFblng==
@@ -4339,10 +4339,10 @@ pretty-ms@7.0.1:
   dependencies:
     parse-ms "^2.1.0"
 
-probot@^13.0.2, probot@^13.2.2:
-  version "13.3.7"
-  resolved "https://registry.yarnpkg.com/probot/-/probot-13.3.7.tgz#4cdbd5ce24bc04bd53747b8b102da5639bee4b56"
-  integrity sha512-aqePJLDQWRwd/dcA6ssjzv8U9ySAkgZasjG/xz65KlLepIY8vy2k66Z6SBJJMlyZb/dznNZUMDM0GCbmsXILyQ==
+probot@^13.0.2, probot@^13.3.8:
+  version "13.3.8"
+  resolved "https://registry.yarnpkg.com/probot/-/probot-13.3.8.tgz#31d50e86a12c01efa37c7063b37d293fc59aff2a"
+  integrity sha512-xc+KBC0mp1JKFMsPbMyj1SpmN0B7Q8uFO7ze4PBbNv74q8AyPGqYL3TmkZSOmcOjFTeFrZTnMYEoXi+z1anyLA==
   dependencies:
     "@octokit/core" "^5.0.2"
     "@octokit/plugin-enterprise-compatibility" "^4.0.1"
@@ -4361,7 +4361,7 @@ probot@^13.0.2, probot@^13.2.2:
     commander "^12.0.0"
     deepmerge "^4.3.1"
     dotenv "^16.3.1"
-    express "^4.18.2"
+    express "^4.21.0"
     ioredis "^5.3.2"
     js-yaml "^4.1.0"
     lru-cache "^10.0.3"
