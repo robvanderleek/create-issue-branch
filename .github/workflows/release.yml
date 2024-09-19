@@ -6,6 +6,8 @@ jobs:
   release:
     name: Semantic Release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
     - name: 'Checkout sources'
       uses: actions/checkout@v4
@@ -24,30 +26,13 @@ jobs:
     - name: 'Build GitHub Actions distribution'
       run: yarn action:dist
 
+    - name: 'Commit GitHub Actions distribution'
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: Build by GitHub Actions
+        file_pattern: action-dist/index.js
+
     - name: 'Semantic Release'
-      id: semantic
-      uses: cycjimmy/semantic-release-action@v3
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: 'GitHub release'
-      if: steps.semantic.outputs.new_release_published == 'true'
-      uses: softprops/action-gh-release@v1
-      with:
-        tag_name: ${{ steps.semantic.outputs.new_release_version }}
-
-    - name: 'Commit GitHub Actions distribution'
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add action-dist/index.js
-        git commit -m "Build by GitHub Actions" || true
-      if: job.status == 'success'
-
-    - name: 'Push changes'
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: ${{ github.ref }}
-        force: true
-      if: job.status == 'success'
+      run: npx semantic-release
