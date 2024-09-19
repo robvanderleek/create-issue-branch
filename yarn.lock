@@ -804,10 +804,10 @@
   dependencies:
     sparse-bitfield "^3.0.3"
 
-"@mswjs/interceptors@^0.35.1":
-  version "0.35.1"
-  resolved "https://registry.yarnpkg.com/@mswjs/interceptors/-/interceptors-0.35.1.tgz#06b5a18d6a259d26269548dc8504836918a8c54f"
-  integrity sha512-nMuUaMCtg8oKSTHwAnsoGRN6c1RZXNm6+ebEoe9SBGALVlBIzniZoSuC/itNCLOt51YEEYsF0svB/sOzYhqLPA==
+"@mswjs/interceptors@^0.35.6":
+  version "0.35.6"
+  resolved "https://registry.yarnpkg.com/@mswjs/interceptors/-/interceptors-0.35.6.tgz#66c522036bc01fa6be87b46b49cc378b837bf510"
+  integrity sha512-PpD687w7qLxVMK176bpQjbzU9O0VC75QnBK5U1lKd29s4hIuxfTItUD6raNKyQ6BN8b64/8HE34RuYTkwH9uPQ==
   dependencies:
     "@open-draft/deferred-promise" "^2.2.0"
     "@open-draft/logger" "^0.3.0"
@@ -3959,12 +3959,12 @@ next@^14.2.12:
     "@next/swc-win32-ia32-msvc" "14.2.12"
     "@next/swc-win32-x64-msvc" "14.2.12"
 
-nock@14.0.0-beta.13:
-  version "14.0.0-beta.13"
-  resolved "https://registry.yarnpkg.com/nock/-/nock-14.0.0-beta.13.tgz#4da3cef9faba1748e0b2e6f3c997f5898344fe76"
-  integrity sha512-dBuonA2N0JGmCAh8OK7oHzM8cmBsN2OlfT4/vxYrG4mdAm7mpZlr9/xO1NxFxcRg8EX85U0vA9uo/DvuhfF9Mg==
+nock@14.0.0-beta.14:
+  version "14.0.0-beta.14"
+  resolved "https://registry.yarnpkg.com/nock/-/nock-14.0.0-beta.14.tgz#1d211b93a547386846d6054f455c2581ab34f750"
+  integrity sha512-nbUIuqYkixyazl4hWBQ+EJzb5F0/NJabIQFEEIQwBHPaG+RxvVSs4uSCasHMnCrNuCmOndxgUBqS860g6/OwJw==
   dependencies:
-    "@mswjs/interceptors" "^0.35.1"
+    "@mswjs/interceptors" "^0.35.6"
     json-stringify-safe "^5.0.1"
     propagate "^2.0.0"
 
