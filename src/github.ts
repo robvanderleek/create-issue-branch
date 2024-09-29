@@ -26,9 +26,13 @@ import {
     formatAsExpandingMarkdown,
     getStringLengthInBytes,
     isProduction,
-    isRunningInGitHubActions, makeGitSafe, makePrefixGitSafe,
-    pushMetric, sleep,
-    trimStringToByteLength, wildcardMatch
+    isRunningInGitHubActions,
+    makeGitSafe,
+    makePrefixGitSafe,
+    pushMetric,
+    sleep,
+    trimStringToByteLength,
+    wildcardMatch
 } from "./utils";
 
 export async function createIssueBranch(app: Probot, ctx: Context<any>, branchName: string, config: Config) {
@@ -426,8 +430,7 @@ async function copyIssueProjectsToPr(ctx: Context<any>, pr: any) {
     })
 }
 
-async function queryProjectIdsForIssue(ctx: Context<any>) {
-    const queryProjectIds = `
+const projectIdsQuery = `
   query ($owner: String!, $repo: String!, $number: Int!) {
     repository(owner: $owner, name: $repo) {
       issue(number: $number) {
@@ -437,22 +440,34 @@ async function queryProjectIdsForIssue(ctx: Context<any>) {
               id
             }
           }
+        },
+        projectItems(first: 10) {
+          nodes {
+            project {
+              id
+            }
+          }
         }
       }
     }
   }
-  `
-    const queryResult: any = await ctx.octokit.graphql(queryProjectIds, {
+  `;
+
+async function queryProjectIdsForIssue(ctx: Context<any>) {
+    const queryResult: any = await ctx.octokit.graphql(projectIdsQuery, {
         owner: getRepoOwnerLogin(ctx), repo: getRepoName(ctx), number: getIssueNumber(ctx)
-    })
-    const projectCards = queryResult?.repository?.issue?.projectCards
-    const result = []
+    });
+    const result = [];
+    const projectCards = queryResult?.repository?.issue?.projectCards;
     if (projectCards) {
         for (const node of projectCards.nodes) {
-            const projectId = node.project?.id
-            if (projectId) {
-                result.push(projectId)
-            }
+            node.project?.id && result.push(node.project.id);
+        }
+    }
+    const projectItems = queryResult?.repository?.issue?.projectItems;
+    if (projectItems) {
+        for (const node of projectItems.nodes) {
+            node.project?.id && result.push(node.project.id);
         }
     }
     return result
