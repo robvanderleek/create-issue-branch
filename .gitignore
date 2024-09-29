@@ -9,8 +9,7 @@ node_modules/
 .private-key.pem
 .private-key.staging.pem
 coverage/
-dist/static/
-dist/views/
+server-dist/
 src/version.ts
 .vercel/
 .next/

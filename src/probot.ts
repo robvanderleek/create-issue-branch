@@ -21,7 +21,6 @@ export default (app: Probot, {getRouter}: ApplicationFunctionOptions) => {
     const buildDate = gitDate.toISOString().substring(0, 10);
     app.log.info(`Create Issue Branch, version: ${version}, revison: ${gitSha.substring(0, 8)}, built on: ${buildDate}`);
     if (getRouter) {
-        addStatsRoute(getRouter);
         addPlansRoute(app, getRouter);
     } else if (!isRunningInGitHubActions()) {
         app.log.info('Custom routes not available!')
@@ -107,13 +106,6 @@ async function insertEventIntoDatabase(app: Probot, ctx: any) {
         await dbService.storeEvent(webhookEvent);
         dbService.disconnect();
     }
-}
-
-function addStatsRoute(getRouter: (path?: string) => express.Router) {
-    const router = getRouter('/probot')
-    router.get('/stats', (req, res) => {
-        res.redirect('https://raw.githubusercontent.com/robvanderleek/create-issue-branch/main/static/stats.json')
-    })
 }
 
 async function addPlansRoute(app: Probot, getRouter: (path?: string) => express.Router) {
