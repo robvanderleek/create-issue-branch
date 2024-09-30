@@ -470,6 +470,7 @@ async function queryProjectIdsForIssue(ctx: Context<any>) {
             node.project?.id && result.push(node.project.id);
         }
     }
+    console.log('Project IDs:', result);
     return result
 }
 
