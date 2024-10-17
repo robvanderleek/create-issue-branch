@@ -417,17 +417,13 @@ async function copyIssueMilestoneToPr(ctx: Context<any>, pr: any) {
 
 async function copyIssueProjectsToPr(ctx: Context<any>, pr: any) {
     const projectIds = await queryProjectIdsForIssue(ctx)
-    const mutatePullRequest = `
-  mutation($pullRequestId: ID!, $projectIds: [ID!])  {
-    updatePullRequest(input:{pullRequestId: $pullRequestId, projectIds: $projectIds}) {
-      pullRequest{
-        id
-      }
+    if (projectIds) {
+        await updatePrWithProjects(pr, projectIds, ctx);
     }
-  }`
-    await ctx.octokit.graphql(mutatePullRequest, {
-        pullRequestId: pr.node_id, projectIds: projectIds
-    })
+    const projectV2Ids = await queryProjectV2IdsForIssue(ctx);
+    if (projectV2Ids) {
+        await updatePrWithProjectsV2(pr, projectV2Ids, ctx);
+    }
 }
 
 const projectIdsQuery = `
@@ -435,13 +431,6 @@ const projectIdsQuery = `
     repository(owner: $owner, name: $repo) {
       issue(number: $number) {
         projectCards {
-          nodes {
-            project {
-              id
-            }
-          }
-        },
-        projectItems(first: 10) {
           nodes {
             project {
               id
@@ -464,6 +453,44 @@ async function queryProjectIdsForIssue(ctx: Context<any>) {
             node.project?.id && result.push(node.project.id);
         }
     }
+    return result
+}
+
+async function updatePrWithProjects(pr: any, projectIds: Array<string>, ctx: Context<any>) {
+    const mutatePullRequest = `
+  mutation($pullRequestId: ID!, $projectIds: [ID!])  {
+    updatePullRequest(input:{pullRequestId: $pullRequestId, projectIds: $projectIds}) {
+      pullRequest{
+        id
+      }
+    }
+  }`
+    await ctx.octokit.graphql(mutatePullRequest, {
+        pullRequestId: pr.node_id, projectIds: projectIds
+    })
+}
+
+const projectV2IdsQuery = `
+  query ($owner: String!, $repo: String!, $number: Int!) {
+    repository(owner: $owner, name: $repo) {
+      issue(number: $number) {
+        projectItems(first: 10) {
+          nodes {
+            project {
+              id
+            }
+          }
+        }
+      }
+    }
+  }
+  `;
+
+async function queryProjectV2IdsForIssue(ctx: Context<any>) {
+    const queryResult: any = await ctx.octokit.graphql(projectV2IdsQuery, {
+        owner: getRepoOwnerLogin(ctx), repo: getRepoName(ctx), number: getIssueNumber(ctx)
+    });
+    const result = [];
     const projectItems = queryResult?.repository?.issue?.projectItems;
     if (projectItems) {
         for (const node of projectItems.nodes) {
@@ -472,6 +499,20 @@ async function queryProjectIdsForIssue(ctx: Context<any>) {
     }
     console.log('Project IDs:', result);
     return result
+}
+
+async function updatePrWithProjectsV2(pr: any, projectIds: Array<string>, ctx: Context<any>) {
+    const mutatePullRequest = `
+  mutation($pullRequestId: ID!, $projectId: ID!)  {
+    addProjectV2ItemById(input: {projectId: $projectId, contentId: $pullRequestId}) {
+      item {
+        id
+      }
+    }
+  }`
+    await ctx.octokit.graphql(mutatePullRequest, {
+        pullRequestId: pr.node_id, projectIds: projectIds
+    })
 }
 
 export async function updatePrTitle(app: Probot, ctx: Context<any>, config: Config, pr: any, issueTitle: string, labels: Array<string>) {
