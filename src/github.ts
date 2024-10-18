@@ -416,12 +416,14 @@ async function copyIssueMilestoneToPr(ctx: Context<any>, pr: any) {
 }
 
 async function copyIssueProjectsToPr(ctx: Context<any>, pr: any) {
-    const projectIds = await queryProjectIdsForIssue(ctx)
-    if (projectIds) {
+    const projectIds = await queryProjectIdsForIssue(ctx);
+    console.log('Project IDs:', projectIds);
+    if (projectIds.length > 0) {
         await updatePrWithProjects(pr, projectIds, ctx);
     }
     const projectV2Ids = await queryProjectV2IdsForIssue(ctx);
-    if (projectV2Ids) {
+    console.log('ProjectV2 IDs:', projectV2Ids);
+    if (projectV2Ids.length > 0) {
         await updatePrWithProjectsV2(pr, projectV2Ids, ctx);
     }
 }
@@ -497,7 +499,6 @@ async function queryProjectV2IdsForIssue(ctx: Context<any>) {
             node.project?.id && result.push(node.project.id);
         }
     }
-    console.log('Project IDs:', result);
     return result
 }
 
