@@ -422,9 +422,9 @@ async function copyIssueProjectsToPr(ctx: Context<any>, pr: any) {
         await updatePrWithProjects(pr, projectIds, ctx);
     }
     const projectV2Ids = await queryProjectV2IdsForIssue(ctx);
-    console.log('ProjectV2 IDs:', projectV2Ids);
-    if (projectV2Ids.length > 0) {
-        await updatePrWithProjectsV2(pr, projectV2Ids, ctx);
+    for (const projectV2Id of projectV2Ids) {
+        console.log('ProjectV2 ID:', projectV2Id);
+        await updatePrWithProjectV2(pr, projectV2Id, ctx);
     }
 }
 
@@ -502,7 +502,7 @@ async function queryProjectV2IdsForIssue(ctx: Context<any>) {
     return result
 }
 
-async function updatePrWithProjectsV2(pr: any, projectIds: Array<string>, ctx: Context<any>) {
+async function updatePrWithProjectV2(pr: any, projectIds: Array<string>, ctx: Context<any>) {
     const mutatePullRequest = `
   mutation($pullRequestId: ID!, $projectId: ID!)  {
     addProjectV2ItemById(input: {projectId: $projectId, contentId: $pullRequestId}) {
