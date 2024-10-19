@@ -502,7 +502,7 @@ async function queryProjectV2IdsForIssue(ctx: Context<any>) {
     return result
 }
 
-async function updatePrWithProjectV2(pr: any, projectIds: Array<string>, ctx: Context<any>) {
+async function updatePrWithProjectV2(pr: any, projectId: string, ctx: Context<any>) {
     const mutatePullRequest = `
   mutation($pullRequestId: ID!, $projectId: ID!)  {
     addProjectV2ItemById(input: {projectId: $projectId, contentId: $pullRequestId}) {
@@ -510,10 +510,10 @@ async function updatePrWithProjectV2(pr: any, projectIds: Array<string>, ctx: Co
         id
       }
     }
-  }`
+  }`;
     await ctx.octokit.graphql(mutatePullRequest, {
-        pullRequestId: pr.node_id, projectIds: projectIds
-    })
+        pullRequestId: pr.node_id, projectId: projectId
+    });
 }
 
 export async function updatePrTitle(app: Probot, ctx: Context<any>, config: Config, pr: any, issueTitle: string, labels: Array<string>) {
