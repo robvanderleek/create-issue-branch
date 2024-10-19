@@ -417,13 +417,11 @@ async function copyIssueMilestoneToPr(ctx: Context<any>, pr: any) {
 
 async function copyIssueProjectsToPr(ctx: Context<any>, pr: any) {
     const projectIds = await queryProjectIdsForIssue(ctx);
-    console.log('Project IDs:', projectIds);
     if (projectIds.length > 0) {
         await updatePrWithProjects(pr, projectIds, ctx);
     }
     const projectV2Ids = await queryProjectV2IdsForIssue(ctx);
     for (const projectV2Id of projectV2Ids) {
-        console.log('ProjectV2 ID:', projectV2Id);
         await updatePrWithProjectV2(pr, projectV2Id, ctx);
     }
 }
