@@ -4725,10 +4725,10 @@ slice@^1.0.0:
   dependencies:
     dot-json "^1.0.4"
 
-smee-client@^2.0.1:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/smee-client/-/smee-client-2.0.3.tgz#de57d90a2531af136e0f0496a88599376ad53fa8"
-  integrity sha512-W5tQKHzZFe+IMBlaAJ8Ho32Y2wbUbzriHAA2DAFXpITId+0dYHJJbAX36a/HMrGjW7yFjhcKCNPwRBAiIrlZGQ==
+smee-client@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/smee-client/-/smee-client-2.0.4.tgz#796d44e30104d0d222140b8d38cedde89855da7b"
+  integrity sha512-RxXCs0mfaxpI8JF4SeTM51XtRiprzW5g20HVt4aTQ36EB+RaN0aj0m/4EbXLGdfPlqahQ09d3UnJYmALN2CbYw==
   dependencies:
     commander "^12.0.0"
     eventsource "^2.0.2"
