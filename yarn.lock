@@ -1328,10 +1328,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/dlv@^1.1.4":
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/@types/dlv/-/dlv-1.1.4.tgz#e92f76b78adf2b118b5a807956f36434baefbab0"
-  integrity sha512-m8KmImw4Jt+4rIgupwfivrWEOnj1LzkmKkqbh075uG13eTQ1ZxHWT6T0vIdSQhLIjQCiR0n0lZdtyDOPO1x2Mw==
+"@types/dlv@^1.1.5":
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/@types/dlv/-/dlv-1.1.5.tgz#14aab363b57cd38828e9e380fe44b1bb6b08f732"
+  integrity sha512-JHOWNfiWepAhfwlSw17kiWrWrk6od2dEQgHltJw9AS0JPFoLZJBge5+Dnil2NfdjAvJ/+vGSX60/BRW20PpUXw==
 
 "@types/express-serve-static-core@^4.17.33":
   version "4.19.5"
