@@ -72,7 +72,7 @@
     "@vercel/node": "^3.2.14",
     "jest": "^29.7.0",
     "mkver": "^2.1.0",
-    "nock": "14.0.0-beta.14",
+    "nock": "14.0.0-beta.18",
     "nodemon": "^3.1.5",
     "smee-client": "^2.0.1",
     "ts-jest": "^29.1.5",
