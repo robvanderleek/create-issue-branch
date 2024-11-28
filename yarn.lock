@@ -1498,15 +1498,15 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@vercel/build-utils@8.4.2":
-  version "8.4.2"
-  resolved "https://registry.yarnpkg.com/@vercel/build-utils/-/build-utils-8.4.2.tgz#f1afa3c9df53577cdbfdd69888faad17a552d8e1"
-  integrity sha512-Bern3FVvUgMu8YGuP+cYSTDaUA5Kn6HsMU75osWK6npS5Sw4K9zaY+cxONDMrzo/08Kvz5vgSRnwmq+P1MYq2g==
+"@vercel/build-utils@8.6.0":
+  version "8.6.0"
+  resolved "https://registry.yarnpkg.com/@vercel/build-utils/-/build-utils-8.6.0.tgz#c58d3551d6917795038bbcf1921aa678379cda7b"
+  integrity sha512-shST7/8zY0Oi2uxgwt9S/fjat96Ohpt0bXB+4/TeekdDmIIIL8t+mg9ASEg1WGF8JjWqWx+tYQfXlvv7d/D+dg==
 
-"@vercel/error-utils@2.0.2":
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/@vercel/error-utils/-/error-utils-2.0.2.tgz#d75ccce100dbdfc9cb85700767b59d4257a91113"
-  integrity sha512-Sj0LFafGpYr6pfCqrQ82X6ukRl5qpmVrHM/191kNYFqkkB9YkjlMAj6QcEsvCG259x4QZ7Tya++0AB85NDPbKQ==
+"@vercel/error-utils@2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@vercel/error-utils/-/error-utils-2.0.3.tgz#72575bf3a3ff3e67f474364e24e753d113c5b79a"
+  integrity sha512-CqC01WZxbLUxoiVdh9B/poPbNpY9U+tO1N9oWHwTl5YAZxcqXmmWJ8KNMFItJCUUWdY3J3xv8LvAuQv2KZ5YdQ==
 
 "@vercel/nft@0.27.3":
   version "0.27.3"
@@ -1526,17 +1526,17 @@
     node-gyp-build "^4.2.2"
     resolve-from "^5.0.0"
 
-"@vercel/node@^3.2.14":
-  version "3.2.14"
-  resolved "https://registry.yarnpkg.com/@vercel/node/-/node-3.2.14.tgz#bc44238c4a18aa43768b130b6e586ce0fbfb2ec2"
-  integrity sha512-aZFJgqem1YI3E7gvuVG/Jy4k8j19BjEQkexmnFv0nEieKuzHgTC8AzcgZQu8laEDVkpnOe+zlpmXZZBxTsvLuA==
+"@vercel/node@^3.2.27":
+  version "3.2.27"
+  resolved "https://registry.yarnpkg.com/@vercel/node/-/node-3.2.27.tgz#7ec19723b142bcb6fa809bfca7928420a8375b5c"
+  integrity sha512-vvTBD8Rz2jgbnm9/mTe+wB1rh/uISr7HRkyECUt92IlI4tYxOf/vS7ARgR86TGzb9WDwTrnRVxCl92q//f7hHA==
   dependencies:
     "@edge-runtime/node-utils" "2.3.0"
     "@edge-runtime/primitives" "4.1.0"
     "@edge-runtime/vm" "3.2.0"
     "@types/node" "16.18.11"
-    "@vercel/build-utils" "8.4.2"
-    "@vercel/error-utils" "2.0.2"
+    "@vercel/build-utils" "8.6.0"
+    "@vercel/error-utils" "2.0.3"
     "@vercel/nft" "0.27.3"
     "@vercel/static-config" "3.0.0"
     async-listen "3.0.0"
