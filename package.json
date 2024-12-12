@@ -55,7 +55,7 @@
     "analytics": "^0.8.11",
     "is-plain-object": "^5.0.0",
     "js-tokens": "^9.0.0",
-    "mongodb": "^6.8.1",
+    "mongodb": "^6.12.0",
     "next": "^14.2.12",
     "node-fetch": "^2.6.1",
     "probot": "^13.3.8",
