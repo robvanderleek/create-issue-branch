@@ -15,7 +15,7 @@
 <div align="center">
 
 [![Build Status](https://github.com/robvanderleek/create-issue-branch/workflows/main/badge.svg)](https://github.com/robvanderleek/create-issue-branch/actions)
-[![CodeLimit](https://github.com/robvanderleek/create-issue-branch/blob/_codelimit_reports/add-codelimit/badge.svg)](https://github.com/robvanderleek/create-issue-branch/blob/_codelimit_reports/add-codelimit/codelimit.md)
+[![CodeLimit](https://github.com/robvanderleek/create-issue-branch/blob/_codelimit_reports/main/badge.svg)](https://github.com/robvanderleek/create-issue-branch/blob/_codelimit_reports/main/codelimit.md)
 [![codecov](https://codecov.io/gh/robvanderleek/create-issue-branch/branch/main/graph/badge.svg?token=WBKIPs2WEc)](https://codecov.io/gh/robvanderleek/create-issue-branch)
 [![Dependabot](https://badgen.net/badge/Dependabot/enabled/green?icon=dependabot)](https://dependabot.com/)
 [![Sentry](https://img.shields.io/badge/sentry-enabled-green)](https://sentry.io)
