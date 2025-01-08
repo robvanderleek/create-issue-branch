@@ -1,19 +1,25 @@
 {
-  "version": "0.14.3",
-  "uuid": "11c17896-362d-42b6-bb15-d71c17807494",
+  "version": "0.18.1",
+  "uuid": "d80626da-0052-4535-8c58-b1a251c712d8",
+  "timestamp": "2025-01-08T20:51:35+00:00",
   "root": "/github/workspace",
+  "repository": {
+    "owner": "robvanderleek",
+    "name": "create-issue-branch",
+    "branch": "add-codelimit"
+  },
   "codebase": {
     "totals": {
       "TypeScript": {
         "files": 24,
-        "lines_of_code": 1530,
+        "lines_of_code": 1252,
         "functions": 115,
         "hard_to_maintain": 3,
         "unmaintainable": 0
       },
       "JavaScript": {
         "files": 1,
-        "lines_of_code": 13,
+        "lines_of_code": 8,
         "functions": 1,
         "hard_to_maintain": 0,
         "unmaintainable": 0
@@ -26,7 +32,7 @@
           "next.config.js",
           "src/"
         ],
-        "profile": [678, 481, 117, 0]
+        "profile": [679, 464, 117, 0]
       },
       "src/": {
         "entries": [
@@ -45,7 +51,7 @@
           "webhooks/",
           "services/"
         ],
-        "profile": [670, 481, 117, 0]
+        "profile": [671, 464, 117, 0]
       },
       "src/entities/": {
         "entries": [
@@ -91,7 +97,7 @@
       "next-env.d.ts": {
         "checksum": "3cf36e94213e85dc306ec5f3f3760ecc",
         "language": "TypeScript",
-        "loc": 1,
+        "loc": 0,
         "profile": [0, 0, 0, 0],
         "measurements": [
         ]
@@ -99,7 +105,7 @@
       "next.config.js": {
         "checksum": "e6e268855af4f54f80411ec0ea08f55a",
         "language": "JavaScript",
-        "loc": 13,
+        "loc": 8,
         "profile": [8, 0, 0, 0],
         "measurements": [
           {"unit_name": "rewrites", "start": {"line": 4, "column": 9}, "end": {"line": 11, "column": 4}, "value": 8}
@@ -108,7 +114,7 @@
       "src/action.ts": {
         "checksum": "4244eb172dbe0e36287a1cbd2042dda9",
         "language": "TypeScript",
-        "loc": 6,
+        "loc": 0,
         "profile": [0, 0, 0, 0],
         "measurements": [
         ]
@@ -116,7 +122,7 @@
       "src/interpolate.ts": {
         "checksum": "3c0ece0af620dc6e53e2d7c238e01e6b",
         "language": "TypeScript",
-        "loc": 72,
+        "loc": 66,
         "profile": [45, 21, 0, 0],
         "measurements": [
           {"unit_name": "interpolate", "start": {"line": 12, "column": 17}, "end": {"line": 14, "column": 2}, "value": 3},
@@ -131,7 +137,7 @@
       "src/plans.ts": {
         "checksum": "2878248338004573f7e480efe8125c1a",
         "language": "TypeScript",
-        "loc": 87,
+        "loc": 84,
         "profile": [22, 62, 0, 0],
         "measurements": [
           {"unit_name": "isProPlan", "start": {"line": 6, "column": 23}, "end": {"line": 28, "column": 2}, "value": 23},
@@ -165,7 +171,7 @@
       "src/discord.ts": {
         "checksum": "16d5dec1f230125b0f9fe9b62dae3272",
         "language": "TypeScript",
-        "loc": 8,
+        "loc": 7,
         "profile": [7, 0, 0, 0],
         "measurements": [
           {"unit_name": "message", "start": {"line": 3, "column": 23}, "end": {"line": 9, "column": 2}, "value": 7}
@@ -174,7 +180,7 @@
       "src/server.ts": {
         "checksum": "25a009be99f96b01eeb41dc3e37e6fdf",
         "language": "TypeScript",
-        "loc": 3,
+        "loc": 0,
         "profile": [0, 0, 0, 0],
         "measurements": [
         ]
@@ -182,11 +188,12 @@
       "src/config.ts": {
         "checksum": "b28847e77d5691c98d003356ec52bb98",
         "language": "TypeScript",
-        "loc": 176,
-        "profile": [74, 40, 63, 0],
+        "loc": 169,
+        "profile": [83, 23, 63, 0],
         "measurements": [
           {"unit_name": "findConfigurationErrorIssue", "start": {"line": 10, "column": 16}, "end": {"line": 15, "column": 2}, "value": 6},
-          {"unit_name": "createConfigurationErrorIssue", "start": {"line": 17, "column": 16}, "end": {"line": 34, "column": 2}, "value": 17},
+          {"unit_name": "createConfigurationErrorIssue", "start": {"line": 17, "column": 16}, "end": {"line": 34, "column": 2}, "value": 9},
+          {"unit_name": "errorBody", "start": {"line": 18, "column": 5}, "end": {"line": 26, "column": 6}, "value": 8},
           {"unit_name": "handleError", "start": {"line": 36, "column": 16}, "end": {"line": 44, "column": 2}, "value": 9},
           {"unit_name": "loadConfig", "start": {"line": 48, "column": 23}, "end": {"line": 70, "column": 2}, "value": 23},
           {"unit_name": "isModeAuto", "start": {"line": 72, "column": 17}, "end": {"line": 74, "column": 2}, "value": 3},
@@ -201,20 +208,19 @@
           {"unit_name": "getDefaultBranch", "start": {"line": 123, "column": 17}, "end": {"line": 129, "column": 2}, "value": 7},
           {"unit_name": "getConventionalPrTitlePrefix", "start": {"line": 131, "column": 17}, "end": {"line": 162, "column": 2}, "value": 32},
           {"unit_name": "getConventionalLabelMapping", "start": {"line": 168, "column": 17}, "end": {"line": 198, "column": 2}, "value": 31},
-          {"unit_name": "isBreakingPr", "start": {"line": 200, "column": 10}, "end": {"line": 202, "column": 2}, "value": 3},
-          {"unit_name": "errorBody", "start": {"line": 18, "column": 5}, "end": {"line": 26, "column": 6}, "value": 8}
+          {"unit_name": "isBreakingPr", "start": {"line": 200, "column": 10}, "end": {"line": 202, "column": 2}, "value": 3}
         ]
       },
       "src/utils.ts": {
         "checksum": "6802e2f0f4a53e161c07fa9b2de0d74e",
         "language": "TypeScript",
-        "loc": 81,
-        "profile": [77, 0, 0, 0],
+        "loc": 69,
+        "profile": [69, 0, 0, 0],
         "measurements": [
-          {"unit_name": "makePrefixGitSafe", "start": {"line": 9, "column": 17}, "end": {"line": 15, "column": 2}, "value": 7},
-          {"unit_name": "makeGitSafe", "start": {"line": 17, "column": 17}, "end": {"line": 22, "column": 2}, "value": 6},
+          {"unit_name": "makePrefixGitSafe", "start": {"line": 9, "column": 17}, "end": {"line": 9, "column": 88}, "value": 1},
+          {"unit_name": "makeGitSafe", "start": {"line": 17, "column": 17}, "end": {"line": 17, "column": 82}, "value": 1},
           {"unit_name": "trim", "start": {"line": 24, "column": 10}, "end": {"line": 30, "column": 2}, "value": 7},
-          {"unit_name": "substring", "start": {"line": 29, "column": 50}, "end": {"line": 46, "column": 2}, "value": 7},
+          {"unit_name": "substring", "start": {"line": 29, "column": 50}, "end": {"line": 46, "column": 2}, "value": 10},
           {"unit_name": "wildcardMatch", "start": {"line": 32, "column": 17}, "end": {"line": 35, "column": 2}, "value": 4},
           {"unit_name": "isProduction", "start": {"line": 37, "column": 17}, "end": {"line": 39, "column": 2}, "value": 3},
           {"unit_name": "pushMetric", "start": {"line": 48, "column": 17}, "end": {"line": 53, "column": 2}, "value": 6},
@@ -229,7 +235,7 @@
       "src/probot.ts": {
         "checksum": "3e6f9261a5cf7be4888b1df7b47c4ccf",
         "language": "TypeScript",
-        "loc": 120,
+        "loc": 91,
         "profile": [15, 22, 54, 0],
         "measurements": [
           {"unit_name": "setupEventHandlers", "start": {"line": 33, "column": 10}, "end": {"line": 86, "column": 2}, "value": 54},
@@ -241,7 +247,7 @@
       "src/github.ts": {
         "checksum": "7bee7789531c35fc0a281180be3ed5a5",
         "language": "TypeScript",
-        "loc": 421,
+        "loc": 385,
         "profile": [235, 150, 0, 0],
         "measurements": [
           {"unit_name": "createIssueBranch", "start": {"line": 34, "column": 23}, "end": {"line": 43, "column": 2}, "value": 10},
@@ -281,7 +287,7 @@
       "src/entities/WebhookEvent.ts": {
         "checksum": "6f1ec2abd56064dc619bafd620bbdce1",
         "language": "TypeScript",
-        "loc": 7,
+        "loc": 0,
         "profile": [0, 0, 0, 0],
         "measurements": [
         ]
@@ -289,7 +295,7 @@
       "src/entities/Config.ts": {
         "checksum": "fcd684abeeb89efd5e217d64ab65bf9a",
         "language": "TypeScript",
-        "loc": 62,
+        "loc": 27,
         "profile": [0, 27, 0, 0],
         "measurements": [
           {"unit_name": "getDefaultConfig", "start": {"line": 38, "column": 17}, "end": {"line": 64, "column": 2}, "value": 27}
@@ -298,7 +304,7 @@
       "src/pages/api/webhook.ts": {
         "checksum": "482bc818f896903c830c60c283781e01",
         "language": "TypeScript",
-        "loc": 44,
+        "loc": 12,
         "profile": [12, 0, 0, 0],
         "measurements": [
           {"unit_name": "getBody", "start": {"line": 8, "column": 10}, "end": {"line": 19, "column": 2}, "value": 12}
@@ -307,7 +313,7 @@
       "src/pages/api/plans.ts": {
         "checksum": "862f9ca1e50183c868ff5fe35ed6c281",
         "language": "TypeScript",
-        "loc": 18,
+        "loc": 0,
         "profile": [0, 0, 0, 0],
         "measurements": [
         ]
@@ -315,7 +321,7 @@
       "src/webhooks/marketplace-purchase.ts": {
         "checksum": "13d0595f3703d82cdc1393c4841b3670",
         "language": "TypeScript",
-        "loc": 22,
+        "loc": 20,
         "profile": [20, 0, 0, 0],
         "measurements": [
           {"unit_name": "marketplacePurchase", "start": {"line": 4, "column": 23}, "end": {"line": 13, "column": 2}, "value": 10},
@@ -325,7 +331,7 @@
       "src/webhooks/issue-opened.ts": {
         "checksum": "97324af39f32b65f6515398b357a2a79",
         "language": "TypeScript",
-        "loc": 53,
+        "loc": 37,
         "profile": [10, 27, 0, 0],
         "measurements": [
           {"unit_name": "issueOpened", "start": {"line": 18, "column": 23}, "end": {"line": 27, "column": 2}, "value": 10},
@@ -335,7 +341,7 @@
       "src/webhooks/pull-request-closed.ts": {
         "checksum": "e1eacd7530a9b0f18cfbe28cb42f611e",
         "language": "TypeScript",
-        "loc": 37,
+        "loc": 33,
         "profile": [14, 19, 0, 0],
         "measurements": [
           {"unit_name": "pullRequestClosed", "start": {"line": 6, "column": 23}, "end": {"line": 19, "column": 2}, "value": 14},
@@ -345,7 +351,7 @@
       "src/webhooks/comment-created.ts": {
         "checksum": "4911be09dd463e1e82832f04de53606c",
         "language": "TypeScript",
-        "loc": 72,
+        "loc": 50,
         "profile": [20, 30, 0, 0],
         "measurements": [
           {"unit_name": "commentCreated", "start": {"line": 24, "column": 23}, "end": {"line": 31, "column": 2}, "value": 8},
@@ -356,7 +362,7 @@
       "src/webhooks/issue-labeled.ts": {
         "checksum": "5a590def2d82386bf3912efdb267c02e",
         "language": "TypeScript",
-        "loc": 20,
+        "loc": 16,
         "profile": [0, 16, 0, 0],
         "measurements": [
           {"unit_name": "issueLabeled", "start": {"line": 6, "column": 23}, "end": {"line": 21, "column": 2}, "value": 16}
@@ -365,7 +371,7 @@
       "src/webhooks/issue-closed.ts": {
         "checksum": "6ef225b3cd349b749d1a6ce723f25ffc",
         "language": "TypeScript",
-        "loc": 26,
+        "loc": 21,
         "profile": [21, 0, 0, 0],
         "measurements": [
           {"unit_name": "issueClosed", "start": {"line": 7, "column": 23}, "end": {"line": 16, "column": 2}, "value": 10},
@@ -375,7 +381,7 @@
       "src/webhooks/pull-request.ts": {
         "checksum": "76779d2bd81873ac197f579f32251cc0",
         "language": "TypeScript",
-        "loc": 52,
+        "loc": 47,
         "profile": [23, 24, 0, 0],
         "measurements": [
           {"unit_name": "pullRequest", "start": {"line": 8, "column": 23}, "end": {"line": 31, "column": 2}, "value": 24},
@@ -386,7 +392,7 @@
       "src/webhooks/issue-assigned.ts": {
         "checksum": "32a794d7bb0a25f72d0316b6efce7a94",
         "language": "TypeScript",
-        "loc": 53,
+        "loc": 38,
         "profile": [11, 27, 0, 0],
         "measurements": [
           {"unit_name": "issueAssigned", "start": {"line": 17, "column": 23}, "end": {"line": 27, "column": 2}, "value": 11},
@@ -396,7 +402,7 @@
       "src/services/MongoDbService.ts": {
         "checksum": "48008324e7edb8b1e07629e642924c21",
         "language": "TypeScript",
-        "loc": 26,
+        "loc": 17,
         "profile": [17, 0, 0, 0],
         "measurements": [
           {"unit_name": "getDatabase", "start": {"line": 12, "column": 11}, "end": {"line": 20, "column": 6}, "value": 9},
