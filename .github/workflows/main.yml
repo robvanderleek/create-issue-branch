@@ -32,9 +32,6 @@ jobs:
     - name: 'Run unit-tests'
       run: yarn test
 
-    - name: 'Run CodeLimit'
-      uses: getcodelimit/codelimit-action@v1
-
     - name: 'Run code coverage'
       run: yarn run coverage
 
