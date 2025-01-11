@@ -1,7 +1,7 @@
 {
   "version": "0.18.1",
-  "uuid": "681f604f-d3b7-4c45-8838-eb65ca76b9da",
-  "timestamp": "2025-01-08T21:05:44+00:00",
+  "uuid": "8d156467-229f-405e-a566-59ec9badd3ed",
+  "timestamp": "2025-01-11T20:29:18+00:00",
   "root": "/github/workspace",
   "repository": {
     "owner": "robvanderleek",
@@ -12,7 +12,7 @@
     "totals": {
       "TypeScript": {
         "files": 24,
-        "lines_of_code": 1252,
+        "lines_of_code": 1241,
         "functions": 115,
         "hard_to_maintain": 3,
         "unmaintainable": 0
@@ -32,7 +32,7 @@
           "next.config.js",
           "src/"
         ],
-        "profile": [679, 464, 117, 0]
+        "profile": [696, 436, 117, 0]
       },
       "src/": {
         "entries": [
@@ -51,14 +51,14 @@
           "webhooks/",
           "services/"
         ],
-        "profile": [671, 464, 117, 0]
+        "profile": [688, 436, 117, 0]
       },
       "src/entities/": {
         "entries": [
           "WebhookEvent.ts",
           "Config.ts"
         ],
-        "profile": [0, 27, 0, 0]
+        "profile": [0, 28, 0, 0]
       },
       "src/pages/api/": {
         "entries": [
@@ -95,7 +95,7 @@
     },
     "files": {
       "next-env.d.ts": {
-        "checksum": "3cf36e94213e85dc306ec5f3f3760ecc",
+        "checksum": "cd8a0ae6ffaa12655296aeb2a08ba0bb",
         "language": "TypeScript",
         "loc": 0,
         "profile": [0, 0, 0, 0],
@@ -135,23 +135,24 @@
         ]
       },
       "src/plans.ts": {
-        "checksum": "2878248338004573f7e480efe8125c1a",
+        "checksum": "c2de496efa80d70393b1a39db5ff282c",
         "language": "TypeScript",
-        "loc": 84,
-        "profile": [22, 62, 0, 0],
+        "loc": 93,
+        "profile": [41, 52, 0, 0],
         "measurements": [
-          {"unit_name": "isProPlan", "start": {"line": 6, "column": 23}, "end": {"line": 28, "column": 2}, "value": 23},
-          {"unit_name": "freeProSubscription", "start": {"line": 30, "column": 10}, "end": {"line": 36, "column": 2}, "value": 7},
-          {"unit_name": "isActivatedBeforeProPlanIntroduction", "start": {"line": 38, "column": 23}, "end": {"line": 60, "column": 2}, "value": 23},
-          {"unit_name": "listAppSubscriptions", "start": {"line": 62, "column": 23}, "end": {"line": 77, "column": 2}, "value": 16},
-          {"unit_name": "listFreeTrialAccounts", "start": {"line": 79, "column": 10}, "end": {"line": 93, "column": 2}, "value": 15}
+          {"unit_name": "hasValidSubscription", "start": {"line": 8, "column": 23}, "end": {"line": 20, "column": 2}, "value": 13},
+          {"unit_name": "isPaidPlan", "start": {"line": 22, "column": 23}, "end": {"line": 40, "column": 2}, "value": 19},
+          {"unit_name": "displayFreePlanWarning", "start": {"line": 42, "column": 23}, "end": {"line": 58, "column": 2}, "value": 17},
+          {"unit_name": "isFreePaidSubscription", "start": {"line": 60, "column": 17}, "end": {"line": 72, "column": 2}, "value": 13},
+          {"unit_name": "listAppSubscriptions", "start": {"line": 74, "column": 23}, "end": {"line": 89, "column": 2}, "value": 16},
+          {"unit_name": "listFreeTrialAccounts", "start": {"line": 91, "column": 10}, "end": {"line": 105, "column": 2}, "value": 15}
         ]
       },
       "src/context.ts": {
-        "checksum": "0509faa8dff968a0df661b1ff00c6d1b",
+        "checksum": "78423749666bb7400a339e6fab7da24b",
         "language": "TypeScript",
-        "loc": 63,
-        "profile": [47, 16, 0, 0],
+        "loc": 59,
+        "profile": [43, 16, 0, 0],
         "measurements": [
           {"unit_name": "getRepoOwnerLogin", "start": {"line": 1, "column": 17}, "end": {"line": 3, "column": 2}, "value": 3},
           {"unit_name": "getRepoOwnerId", "start": {"line": 5, "column": 17}, "end": {"line": 7, "column": 2}, "value": 3},
@@ -160,12 +161,11 @@
           {"unit_name": "getIssueDescription", "start": {"line": 17, "column": 17}, "end": {"line": 19, "column": 2}, "value": 3},
           {"unit_name": "getIssueTitle", "start": {"line": 21, "column": 17}, "end": {"line": 23, "column": 2}, "value": 3},
           {"unit_name": "getDefaultBranch", "start": {"line": 25, "column": 17}, "end": {"line": 27, "column": 2}, "value": 3},
-          {"unit_name": "isPrivateOrgRepo", "start": {"line": 29, "column": 17}, "end": {"line": 32, "column": 2}, "value": 4},
-          {"unit_name": "getIssueLabels", "start": {"line": 34, "column": 17}, "end": {"line": 37, "column": 2}, "value": 4},
-          {"unit_name": "getIssueLabelsForMatching", "start": {"line": 39, "column": 17}, "end": {"line": 46, "column": 2}, "value": 8},
-          {"unit_name": "getAssignee", "start": {"line": 48, "column": 17}, "end": {"line": 63, "column": 2}, "value": 16},
-          {"unit_name": "getSender", "start": {"line": 65, "column": 17}, "end": {"line": 67, "column": 2}, "value": 3},
-          {"unit_name": "getMilestoneNumber", "start": {"line": 69, "column": 17}, "end": {"line": 75, "column": 2}, "value": 7}
+          {"unit_name": "getIssueLabels", "start": {"line": 29, "column": 17}, "end": {"line": 32, "column": 2}, "value": 4},
+          {"unit_name": "getIssueLabelsForMatching", "start": {"line": 34, "column": 17}, "end": {"line": 41, "column": 2}, "value": 8},
+          {"unit_name": "getAssignee", "start": {"line": 43, "column": 17}, "end": {"line": 58, "column": 2}, "value": 16},
+          {"unit_name": "getSender", "start": {"line": 60, "column": 17}, "end": {"line": 62, "column": 2}, "value": 3},
+          {"unit_name": "getMilestoneNumber", "start": {"line": 64, "column": 17}, "end": {"line": 70, "column": 2}, "value": 7}
         ]
       },
       "src/discord.ts": {
@@ -186,10 +186,10 @@
         ]
       },
       "src/config.ts": {
-        "checksum": "b28847e77d5691c98d003356ec52bb98",
+        "checksum": "a6c84daaea022a35bcde32d28508eb50",
         "language": "TypeScript",
-        "loc": 169,
-        "profile": [83, 23, 63, 0],
+        "loc": 172,
+        "profile": [86, 23, 63, 0],
         "measurements": [
           {"unit_name": "findConfigurationErrorIssue", "start": {"line": 10, "column": 16}, "end": {"line": 15, "column": 2}, "value": 6},
           {"unit_name": "createConfigurationErrorIssue", "start": {"line": 17, "column": 16}, "end": {"line": 34, "column": 2}, "value": 9},
@@ -202,20 +202,21 @@
           {"unit_name": "isExperimentalBranchNameArgument", "start": {"line": 84, "column": 17}, "end": {"line": 86, "column": 2}, "value": 3},
           {"unit_name": "shouldOpenPR", "start": {"line": 88, "column": 17}, "end": {"line": 90, "column": 2}, "value": 3},
           {"unit_name": "prSkipCI", "start": {"line": 92, "column": 17}, "end": {"line": 94, "column": 2}, "value": 3},
-          {"unit_name": "isChatOpsCommand", "start": {"line": 96, "column": 17}, "end": {"line": 103, "column": 2}, "value": 8},
-          {"unit_name": "getChatOpsCommandArgument", "start": {"line": 105, "column": 17}, "end": {"line": 112, "column": 2}, "value": 8},
-          {"unit_name": "getCommentMessage", "start": {"line": 114, "column": 17}, "end": {"line": 121, "column": 2}, "value": 7},
-          {"unit_name": "getDefaultBranch", "start": {"line": 123, "column": 17}, "end": {"line": 129, "column": 2}, "value": 7},
-          {"unit_name": "getConventionalPrTitlePrefix", "start": {"line": 131, "column": 17}, "end": {"line": 162, "column": 2}, "value": 32},
-          {"unit_name": "getConventionalLabelMapping", "start": {"line": 168, "column": 17}, "end": {"line": 198, "column": 2}, "value": 31},
-          {"unit_name": "isBreakingPr", "start": {"line": 200, "column": 10}, "end": {"line": 202, "column": 2}, "value": 3}
+          {"unit_name": "showFreePlanWarning", "start": {"line": 96, "column": 17}, "end": {"line": 98, "column": 2}, "value": 3},
+          {"unit_name": "isChatOpsCommand", "start": {"line": 100, "column": 17}, "end": {"line": 107, "column": 2}, "value": 8},
+          {"unit_name": "getChatOpsCommandArgument", "start": {"line": 109, "column": 17}, "end": {"line": 116, "column": 2}, "value": 8},
+          {"unit_name": "getCommentMessage", "start": {"line": 118, "column": 17}, "end": {"line": 125, "column": 2}, "value": 7},
+          {"unit_name": "getDefaultBranch", "start": {"line": 127, "column": 17}, "end": {"line": 133, "column": 2}, "value": 7},
+          {"unit_name": "getConventionalPrTitlePrefix", "start": {"line": 135, "column": 17}, "end": {"line": 166, "column": 2}, "value": 32},
+          {"unit_name": "getConventionalLabelMapping", "start": {"line": 172, "column": 17}, "end": {"line": 202, "column": 2}, "value": 31},
+          {"unit_name": "isBreakingPr", "start": {"line": 204, "column": 10}, "end": {"line": 206, "column": 2}, "value": 3}
         ]
       },
       "src/utils.ts": {
-        "checksum": "6802e2f0f4a53e161c07fa9b2de0d74e",
+        "checksum": "e2e6b7980879f3f93005af75029e488c",
         "language": "TypeScript",
-        "loc": 69,
-        "profile": [69, 0, 0, 0],
+        "loc": 72,
+        "profile": [72, 0, 0, 0],
         "measurements": [
           {"unit_name": "makePrefixGitSafe", "start": {"line": 9, "column": 17}, "end": {"line": 9, "column": 88}, "value": 1},
           {"unit_name": "makeGitSafe", "start": {"line": 17, "column": 17}, "end": {"line": 17, "column": 82}, "value": 1},
@@ -225,11 +226,12 @@
           {"unit_name": "isProduction", "start": {"line": 37, "column": 17}, "end": {"line": 39, "column": 2}, "value": 3},
           {"unit_name": "pushMetric", "start": {"line": 48, "column": 17}, "end": {"line": 53, "column": 2}, "value": 6},
           {"unit_name": "isRunningInGitHubActions", "start": {"line": 55, "column": 17}, "end": {"line": 57, "column": 2}, "value": 3},
-          {"unit_name": "getStringLengthInBytes", "start": {"line": 59, "column": 17}, "end": {"line": 61, "column": 2}, "value": 3},
-          {"unit_name": "trimStringToByteLength", "start": {"line": 63, "column": 17}, "end": {"line": 73, "column": 2}, "value": 11},
-          {"unit_name": "logMemoryUsage", "start": {"line": 75, "column": 17}, "end": {"line": 82, "column": 2}, "value": 8},
-          {"unit_name": "formatAsExpandingMarkdown", "start": {"line": 84, "column": 17}, "end": {"line": 92, "column": 2}, "value": 9},
-          {"unit_name": "sleep", "start": {"line": 94, "column": 23}, "end": {"line": 96, "column": 2}, "value": 3}
+          {"unit_name": "isRunningInTestEnvironment", "start": {"line": 59, "column": 17}, "end": {"line": 61, "column": 2}, "value": 3},
+          {"unit_name": "getStringLengthInBytes", "start": {"line": 63, "column": 17}, "end": {"line": 65, "column": 2}, "value": 3},
+          {"unit_name": "trimStringToByteLength", "start": {"line": 67, "column": 17}, "end": {"line": 77, "column": 2}, "value": 11},
+          {"unit_name": "logMemoryUsage", "start": {"line": 79, "column": 17}, "end": {"line": 86, "column": 2}, "value": 8},
+          {"unit_name": "formatAsExpandingMarkdown", "start": {"line": 88, "column": 17}, "end": {"line": 96, "column": 2}, "value": 9},
+          {"unit_name": "sleep", "start": {"line": 98, "column": 23}, "end": {"line": 100, "column": 2}, "value": 3}
         ]
       },
       "src/probot.ts": {
@@ -245,43 +247,41 @@
         ]
       },
       "src/github.ts": {
-        "checksum": "7bee7789531c35fc0a281180be3ed5a5",
+        "checksum": "5245187aac2ede5f4846899fe4c6e1c7",
         "language": "TypeScript",
-        "loc": 385,
-        "profile": [235, 150, 0, 0],
+        "loc": 362,
+        "profile": [231, 131, 0, 0],
         "measurements": [
-          {"unit_name": "createIssueBranch", "start": {"line": 34, "column": 23}, "end": {"line": 43, "column": 2}, "value": 10},
-          {"unit_name": "hasValidSubscriptionForRepo", "start": {"line": 45, "column": 16}, "end": {"line": 63, "column": 2}, "value": 19},
-          {"unit_name": "addBuyProComment", "start": {"line": 70, "column": 16}, "end": {"line": 73, "column": 2}, "value": 4},
-          {"unit_name": "getBranchNameFromIssue", "start": {"line": 75, "column": 23}, "end": {"line": 86, "column": 2}, "value": 10},
-          {"unit_name": "getBranchName", "start": {"line": 88, "column": 23}, "end": {"line": 111, "column": 2}, "value": 24},
-          {"unit_name": "getIssueNumberFromBranchName", "start": {"line": 113, "column": 17}, "end": {"line": 127, "column": 2}, "value": 15},
-          {"unit_name": "getIssueBranchPrefix", "start": {"line": 129, "column": 17}, "end": {"line": 136, "column": 2}, "value": 8},
-          {"unit_name": "getIssueBranchConfig", "start": {"line": 138, "column": 17}, "end": {"line": 149, "column": 2}, "value": 12},
-          {"unit_name": "allLabelsMatchIssueLabels", "start": {"line": 151, "column": 10}, "end": {"line": 153, "column": 2}, "value": 3},
-          {"unit_name": "skipForIssue", "start": {"line": 155, "column": 17}, "end": {"line": 162, "column": 2}, "value": 8},
-          {"unit_name": "skipBranchCreationForIssue", "start": {"line": 164, "column": 17}, "end": {"line": 171, "column": 2}, "value": 8},
-          {"unit_name": "addComment", "start": {"line": 173, "column": 23}, "end": {"line": 188, "column": 2}, "value": 16},
-          {"unit_name": "branchExists", "start": {"line": 190, "column": 23}, "end": {"line": 201, "column": 2}, "value": 12},
-          {"unit_name": "deleteBranch", "start": {"line": 203, "column": 23}, "end": {"line": 214, "column": 2}, "value": 12},
-          {"unit_name": "getSourceBranch", "start": {"line": 216, "column": 17}, "end": {"line": 223, "column": 2}, "value": 8},
-          {"unit_name": "getPrTargetBranch", "start": {"line": 225, "column": 10}, "end": {"line": 234, "column": 2}, "value": 10},
-          {"unit_name": "getSourceBranchHeadSha", "start": {"line": 236, "column": 16}, "end": {"line": 248, "column": 2}, "value": 13},
-          {"unit_name": "getDefaultBranch", "start": {"line": 250, "column": 10}, "end": {"line": 252, "column": 2}, "value": 3},
-          {"unit_name": "getBranchHeadSha", "start": {"line": 254, "column": 16}, "end": {"line": 264, "column": 2}, "value": 11},
-          {"unit_name": "createBranch", "start": {"line": 266, "column": 23}, "end": {"line": 290, "column": 2}, "value": 25},
-          {"unit_name": "createPr", "start": {"line": 292, "column": 23}, "end": {"line": 313, "column": 2}, "value": 22},
-          {"unit_name": "createEmptyCommit", "start": {"line": 315, "column": 16}, "end": {"line": 336, "column": 2}, "value": 13},
-          {"unit_name": "getCommitText", "start": {"line": 338, "column": 10}, "end": {"line": 348, "column": 2}, "value": 11},
-          {"unit_name": "getPrBody", "start": {"line": 350, "column": 10}, "end": {"line": 363, "column": 2}, "value": 14},
-          {"unit_name": "copyIssueAttributesToPr", "start": {"line": 365, "column": 16}, "end": {"line": 387, "column": 2}, "value": 23},
-          {"unit_name": "copyIssueLabelsToPr", "start": {"line": 389, "column": 16}, "end": {"line": 396, "column": 2}, "value": 8},
-          {"unit_name": "copyIssueAssigneeToPr", "start": {"line": 398, "column": 16}, "end": {"line": 403, "column": 2}, "value": 6},
-          {"unit_name": "copyIssueMilestoneToPr", "start": {"line": 405, "column": 16}, "end": {"line": 412, "column": 2}, "value": 8},
-          {"unit_name": "copyIssueProjectsToPr", "start": {"line": 414, "column": 16}, "end": {"line": 427, "column": 2}, "value": 10},
-          {"unit_name": "queryProjectIdsForIssue", "start": {"line": 429, "column": 16}, "end": {"line": 459, "column": 2}, "value": 21},
-          {"unit_name": "updatePrTitle", "start": {"line": 461, "column": 23}, "end": {"line": 471, "column": 2}, "value": 11},
-          {"unit_name": "updatePrBody", "start": {"line": 473, "column": 23}, "end": {"line": 479, "column": 2}, "value": 7}
+          {"unit_name": "createIssueBranch", "start": {"line": 37, "column": 23}, "end": {"line": 46, "column": 2}, "value": 10},
+          {"unit_name": "getBranchNameFromIssue", "start": {"line": 48, "column": 23}, "end": {"line": 59, "column": 2}, "value": 10},
+          {"unit_name": "getBranchName", "start": {"line": 61, "column": 23}, "end": {"line": 84, "column": 2}, "value": 24},
+          {"unit_name": "getIssueNumberFromBranchName", "start": {"line": 86, "column": 17}, "end": {"line": 100, "column": 2}, "value": 15},
+          {"unit_name": "getIssueBranchPrefix", "start": {"line": 102, "column": 17}, "end": {"line": 109, "column": 2}, "value": 8},
+          {"unit_name": "getIssueBranchConfig", "start": {"line": 111, "column": 17}, "end": {"line": 122, "column": 2}, "value": 12},
+          {"unit_name": "allLabelsMatchIssueLabels", "start": {"line": 124, "column": 10}, "end": {"line": 126, "column": 2}, "value": 3},
+          {"unit_name": "skipForIssue", "start": {"line": 128, "column": 17}, "end": {"line": 135, "column": 2}, "value": 8},
+          {"unit_name": "skipBranchCreationForIssue", "start": {"line": 137, "column": 17}, "end": {"line": 144, "column": 2}, "value": 8},
+          {"unit_name": "addComment", "start": {"line": 146, "column": 23}, "end": {"line": 161, "column": 2}, "value": 16},
+          {"unit_name": "branchExists", "start": {"line": 163, "column": 23}, "end": {"line": 174, "column": 2}, "value": 12},
+          {"unit_name": "deleteBranch", "start": {"line": 176, "column": 23}, "end": {"line": 187, "column": 2}, "value": 12},
+          {"unit_name": "getSourceBranch", "start": {"line": 189, "column": 17}, "end": {"line": 196, "column": 2}, "value": 8},
+          {"unit_name": "getPrTargetBranch", "start": {"line": 198, "column": 10}, "end": {"line": 207, "column": 2}, "value": 10},
+          {"unit_name": "getSourceBranchHeadSha", "start": {"line": 209, "column": 16}, "end": {"line": 221, "column": 2}, "value": 13},
+          {"unit_name": "getDefaultBranch", "start": {"line": 223, "column": 10}, "end": {"line": 225, "column": 2}, "value": 3},
+          {"unit_name": "getBranchHeadSha", "start": {"line": 227, "column": 16}, "end": {"line": 237, "column": 2}, "value": 11},
+          {"unit_name": "createBranch", "start": {"line": 239, "column": 23}, "end": {"line": 263, "column": 2}, "value": 25},
+          {"unit_name": "createPr", "start": {"line": 265, "column": 23}, "end": {"line": 286, "column": 2}, "value": 22},
+          {"unit_name": "createEmptyCommit", "start": {"line": 288, "column": 16}, "end": {"line": 309, "column": 2}, "value": 13},
+          {"unit_name": "getCommitText", "start": {"line": 311, "column": 10}, "end": {"line": 321, "column": 2}, "value": 11},
+          {"unit_name": "getPrBody", "start": {"line": 323, "column": 10}, "end": {"line": 336, "column": 2}, "value": 14},
+          {"unit_name": "copyIssueAttributesToPr", "start": {"line": 338, "column": 16}, "end": {"line": 360, "column": 2}, "value": 23},
+          {"unit_name": "copyIssueLabelsToPr", "start": {"line": 362, "column": 16}, "end": {"line": 369, "column": 2}, "value": 8},
+          {"unit_name": "copyIssueAssigneeToPr", "start": {"line": 371, "column": 16}, "end": {"line": 376, "column": 2}, "value": 6},
+          {"unit_name": "copyIssueMilestoneToPr", "start": {"line": 378, "column": 16}, "end": {"line": 385, "column": 2}, "value": 8},
+          {"unit_name": "copyIssueProjectsToPr", "start": {"line": 387, "column": 16}, "end": {"line": 400, "column": 2}, "value": 10},
+          {"unit_name": "queryProjectIdsForIssue", "start": {"line": 402, "column": 16}, "end": {"line": 432, "column": 2}, "value": 21},
+          {"unit_name": "updatePrTitle", "start": {"line": 434, "column": 23}, "end": {"line": 444, "column": 2}, "value": 11},
+          {"unit_name": "updatePrBody", "start": {"line": 446, "column": 23}, "end": {"line": 452, "column": 2}, "value": 7}
         ]
       },
       "src/entities/WebhookEvent.ts": {
@@ -293,12 +293,12 @@
         ]
       },
       "src/entities/Config.ts": {
-        "checksum": "fcd684abeeb89efd5e217d64ab65bf9a",
+        "checksum": "eb9b0c5aea8df404ede5f435357c95e4",
         "language": "TypeScript",
-        "loc": 27,
-        "profile": [0, 27, 0, 0],
+        "loc": 28,
+        "profile": [0, 28, 0, 0],
         "measurements": [
-          {"unit_name": "getDefaultConfig", "start": {"line": 38, "column": 17}, "end": {"line": 64, "column": 2}, "value": 27}
+          {"unit_name": "getDefaultConfig", "start": {"line": 39, "column": 17}, "end": {"line": 66, "column": 2}, "value": 28}
         ]
       },
       "src/pages/api/webhook.ts": {
@@ -390,13 +390,13 @@
         ]
       },
       "src/webhooks/issue-assigned.ts": {
-        "checksum": "32a794d7bb0a25f72d0316b6efce7a94",
+        "checksum": "1129ec9882ea2bb8f14d3cdbfcf8e185",
         "language": "TypeScript",
         "loc": 38,
         "profile": [11, 27, 0, 0],
         "measurements": [
-          {"unit_name": "issueAssigned", "start": {"line": 17, "column": 23}, "end": {"line": 27, "column": 2}, "value": 11},
-          {"unit_name": "handle", "start": {"line": 29, "column": 16}, "end": {"line": 55, "column": 2}, "value": 27}
+          {"unit_name": "issueAssigned", "start": {"line": 18, "column": 23}, "end": {"line": 28, "column": 2}, "value": 11},
+          {"unit_name": "handle", "start": {"line": 31, "column": 16}, "end": {"line": 57, "column": 2}, "value": 27}
         ]
       },
       "src/services/MongoDbService.ts": {
