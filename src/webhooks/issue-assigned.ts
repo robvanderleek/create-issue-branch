@@ -13,6 +13,7 @@ import {
 } from "../github";
 import {isRunningInGitHubActions, logMemoryUsage} from "../utils";
 import {setOutput} from "@actions/core";
+import {displayFreePlanWarning} from "../plans";
 
 export async function issueAssigned(app: Probot, ctx: Context<any>) {
     app.log.debug('Issue was assigned');
@@ -26,6 +27,7 @@ export async function issueAssigned(app: Probot, ctx: Context<any>) {
     }
 }
 
+
 async function handle(app: Probot, ctx: Context<any>, config: Config) {
     if (skipForIssue(ctx, config)) {
         app.log.info(`Skipping run for issue: ${getIssueTitle(ctx)}`)
@@ -36,15 +38,15 @@ async function handle(app: Probot, ctx: Context<any>, config: Config) {
         app.log.info(`Skipping branch creation for issue: ${getIssueTitle(ctx)}`)
         branchName = await getSourceBranch(ctx, config)
     } else {
-        branchName = await getBranchNameFromIssue(ctx, config)
+        branchName = await getBranchNameFromIssue(ctx, config);
         if (await branchExists(ctx, branchName)) {
-            app.log.info('Could not create branch as it already exists')
+            app.log.info('Could not create branch as it already exists');
             if (isRunningInGitHubActions()) {
-                setOutput('branchName', branchName)
+                setOutput('branchName', branchName);
             }
-            return
+            return;
         }
-        await createIssueBranch(app, ctx, branchName, config)
+        await createIssueBranch(app, ctx, branchName, config);
     }
     const shouldCreatePR = shouldOpenPR(config)
     if (shouldCreatePR) {

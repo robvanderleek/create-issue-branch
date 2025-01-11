@@ -18,6 +18,7 @@ export interface Config {
     openPR: boolean;
     openDraftPR: boolean;
     prSkipCI: boolean;
+    freePlanWarning: boolean;
     conventionalPrTitles: boolean;
     conventionalStyle: 'semver' | 'gitmoji' | 'semver-no-gitmoji';
     conventionalLabels: { [name: string]: { [name: string]: any } }
@@ -54,6 +55,7 @@ export function getDefaultConfig(): Config {
         openPR: false,
         openDraftPR: false,
         prSkipCI: false,
+        freePlanWarning: true,
         conventionalPrTitles: false,
         conventionalStyle: 'semver',
         conventionalLabels: {},

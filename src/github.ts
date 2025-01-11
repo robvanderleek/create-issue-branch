@@ -8,11 +8,10 @@ import {
     getIssueTitle,
     getMilestoneNumber,
     getRepoName,
-    getRepoOwnerLogin,
-    isPrivateOrgRepo
+    getRepoOwnerLogin
 } from "./context";
 import {Context, Probot} from "probot";
-import {isProPlan} from "./plans";
+import {hasValidSubscription} from "./plans";
 import {interpolate} from "./interpolate";
 import {Config} from "./entities/Config";
 import {
@@ -26,13 +25,17 @@ import {
     formatAsExpandingMarkdown,
     getStringLengthInBytes,
     isProduction,
-    isRunningInGitHubActions, makeGitSafe, makePrefixGitSafe,
-    pushMetric, sleep,
-    trimStringToByteLength, wildcardMatch
+    isRunningInGitHubActions,
+    makeGitSafe,
+    makePrefixGitSafe,
+    pushMetric,
+    sleep,
+    trimStringToByteLength,
+    wildcardMatch
 } from "./utils";
 
 export async function createIssueBranch(app: Probot, ctx: Context<any>, branchName: string, config: Config) {
-    if (await hasValidSubscriptionForRepo(app, ctx, config)) {
+    if (await hasValidSubscription(app, ctx, config)) {
         const sha = await getSourceBranchHeadSha(ctx, config, app.log)
         if (sha) {
             await createBranch(app, ctx, config, branchName, sha);
@@ -40,36 +43,6 @@ export async function createIssueBranch(app: Probot, ctx: Context<any>, branchNa
             await addComment(ctx, config, 'Could not find source branch for new issue branch')
         }
     }
-}
-
-async function hasValidSubscriptionForRepo(app: Probot, ctx: Context<any>, config: Config) {
-    if (isRunningInGitHubActions()) {
-        return true
-    }
-    if (isPrivateOrgRepo(ctx)) {
-        const isProPan = await isProPlan(app, ctx)
-        if (!isProPan) {
-            await addBuyProComment(ctx, config)
-            app.log.info('Added comment to buy Pro 🙏 plan')
-            return false
-        } else {
-            return true
-        }
-    } else {
-        const login = getRepoOwnerLogin(ctx)
-        app.log.info(`Creating branch in public repository from user/org: https://github.com/${login} ...`)
-        return true
-    }
-}
-
-const buyComment = 'Hi there :wave:\n\nUsing this App for a private organization repository requires a paid ' +
-    'subscription that you can buy on the [GitHub Marketplace](https://github.com/marketplace/create-issue-branch)\n\n' +
-    'If you are a non-profit organization or otherwise can not pay for such a plan, contact me by ' +
-    '[creating an issue](https://github.com/robvanderleek/create-issue-branch/issues)'
-
-async function addBuyProComment(ctx: Context<any>, config: Config) {
-    config.silent = false;
-    await addComment(ctx, config, buyComment)
 }
 
 export async function getBranchNameFromIssue(ctx: Context<any>, config: Config) {

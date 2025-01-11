@@ -7,8 +7,7 @@ import {
     getIssueLabels,
     getMilestoneNumber,
     getRepoOwnerLogin,
-    getSender,
-    isPrivateOrgRepo
+    getSender
 } from "../src/context";
 
 test('get owner', () => {
@@ -34,19 +33,6 @@ test('get sender', () => {
     const ctx = {payload: issueCommentCreatedPayload}
 
     expect(getSender(ctx)).toBe('robvanderleek')
-})
-
-test('is private Org repo', () => {
-    expect(isPrivateOrgRepo({payload: issueAssignedPayload})).toBeFalsy()
-
-    const payloadCopy = JSON.parse(JSON.stringify(issueAssignedPayload))
-    payloadCopy.repository.private = true
-
-    expect(isPrivateOrgRepo({payload: payloadCopy})).toBeFalsy()
-
-    payloadCopy.repository.owner.type = 'Organization'
-
-    expect(isPrivateOrgRepo({payload: payloadCopy})).toBeTruthy()
 })
 
 test('get Issue description', () => {

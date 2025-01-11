@@ -56,6 +56,10 @@ export function isRunningInGitHubActions() {
     return process.env.GITHUB_ACTIONS === 'true';
 }
 
+export function isRunningInTestEnvironment() {
+    return process.env.NODE_ENV === 'test';
+}
+
 export function getStringLengthInBytes(str: string) {
     return (new TextEncoder().encode(str)).length
 }
