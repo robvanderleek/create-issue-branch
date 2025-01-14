@@ -1,5 +1,5 @@
 import {Context, Probot} from "probot";
-import {getRepoOwnerId, getRepoOwnerLogin} from "./context";
+import {getRepoOwnerId, getRepoOwnerLogin, isOrgRepo} from "./context";
 import {showFreePlanWarning} from "./config";
 import {addComment} from "./github";
 import {Config} from "./entities/Config";
@@ -12,11 +12,41 @@ export async function hasValidSubscription(app: Probot, ctx: Context<any>, confi
     if (isFreePaidSubscription(app, ctx)) {
         return true;
     }
+    if (isOrgRepo(ctx)) {
+        const hasPaidPlan = await isCommercialOrganizationPlan(app, ctx)
+        if (hasPaidPlan) {
+            return true;
+        } else {
+            await buyCommercialOrganizationPlanComment(ctx, config);
+            app.log.info('Added comment to buy Commercial organization 🙏 plan');
+            return false;
+        }
+    }
     if (await isPaidPlan(app, ctx)) {
         return true;
+    } else {
+        await freePlanWarningComment(ctx, config);
+        return true;
     }
-    await displayFreePlanWarning(ctx, config);
-    return false;
+}
+
+export async function isCommercialOrganizationPlan(app: Probot, ctx: Context<any>) {
+    try {
+        const login = getRepoOwnerLogin(ctx);
+        app.log.info(`Checking Marketplace for organization: https://github.com/${login} ...`);
+        const id = getRepoOwnerId(ctx);
+        const res = await ctx.octokit.apps.getSubscriptionPlanForAccount({account_id: id});
+        const purchase = res.data.marketplace_purchase;
+        if (purchase.plan && purchase.plan.name === 'Commercial organization') {
+            app.log.info('Found Commercial organization 💰 plan');
+            return true;
+        } else {
+            return false;
+        }
+    } catch (error) {
+        app.log.info('Marketplace purchase not found');
+        return false;
+    }
 }
 
 export async function isPaidPlan(app: Probot, ctx: Context<any>) {
@@ -39,7 +69,19 @@ export async function isPaidPlan(app: Probot, ctx: Context<any>) {
     }
 }
 
-export async function displayFreePlanWarning(ctx: Context<any>, config: Config) {
+async function buyCommercialOrganizationPlanComment(ctx: Context<any>, config: Config) {
+    let buyComment = '';
+    buyComment += 'Hi there :wave:\n\n';
+    buyComment += 'Using this App for an organization repository requires a paid ';
+    buyComment += 'subscription that you can buy on the ';
+    buyComment += '[GitHub Marketplace](https://github.com/marketplace/create-issue-branch)\n\n';
+    buyComment += 'If you are a non-profit organization or otherwise can not pay for such a plan, contact me by ';
+    buyComment += '[creating an issue](https://github.com/robvanderleek/create-issue-branch/issues)';
+    config.silent = false;
+    await addComment(ctx, config, buyComment)
+}
+
+async function freePlanWarningComment(ctx: Context<any>, config: Config) {
     if (showFreePlanWarning(config)) {
         let freePlanWarning = '';
         freePlanWarning += 'Hi there :wave:\n\n';

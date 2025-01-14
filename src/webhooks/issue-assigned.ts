@@ -13,7 +13,6 @@ import {
 } from "../github";
 import {isRunningInGitHubActions, logMemoryUsage} from "../utils";
 import {setOutput} from "@actions/core";
-import {displayFreePlanWarning} from "../plans";
 
 export async function issueAssigned(app: Probot, ctx: Context<any>) {
     app.log.debug('Issue was assigned');

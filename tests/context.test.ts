@@ -7,7 +7,8 @@ import {
     getIssueLabels,
     getMilestoneNumber,
     getRepoOwnerLogin,
-    getSender
+    getSender,
+    isOrgRepo
 } from "../src/context";
 
 test('get owner', () => {
@@ -30,10 +31,24 @@ test('get assignee from event', () => {
 })
 
 test('get sender', () => {
-    const ctx = {payload: issueCommentCreatedPayload}
+    const ctx = {payload: issueCommentCreatedPayload};
 
-    expect(getSender(ctx)).toBe('robvanderleek')
-})
+    expect(getSender(ctx)).toBe('robvanderleek');
+});
+
+test('is private Org repo', () => {
+    expect(isOrgRepo({payload: issueAssignedPayload})).toBeFalsy();
+
+    const payloadCopy = JSON.parse(JSON.stringify(issueAssignedPayload));
+
+    payloadCopy.repository.private = true;
+
+    expect(isOrgRepo({payload: payloadCopy})).toBeFalsy();
+
+    payloadCopy.repository.owner.type = 'Organization';
+
+    expect(isOrgRepo({payload: payloadCopy})).toBeTruthy();
+});
 
 test('get Issue description', () => {
     const ctx = {payload: issueOpenedPayload}
