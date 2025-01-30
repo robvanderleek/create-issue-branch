@@ -49,7 +49,7 @@
   },
   "dependencies": {
     "@actions/core": "^1.10.0",
-    "@analytics/google-analytics": "^1.0.3",
+    "@analytics/google-analytics": "^1.1.0",
     "@probot/adapter-github-actions": "^4.0.0",
     "@types/dlv": "^1.1.4",
     "analytics": "^0.8.11",

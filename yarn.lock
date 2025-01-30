@@ -49,10 +49,10 @@
   dependencies:
     "@analytics/type-utils" "^0.6.2"
 
-"@analytics/google-analytics@^1.0.3":
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/@analytics/google-analytics/-/google-analytics-1.0.7.tgz#256658c841af707aabdcfb35858971676115d1ce"
-  integrity sha512-KZ69NaMIi5kOcouzqI8cu7tZgQl7ziGiRahfU6zniUf32G8bv7wQDh73JFz1NwO6gBPloUc+5BzEoWzScM5Rgw==
+"@analytics/google-analytics@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@analytics/google-analytics/-/google-analytics-1.1.0.tgz#901e20b8c0ad10e26118317a5b6d5e98f927037f"
+  integrity sha512-i8uGyELMtwEUAf3GNWNLNBzhRvReDn1RUxvMdMhjUA7+GNGxPOM4kkzFfv3giQXKNxTEjfsh75kqNcscbJsuaA==
 
 "@analytics/localstorage-utils@^0.1.10":
   version "0.1.10"
