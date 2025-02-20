@@ -33,14 +33,14 @@
   dependencies:
     "@analytics/global-storage-utils" "^0.1.7"
 
-"@analytics/core@^0.12.15":
-  version "0.12.15"
-  resolved "https://registry.yarnpkg.com/@analytics/core/-/core-0.12.15.tgz#e363cdc681d419d27b8170ce286e095f212e3576"
-  integrity sha512-Y+zxTNIbONXKxeEUOtcXs4b3uuiGjF5sy1zHl8ZNkIBwrOpTM8ZGNhi0xGL8ZhaQLGbi03BrT6DaoNNG3sBQOg==
+"@analytics/core@^0.12.17":
+  version "0.12.17"
+  resolved "https://registry.yarnpkg.com/@analytics/core/-/core-0.12.17.tgz#e9db81fc715cda42046861b45b4e9f51d401903e"
+  integrity sha512-GMxRm5Dp3Wam/w5NNvqNKMO6zWecozbVv21Kn4WhftCx6OjJI7zMlVtiLpjGjxa0RRZfVG80YhupF0Qh9XL2gw==
   dependencies:
     "@analytics/global-storage-utils" "^0.1.7"
     "@analytics/type-utils" "^0.6.2"
-    analytics-utils "^1.0.12"
+    analytics-utils "^1.0.14"
 
 "@analytics/global-storage-utils@^0.1.7":
   version "0.1.7"
@@ -1699,20 +1699,20 @@ ajv@8.6.3:
     require-from-string "^2.0.2"
     uri-js "^4.2.2"
 
-analytics-utils@^1.0.12:
-  version "1.0.12"
-  resolved "https://registry.yarnpkg.com/analytics-utils/-/analytics-utils-1.0.12.tgz#07bd63471d238e80f42d557fba039365f09c50db"
-  integrity sha512-WvV2YWgsnXLxaY0QYux0crpBAg/0JA763NmbMVz22jKhMPo7dpTBet8G2IlF7ixTjLDzGlkHk1ZaKqqQmjJ+4w==
+analytics-utils@^1.0.14:
+  version "1.0.14"
+  resolved "https://registry.yarnpkg.com/analytics-utils/-/analytics-utils-1.0.14.tgz#b0f90e58fe08f396d718c5270fbefc3bef87df01"
+  integrity sha512-9v0kPd8v0GuBvfQcg5BO48AElaEAr9IXMAfJWXYMAhrD3QprgozEIUgMp/de0vS136PUOBB+10XQH9eBgBmfMw==
   dependencies:
     "@analytics/type-utils" "^0.6.2"
     dlv "^1.1.3"
 
-analytics@^0.8.11:
-  version "0.8.14"
-  resolved "https://registry.yarnpkg.com/analytics/-/analytics-0.8.14.tgz#84b6e7e0308c8db318bea1149ea550db7e677324"
-  integrity sha512-ZKpqWHEHBrN0lvIsrUKmt0fcXNyQuKa0JUWDRAz7LgJ+Sf4ZX+a66/ai28W4H8kJJlLeItCrhIi/xvdbV08RlA==
+analytics@^0.8.16:
+  version "0.8.16"
+  resolved "https://registry.yarnpkg.com/analytics/-/analytics-0.8.16.tgz#d95f36da380b66b82646596260c9b8f6d1ff10a0"
+  integrity sha512-LEFQ47G9V1zVp9WIh2xhnbmSFEJq+WEzSv6voJ5uba88lefiIIYeG2nq87gFu83ocz1qtb9u7XgeaKKVBbbgWA==
   dependencies:
-    "@analytics/core" "^0.12.15"
+    "@analytics/core" "^0.12.17"
     "@analytics/storage-utils" "^0.4.2"
 
 ansi-escapes@^4.2.1:
