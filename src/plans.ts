@@ -1,6 +1,5 @@
 import {Context, Probot} from "probot";
 import {getRepoOwnerId, getRepoOwnerLogin, isOrgRepo} from "./context";
-import {showFreePlanWarning} from "./config";
 import {addComment} from "./github";
 import {Config} from "./entities/Config";
 import {isRunningInGitHubActions, isRunningInTestEnvironment} from "./utils";
@@ -25,8 +24,8 @@ export async function hasValidSubscription(app: Probot, ctx: Context<any>, confi
     if (await isPaidPlan(app, ctx)) {
         return true;
     } else {
-        await freePlanWarningComment(ctx, config);
-        return true;
+        await buyDeveloperPlanComment(ctx, config);
+        return false;
     }
 }
 
@@ -81,22 +80,19 @@ async function buyCommercialOrganizationPlanComment(ctx: Context<any>, config: C
     await addComment(ctx, config, buyComment)
 }
 
-async function freePlanWarningComment(ctx: Context<any>, config: Config) {
-    if (showFreePlanWarning(config)) {
-        let freePlanWarning = '';
-        freePlanWarning += 'Hi there :wave:\n\n';
-        freePlanWarning += 'You are using the free plan of the Create Issue Branch App.\n';
-        freePlanWarning += 'Due to its popularity, offering the App for free is becoming too costly for me.\n';
-        freePlanWarning += 'The free plan is therefore going to be deprecated on March 1st, 2025.\n\n';
-        freePlanWarning += 'If you want to continue using this App, please upgrade to the Developer plan.\n';
-        freePlanWarning += 'The Developer plan costs only $1 per month (or $10 yearly).\nYou can upgrade on the ';
-        freePlanWarning += '[GitHub Marketplace](https://github.com/marketplace/create-issue-branch)\n\n';
-        freePlanWarning += 'If you have any questions reach out to me by ';
-        freePlanWarning += '[opening an issue](https://github.com/robvanderleek/create-issue-branch/issues).\n';
-        freePlanWarning += 'To disable this message, insert `freePlanWarning: false` in your configuration YAML.\n';
-        config.silent = false;
-        await addComment(ctx, config, freePlanWarning);
-    }
+async function buyDeveloperPlanComment(ctx: Context<any>, config: Config) {
+    let buyComment = '';
+    buyComment += 'Hi there :wave:\n\n';
+    buyComment += 'You are using the free plan of the Create Issue Branch App.\n';
+    buyComment += 'Due to its popularity, offering the App for free is becoming too costly for me.\n';
+    buyComment += 'The free plan was therefore deprecated on March 1st, 2025.\n\n';
+    buyComment += 'If you want to continue using this App, please upgrade to the Developer plan.\n';
+    buyComment += 'The Developer plan costs only $1 per month (or $10 yearly).\nYou can upgrade on the ';
+    buyComment += '[GitHub Marketplace](https://github.com/marketplace/create-issue-branch)\n\n';
+    buyComment += 'If you have any questions reach out to me by ';
+    buyComment += '[opening an issue](https://github.com/robvanderleek/create-issue-branch/issues).\n';
+    config.silent = false;
+    await addComment(ctx, config, buyComment);
 }
 
 export function isFreePaidSubscription(app: Probot, ctx: Context<any>): boolean {
