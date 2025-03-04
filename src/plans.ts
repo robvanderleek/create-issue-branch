@@ -25,6 +25,7 @@ export async function hasValidSubscription(app: Probot, ctx: Context<any>, confi
         return true;
     } else {
         await buyDeveloperPlanComment(ctx, config);
+        app.log.info('Added comment to buy Developer 🙏 plan');
         return false;
     }
 }
@@ -99,7 +100,8 @@ export function isFreePaidSubscription(app: Probot, ctx: Context<any>): boolean 
     const login = getRepoOwnerLogin(ctx)
     const logins = ['PWrInSpace', 'KPLRCDBS', 'codemeistre', 'RaspberryPiFoundation', 'astro-pi',
         'LOG680-01-Equipe-09', 'New-AutoMotive', 'EpitechMscPro2020', 'snaphu-msu', 'SerenKodi', 'oyunprotocol',
-        'web-illinois', 'PathologyDataScience', 'miranhas-github', 'DHBW-FN', 'lecoindesdevs', 'getcodelimit'];
+        'web-illinois', 'PathologyDataScience', 'miranhas-github', 'DHBW-FN', 'lecoindesdevs', 'getcodelimit',
+        'facio-ergo-sum'];
     const match = logins.find(o => o.toLowerCase() === login.toLowerCase());
     if (match !== undefined) {
         app.log.info('Found free ❤️ paid plan');
