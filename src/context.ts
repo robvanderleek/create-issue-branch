@@ -26,9 +26,9 @@ export function getDefaultBranch(ctx: any) {
     return ctx.payload.repository.default_branch
 }
 
-export function isPrivateOrgRepo(ctx: any) {
-    const {repository} = ctx.payload
-    return repository.private && repository.owner.type === 'Organization'
+export function isOrgRepo(ctx: any) {
+    const {repository} = ctx.payload;
+    return repository.owner.type === 'Organization';
 }
 
 export function getIssueLabels(ctx: any) {

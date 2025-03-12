@@ -90,7 +90,11 @@ export function shouldOpenPR(config: Config) {
 }
 
 export function prSkipCI(config: Config) {
-    return 'prSkipCI' in config && config.prSkipCI === true
+    return config.prSkipCI;
+}
+
+export function showFreePlanWarning(config: Config) {
+    return config.freePlanWarning;
 }
 
 export function isChatOpsCommand(s?: string) {

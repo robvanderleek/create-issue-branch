@@ -11,6 +11,7 @@ export interface Config {
     copyIssueProjectsToPR: boolean;
     copyIssueMilestoneToPR: boolean;
     copyIssueDescriptionToPR: boolean;
+    copyPullRequestTemplateToPR: boolean;
     gitReplaceChars: string;
     gitSafeReplacementChar: string;
     commentMessage?: string;
@@ -18,6 +19,7 @@ export interface Config {
     openPR: boolean;
     openDraftPR: boolean;
     prSkipCI: boolean;
+    freePlanWarning: boolean;
     conventionalPrTitles: boolean;
     conventionalStyle: 'semver' | 'gitmoji' | 'semver-no-gitmoji';
     conventionalLabels: { [name: string]: { [name: string]: any } }
@@ -48,12 +50,14 @@ export function getDefaultConfig(): Config {
         copyIssueProjectsToPR: false,
         copyIssueMilestoneToPR: false,
         copyIssueDescriptionToPR: false,
+        copyPullRequestTemplateToPR: false,
         gitReplaceChars: '',
         gitSafeReplacementChar: '_',
         silent: false,
         openPR: false,
         openDraftPR: false,
         prSkipCI: false,
+        freePlanWarning: true,
         conventionalPrTitles: false,
         conventionalStyle: 'semver',
         conventionalLabels: {},

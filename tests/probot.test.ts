@@ -2,7 +2,6 @@ import {Probot} from "probot";
 import issueOpenedPayload from "./test-fixtures/issues.opened.json";
 import issueAssignedPayload from "./test-fixtures/issues.assigned.json";
 import pullRequestClosedPayload from "./test-fixtures/pull_request.closed.json";
-import marketplaceFreePlan from "./test-fixtures/marketplace_free_plan.json";
 import {
     initNock,
     initProbot,
@@ -15,10 +14,8 @@ import {
     nockCreatePR,
     nockEmptyConfig,
     nockExistingBranch,
-    nockMarketplacePlan,
     nockNonExistingBranch,
-    nockUpdateBranch,
-    privateOrganizationRepoPayload
+    nockUpdateBranch
 } from "./test-helpers";
 
 const nock = require('nock')
@@ -34,22 +31,22 @@ beforeEach(() => {
 })
 
 test('creates a branch when an issue is assigned', async () => {
-    nockNonExistingBranch('issue-1-Test_issue')
-    nockExistingBranch('master', '12345678')
-    nockEmptyConfig()
-    nockCommentCreated()
-    let createEndpointCalled = false
+    nockNonExistingBranch('issue-1-Test_issue');
+    nockExistingBranch('master', '12345678');
+    nockEmptyConfig();
+    nockCommentCreated();
+    let createEndpointCalled = false;
 
     nock('https://api.github.com')
         .post('/repos/robvanderleek/create-issue-branch/git/refs', () => {
             createEndpointCalled = true
             return true
         })
-        .reply(200)
+        .reply(200);
 
-    await probot.receive({id: '', name: 'issues', payload: issueAssignedPayload as any})
+    await probot.receive({id: '', name: 'issues', payload: issueAssignedPayload as any});
 
-    expect(createEndpointCalled).toBeTruthy()
+    expect(createEndpointCalled).toBeTruthy();
 })
 
 test('do not create a branch when it already exists', async () => {
@@ -318,33 +315,6 @@ test('custom message with placeholder substitution in comment', async () => {
     await probot.receive({id: '', name: 'issues', payload: issueAssignedWithLabelsPayload('bug', 'enhancement')})
 
     expect(comment).toBe('hello branch for issue 1')
-})
-
-test('Buy Pro message in comment for subscriptions activated after Pro plan introduction', async () => {
-    if (utils.isRunningInGitHubActions()) { // Test fails in GitHub Actions due to application logic
-        return
-    }
-    nockNonExistingBranch('issue-1-Test_issue')
-    nockEmptyConfig()
-    const marketplaceFreePlanCopy = JSON.parse(JSON.stringify(marketplaceFreePlan))
-    marketplaceFreePlanCopy.marketplace_purchase.updated_at = '2021-04-08T19:51:53Z'
-    nockMarketplacePlan(marketplaceFreePlanCopy)
-    let comment = ''
-    nock('https://api.github.com')
-        .post('/repos/robvanderleek/create-issue-branch/issues/1/comments', (data: any) => {
-            comment = data.body
-            return true
-        })
-        .reply(200)
-
-    const ctx = {
-        name: 'issues', payload: privateOrganizationRepoPayload(issueAssignedPayload)
-    }
-
-    await probot.receive(ctx as any)
-
-    expect(comment).toBeDefined()
-    expect(comment.toLowerCase().indexOf('buy')).toBeGreaterThan(0)
 })
 
 test('open a pull request when mode is immediate', async () => {

@@ -8,11 +8,10 @@ import {
     getIssueTitle,
     getMilestoneNumber,
     getRepoName,
-    getRepoOwnerLogin,
-    isPrivateOrgRepo
+    getRepoOwnerLogin
 } from "./context";
 import {Context, Probot} from "probot";
-import {isProPlan} from "./plans";
+import {hasValidSubscription} from "./plans";
 import {interpolate} from "./interpolate";
 import {Config} from "./entities/Config";
 import {
@@ -36,7 +35,7 @@ import {
 } from "./utils";
 
 export async function createIssueBranch(app: Probot, ctx: Context<any>, branchName: string, config: Config) {
-    if (await hasValidSubscriptionForRepo(app, ctx, config)) {
+    if (await hasValidSubscription(app, ctx, config)) {
         const sha = await getSourceBranchHeadSha(ctx, config, app.log)
         if (sha) {
             await createBranch(app, ctx, config, branchName, sha);
@@ -44,36 +43,6 @@ export async function createIssueBranch(app: Probot, ctx: Context<any>, branchNa
             await addComment(ctx, config, 'Could not find source branch for new issue branch')
         }
     }
-}
-
-async function hasValidSubscriptionForRepo(app: Probot, ctx: Context<any>, config: Config) {
-    if (isRunningInGitHubActions()) {
-        return true
-    }
-    if (isPrivateOrgRepo(ctx)) {
-        const isProPan = await isProPlan(app, ctx)
-        if (!isProPan) {
-            await addBuyProComment(ctx, config)
-            app.log.info('Added comment to buy Pro 🙏 plan')
-            return false
-        } else {
-            return true
-        }
-    } else {
-        const login = getRepoOwnerLogin(ctx)
-        app.log.info(`Creating branch in public repository from user/org: https://github.com/${login} ...`)
-        return true
-    }
-}
-
-const buyComment = 'Hi there :wave:\n\nUsing this App for a private organization repository requires a paid ' +
-    'subscription that you can buy on the [GitHub Marketplace](https://github.com/marketplace/create-issue-branch)\n\n' +
-    'If you are a non-profit organization or otherwise can not pay for such a plan, contact me by ' +
-    '[creating an issue](https://github.com/robvanderleek/create-issue-branch/issues)'
-
-async function addBuyProComment(ctx: Context<any>, config: Config) {
-    config.silent = false;
-    await addComment(ctx, config, buyComment)
 }
 
 export async function getBranchNameFromIssue(ctx: Context<any>, config: Config) {
@@ -307,7 +276,7 @@ export async function createPr(app: Probot, ctx: Context<any>, config: Config, u
             await createEmptyCommit(ctx, branchName, getCommitText(ctx, config), String(branchHeadSha))
         }
         const {data: pr} = await ctx.octokit.pulls.create(
-            {owner, repo, head: branchName, base, title, body: getPrBody(app, ctx, config), draft: draft})
+            {owner, repo, head: branchName, base, title, body: await getPrBody(app, ctx, config), draft: draft})
         app.log.info(`${draft ? 'Created draft' : 'Created'} pull request ${pr.number} for branch ${branchName}`)
         await copyIssueAttributesToPr(app, ctx, config, pr)
     } catch (e: any) {
@@ -351,19 +320,43 @@ function getCommitText(ctx: Context<any>, config: Config) {
     }
 }
 
-function getPrBody(app: Probot, ctx: Context<any>, config: Config) {
-    const issueNumber = getIssueNumber(ctx)
-    let result = ''
+async function getPrBody(app: Probot, ctx: Context<any>, config: Config) {
+    const issueNumber = getIssueNumber(ctx);
+    let result = '';
     if (config.copyIssueDescriptionToPR) {
-        app.log.info('Copying issue description to PR')
-        const issueDescription = getIssueDescription(ctx)
+        app.log.info('Copying issue description to PR');
+        const issueDescription = getIssueDescription(ctx);
         if (issueDescription) {
-            result += formatAsExpandingMarkdown('Original issue description', issueDescription)
-            result += '\n'
+            result += formatAsExpandingMarkdown('Original issue description', issueDescription);
+            result += '\n';
         }
     }
-    result += `closes #${issueNumber}`
-    return result
+    if (config.copyPullRequestTemplateToPR) {
+        app.log.info('Copying pull-request template to PR');
+        const pullRequestTemplate = await getPullRequestTemplate(ctx);
+        if (pullRequestTemplate) {
+            result += pullRequestTemplate;
+            result += '\n';
+        }
+    }
+    result += `closes #${issueNumber}`;
+    return result;
+}
+
+async function getPullRequestTemplate(ctx: Context<any>): Promise<string | undefined> {
+    try {
+        const {data} = await ctx.octokit.repos.getContent({
+            owner: getRepoOwnerLogin(ctx),
+            repo: getRepoName(ctx),
+            path: '.github/PULL_REQUEST_TEMPLATE.md'
+        }) as any;
+        if (data.type === 'file' && data.content) {
+            return Buffer.from(data.content, 'base64').toString('utf8');
+        }
+    } catch (e: any) {
+        /* do nothing */
+    }
+    return undefined;
 }
 
 async function copyIssueAttributesToPr(app: Probot, ctx: Context<any>, config: Config, pr: any) {
