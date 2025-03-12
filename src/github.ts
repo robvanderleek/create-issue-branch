@@ -276,7 +276,7 @@ export async function createPr(app: Probot, ctx: Context<any>, config: Config, u
             await createEmptyCommit(ctx, branchName, getCommitText(ctx, config), String(branchHeadSha))
         }
         const {data: pr} = await ctx.octokit.pulls.create(
-            {owner, repo, head: branchName, base, title, body: getPrBody(app, ctx, config), draft: draft})
+            {owner, repo, head: branchName, base, title, body: await getPrBody(app, ctx, config), draft: draft})
         app.log.info(`${draft ? 'Created draft' : 'Created'} pull request ${pr.number} for branch ${branchName}`)
         await copyIssueAttributesToPr(app, ctx, config, pr)
     } catch (e: any) {
@@ -320,19 +320,43 @@ function getCommitText(ctx: Context<any>, config: Config) {
     }
 }
 
-function getPrBody(app: Probot, ctx: Context<any>, config: Config) {
-    const issueNumber = getIssueNumber(ctx)
-    let result = ''
+async function getPrBody(app: Probot, ctx: Context<any>, config: Config) {
+    const issueNumber = getIssueNumber(ctx);
+    let result = '';
     if (config.copyIssueDescriptionToPR) {
-        app.log.info('Copying issue description to PR')
-        const issueDescription = getIssueDescription(ctx)
+        app.log.info('Copying issue description to PR');
+        const issueDescription = getIssueDescription(ctx);
         if (issueDescription) {
-            result += formatAsExpandingMarkdown('Original issue description', issueDescription)
-            result += '\n'
+            result += formatAsExpandingMarkdown('Original issue description', issueDescription);
+            result += '\n';
         }
     }
-    result += `closes #${issueNumber}`
-    return result
+    if (config.copyPullRequestTemplateToPR) {
+        app.log.info('Copying pull-request template to PR');
+        const pullRequestTemplate = await getPullRequestTemplate(ctx);
+        if (pullRequestTemplate) {
+            result += pullRequestTemplate;
+            result += '\n';
+        }
+    }
+    result += `closes #${issueNumber}`;
+    return result;
+}
+
+async function getPullRequestTemplate(ctx: Context<any>): Promise<string | undefined> {
+    try {
+        const {data} = await ctx.octokit.repos.getContent({
+            owner: getRepoOwnerLogin(ctx),
+            repo: getRepoName(ctx),
+            path: '.github/PULL_REQUEST_TEMPLATE.md'
+        }) as any;
+        if (data.type === 'file' && data.content) {
+            return Buffer.from(data.content, 'base64').toString('utf8');
+        }
+    } catch (e: any) {
+        /* do nothing */
+    }
+    return undefined;
 }
 
 async function copyIssueAttributesToPr(app: Probot, ctx: Context<any>, config: Config, pr: any) {

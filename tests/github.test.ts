@@ -296,6 +296,7 @@ test('copy Issue description into PR', async () => {
     })
 })
 
+
 test('Do not copy undefined Issue description into PR', async () => {
     const createPR = jest.fn()
     const ctx = getDefaultContext()
@@ -315,6 +316,56 @@ test('Do not copy undefined Issue description into PR', async () => {
         body: 'closes #1',
         title: 'Hello world'
     })
+})
+
+test('copy pull-request template into PR', async () => {
+    const createPR = jest.fn();
+    const ctx = getDefaultContext();
+    ctx.octokit.pulls.create = createPR;
+    ctx.octokit.graphql = jest.fn();
+    ctx.octokit.repos.getContent = async (args: { owner: string, repo: string, path: string }) => {
+        expect(args.path).toBe('.github/PULL_REQUEST_TEMPLATE.md');
+        return {data: {type: 'file', content: Buffer.from('file content').toString('base64')}};
+    };
+    const config = getDefaultConfig();
+    config.copyPullRequestTemplateToPR = true;
+
+    await github.createPr(probot, ctx, config, 'robvanderleek', 'issue-1');
+
+    expect(createPR).toHaveBeenCalledWith({
+        owner: 'robvanderleek',
+        repo: 'create-issue-branch',
+        head: 'issue-1',
+        base: 'master',
+        title: 'Hello world',
+        body: 'file content' + '\ncloses #1',
+        draft: false
+    });
+})
+
+test('pull-request template does not exist', async () => {
+    const createPR = jest.fn();
+    const ctx = getDefaultContext();
+    ctx.octokit.pulls.create = createPR;
+    ctx.octokit.graphql = jest.fn();
+    ctx.octokit.repos.getContent = async (args: { owner: string, repo: string, path: string }) => {
+        expect(args.path).toBe('.github/PULL_REQUEST_TEMPLATE.md');
+        throw {status: 404};
+    };
+    const config = getDefaultConfig();
+    config.copyPullRequestTemplateToPR = true;
+
+    await github.createPr(probot, ctx, config, 'robvanderleek', 'issue-1');
+
+    expect(createPR).toHaveBeenCalledWith({
+        owner: 'robvanderleek',
+        repo: 'create-issue-branch',
+        head: 'issue-1',
+        base: 'master',
+        title: 'Hello world',
+        body: 'closes #1',
+        draft: false
+    });
 })
 
 test('use correct source branch', async () => {

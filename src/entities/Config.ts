@@ -11,6 +11,7 @@ export interface Config {
     copyIssueProjectsToPR: boolean;
     copyIssueMilestoneToPR: boolean;
     copyIssueDescriptionToPR: boolean;
+    copyPullRequestTemplateToPR: boolean;
     gitReplaceChars: string;
     gitSafeReplacementChar: string;
     commentMessage?: string;
@@ -49,6 +50,7 @@ export function getDefaultConfig(): Config {
         copyIssueProjectsToPR: false,
         copyIssueMilestoneToPR: false,
         copyIssueDescriptionToPR: false,
+        copyPullRequestTemplateToPR: false,
         gitReplaceChars: '',
         gitSafeReplacementChar: '_',
         silent: false,
