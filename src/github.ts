@@ -348,7 +348,7 @@ async function getPullRequestTemplate(ctx: Context<any>): Promise<string | undef
         const {data} = await ctx.octokit.repos.getContent({
             owner: getRepoOwnerLogin(ctx),
             repo: getRepoName(ctx),
-            path: '.github/PULL_REQUEST_TEMPLATE.md'
+            path: '.github/pull_request_template.md'
         }) as any;
         if (data.type === 'file' && data.content) {
             return Buffer.from(data.content, 'base64').toString('utf8');

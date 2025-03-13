@@ -564,7 +564,8 @@ branches:
 
 ### Copy attributes from issue
 
-When the App opens a new (draft) Pull Request it can also copy over the following attributes from your issue:
+When the App opens a new (draft) Pull Request, it can also copy over the
+following attributes from your issue:
 
 - Description
 - Labels
@@ -580,6 +581,18 @@ copyIssueLabelsToPR: true
 copyIssueAssigneeToPR: true
 copyIssueProjectsToPR: true
 copyIssueMilestoneToPR: true
+```
+
+### Copy pull request template
+
+When the App opens a new (draft) Pull Request, it can also copy over a pull
+request template from a file in your repository. The template must be stored in
+a file named `.github/pull_request_template.md`.
+
+You can enable this behaviour in the configuration:
+
+```yaml
+copyPullRequestTemplateToPR: true
 ```
 
 ### Skip CI workflows

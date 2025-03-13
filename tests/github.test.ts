@@ -324,7 +324,7 @@ test('copy pull-request template into PR', async () => {
     ctx.octokit.pulls.create = createPR;
     ctx.octokit.graphql = jest.fn();
     ctx.octokit.repos.getContent = async (args: { owner: string, repo: string, path: string }) => {
-        expect(args.path).toBe('.github/PULL_REQUEST_TEMPLATE.md');
+        expect(args.path).toBe('.github/pull_request_template.md');
         return {data: {type: 'file', content: Buffer.from('file content').toString('base64')}};
     };
     const config = getDefaultConfig();
@@ -349,7 +349,7 @@ test('pull-request template does not exist', async () => {
     ctx.octokit.pulls.create = createPR;
     ctx.octokit.graphql = jest.fn();
     ctx.octokit.repos.getContent = async (args: { owner: string, repo: string, path: string }) => {
-        expect(args.path).toBe('.github/PULL_REQUEST_TEMPLATE.md');
+        expect(args.path).toBe('.github/pull_request_template.md');
         throw {status: 404};
     };
     const config = getDefaultConfig();
