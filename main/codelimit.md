@@ -3,16 +3,16 @@
 ### Overview
 | **Language** | **Files** | **Functions** | **Lines of Code** | **⚠** | **⛌** |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| TypeScript | 24 | 118 | 1284 | 3 | 0 |
+| TypeScript | 24 | 119 | 1307 | 3 | 0 |
 | JavaScript | 1 | 1 | 8 | 0 | 0 |
-| **Totals** | **25** | **119** | **1292** | **3** | **0** |
+| **Totals** | **25** | **120** | **1315** | **3** | **0** |
 
 ### Summary
 | **Easy / Verbose** | **Hard-to-maintain ⚠** | **Unmaintainable ⛌** |
 | ---: | ---: | ---: |
-| 90% | 10% | 0% |
+| 91% | 9% | 0% |
 
-✅ 90% of the functions are maintainable, no refactoring necessary.
+✅ 91% of the functions are maintainable, no refactoring necessary.
 
 ### Findings
 | **Function** | **Length** | **File** |
