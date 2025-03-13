@@ -2967,10 +2967,17 @@ events@^3.3.0:
   resolved "https://registry.yarnpkg.com/events/-/events-3.3.0.tgz#31a95ad0a924e2d2c419a813aeb2c4e878ea7400"
   integrity sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q==
 
-eventsource@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/eventsource/-/eventsource-2.0.2.tgz#76dfcc02930fb2ff339520b6d290da573a9e8508"
-  integrity sha512-IzUmBGPR3+oUG9dUeXynyNmf91/3zUSJg1lCktzKw47OXuhco54U3r9B7O4XX+Rb1Itm9OZ2b0RkTs10bICOxA==
+eventsource-parser@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/eventsource-parser/-/eventsource-parser-3.0.0.tgz#9303e303ef807d279ee210a17ce80f16300d9f57"
+  integrity sha512-T1C0XCUimhxVQzW4zFipdx0SficT651NnkR0ZSH3yQwh+mFMdLfgjABVi4YtMTtaL4s168593DaoaRLMqryavA==
+
+eventsource@^3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/eventsource/-/eventsource-3.0.5.tgz#0cae1eee2d2c75894de8b02a91d84e5c57f0cc5a"
+  integrity sha512-LT/5J605bx5SNyE+ITBDiM3FxffBiq9un7Vx0EwMDM3vg8sWKx/tO2zC+LMqZ+smAM0F2hblaDZUVZF0te2pSw==
+  dependencies:
+    eventsource-parser "^3.0.0"
 
 execa@^5.0.0:
   version "5.1.1"
@@ -5235,13 +5242,14 @@ slice@^1.0.0:
   dependencies:
     dot-json "^1.0.4"
 
-smee-client@^2.0.1:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/smee-client/-/smee-client-2.0.4.tgz#796d44e30104d0d222140b8d38cedde89855da7b"
-  integrity sha512-RxXCs0mfaxpI8JF4SeTM51XtRiprzW5g20HVt4aTQ36EB+RaN0aj0m/4EbXLGdfPlqahQ09d3UnJYmALN2CbYw==
+smee-client@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/smee-client/-/smee-client-3.1.1.tgz#1c19178a2647cf34ed3cb1e8e73f59e6374dcae4"
+  integrity sha512-2XGrGA83suqtC/Vn1v/MUAPN+hLSYwTiopqjx97tHGzKMBLJYIeCEcch2dfqFLEXInS6U1pm+jwSQFbphLrg9w==
   dependencies:
     commander "^12.0.0"
-    eventsource "^2.0.2"
+    eventsource "^3.0.5"
+    undici "^6.19.8"
     validator "^13.11.0"
 
 sonic-boom@^3.7.0:
@@ -5612,6 +5620,11 @@ undici@^5.25.4:
   integrity sha512-zICwjrDrcrUE0pyyJc1I2QzBkLM8FINsgOrt6WjA+BgajVq9Nxu2PbFFXUrAggLfDXlZGZBVZYw7WNV5KiBiBA==
   dependencies:
     "@fastify/busboy" "^2.0.0"
+
+undici@^6.19.8:
+  version "6.21.2"
+  resolved "https://registry.yarnpkg.com/undici/-/undici-6.21.2.tgz#49c5884e8f9039c65a89ee9018ef3c8e2f1f4928"
+  integrity sha512-uROZWze0R0itiAKVPsYhFov9LxrPMHLMEQFszeI2gCN6bnIIZ8twzBCJcN2LJrBBLfrP0t1FW0g+JmKVl8Vk1g==
 
 universal-github-app-jwt@^1.1.2:
   version "1.2.0"
