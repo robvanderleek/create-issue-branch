@@ -163,6 +163,7 @@ export function getDefaultContext(): any {
                 createComment: () => {
                 }
             },
+            repos: {},
             graphql: (_: any, {message}: { message: string }) => {
             }
         }, //
