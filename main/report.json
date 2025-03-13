@@ -1,7 +1,7 @@
 {
   "version": "0.18.1",
-  "uuid": "b824ef60-c99b-427c-94f2-b7023f6df9ca",
-  "timestamp": "2025-03-12T16:30:44+00:00",
+  "uuid": "2529f864-59a4-4d72-a046-29ca4e1b3e5e",
+  "timestamp": "2025-03-13T14:43:41+00:00",
   "root": "/github/workspace",
   "repository": {
     "owner": "robvanderleek",
@@ -19,8 +19,8 @@
       },
       "TypeScript": {
         "files": 24,
-        "lines_of_code": 1284,
-        "functions": 118,
+        "lines_of_code": 1307,
+        "functions": 119,
         "hard_to_maintain": 3,
         "unmaintainable": 0
       }
@@ -32,7 +32,7 @@
           "next-env.d.ts",
           "src/"
         ],
-        "profile": [713, 462, 117, 0]
+        "profile": [713, 485, 117, 0]
       },
       "src/": {
         "entries": [
@@ -51,7 +51,7 @@
           "pages/",
           "entities/"
         ],
-        "profile": [705, 462, 117, 0]
+        "profile": [705, 485, 117, 0]
       },
       "src/services/": {
         "entries": [
@@ -90,7 +90,7 @@
           "Config.ts",
           "WebhookEvent.ts"
         ],
-        "profile": [0, 28, 0, 0]
+        "profile": [0, 29, 0, 0]
       }
     },
     "files": {
@@ -250,10 +250,10 @@
         ]
       },
       "src/github.ts": {
-        "checksum": "5245187aac2ede5f4846899fe4c6e1c7",
+        "checksum": "1122f7970f566e74b2722373f6182b67",
         "language": "TypeScript",
-        "loc": 362,
-        "profile": [231, 131, 0, 0],
+        "loc": 384,
+        "profile": [231, 153, 0, 0],
         "measurements": [
           {"unit_name": "createIssueBranch", "start": {"line": 37, "column": 23}, "end": {"line": 46, "column": 2}, "value": 10},
           {"unit_name": "getBranchNameFromIssue", "start": {"line": 48, "column": 23}, "end": {"line": 59, "column": 2}, "value": 10},
@@ -276,15 +276,16 @@
           {"unit_name": "createPr", "start": {"line": 265, "column": 23}, "end": {"line": 286, "column": 2}, "value": 22},
           {"unit_name": "createEmptyCommit", "start": {"line": 288, "column": 16}, "end": {"line": 309, "column": 2}, "value": 13},
           {"unit_name": "getCommitText", "start": {"line": 311, "column": 10}, "end": {"line": 321, "column": 2}, "value": 11},
-          {"unit_name": "getPrBody", "start": {"line": 323, "column": 10}, "end": {"line": 336, "column": 2}, "value": 14},
-          {"unit_name": "copyIssueAttributesToPr", "start": {"line": 338, "column": 16}, "end": {"line": 360, "column": 2}, "value": 23},
-          {"unit_name": "copyIssueLabelsToPr", "start": {"line": 362, "column": 16}, "end": {"line": 369, "column": 2}, "value": 8},
-          {"unit_name": "copyIssueAssigneeToPr", "start": {"line": 371, "column": 16}, "end": {"line": 376, "column": 2}, "value": 6},
-          {"unit_name": "copyIssueMilestoneToPr", "start": {"line": 378, "column": 16}, "end": {"line": 385, "column": 2}, "value": 8},
-          {"unit_name": "copyIssueProjectsToPr", "start": {"line": 387, "column": 16}, "end": {"line": 400, "column": 2}, "value": 10},
-          {"unit_name": "queryProjectIdsForIssue", "start": {"line": 402, "column": 16}, "end": {"line": 432, "column": 2}, "value": 21},
-          {"unit_name": "updatePrTitle", "start": {"line": 434, "column": 23}, "end": {"line": 444, "column": 2}, "value": 11},
-          {"unit_name": "updatePrBody", "start": {"line": 446, "column": 23}, "end": {"line": 452, "column": 2}, "value": 7}
+          {"unit_name": "getPrBody", "start": {"line": 323, "column": 16}, "end": {"line": 344, "column": 2}, "value": 22},
+          {"unit_name": "getPullRequestTemplate", "start": {"line": 346, "column": 16}, "end": {"line": 360, "column": 2}, "value": 14},
+          {"unit_name": "copyIssueAttributesToPr", "start": {"line": 362, "column": 16}, "end": {"line": 384, "column": 2}, "value": 23},
+          {"unit_name": "copyIssueLabelsToPr", "start": {"line": 386, "column": 16}, "end": {"line": 393, "column": 2}, "value": 8},
+          {"unit_name": "copyIssueAssigneeToPr", "start": {"line": 395, "column": 16}, "end": {"line": 400, "column": 2}, "value": 6},
+          {"unit_name": "copyIssueMilestoneToPr", "start": {"line": 402, "column": 16}, "end": {"line": 409, "column": 2}, "value": 8},
+          {"unit_name": "copyIssueProjectsToPr", "start": {"line": 411, "column": 16}, "end": {"line": 424, "column": 2}, "value": 10},
+          {"unit_name": "queryProjectIdsForIssue", "start": {"line": 426, "column": 16}, "end": {"line": 456, "column": 2}, "value": 21},
+          {"unit_name": "updatePrTitle", "start": {"line": 458, "column": 23}, "end": {"line": 468, "column": 2}, "value": 11},
+          {"unit_name": "updatePrBody", "start": {"line": 470, "column": 23}, "end": {"line": 476, "column": 2}, "value": 7}
         ]
       },
       "src/services/MongoDbService.ts": {
@@ -397,12 +398,12 @@
         ]
       },
       "src/entities/Config.ts": {
-        "checksum": "eb9b0c5aea8df404ede5f435357c95e4",
+        "checksum": "f26de3fd571e067aad4920bccd103736",
         "language": "TypeScript",
-        "loc": 28,
-        "profile": [0, 28, 0, 0],
+        "loc": 29,
+        "profile": [0, 29, 0, 0],
         "measurements": [
-          {"unit_name": "getDefaultConfig", "start": {"line": 39, "column": 17}, "end": {"line": 66, "column": 2}, "value": 28}
+          {"unit_name": "getDefaultConfig", "start": {"line": 40, "column": 17}, "end": {"line": 68, "column": 2}, "value": 29}
         ]
       },
       "src/entities/WebhookEvent.ts": {
