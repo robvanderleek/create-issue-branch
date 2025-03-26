@@ -101,7 +101,7 @@ export function isFreePaidSubscription(app: Probot, ctx: Context<any>): boolean 
     const logins = ['PWrInSpace', 'KPLRCDBS', 'codemeistre', 'RaspberryPiFoundation', 'astro-pi',
         'LOG680-01-Equipe-09', 'New-AutoMotive', 'EpitechMscPro2020', 'snaphu-msu', 'SerenKodi', 'oyunprotocol',
         'web-illinois', 'PathologyDataScience', 'miranhas-github', 'DHBW-FN', 'lecoindesdevs', 'getcodelimit',
-        'facio-ergo-sum', 'robvanderleek'];
+        'facio-ergo-sum', 'robvanderleek', 'ExtendedXmlSerializer'];
     const matching_login = logins.find(o => o.toLowerCase() === login.toLowerCase());
     if (matching_login !== undefined) {
         app.log.info(`Found free ❤️ paid plan for login: ${matching_login}`);
