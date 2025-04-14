@@ -1,7 +1,7 @@
 {
   "version": "0.18.1",
-  "uuid": "eafbf4a6-c39e-457a-8956-e1eaa4050811",
-  "timestamp": "2025-03-26T17:41:36+00:00",
+  "uuid": "5fce6eb2-8345-4767-af68-46f9f8505599",
+  "timestamp": "2025-04-14T11:19:45+00:00",
   "root": "/github/workspace",
   "repository": {
     "owner": "robvanderleek",
@@ -19,7 +19,7 @@
       },
       "TypeScript": {
         "files": 24,
-        "lines_of_code": 1307,
+        "lines_of_code": 1308,
         "functions": 119,
         "hard_to_maintain": 3,
         "unmaintainable": 0
@@ -32,7 +32,7 @@
           "next-env.d.ts",
           "src/"
         ],
-        "profile": [713, 485, 117, 0]
+        "profile": [714, 485, 117, 0]
       },
       "src/": {
         "entries": [
@@ -51,7 +51,7 @@
           "pages/",
           "entities/"
         ],
-        "profile": [705, 485, 117, 0]
+        "profile": [706, 485, 117, 0]
       },
       "src/services/": {
         "entries": [
@@ -234,19 +234,19 @@
         ]
       },
       "src/plans.ts": {
-        "checksum": "ef29e2e2c53e31c731da06b8c65c7c6b",
+        "checksum": "099a34708e60693efffc42b10ce4418b",
         "language": "TypeScript",
-        "loc": 132,
-        "profile": [54, 78, 0, 0],
+        "loc": 133,
+        "profile": [55, 78, 0, 0],
         "measurements": [
           {"unit_name": "hasValidSubscription", "start": {"line": 7, "column": 23}, "end": {"line": 31, "column": 2}, "value": 25},
           {"unit_name": "isCommercialOrganizationPlan", "start": {"line": 33, "column": 23}, "end": {"line": 50, "column": 2}, "value": 18},
           {"unit_name": "isPaidPlan", "start": {"line": 52, "column": 23}, "end": {"line": 70, "column": 2}, "value": 19},
           {"unit_name": "buyCommercialOrganizationPlanComment", "start": {"line": 72, "column": 16}, "end": {"line": 82, "column": 2}, "value": 11},
           {"unit_name": "buyDeveloperPlanComment", "start": {"line": 84, "column": 16}, "end": {"line": 97, "column": 2}, "value": 14},
-          {"unit_name": "isFreePaidSubscription", "start": {"line": 99, "column": 17}, "end": {"line": 112, "column": 2}, "value": 14},
-          {"unit_name": "listAppSubscriptions", "start": {"line": 114, "column": 23}, "end": {"line": 129, "column": 2}, "value": 16},
-          {"unit_name": "listFreeTrialAccounts", "start": {"line": 131, "column": 10}, "end": {"line": 145, "column": 2}, "value": 15}
+          {"unit_name": "isFreePaidSubscription", "start": {"line": 99, "column": 17}, "end": {"line": 113, "column": 2}, "value": 15},
+          {"unit_name": "listAppSubscriptions", "start": {"line": 115, "column": 23}, "end": {"line": 130, "column": 2}, "value": 16},
+          {"unit_name": "listFreeTrialAccounts", "start": {"line": 132, "column": 10}, "end": {"line": 146, "column": 2}, "value": 15}
         ]
       },
       "src/github.ts": {
