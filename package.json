@@ -56,7 +56,7 @@
     "is-plain-object": "^5.0.0",
     "js-tokens": "^9.0.0",
     "mongodb": "^6.12.0",
-    "next": "^14.2.12",
+    "next": "^15.3.2",
     "node-fetch": "^2.6.1",
     "probot": "^13.4.1",
     "react": "^18.2.0",
