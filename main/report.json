@@ -1,7 +1,7 @@
 {
   "version": "0.18.1",
-  "uuid": "5fce6eb2-8345-4767-af68-46f9f8505599",
-  "timestamp": "2025-04-14T11:19:45+00:00",
+  "uuid": "863dd743-cfc2-4ab6-9180-7b52a6c1ec1b",
+  "timestamp": "2025-05-25T19:19:38+00:00",
   "root": "/github/workspace",
   "repository": {
     "owner": "robvanderleek",
@@ -10,65 +10,66 @@
   },
   "codebase": {
     "totals": {
-      "JavaScript": {
-        "files": 1,
-        "lines_of_code": 8,
-        "functions": 1,
-        "hard_to_maintain": 0,
-        "unmaintainable": 0
-      },
       "TypeScript": {
         "files": 24,
         "lines_of_code": 1308,
         "functions": 119,
         "hard_to_maintain": 3,
         "unmaintainable": 0
+      },
+      "JavaScript": {
+        "files": 1,
+        "lines_of_code": 8,
+        "functions": 1,
+        "hard_to_maintain": 0,
+        "unmaintainable": 0
       }
     },
     "tree": {
       "./": {
         "entries": [
-          "next.config.js",
           "next-env.d.ts",
+          "next.config.js",
           "src/"
         ],
         "profile": [714, 485, 117, 0]
       },
       "src/": {
         "entries": [
+          "github.ts",
+          "interpolate.ts",
+          "server.ts",
           "config.ts",
-          "probot.ts",
+          "context.ts",
           "discord.ts",
           "utils.ts",
-          "context.ts",
-          "interpolate.ts",
+          "probot.ts",
           "action.ts",
-          "server.ts",
           "plans.ts",
-          "github.ts",
-          "services/",
+          "entities/",
           "webhooks/",
           "pages/",
-          "entities/"
+          "services/"
         ],
         "profile": [706, 485, 117, 0]
       },
-      "src/services/": {
+      "src/entities/": {
         "entries": [
-          "MongoDbService.ts"
+          "WebhookEvent.ts",
+          "Config.ts"
         ],
-        "profile": [17, 0, 0, 0]
+        "profile": [0, 29, 0, 0]
       },
       "src/webhooks/": {
         "entries": [
           "marketplace-purchase.ts",
-          "issue-closed.ts",
           "issue-assigned.ts",
           "pull-request-closed.ts",
           "issue-opened.ts",
+          "comment-created.ts",
           "pull-request.ts",
           "issue-labeled.ts",
-          "comment-created.ts"
+          "issue-closed.ts"
         ],
         "profile": [119, 143, 0, 0]
       },
@@ -85,24 +86,14 @@
         ],
         "profile": [12, 0, 0, 0]
       },
-      "src/entities/": {
+      "src/services/": {
         "entries": [
-          "Config.ts",
-          "WebhookEvent.ts"
+          "MongoDbService.ts"
         ],
-        "profile": [0, 29, 0, 0]
+        "profile": [17, 0, 0, 0]
       }
     },
     "files": {
-      "next.config.js": {
-        "checksum": "e6e268855af4f54f80411ec0ea08f55a",
-        "language": "JavaScript",
-        "loc": 8,
-        "profile": [8, 0, 0, 0],
-        "measurements": [
-          {"unit_name": "rewrites", "start": {"line": 4, "column": 9}, "end": {"line": 11, "column": 4}, "value": 8}
-        ]
-      },
       "next-env.d.ts": {
         "checksum": "cd8a0ae6ffaa12655296aeb2a08ba0bb",
         "language": "TypeScript",
@@ -111,142 +102,13 @@
         "measurements": [
         ]
       },
-      "src/config.ts": {
-        "checksum": "a6c84daaea022a35bcde32d28508eb50",
-        "language": "TypeScript",
-        "loc": 172,
-        "profile": [86, 23, 63, 0],
+      "next.config.js": {
+        "checksum": "e6e268855af4f54f80411ec0ea08f55a",
+        "language": "JavaScript",
+        "loc": 8,
+        "profile": [8, 0, 0, 0],
         "measurements": [
-          {"unit_name": "findConfigurationErrorIssue", "start": {"line": 10, "column": 16}, "end": {"line": 15, "column": 2}, "value": 6},
-          {"unit_name": "createConfigurationErrorIssue", "start": {"line": 17, "column": 16}, "end": {"line": 34, "column": 2}, "value": 9},
-          {"unit_name": "errorBody", "start": {"line": 18, "column": 5}, "end": {"line": 26, "column": 6}, "value": 8},
-          {"unit_name": "handleError", "start": {"line": 36, "column": 16}, "end": {"line": 44, "column": 2}, "value": 9},
-          {"unit_name": "loadConfig", "start": {"line": 48, "column": 23}, "end": {"line": 70, "column": 2}, "value": 23},
-          {"unit_name": "isModeAuto", "start": {"line": 72, "column": 17}, "end": {"line": 74, "column": 2}, "value": 3},
-          {"unit_name": "isModeImmediate", "start": {"line": 76, "column": 17}, "end": {"line": 78, "column": 2}, "value": 3},
-          {"unit_name": "isModeChatOps", "start": {"line": 80, "column": 17}, "end": {"line": 82, "column": 2}, "value": 3},
-          {"unit_name": "isExperimentalBranchNameArgument", "start": {"line": 84, "column": 17}, "end": {"line": 86, "column": 2}, "value": 3},
-          {"unit_name": "shouldOpenPR", "start": {"line": 88, "column": 17}, "end": {"line": 90, "column": 2}, "value": 3},
-          {"unit_name": "prSkipCI", "start": {"line": 92, "column": 17}, "end": {"line": 94, "column": 2}, "value": 3},
-          {"unit_name": "showFreePlanWarning", "start": {"line": 96, "column": 17}, "end": {"line": 98, "column": 2}, "value": 3},
-          {"unit_name": "isChatOpsCommand", "start": {"line": 100, "column": 17}, "end": {"line": 107, "column": 2}, "value": 8},
-          {"unit_name": "getChatOpsCommandArgument", "start": {"line": 109, "column": 17}, "end": {"line": 116, "column": 2}, "value": 8},
-          {"unit_name": "getCommentMessage", "start": {"line": 118, "column": 17}, "end": {"line": 125, "column": 2}, "value": 7},
-          {"unit_name": "getDefaultBranch", "start": {"line": 127, "column": 17}, "end": {"line": 133, "column": 2}, "value": 7},
-          {"unit_name": "getConventionalPrTitlePrefix", "start": {"line": 135, "column": 17}, "end": {"line": 166, "column": 2}, "value": 32},
-          {"unit_name": "getConventionalLabelMapping", "start": {"line": 172, "column": 17}, "end": {"line": 202, "column": 2}, "value": 31},
-          {"unit_name": "isBreakingPr", "start": {"line": 204, "column": 10}, "end": {"line": 206, "column": 2}, "value": 3}
-        ]
-      },
-      "src/probot.ts": {
-        "checksum": "3e6f9261a5cf7be4888b1df7b47c4ccf",
-        "language": "TypeScript",
-        "loc": 91,
-        "profile": [15, 22, 54, 0],
-        "measurements": [
-          {"unit_name": "setupEventHandlers", "start": {"line": 33, "column": 10}, "end": {"line": 86, "column": 2}, "value": 54},
-          {"unit_name": "insertEventIntoDatabase", "start": {"line": 88, "column": 16}, "end": {"line": 109, "column": 2}, "value": 22},
-          {"unit_name": "addPlansRoute", "start": {"line": 111, "column": 16}, "end": {"line": 117, "column": 2}, "value": 7},
-          {"unit_name": "configureSentry", "start": {"line": 119, "column": 10}, "end": {"line": 126, "column": 2}, "value": 8}
-        ]
-      },
-      "src/discord.ts": {
-        "checksum": "16d5dec1f230125b0f9fe9b62dae3272",
-        "language": "TypeScript",
-        "loc": 7,
-        "profile": [7, 0, 0, 0],
-        "measurements": [
-          {"unit_name": "message", "start": {"line": 3, "column": 23}, "end": {"line": 9, "column": 2}, "value": 7}
-        ]
-      },
-      "src/utils.ts": {
-        "checksum": "e2e6b7980879f3f93005af75029e488c",
-        "language": "TypeScript",
-        "loc": 72,
-        "profile": [72, 0, 0, 0],
-        "measurements": [
-          {"unit_name": "makePrefixGitSafe", "start": {"line": 9, "column": 17}, "end": {"line": 9, "column": 88}, "value": 1},
-          {"unit_name": "makeGitSafe", "start": {"line": 17, "column": 17}, "end": {"line": 17, "column": 82}, "value": 1},
-          {"unit_name": "trim", "start": {"line": 24, "column": 10}, "end": {"line": 30, "column": 2}, "value": 7},
-          {"unit_name": "substring", "start": {"line": 29, "column": 50}, "end": {"line": 46, "column": 2}, "value": 10},
-          {"unit_name": "wildcardMatch", "start": {"line": 32, "column": 17}, "end": {"line": 35, "column": 2}, "value": 4},
-          {"unit_name": "isProduction", "start": {"line": 37, "column": 17}, "end": {"line": 39, "column": 2}, "value": 3},
-          {"unit_name": "pushMetric", "start": {"line": 48, "column": 17}, "end": {"line": 53, "column": 2}, "value": 6},
-          {"unit_name": "isRunningInGitHubActions", "start": {"line": 55, "column": 17}, "end": {"line": 57, "column": 2}, "value": 3},
-          {"unit_name": "isRunningInTestEnvironment", "start": {"line": 59, "column": 17}, "end": {"line": 61, "column": 2}, "value": 3},
-          {"unit_name": "getStringLengthInBytes", "start": {"line": 63, "column": 17}, "end": {"line": 65, "column": 2}, "value": 3},
-          {"unit_name": "trimStringToByteLength", "start": {"line": 67, "column": 17}, "end": {"line": 77, "column": 2}, "value": 11},
-          {"unit_name": "logMemoryUsage", "start": {"line": 79, "column": 17}, "end": {"line": 86, "column": 2}, "value": 8},
-          {"unit_name": "formatAsExpandingMarkdown", "start": {"line": 88, "column": 17}, "end": {"line": 96, "column": 2}, "value": 9},
-          {"unit_name": "sleep", "start": {"line": 98, "column": 23}, "end": {"line": 100, "column": 2}, "value": 3}
-        ]
-      },
-      "src/context.ts": {
-        "checksum": "e5667b605613ca6731efcefa4e4f9200",
-        "language": "TypeScript",
-        "loc": 63,
-        "profile": [47, 16, 0, 0],
-        "measurements": [
-          {"unit_name": "getRepoOwnerLogin", "start": {"line": 1, "column": 17}, "end": {"line": 3, "column": 2}, "value": 3},
-          {"unit_name": "getRepoOwnerId", "start": {"line": 5, "column": 17}, "end": {"line": 7, "column": 2}, "value": 3},
-          {"unit_name": "getRepoName", "start": {"line": 9, "column": 17}, "end": {"line": 11, "column": 2}, "value": 3},
-          {"unit_name": "getIssueNumber", "start": {"line": 13, "column": 17}, "end": {"line": 15, "column": 2}, "value": 3},
-          {"unit_name": "getIssueDescription", "start": {"line": 17, "column": 17}, "end": {"line": 19, "column": 2}, "value": 3},
-          {"unit_name": "getIssueTitle", "start": {"line": 21, "column": 17}, "end": {"line": 23, "column": 2}, "value": 3},
-          {"unit_name": "getDefaultBranch", "start": {"line": 25, "column": 17}, "end": {"line": 27, "column": 2}, "value": 3},
-          {"unit_name": "isOrgRepo", "start": {"line": 29, "column": 17}, "end": {"line": 32, "column": 2}, "value": 4},
-          {"unit_name": "getIssueLabels", "start": {"line": 34, "column": 17}, "end": {"line": 37, "column": 2}, "value": 4},
-          {"unit_name": "getIssueLabelsForMatching", "start": {"line": 39, "column": 17}, "end": {"line": 46, "column": 2}, "value": 8},
-          {"unit_name": "getAssignee", "start": {"line": 48, "column": 17}, "end": {"line": 63, "column": 2}, "value": 16},
-          {"unit_name": "getSender", "start": {"line": 65, "column": 17}, "end": {"line": 67, "column": 2}, "value": 3},
-          {"unit_name": "getMilestoneNumber", "start": {"line": 69, "column": 17}, "end": {"line": 75, "column": 2}, "value": 7}
-        ]
-      },
-      "src/interpolate.ts": {
-        "checksum": "3c0ece0af620dc6e53e2d7c238e01e6b",
-        "language": "TypeScript",
-        "loc": 66,
-        "profile": [45, 21, 0, 0],
-        "measurements": [
-          {"unit_name": "interpolate", "start": {"line": 12, "column": 17}, "end": {"line": 14, "column": 2}, "value": 3},
-          {"unit_name": "interpolateExpression", "start": {"line": 16, "column": 10}, "end": {"line": 26, "column": 2}, "value": 11},
-          {"unit_name": "interpolateEnvironmentVariable", "start": {"line": 28, "column": 10}, "end": {"line": 30, "column": 2}, "value": 3},
-          {"unit_name": "interpolateProperty", "start": {"line": 32, "column": 10}, "end": {"line": 34, "column": 2}, "value": 3},
-          {"unit_name": "checkOperators", "start": {"line": 36, "column": 10}, "end": {"line": 47, "column": 2}, "value": 12},
-          {"unit_name": "slice", "start": {"line": 49, "column": 10}, "end": {"line": 69, "column": 2}, "value": 21},
-          {"unit_name": "rewriteSignedNumbers", "start": {"line": 71, "column": 10}, "end": {"line": 83, "column": 2}, "value": 13}
-        ]
-      },
-      "src/action.ts": {
-        "checksum": "4244eb172dbe0e36287a1cbd2042dda9",
-        "language": "TypeScript",
-        "loc": 0,
-        "profile": [0, 0, 0, 0],
-        "measurements": [
-        ]
-      },
-      "src/server.ts": {
-        "checksum": "25a009be99f96b01eeb41dc3e37e6fdf",
-        "language": "TypeScript",
-        "loc": 0,
-        "profile": [0, 0, 0, 0],
-        "measurements": [
-        ]
-      },
-      "src/plans.ts": {
-        "checksum": "099a34708e60693efffc42b10ce4418b",
-        "language": "TypeScript",
-        "loc": 133,
-        "profile": [55, 78, 0, 0],
-        "measurements": [
-          {"unit_name": "hasValidSubscription", "start": {"line": 7, "column": 23}, "end": {"line": 31, "column": 2}, "value": 25},
-          {"unit_name": "isCommercialOrganizationPlan", "start": {"line": 33, "column": 23}, "end": {"line": 50, "column": 2}, "value": 18},
-          {"unit_name": "isPaidPlan", "start": {"line": 52, "column": 23}, "end": {"line": 70, "column": 2}, "value": 19},
-          {"unit_name": "buyCommercialOrganizationPlanComment", "start": {"line": 72, "column": 16}, "end": {"line": 82, "column": 2}, "value": 11},
-          {"unit_name": "buyDeveloperPlanComment", "start": {"line": 84, "column": 16}, "end": {"line": 97, "column": 2}, "value": 14},
-          {"unit_name": "isFreePaidSubscription", "start": {"line": 99, "column": 17}, "end": {"line": 113, "column": 2}, "value": 15},
-          {"unit_name": "listAppSubscriptions", "start": {"line": 115, "column": 23}, "end": {"line": 130, "column": 2}, "value": 16},
-          {"unit_name": "listFreeTrialAccounts", "start": {"line": 132, "column": 10}, "end": {"line": 146, "column": 2}, "value": 15}
+          {"unit_name": "rewrites", "start": {"line": 4, "column": 9}, "end": {"line": 11, "column": 4}, "value": 8}
         ]
       },
       "src/github.ts": {
@@ -288,15 +150,159 @@
           {"unit_name": "updatePrBody", "start": {"line": 470, "column": 23}, "end": {"line": 476, "column": 2}, "value": 7}
         ]
       },
-      "src/services/MongoDbService.ts": {
-        "checksum": "48008324e7edb8b1e07629e642924c21",
+      "src/interpolate.ts": {
+        "checksum": "3c0ece0af620dc6e53e2d7c238e01e6b",
         "language": "TypeScript",
-        "loc": 17,
-        "profile": [17, 0, 0, 0],
+        "loc": 66,
+        "profile": [45, 21, 0, 0],
         "measurements": [
-          {"unit_name": "getDatabase", "start": {"line": 12, "column": 11}, "end": {"line": 20, "column": 6}, "value": 9},
-          {"unit_name": "storeEvent", "start": {"line": 22, "column": 11}, "end": {"line": 26, "column": 6}, "value": 5},
-          {"unit_name": "disconnect", "start": {"line": 28, "column": 5}, "end": {"line": 30, "column": 6}, "value": 3}
+          {"unit_name": "interpolate", "start": {"line": 12, "column": 17}, "end": {"line": 14, "column": 2}, "value": 3},
+          {"unit_name": "interpolateExpression", "start": {"line": 16, "column": 10}, "end": {"line": 26, "column": 2}, "value": 11},
+          {"unit_name": "interpolateEnvironmentVariable", "start": {"line": 28, "column": 10}, "end": {"line": 30, "column": 2}, "value": 3},
+          {"unit_name": "interpolateProperty", "start": {"line": 32, "column": 10}, "end": {"line": 34, "column": 2}, "value": 3},
+          {"unit_name": "checkOperators", "start": {"line": 36, "column": 10}, "end": {"line": 47, "column": 2}, "value": 12},
+          {"unit_name": "slice", "start": {"line": 49, "column": 10}, "end": {"line": 69, "column": 2}, "value": 21},
+          {"unit_name": "rewriteSignedNumbers", "start": {"line": 71, "column": 10}, "end": {"line": 83, "column": 2}, "value": 13}
+        ]
+      },
+      "src/server.ts": {
+        "checksum": "25a009be99f96b01eeb41dc3e37e6fdf",
+        "language": "TypeScript",
+        "loc": 0,
+        "profile": [0, 0, 0, 0],
+        "measurements": [
+        ]
+      },
+      "src/config.ts": {
+        "checksum": "a6c84daaea022a35bcde32d28508eb50",
+        "language": "TypeScript",
+        "loc": 172,
+        "profile": [86, 23, 63, 0],
+        "measurements": [
+          {"unit_name": "findConfigurationErrorIssue", "start": {"line": 10, "column": 16}, "end": {"line": 15, "column": 2}, "value": 6},
+          {"unit_name": "createConfigurationErrorIssue", "start": {"line": 17, "column": 16}, "end": {"line": 34, "column": 2}, "value": 9},
+          {"unit_name": "errorBody", "start": {"line": 18, "column": 5}, "end": {"line": 26, "column": 6}, "value": 8},
+          {"unit_name": "handleError", "start": {"line": 36, "column": 16}, "end": {"line": 44, "column": 2}, "value": 9},
+          {"unit_name": "loadConfig", "start": {"line": 48, "column": 23}, "end": {"line": 70, "column": 2}, "value": 23},
+          {"unit_name": "isModeAuto", "start": {"line": 72, "column": 17}, "end": {"line": 74, "column": 2}, "value": 3},
+          {"unit_name": "isModeImmediate", "start": {"line": 76, "column": 17}, "end": {"line": 78, "column": 2}, "value": 3},
+          {"unit_name": "isModeChatOps", "start": {"line": 80, "column": 17}, "end": {"line": 82, "column": 2}, "value": 3},
+          {"unit_name": "isExperimentalBranchNameArgument", "start": {"line": 84, "column": 17}, "end": {"line": 86, "column": 2}, "value": 3},
+          {"unit_name": "shouldOpenPR", "start": {"line": 88, "column": 17}, "end": {"line": 90, "column": 2}, "value": 3},
+          {"unit_name": "prSkipCI", "start": {"line": 92, "column": 17}, "end": {"line": 94, "column": 2}, "value": 3},
+          {"unit_name": "showFreePlanWarning", "start": {"line": 96, "column": 17}, "end": {"line": 98, "column": 2}, "value": 3},
+          {"unit_name": "isChatOpsCommand", "start": {"line": 100, "column": 17}, "end": {"line": 107, "column": 2}, "value": 8},
+          {"unit_name": "getChatOpsCommandArgument", "start": {"line": 109, "column": 17}, "end": {"line": 116, "column": 2}, "value": 8},
+          {"unit_name": "getCommentMessage", "start": {"line": 118, "column": 17}, "end": {"line": 125, "column": 2}, "value": 7},
+          {"unit_name": "getDefaultBranch", "start": {"line": 127, "column": 17}, "end": {"line": 133, "column": 2}, "value": 7},
+          {"unit_name": "getConventionalPrTitlePrefix", "start": {"line": 135, "column": 17}, "end": {"line": 166, "column": 2}, "value": 32},
+          {"unit_name": "getConventionalLabelMapping", "start": {"line": 172, "column": 17}, "end": {"line": 202, "column": 2}, "value": 31},
+          {"unit_name": "isBreakingPr", "start": {"line": 204, "column": 10}, "end": {"line": 206, "column": 2}, "value": 3}
+        ]
+      },
+      "src/context.ts": {
+        "checksum": "e5667b605613ca6731efcefa4e4f9200",
+        "language": "TypeScript",
+        "loc": 63,
+        "profile": [47, 16, 0, 0],
+        "measurements": [
+          {"unit_name": "getRepoOwnerLogin", "start": {"line": 1, "column": 17}, "end": {"line": 3, "column": 2}, "value": 3},
+          {"unit_name": "getRepoOwnerId", "start": {"line": 5, "column": 17}, "end": {"line": 7, "column": 2}, "value": 3},
+          {"unit_name": "getRepoName", "start": {"line": 9, "column": 17}, "end": {"line": 11, "column": 2}, "value": 3},
+          {"unit_name": "getIssueNumber", "start": {"line": 13, "column": 17}, "end": {"line": 15, "column": 2}, "value": 3},
+          {"unit_name": "getIssueDescription", "start": {"line": 17, "column": 17}, "end": {"line": 19, "column": 2}, "value": 3},
+          {"unit_name": "getIssueTitle", "start": {"line": 21, "column": 17}, "end": {"line": 23, "column": 2}, "value": 3},
+          {"unit_name": "getDefaultBranch", "start": {"line": 25, "column": 17}, "end": {"line": 27, "column": 2}, "value": 3},
+          {"unit_name": "isOrgRepo", "start": {"line": 29, "column": 17}, "end": {"line": 32, "column": 2}, "value": 4},
+          {"unit_name": "getIssueLabels", "start": {"line": 34, "column": 17}, "end": {"line": 37, "column": 2}, "value": 4},
+          {"unit_name": "getIssueLabelsForMatching", "start": {"line": 39, "column": 17}, "end": {"line": 46, "column": 2}, "value": 8},
+          {"unit_name": "getAssignee", "start": {"line": 48, "column": 17}, "end": {"line": 63, "column": 2}, "value": 16},
+          {"unit_name": "getSender", "start": {"line": 65, "column": 17}, "end": {"line": 67, "column": 2}, "value": 3},
+          {"unit_name": "getMilestoneNumber", "start": {"line": 69, "column": 17}, "end": {"line": 75, "column": 2}, "value": 7}
+        ]
+      },
+      "src/discord.ts": {
+        "checksum": "16d5dec1f230125b0f9fe9b62dae3272",
+        "language": "TypeScript",
+        "loc": 7,
+        "profile": [7, 0, 0, 0],
+        "measurements": [
+          {"unit_name": "message", "start": {"line": 3, "column": 23}, "end": {"line": 9, "column": 2}, "value": 7}
+        ]
+      },
+      "src/utils.ts": {
+        "checksum": "e2e6b7980879f3f93005af75029e488c",
+        "language": "TypeScript",
+        "loc": 72,
+        "profile": [72, 0, 0, 0],
+        "measurements": [
+          {"unit_name": "makePrefixGitSafe", "start": {"line": 9, "column": 17}, "end": {"line": 9, "column": 88}, "value": 1},
+          {"unit_name": "makeGitSafe", "start": {"line": 17, "column": 17}, "end": {"line": 17, "column": 82}, "value": 1},
+          {"unit_name": "trim", "start": {"line": 24, "column": 10}, "end": {"line": 30, "column": 2}, "value": 7},
+          {"unit_name": "substring", "start": {"line": 29, "column": 50}, "end": {"line": 46, "column": 2}, "value": 10},
+          {"unit_name": "wildcardMatch", "start": {"line": 32, "column": 17}, "end": {"line": 35, "column": 2}, "value": 4},
+          {"unit_name": "isProduction", "start": {"line": 37, "column": 17}, "end": {"line": 39, "column": 2}, "value": 3},
+          {"unit_name": "pushMetric", "start": {"line": 48, "column": 17}, "end": {"line": 53, "column": 2}, "value": 6},
+          {"unit_name": "isRunningInGitHubActions", "start": {"line": 55, "column": 17}, "end": {"line": 57, "column": 2}, "value": 3},
+          {"unit_name": "isRunningInTestEnvironment", "start": {"line": 59, "column": 17}, "end": {"line": 61, "column": 2}, "value": 3},
+          {"unit_name": "getStringLengthInBytes", "start": {"line": 63, "column": 17}, "end": {"line": 65, "column": 2}, "value": 3},
+          {"unit_name": "trimStringToByteLength", "start": {"line": 67, "column": 17}, "end": {"line": 77, "column": 2}, "value": 11},
+          {"unit_name": "logMemoryUsage", "start": {"line": 79, "column": 17}, "end": {"line": 86, "column": 2}, "value": 8},
+          {"unit_name": "formatAsExpandingMarkdown", "start": {"line": 88, "column": 17}, "end": {"line": 96, "column": 2}, "value": 9},
+          {"unit_name": "sleep", "start": {"line": 98, "column": 23}, "end": {"line": 100, "column": 2}, "value": 3}
+        ]
+      },
+      "src/probot.ts": {
+        "checksum": "3e6f9261a5cf7be4888b1df7b47c4ccf",
+        "language": "TypeScript",
+        "loc": 91,
+        "profile": [15, 22, 54, 0],
+        "measurements": [
+          {"unit_name": "setupEventHandlers", "start": {"line": 33, "column": 10}, "end": {"line": 86, "column": 2}, "value": 54},
+          {"unit_name": "insertEventIntoDatabase", "start": {"line": 88, "column": 16}, "end": {"line": 109, "column": 2}, "value": 22},
+          {"unit_name": "addPlansRoute", "start": {"line": 111, "column": 16}, "end": {"line": 117, "column": 2}, "value": 7},
+          {"unit_name": "configureSentry", "start": {"line": 119, "column": 10}, "end": {"line": 126, "column": 2}, "value": 8}
+        ]
+      },
+      "src/action.ts": {
+        "checksum": "4244eb172dbe0e36287a1cbd2042dda9",
+        "language": "TypeScript",
+        "loc": 0,
+        "profile": [0, 0, 0, 0],
+        "measurements": [
+        ]
+      },
+      "src/plans.ts": {
+        "checksum": "9db39b95aa309fcda86c4969b1e89a8c",
+        "language": "TypeScript",
+        "loc": 133,
+        "profile": [55, 78, 0, 0],
+        "measurements": [
+          {"unit_name": "hasValidSubscription", "start": {"line": 7, "column": 23}, "end": {"line": 31, "column": 2}, "value": 25},
+          {"unit_name": "isCommercialOrganizationPlan", "start": {"line": 33, "column": 23}, "end": {"line": 50, "column": 2}, "value": 18},
+          {"unit_name": "isPaidPlan", "start": {"line": 52, "column": 23}, "end": {"line": 70, "column": 2}, "value": 19},
+          {"unit_name": "buyCommercialOrganizationPlanComment", "start": {"line": 72, "column": 16}, "end": {"line": 82, "column": 2}, "value": 11},
+          {"unit_name": "buyDeveloperPlanComment", "start": {"line": 84, "column": 16}, "end": {"line": 97, "column": 2}, "value": 14},
+          {"unit_name": "isFreePaidSubscription", "start": {"line": 99, "column": 17}, "end": {"line": 113, "column": 2}, "value": 15},
+          {"unit_name": "listAppSubscriptions", "start": {"line": 115, "column": 23}, "end": {"line": 130, "column": 2}, "value": 16},
+          {"unit_name": "listFreeTrialAccounts", "start": {"line": 132, "column": 10}, "end": {"line": 146, "column": 2}, "value": 15}
+        ]
+      },
+      "src/entities/WebhookEvent.ts": {
+        "checksum": "6f1ec2abd56064dc619bafd620bbdce1",
+        "language": "TypeScript",
+        "loc": 0,
+        "profile": [0, 0, 0, 0],
+        "measurements": [
+        ]
+      },
+      "src/entities/Config.ts": {
+        "checksum": "f26de3fd571e067aad4920bccd103736",
+        "language": "TypeScript",
+        "loc": 29,
+        "profile": [0, 29, 0, 0],
+        "measurements": [
+          {"unit_name": "getDefaultConfig", "start": {"line": 40, "column": 17}, "end": {"line": 68, "column": 2}, "value": 29}
         ]
       },
       "src/webhooks/marketplace-purchase.ts": {
@@ -307,16 +313,6 @@
         "measurements": [
           {"unit_name": "marketplacePurchase", "start": {"line": 4, "column": 23}, "end": {"line": 13, "column": 2}, "value": 10},
           {"unit_name": "getChangeEmoji", "start": {"line": 15, "column": 10}, "end": {"line": 24, "column": 2}, "value": 10}
-        ]
-      },
-      "src/webhooks/issue-closed.ts": {
-        "checksum": "6ef225b3cd349b749d1a6ce723f25ffc",
-        "language": "TypeScript",
-        "loc": 21,
-        "profile": [21, 0, 0, 0],
-        "measurements": [
-          {"unit_name": "issueClosed", "start": {"line": 7, "column": 23}, "end": {"line": 16, "column": 2}, "value": 10},
-          {"unit_name": "handle", "start": {"line": 18, "column": 16}, "end": {"line": 28, "column": 2}, "value": 11}
         ]
       },
       "src/webhooks/issue-assigned.ts": {
@@ -349,6 +345,17 @@
           {"unit_name": "handle", "start": {"line": 29, "column": 16}, "end": {"line": 55, "column": 2}, "value": 27}
         ]
       },
+      "src/webhooks/comment-created.ts": {
+        "checksum": "4911be09dd463e1e82832f04de53606c",
+        "language": "TypeScript",
+        "loc": 50,
+        "profile": [20, 30, 0, 0],
+        "measurements": [
+          {"unit_name": "commentCreated", "start": {"line": 24, "column": 23}, "end": {"line": 31, "column": 2}, "value": 8},
+          {"unit_name": "getBranchName", "start": {"line": 33, "column": 16}, "end": {"line": 44, "column": 2}, "value": 12},
+          {"unit_name": "chatOpsCommandGiven", "start": {"line": 46, "column": 23}, "end": {"line": 75, "column": 2}, "value": 30}
+        ]
+      },
       "src/webhooks/pull-request.ts": {
         "checksum": "76779d2bd81873ac197f579f32251cc0",
         "language": "TypeScript",
@@ -369,15 +376,14 @@
           {"unit_name": "issueLabeled", "start": {"line": 6, "column": 23}, "end": {"line": 21, "column": 2}, "value": 16}
         ]
       },
-      "src/webhooks/comment-created.ts": {
-        "checksum": "4911be09dd463e1e82832f04de53606c",
+      "src/webhooks/issue-closed.ts": {
+        "checksum": "6ef225b3cd349b749d1a6ce723f25ffc",
         "language": "TypeScript",
-        "loc": 50,
-        "profile": [20, 30, 0, 0],
+        "loc": 21,
+        "profile": [21, 0, 0, 0],
         "measurements": [
-          {"unit_name": "commentCreated", "start": {"line": 24, "column": 23}, "end": {"line": 31, "column": 2}, "value": 8},
-          {"unit_name": "getBranchName", "start": {"line": 33, "column": 16}, "end": {"line": 44, "column": 2}, "value": 12},
-          {"unit_name": "chatOpsCommandGiven", "start": {"line": 46, "column": 23}, "end": {"line": 75, "column": 2}, "value": 30}
+          {"unit_name": "issueClosed", "start": {"line": 7, "column": 23}, "end": {"line": 16, "column": 2}, "value": 10},
+          {"unit_name": "handle", "start": {"line": 18, "column": 16}, "end": {"line": 28, "column": 2}, "value": 11}
         ]
       },
       "src/pages/api/webhook.ts": {
@@ -397,21 +403,15 @@
         "measurements": [
         ]
       },
-      "src/entities/Config.ts": {
-        "checksum": "f26de3fd571e067aad4920bccd103736",
+      "src/services/MongoDbService.ts": {
+        "checksum": "48008324e7edb8b1e07629e642924c21",
         "language": "TypeScript",
-        "loc": 29,
-        "profile": [0, 29, 0, 0],
+        "loc": 17,
+        "profile": [17, 0, 0, 0],
         "measurements": [
-          {"unit_name": "getDefaultConfig", "start": {"line": 40, "column": 17}, "end": {"line": 68, "column": 2}, "value": 29}
-        ]
-      },
-      "src/entities/WebhookEvent.ts": {
-        "checksum": "6f1ec2abd56064dc619bafd620bbdce1",
-        "language": "TypeScript",
-        "loc": 0,
-        "profile": [0, 0, 0, 0],
-        "measurements": [
+          {"unit_name": "getDatabase", "start": {"line": 12, "column": 11}, "end": {"line": 20, "column": 6}, "value": 9},
+          {"unit_name": "storeEvent", "start": {"line": 22, "column": 11}, "end": {"line": 26, "column": 6}, "value": 5},
+          {"unit_name": "disconnect", "start": {"line": 28, "column": 5}, "end": {"line": 30, "column": 6}, "value": 3}
         ]
       }
     }
