@@ -4256,10 +4256,10 @@ mkdirp@^1.0.3, mkdirp@^1.0.4:
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
 
-mkver@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/mkver/-/mkver-2.1.0.tgz#3f47b08810ba78ed5f301f6dd9d05e7677c506b6"
-  integrity sha512-a5tfefhIVPqHgy98IAyVU2Tn45knQ5Um44j68EdtfXKikfbRoxOsO+0wjJCsl4k0VgSEnqWx3VuItcBynb78Pw==
+mkver@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/mkver/-/mkver-4.0.1.tgz#45570bdaaa5f309089e0aa07ce30c06bbb90a261"
+  integrity sha512-tP/DC0pQK+l+xSCsEVdw28g3QKCrDDglLD0fz5oVBWXL/Za5TJXa1iHbxJHimM4q/x+4fd3uWUuiklEOaT73Mg==
 
 module-details-from-path@^1.0.3:
   version "1.0.3"
