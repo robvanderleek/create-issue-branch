@@ -33,6 +33,7 @@ import {
     trimStringToByteLength,
     wildcardMatch
 } from "./utils";
+import {GraphQlResponse} from "@octokit/graphql/dist-types/types";
 
 export async function createIssueBranch(app: Probot, ctx: Context<any>, branchName: string, config: Config) {
     if (await hasValidSubscription(app, ctx, config)) {
@@ -263,29 +264,37 @@ export async function createBranch(app: Probot, ctx: Context<any>, config: Confi
 }
 
 export async function createPr(app: Probot, ctx: Context<any>, config: Config, username: string, branchName: string) {
-    const owner = getRepoOwnerLogin(ctx)
-    const repo = getRepoName(ctx)
-    const base = getPrTargetBranch(ctx, config)
-    const title = getIssueTitle(ctx)
+    const owner = getRepoOwnerLogin(ctx);
+    const repo = getRepoName(ctx);
+    const base = getPrTargetBranch(ctx, config);
+    const title = getIssueTitle(ctx);
     const draft = config.openDraftPR;
+    const logContext: any = {owner, repo, branchName, base, title, draft, username};
     try {
-        const baseHeadSha = await getBranchHeadSha(ctx, base)
-        const branchHeadSha = await getBranchHeadSha(ctx, branchName)
+        const baseHeadSha = await getBranchHeadSha(ctx, base);
+        logContext.baseHeadSha = baseHeadSha;
+        const branchHeadSha = await getBranchHeadSha(ctx, branchName);
+        logContext.branchHeadSha = branchHeadSha;
         if (branchHeadSha === baseHeadSha) {
-            app.log.info('Branch and base heads are equal, creating empty commit for PR')
-            await createEmptyCommit(ctx, branchName, getCommitText(ctx, config), String(branchHeadSha))
+            app.log.info('Branch and base heads are equal, creating empty commit for PR');
+            const res = await createEmptyCommit(ctx, branchName, getCommitText(ctx, config), String(branchHeadSha));
+            logContext.emptyCommitResponse = res;
         }
         const {data: pr} = await ctx.octokit.pulls.create(
             {owner, repo, head: branchName, base, title, body: await getPrBody(app, ctx, config), draft: draft})
         app.log.info(`${draft ? 'Created draft' : 'Created'} pull request ${pr.number} for branch ${branchName}`)
-        await copyIssueAttributesToPr(app, ctx, config, pr)
+        await copyIssueAttributesToPr(app, ctx, config, pr);
     } catch (e: any) {
-        app.log.info(`Could not create PR (${e.message})`)
-        await addComment(ctx, config, `Could not create PR (${e.message})`)
+        app.log.info(`Could not create PR (${e.message})`);
+        await addComment(ctx, config, ``);
+        await addComment(ctx, config,
+            'Could not create PR (${e.message})\n' +
+            'Context:\n' +
+            '```json\n' + JSON.stringify(logContext, null, 2) + '\n```');
     }
 }
 
-async function createEmptyCommit(ctx: Context<any>, branchName: string, message: string, headSha: string) {
+async function createEmptyCommit(ctx: Context<any>, branchName: string, message: string, headSha: string): Promise<GraphQlResponse<any>> {
     const owner = getRepoOwnerLogin(ctx)
     const repo = getRepoName(ctx)
     const createEptyCommitMutation = `
@@ -303,7 +312,7 @@ async function createEmptyCommit(ctx: Context<any>, branchName: string, message:
       }
     }
   }`
-    await ctx.octokit.graphql(createEptyCommitMutation, {
+    return await ctx.octokit.graphql(createEptyCommitMutation, {
         repositoryNameWithOwner: `${owner}/${repo}`, branchName: branchName, message: message, headSha: headSha
     })
 }

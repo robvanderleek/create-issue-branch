@@ -99,7 +99,7 @@ async function insertEventIntoDatabase(app: Probot, ctx: any) {
     }
     const connectionString = process.env.CREATE_ISSUE_BRANCH_MONGODB;
     if (!connectionString) {
-        app.log.info('Environment variable CREATE_ISSUE_BRANCH_MONGODB not set, skipping database insert');
+        app.log.debug('Environment variable CREATE_ISSUE_BRANCH_MONGODB not set, skipping database insert');
     } else {
         const dbService = new MongoDbService(connectionString);
         app.log.info(`Inserting event into database: ${JSON.stringify(webhookEvent)}`);
