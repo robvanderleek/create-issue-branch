@@ -100,7 +100,7 @@ export function isFreePaidSubscription(app: Probot, ctx: Context<any>): boolean 
     const login = getRepoOwnerLogin(ctx)
     const logins = ['PWrInSpace', 'KPLRCDBS', 'codemeistre', 'RaspberryPiFoundation', 'astro-pi',
         'LOG680-01-Equipe-09', 'New-AutoMotive', 'EpitechMscPro2020', 'snaphu-msu', 'SerenKodi', 'oyunprotocol',
-        'web-illinois', 'PathologyDataScience', 'miranhas-github', 'DHBW-FN', 'lecoindesdevs', 'getcodelimit',
+        'web-illinois', 'PathologyDataScience', 'miranhas-github', 'DHBW-FN', 'lecoindesdevs', 'getcapm', 'getcodelimit',
         'facio-ergo-sum', 'robvanderleek', 'ExtendedXmlSerializer',
         'CantoneseLanguageDictionary', 'Il-Libro-Open-Source'];
     const matching_login = logins.find(o => o.toLowerCase() === login.toLowerCase());
