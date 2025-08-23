@@ -24,11 +24,9 @@ import {setOutput} from "@actions/core";
 import {
     formatAsExpandingMarkdown,
     getStringLengthInBytes,
-    isProduction,
     isRunningInGitHubActions,
     makeGitSafe,
     makePrefixGitSafe,
-    pushMetric,
     sleep,
     trimStringToByteLength,
     wildcardMatch
@@ -238,27 +236,24 @@ async function getBranchHeadSha(ctx: Context<any>, branch: string) {
 }
 
 export async function createBranch(app: Probot, ctx: Context<any>, config: Config, branchName: string, sha: string) {
-    const owner = getRepoOwnerLogin(ctx)
-    const repo = getRepoName(ctx)
+    const owner = getRepoOwnerLogin(ctx);
+    const repo = getRepoName(ctx);
     try {
         const res = await ctx.octokit.git.createRef({
             owner: owner, repo: repo, ref: `refs/heads/${branchName}`, sha: sha
-        })
-        app.log.info(`Branch created: ${branchName}`)
+        });
+        app.log.info(`Branch created: ${branchName}`);
         if (isRunningInGitHubActions()) {
-            setOutput('branchName', branchName)
+            setOutput('branchName', branchName);
         }
-        const commentMessage = interpolate(getCommentMessage(config), {...ctx.payload, branchName: branchName})
-        await addComment(ctx, config, commentMessage)
-        if (isProduction()) {
-            pushMetric(app, owner);
-        }
-        return res
+        const commentMessage = interpolate(getCommentMessage(config), {...ctx.payload, branchName: branchName});
+        await addComment(ctx, config, commentMessage);
+        return res;
     } catch (e: any) {
         if (e.message === 'Reference already exists') {
-            app.log.info('Could not create branch as it already exists')
+            app.log.info('Could not create branch as it already exists');
         } else {
-            await addComment(ctx, config, `Could not create branch \`${branchName}\` due to: ${e.message}`)
+            await addComment(ctx, config, `Could not create branch \`${branchName}\` due to: ${e.message}`);
         }
     }
 }
@@ -277,8 +272,7 @@ export async function createPr(app: Probot, ctx: Context<any>, config: Config, u
         logContext.branchHeadSha = branchHeadSha;
         if (branchHeadSha === baseHeadSha) {
             app.log.info('Branch and base heads are equal, creating empty commit for PR');
-            const res = await createEmptyCommit(ctx, branchName, getCommitText(ctx, config), String(branchHeadSha));
-            logContext.emptyCommitResponse = res;
+            logContext.emptyCommitResponse = await createEmptyCommit(ctx, branchName, getCommitText(ctx, config), String(branchHeadSha));
         }
         const {data: pr} = await ctx.octokit.pulls.create(
             {owner, repo, head: branchName, base, title, body: await getPrBody(app, ctx, config), draft: draft})

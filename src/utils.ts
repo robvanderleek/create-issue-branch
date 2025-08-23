@@ -1,8 +1,6 @@
 import wcMatch from "wildcard-match";
-import {Analytics} from "analytics";
 import {Probot} from "probot";
 
-const googleAnalytics = require('@analytics/google-analytics').default
 // Regexp below is a stricter implementation of https://git-scm.com/docs/git-check-ref-format
 const GIT_SAFE_REGEXP = /([.~^:?*[\]@{}<>|\\"'()`,]|\s)+/g
 
@@ -36,20 +34,6 @@ export function wildcardMatch(pattern: string, s: string) {
 
 export function isProduction() {
     return process.env.NODE_ENV === 'production'
-}
-
-const analytics = Analytics({
-    app: 'create-issue-branch', //
-    plugins: [googleAnalytics({
-        trackingId: 'UA-207350952-1'
-    })]
-})
-
-export function pushMetric(app: Probot, owner: string) {
-    analytics.identify(owner, () => {
-        analytics.track('branch_created', {category: 'Branches'}, () => app.log.info('Pushed metric to Google Analytics'))
-            .catch(err => app.log.error('Could not push metric to Google Analytics: ' + err))
-    }).catch(err => app.log.error('Could not identify user: ' + err))
 }
 
 export function isRunningInGitHubActions() {
