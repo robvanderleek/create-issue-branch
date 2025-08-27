@@ -1,7 +1,7 @@
 {
   "version": "0.20.2",
-  "uuid": "d5bfa7e2-2edf-4ab1-8258-c57d8b0ccdfc",
-  "timestamp": "2025-08-23T12:48:20+00:00",
+  "uuid": "f8fbc228-aa1a-43bf-93ae-b0da6345be60",
+  "timestamp": "2025-08-27T12:25:41+00:00",
   "root": "/github/workspace",
   "repository": {
     "owner": "robvanderleek",
@@ -12,7 +12,7 @@
     "totals": {
       "TypeScript": {
         "files": 24,
-        "lines_of_code": 1296,
+        "lines_of_code": 1297,
         "functions": 117,
         "hard_to_maintain": 3,
         "unmaintainable": 0
@@ -32,7 +32,7 @@
           "next.config.js",
           "src/"
         ],
-        "profile": [698, 489, 117, 0]
+        "profile": [698, 490, 117, 0]
       },
       "src/": {
         "entries": [
@@ -51,7 +51,7 @@
           "pages/",
           "entities/"
         ],
-        "profile": [690, 489, 117, 0]
+        "profile": [690, 490, 117, 0]
       },
       "src/webhooks/": {
         "entries": [
@@ -132,62 +132,62 @@
         ]
       },
       "src/utils.ts": {
-        "checksum": "9ac3cce8d4dd05730dd37d6b8c7c4157",
+        "checksum": "3af67b9cb1dcd900cd86ace1fd2543f8",
         "language": "TypeScript",
         "loc": 56,
         "profile": [56, 0, 0, 0],
         "measurements": [
-          {"unit_name": "makePrefixGitSafe", "start": {"line": 7, "column": 17}, "end": {"line": 7, "column": 88}, "value": 1},
-          {"unit_name": "makeGitSafe", "start": {"line": 15, "column": 17}, "end": {"line": 15, "column": 82}, "value": 1},
-          {"unit_name": "trim", "start": {"line": 22, "column": 10}, "end": {"line": 28, "column": 2}, "value": 7},
-          {"unit_name": "wildcardMatch", "start": {"line": 30, "column": 17}, "end": {"line": 33, "column": 2}, "value": 4},
-          {"unit_name": "isProduction", "start": {"line": 35, "column": 17}, "end": {"line": 37, "column": 2}, "value": 3},
-          {"unit_name": "isRunningInGitHubActions", "start": {"line": 39, "column": 17}, "end": {"line": 41, "column": 2}, "value": 3},
-          {"unit_name": "isRunningInTestEnvironment", "start": {"line": 43, "column": 17}, "end": {"line": 45, "column": 2}, "value": 3},
-          {"unit_name": "getStringLengthInBytes", "start": {"line": 47, "column": 17}, "end": {"line": 49, "column": 2}, "value": 3},
-          {"unit_name": "trimStringToByteLength", "start": {"line": 51, "column": 17}, "end": {"line": 61, "column": 2}, "value": 11},
-          {"unit_name": "logMemoryUsage", "start": {"line": 63, "column": 17}, "end": {"line": 70, "column": 2}, "value": 8},
-          {"unit_name": "formatAsExpandingMarkdown", "start": {"line": 72, "column": 17}, "end": {"line": 80, "column": 2}, "value": 9},
-          {"unit_name": "sleep", "start": {"line": 82, "column": 23}, "end": {"line": 84, "column": 2}, "value": 3}
+          {"unit_name": "makePrefixGitSafe", "start": {"line": 7, "column": 17}, "end": {"line": 7, "column": 69}, "value": 1},
+          {"unit_name": "makeGitSafe", "start": {"line": 11, "column": 17}, "end": {"line": 11, "column": 82}, "value": 1},
+          {"unit_name": "trim", "start": {"line": 21, "column": 10}, "end": {"line": 27, "column": 2}, "value": 7},
+          {"unit_name": "wildcardMatch", "start": {"line": 29, "column": 17}, "end": {"line": 32, "column": 2}, "value": 4},
+          {"unit_name": "isProduction", "start": {"line": 34, "column": 17}, "end": {"line": 36, "column": 2}, "value": 3},
+          {"unit_name": "isRunningInGitHubActions", "start": {"line": 38, "column": 17}, "end": {"line": 40, "column": 2}, "value": 3},
+          {"unit_name": "isRunningInTestEnvironment", "start": {"line": 42, "column": 17}, "end": {"line": 44, "column": 2}, "value": 3},
+          {"unit_name": "getStringLengthInBytes", "start": {"line": 46, "column": 17}, "end": {"line": 48, "column": 2}, "value": 3},
+          {"unit_name": "trimStringToByteLength", "start": {"line": 50, "column": 17}, "end": {"line": 60, "column": 2}, "value": 11},
+          {"unit_name": "logMemoryUsage", "start": {"line": 62, "column": 17}, "end": {"line": 69, "column": 2}, "value": 8},
+          {"unit_name": "formatAsExpandingMarkdown", "start": {"line": 71, "column": 17}, "end": {"line": 79, "column": 2}, "value": 9},
+          {"unit_name": "sleep", "start": {"line": 81, "column": 23}, "end": {"line": 83, "column": 2}, "value": 3}
         ]
       },
       "src/github.ts": {
-        "checksum": "0f414553c241343f04797b5f112ed54e",
+        "checksum": "4aa13f2580ff6014697ddd6339aedc00",
         "language": "TypeScript",
-        "loc": 388,
-        "profile": [231, 157, 0, 0],
+        "loc": 389,
+        "profile": [231, 158, 0, 0],
         "measurements": [
           {"unit_name": "createIssueBranch", "start": {"line": 36, "column": 23}, "end": {"line": 45, "column": 2}, "value": 10},
           {"unit_name": "getBranchNameFromIssue", "start": {"line": 47, "column": 23}, "end": {"line": 58, "column": 2}, "value": 10},
-          {"unit_name": "getBranchName", "start": {"line": 60, "column": 23}, "end": {"line": 83, "column": 2}, "value": 24},
-          {"unit_name": "getIssueNumberFromBranchName", "start": {"line": 85, "column": 17}, "end": {"line": 99, "column": 2}, "value": 15},
-          {"unit_name": "getIssueBranchPrefix", "start": {"line": 101, "column": 17}, "end": {"line": 108, "column": 2}, "value": 8},
-          {"unit_name": "getIssueBranchConfig", "start": {"line": 110, "column": 17}, "end": {"line": 121, "column": 2}, "value": 12},
-          {"unit_name": "allLabelsMatchIssueLabels", "start": {"line": 123, "column": 10}, "end": {"line": 125, "column": 2}, "value": 3},
-          {"unit_name": "skipForIssue", "start": {"line": 127, "column": 17}, "end": {"line": 134, "column": 2}, "value": 8},
-          {"unit_name": "skipBranchCreationForIssue", "start": {"line": 136, "column": 17}, "end": {"line": 143, "column": 2}, "value": 8},
-          {"unit_name": "addComment", "start": {"line": 145, "column": 23}, "end": {"line": 160, "column": 2}, "value": 16},
-          {"unit_name": "branchExists", "start": {"line": 162, "column": 23}, "end": {"line": 173, "column": 2}, "value": 12},
-          {"unit_name": "deleteBranch", "start": {"line": 175, "column": 23}, "end": {"line": 186, "column": 2}, "value": 12},
-          {"unit_name": "getSourceBranch", "start": {"line": 188, "column": 17}, "end": {"line": 195, "column": 2}, "value": 8},
-          {"unit_name": "getPrTargetBranch", "start": {"line": 197, "column": 10}, "end": {"line": 206, "column": 2}, "value": 10},
-          {"unit_name": "getSourceBranchHeadSha", "start": {"line": 208, "column": 16}, "end": {"line": 220, "column": 2}, "value": 13},
-          {"unit_name": "getDefaultBranch", "start": {"line": 222, "column": 10}, "end": {"line": 224, "column": 2}, "value": 3},
-          {"unit_name": "getBranchHeadSha", "start": {"line": 226, "column": 16}, "end": {"line": 236, "column": 2}, "value": 11},
-          {"unit_name": "createBranch", "start": {"line": 238, "column": 23}, "end": {"line": 259, "column": 2}, "value": 22},
-          {"unit_name": "createPr", "start": {"line": 261, "column": 23}, "end": {"line": 289, "column": 2}, "value": 29},
-          {"unit_name": "createEmptyCommit", "start": {"line": 291, "column": 16}, "end": {"line": 312, "column": 2}, "value": 13},
-          {"unit_name": "getCommitText", "start": {"line": 314, "column": 10}, "end": {"line": 324, "column": 2}, "value": 11},
-          {"unit_name": "getPrBody", "start": {"line": 326, "column": 16}, "end": {"line": 347, "column": 2}, "value": 22},
-          {"unit_name": "getPullRequestTemplate", "start": {"line": 349, "column": 16}, "end": {"line": 363, "column": 2}, "value": 14},
-          {"unit_name": "copyIssueAttributesToPr", "start": {"line": 365, "column": 16}, "end": {"line": 387, "column": 2}, "value": 23},
-          {"unit_name": "copyIssueLabelsToPr", "start": {"line": 389, "column": 16}, "end": {"line": 396, "column": 2}, "value": 8},
-          {"unit_name": "copyIssueAssigneeToPr", "start": {"line": 398, "column": 16}, "end": {"line": 403, "column": 2}, "value": 6},
-          {"unit_name": "copyIssueMilestoneToPr", "start": {"line": 405, "column": 16}, "end": {"line": 412, "column": 2}, "value": 8},
-          {"unit_name": "copyIssueProjectsToPr", "start": {"line": 414, "column": 16}, "end": {"line": 427, "column": 2}, "value": 10},
-          {"unit_name": "queryProjectIdsForIssue", "start": {"line": 429, "column": 16}, "end": {"line": 459, "column": 2}, "value": 21},
-          {"unit_name": "updatePrTitle", "start": {"line": 461, "column": 23}, "end": {"line": 471, "column": 2}, "value": 11},
-          {"unit_name": "updatePrBody", "start": {"line": 473, "column": 23}, "end": {"line": 479, "column": 2}, "value": 7}
+          {"unit_name": "getBranchName", "start": {"line": 60, "column": 23}, "end": {"line": 84, "column": 2}, "value": 25},
+          {"unit_name": "getIssueNumberFromBranchName", "start": {"line": 86, "column": 17}, "end": {"line": 100, "column": 2}, "value": 15},
+          {"unit_name": "getIssueBranchPrefix", "start": {"line": 102, "column": 17}, "end": {"line": 109, "column": 2}, "value": 8},
+          {"unit_name": "getIssueBranchConfig", "start": {"line": 111, "column": 17}, "end": {"line": 122, "column": 2}, "value": 12},
+          {"unit_name": "allLabelsMatchIssueLabels", "start": {"line": 124, "column": 10}, "end": {"line": 126, "column": 2}, "value": 3},
+          {"unit_name": "skipForIssue", "start": {"line": 128, "column": 17}, "end": {"line": 135, "column": 2}, "value": 8},
+          {"unit_name": "skipBranchCreationForIssue", "start": {"line": 137, "column": 17}, "end": {"line": 144, "column": 2}, "value": 8},
+          {"unit_name": "addComment", "start": {"line": 146, "column": 23}, "end": {"line": 161, "column": 2}, "value": 16},
+          {"unit_name": "branchExists", "start": {"line": 163, "column": 23}, "end": {"line": 174, "column": 2}, "value": 12},
+          {"unit_name": "deleteBranch", "start": {"line": 176, "column": 23}, "end": {"line": 187, "column": 2}, "value": 12},
+          {"unit_name": "getSourceBranch", "start": {"line": 189, "column": 17}, "end": {"line": 196, "column": 2}, "value": 8},
+          {"unit_name": "getPrTargetBranch", "start": {"line": 198, "column": 10}, "end": {"line": 207, "column": 2}, "value": 10},
+          {"unit_name": "getSourceBranchHeadSha", "start": {"line": 209, "column": 16}, "end": {"line": 221, "column": 2}, "value": 13},
+          {"unit_name": "getDefaultBranch", "start": {"line": 223, "column": 10}, "end": {"line": 225, "column": 2}, "value": 3},
+          {"unit_name": "getBranchHeadSha", "start": {"line": 227, "column": 16}, "end": {"line": 237, "column": 2}, "value": 11},
+          {"unit_name": "createBranch", "start": {"line": 239, "column": 23}, "end": {"line": 260, "column": 2}, "value": 22},
+          {"unit_name": "createPr", "start": {"line": 262, "column": 23}, "end": {"line": 290, "column": 2}, "value": 29},
+          {"unit_name": "createEmptyCommit", "start": {"line": 292, "column": 16}, "end": {"line": 313, "column": 2}, "value": 13},
+          {"unit_name": "getCommitText", "start": {"line": 315, "column": 10}, "end": {"line": 325, "column": 2}, "value": 11},
+          {"unit_name": "getPrBody", "start": {"line": 327, "column": 16}, "end": {"line": 348, "column": 2}, "value": 22},
+          {"unit_name": "getPullRequestTemplate", "start": {"line": 350, "column": 16}, "end": {"line": 364, "column": 2}, "value": 14},
+          {"unit_name": "copyIssueAttributesToPr", "start": {"line": 366, "column": 16}, "end": {"line": 388, "column": 2}, "value": 23},
+          {"unit_name": "copyIssueLabelsToPr", "start": {"line": 390, "column": 16}, "end": {"line": 397, "column": 2}, "value": 8},
+          {"unit_name": "copyIssueAssigneeToPr", "start": {"line": 399, "column": 16}, "end": {"line": 404, "column": 2}, "value": 6},
+          {"unit_name": "copyIssueMilestoneToPr", "start": {"line": 406, "column": 16}, "end": {"line": 413, "column": 2}, "value": 8},
+          {"unit_name": "copyIssueProjectsToPr", "start": {"line": 415, "column": 16}, "end": {"line": 428, "column": 2}, "value": 10},
+          {"unit_name": "queryProjectIdsForIssue", "start": {"line": 430, "column": 16}, "end": {"line": 460, "column": 2}, "value": 21},
+          {"unit_name": "updatePrTitle", "start": {"line": 462, "column": 23}, "end": {"line": 472, "column": 2}, "value": 11},
+          {"unit_name": "updatePrBody", "start": {"line": 474, "column": 23}, "end": {"line": 480, "column": 2}, "value": 7}
         ]
       },
       "src/config.ts": {
