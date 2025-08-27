@@ -2,21 +2,20 @@ import wcMatch from "wildcard-match";
 import {Probot} from "probot";
 
 // Regexp below is a stricter implementation of https://git-scm.com/docs/git-check-ref-format
-const GIT_SAFE_REGEXP = /([.~^:?*[\]@{}<>|\\"'()`,]|\s)+/g
+const GIT_SAFE_REGEXP = /([.~^:?*[\]@{}<>|\\"'()`,]|\s)+/g;
 
-export function makePrefixGitSafe(s: string, {replaceChars = '', replacementChar = '_'} = {}) {
-    let result = trim(s, ' ').replace(GIT_SAFE_REGEXP, replacementChar)
-    if (replaceChars.length > 0) {
-        result = result.replace(new RegExp(`[${replaceChars}]`, 'g'), replacementChar)
-    }
-    return result
+export function makePrefixGitSafe(s: string, {replacementChar = '_'} = {}) {
+    return trim(s, ' ').replace(GIT_SAFE_REGEXP, replacementChar);
 }
 
 export function makeGitSafe(s: string, {replaceChars = '', replacementChar = '_'} = {}) {
-    let result = makePrefixGitSafe(s, {replaceChars: replaceChars, replacementChar: replacementChar})
-    result = trim(result, replacementChar)
-    result = result.replace(/[/]+$/, '')
-    return result
+    let result = trim(s, ' ').replace(GIT_SAFE_REGEXP, replacementChar);
+    if (replaceChars.length > 0) {
+        result = result.replace(new RegExp(`[${replaceChars}]`, 'g'), replacementChar);
+    }
+    result = trim(result, replacementChar);
+    result = result.replace(/[/]+$/, '');
+    return result;
 }
 
 function trim(str: string, ch: string) {

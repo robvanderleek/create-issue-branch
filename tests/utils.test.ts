@@ -37,9 +37,8 @@ test('custom git safe replacements', () => {
 })
 
 test('custom replace chars', () => {
-    expect(makePrefixGitSafe('  feature/this is a bug ', {replaceChars: '/', replacementChar: '+'}))
-        .toBe('feature+this+is+a+bug')
-    expect(makePrefixGitSafe('hello/ world', {replaceChars: '/', replacementChar: '+'})).toBe('hello++world')
+    expect(makePrefixGitSafe('  feature/this is a bug ', {replacementChar: '+'})).toBe('feature/this+is+a+bug')
+    expect(makePrefixGitSafe('hello/ world', {replacementChar: '+'})).toBe('hello/+world')
     expect(makeGitSafe('feature_bug', {replaceChars: '_', replacementChar: '-'})).toBe('feature-bug')
     expect(makeGitSafe('Issue name with slash/', {replaceChars: 'Is'})).toBe('ue_name_with__la_h')
     expect(makeGitSafe('Also issue name/with slash', {replaceChars: '/', replacementChar: '-'}))
