@@ -334,13 +334,14 @@ gitSafeReplacementChar: '-'
 The above configuration would generate the following branch name for issue 15 that has the title "Fix nasty
 bug": `issue-15-Fix-nasty-bug`.
 
-Furthermore, you also can replace arbitrary characters in the branch title:
+Furthermore, you also can replace arbitrary characters in the issue title:
 
 ```yaml
 gitReplaceChars: 'ab/'
 ```
 
-The above configuration replaces all occurences of the characters 'a', 'b' and '/' in the branch title.
+The above configuration replaces all occurences of the characters 'a', 'b' and
+'/' in the issue title.
 
 ## Automatically link pull request with issue
 
