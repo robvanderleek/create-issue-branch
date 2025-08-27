@@ -84,6 +84,16 @@ test('get branch name from issue, reported issues', async () => {
     expect(await github.getBranchNameFromIssue(ctx as any, config)).toBe('issue-12-半中文half_english')
 })
 
+test('get branch name from issue, reported issue #1072', async () => {
+    const ctx = {payload: {issue: {number: 12, title: 'resolve bug/etc', labels: [{name: 'bug'}]}}};
+    const config = getDefaultConfig();
+    config.branchName = '${issue.number%4}-${issue.title,}';
+    config.gitReplaceChars = '/';
+    config.branches = [{label: 'bug', prefix: 'bug/'}];
+
+    expect(await github.getBranchNameFromIssue(ctx as any, config)).toBe('bug/0012-resolve_bug_etc')
+})
+
 test('get branch configuration for issue', () => {
     const ctx = {payload: {issue: {labels: [{name: 'enhancement'}]}}}
     const config = getDefaultConfig();

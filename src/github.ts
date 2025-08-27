@@ -76,10 +76,11 @@ export async function getBranchName(ctx: Context<any>, config: Config, title: st
     }
     const replacementChar = config.gitSafeReplacementChar;
     const replaceChars = config.gitReplaceChars;
-    return makePrefixGitSafe(getIssueBranchPrefix(ctx, config), {
-        replaceChars: replaceChars, //
-        replacementChar: replacementChar //
-    }) + makeGitSafe(result, {replaceChars: replaceChars, replacementChar: replacementChar})
+    return makePrefixGitSafe(getIssueBranchPrefix(ctx, config), {replacementChar: replacementChar}) +
+        makeGitSafe(result, {
+            replaceChars: replaceChars,
+            replacementChar: replacementChar
+        });
 }
 
 export function getIssueNumberFromBranchName(branchName: string): number | undefined {
