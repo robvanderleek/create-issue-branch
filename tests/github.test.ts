@@ -203,47 +203,47 @@ test('handle branch already exist, log message to info level', async () => {
 
     await github.createBranch(probot, ctx, config, 'issue-1', '1234abcd');
 
-    expect(probot.log.info).toBeCalled();
+    expect(probot.log.info).toHaveBeenCalled();
 })
 
 test('log branch create errors with error level', async () => {
-    const createComment = jest.fn()
+    const createComment = jest.fn();
     const createRef = () => {
         // eslint-disable-next-line no-throw-literal
         throw {message: 'Oops, something is wrong'}
-    }
-    const ctx = getDefaultContext()
-    ctx.octokit.issues.createComment = createComment
-    ctx.octokit.git.createRef = createRef
+    };
+    const ctx = getDefaultContext();
+    ctx.octokit.issues.createComment = createComment;
+    ctx.octokit.git.createRef = createRef;
     const config = getDefaultConfig();
     config.silent = false;
 
     await github.createBranch(probot, ctx, config, 'issue-1', '1234abcd');
 
-    expect(createComment).toBeCalled()
+    expect(createComment).toHaveBeenCalled();
 })
 
 test('Retry create comment when it fails', async () => {
-    let hasBeenCalled = false
+    let hasBeenCalled = false;
     const createComment = jest.fn().mockImplementation(() => {
         if (!hasBeenCalled) {
             hasBeenCalled = true
             throw new Error()
         }
-    })
+    });
     const createRef = () => {
         // eslint-disable-next-line no-throw-literal
         throw {message: 'Oops, something is wrong'}
-    }
-    const ctx = getDefaultContext()
-    ctx.octokit.issues.createComment = createComment
+    };
+    const ctx = getDefaultContext();
+    ctx.octokit.issues.createComment = createComment;
     ctx.octokit.git.createRef = createRef
     const config = getDefaultConfig();
     config.silent = false;
 
     await github.createBranch(probot, ctx, config, 'issue-1', '1234abcd');
 
-    expect(createComment).toBeCalled();
+    expect(createComment).toHaveBeenCalled();
 })
 
 test('create (draft) PR', async () => {
