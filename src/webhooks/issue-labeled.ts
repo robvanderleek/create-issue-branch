@@ -1,7 +1,7 @@
 import {Context, Probot} from "probot";
-import {loadConfig} from "../config";
-import {getIssueTitle, getRepoName, getRepoOwnerLogin} from "../context";
-import {getBranchNameFromIssue, updatePrTitle} from "../github";
+import {loadConfig} from "../config.ts";
+import {getIssueTitle, getRepoName, getRepoOwnerLogin} from "../context.ts";
+import {getBranchNameFromIssue, updatePrTitle} from "../github.ts";
 
 export async function issueLabeled(app: Probot, ctx: Context<any>) {
     const action = ctx.payload.action;

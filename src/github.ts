@@ -9,17 +9,17 @@ import {
     getMilestoneNumber,
     getRepoName,
     getRepoOwnerLogin
-} from "./context";
+} from "./context.ts";
 import {Context, Probot} from "probot";
-import {hasValidSubscription} from "./plans";
-import {interpolate} from "./interpolate";
-import {Config} from "./entities/Config";
+import {hasValidSubscription} from "./plans.ts";
+import {interpolate} from "./interpolate.ts";
+import {Config} from "./entities/Config.ts";
 import {
     getCommentMessage,
     getConventionalPrTitlePrefix,
     getDefaultBranch as getDefaultBranchFromConfig,
     prSkipCI
-} from "./config";
+} from "./config.ts";
 import {setOutput} from "@actions/core";
 import {
     formatAsExpandingMarkdown,
@@ -30,8 +30,8 @@ import {
     sleep,
     trimStringToByteLength,
     wildcardMatch
-} from "./utils";
-import {GraphQlResponse} from "@octokit/graphql/dist-types/types";
+} from "./utils.ts";
+import {GraphQlResponse} from "@octokit/graphql/dist-types/types.js";
 
 export async function createIssueBranch(app: Probot, ctx: Context<any>, branchName: string, config: Config) {
     if (await hasValidSubscription(app, ctx, config)) {

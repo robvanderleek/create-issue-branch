@@ -1,7 +1,7 @@
-import * as github from "../src/github";
-import {formatAsExpandingMarkdown} from "../src/utils";
-import {getDefaultConfig} from "../src/entities/Config";
-import {getDefaultContext, initNock, initProbot} from "./test-helpers";
+import * as github from "../src/github.ts";
+import {formatAsExpandingMarkdown} from "../src/utils.ts";
+import {getDefaultConfig} from "../src/entities/Config.ts";
+import {getDefaultContext, initNock, initProbot} from "./test-helpers.ts";
 import {Probot} from "probot";
 
 let probot: Probot

@@ -1,8 +1,8 @@
 import {Context, Probot} from "probot";
-import {loadConfig} from "../config";
-import {getRepoName, getRepoOwnerLogin} from "../context";
-import {getIssueNumberFromBranchName, updatePrBody, updatePrTitle} from "../github";
-import {Config} from "../entities/Config";
+import {loadConfig} from "../config.ts";
+import {getRepoName, getRepoOwnerLogin} from "../context.ts";
+import {getIssueNumberFromBranchName, updatePrBody, updatePrTitle} from "../github.ts";
+import {Config} from "../entities/Config.ts";
 
 
 export async function pullRequest(app: Probot, ctx: Context<any>) {

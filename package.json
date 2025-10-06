@@ -12,6 +12,7 @@
     "github",
     "probot-app"
   ],
+  "type": "module",
   "release": {
     "repositoryUrl": "https://github.com/robvanderleek/create-issue-branch",
     "branches": [

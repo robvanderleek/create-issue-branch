@@ -1,20 +1,20 @@
 import {Probot} from "probot";
-import {ApplicationFunctionOptions} from "probot/lib/types";
+import {ApplicationFunctionOptions} from "probot/lib/types.js";
 import express from "express";
-import {issueAssigned} from "./webhooks/issue-assigned";
-import {issueLabeled} from "./webhooks/issue-labeled";
-import {issueOpened} from "./webhooks/issue-opened";
-import {listAppSubscriptions} from "./plans";
+import {issueAssigned} from "./webhooks/issue-assigned.ts";
+import {issueLabeled} from "./webhooks/issue-labeled.ts";
+import {issueOpened} from "./webhooks/issue-opened.ts";
+import {listAppSubscriptions} from "./plans.ts";
 import * as Sentry from "@sentry/node";
-import {commentCreated} from "./webhooks/comment-created";
-import {marketplacePurchase} from "./webhooks/marketplace-purchase";
-import {pullRequest} from "./webhooks/pull-request";
-import {pullRequestClosed} from "./webhooks/pull-request-closed";
-import {gitDate, gitSha, version} from "./version";
-import {isRunningInGitHubActions, logMemoryUsage} from "./utils";
-import {MongoDbService} from "./services/MongoDbService";
-import {WebhookEvent} from "./entities/WebhookEvent";
-import {issueClosed} from "./webhooks/issue-closed";
+import {commentCreated} from "./webhooks/comment-created.ts";
+import {marketplacePurchase} from "./webhooks/marketplace-purchase.ts";
+import {pullRequest} from "./webhooks/pull-request.ts";
+import {pullRequestClosed} from "./webhooks/pull-request-closed.ts";
+import {gitDate, gitSha, version} from "./version.ts";
+import {isRunningInGitHubActions, logMemoryUsage} from "./utils.ts";
+import {MongoDbService} from "./services/MongoDbService.ts";
+import {WebhookEvent} from "./entities/WebhookEvent.ts";
+import {issueClosed} from "./webhooks/issue-closed.ts";
 
 
 export default (app: Probot, {getRouter}: ApplicationFunctionOptions) => {

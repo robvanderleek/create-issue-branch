@@ -1,4 +1,4 @@
-import {Config, getDefaultConfig} from "./entities/Config";
+import {Config, getDefaultConfig} from "./entities/Config.ts";
 import {Context} from "probot";
 
 /**

@@ -9,7 +9,7 @@ import {
     getRepoOwnerLogin,
     getSender,
     isOrgRepo
-} from "../src/context";
+} from "../src/context.ts";
 
 test('get owner', () => {
     const ctx = {payload: issueAssignedPayload}

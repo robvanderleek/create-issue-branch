@@ -1,8 +1,8 @@
 import {Context, Probot} from "probot";
-import {getRepoOwnerId, getRepoOwnerLogin, isOrgRepo} from "./context";
-import {addComment} from "./github";
-import {Config} from "./entities/Config";
-import {isRunningInGitHubActions, isRunningInTestEnvironment} from "./utils";
+import {getRepoOwnerId, getRepoOwnerLogin, isOrgRepo} from "./context.ts";
+import {addComment} from "./github.ts";
+import {Config} from "./entities/Config.ts";
+import {isRunningInGitHubActions, isRunningInTestEnvironment} from "./utils.ts";
 
 export async function hasValidSubscription(app: Probot, ctx: Context<any>, config: Config) {
     if (isRunningInGitHubActions() || isRunningInTestEnvironment()) {
