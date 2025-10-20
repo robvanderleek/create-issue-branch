@@ -6,7 +6,7 @@ import {
     commentCreatedWithLabelsPayload,
     initNock,
     initProbot,
-    nockCommentCreated,
+    nockCreateComment,
     nockCommit,
     nockCommitTreeSha,
     nockConfig,
@@ -273,7 +273,7 @@ test('open a pull request when a chatops command is given', async () => {
     nockExistingBranch('master', '12345678')
     nockConfig('mode: chatops\nopenPR: true')
     nockCreateBranch()
-    nockCommentCreated()
+    nockCreateComment()
     nockExistingBranch('issue-1-Test_issue', '87654321')
     nockCommitTreeSha('87654321', '12344321')
     nockCommit()
@@ -296,7 +296,7 @@ test('open a pull request but do not create a branch for issue with release labe
     config += '  prTarget: release\n'
     config += '  skipBranch: true\n'
     nockConfig(config)
-    nockCommentCreated()
+    nockCreateComment()
     nockExistingBranch('develop', '87654321')
     nockCommitTreeSha('87654321', '12344321')
     nockCommit()
@@ -332,7 +332,7 @@ test('do not open a pull request when the branch already exists', async () => {
     nockExistingBranch('issue-1-Test_issue', '87654321')
     nockExistingBranch('master', '12345678')
     nockConfig('mode: chatops\nopenPR: true')
-    nockCommentCreated()
+    nockCreateComment()
 
     await probot.receive({id: '', name: 'issue_comment', payload: commentCreatedPayload as any})
 })

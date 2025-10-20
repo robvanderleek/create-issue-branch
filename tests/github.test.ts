@@ -1,4 +1,5 @@
 import * as github from "../src/github";
+import {createPrTitle} from "../src/github";
 import {formatAsExpandingMarkdown} from "../src/utils";
 import {getDefaultConfig} from "../src/entities/Config";
 import {getDefaultContext, initNock, initProbot} from "./test-helpers";
@@ -489,4 +490,19 @@ test('empty commit with skip CI text', async () => {
     await github.createPr(probot, ctx, config, 'robvanderleek', 'issue-1')
 
     expect(capturedCommitMessage).toBe('Create PR for #1\n[skip ci]')
+})
+
+
+test('get PR title prefix for issue label', () => {
+    const config = getDefaultConfig();
+
+    expect(createPrTitle(config, 'Test Issue...', ['bug'])).toBe('Test Issue...');
+
+    config.conventionalPrTitles = true;
+
+    expect(createPrTitle(config, 'Test Issue...', ['bug'])).toBe('fix: 🐛 Test Issue...');
+
+    config.conventionalLabels = {fix: {bug: ':ambulance:'}};
+
+    expect(createPrTitle(config, 'Test Issue...', ['bug'])).toBe('fix: :ambulance: Test Issue...');
 })

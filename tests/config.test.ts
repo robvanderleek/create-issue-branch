@@ -132,6 +132,7 @@ test('get default branch', () => {
 
     expect(getDefaultBranch(config)).toBe('main');
 })
+
 test('get PR title prefix for issue label', () => {
     const config = getDefaultConfig();
 

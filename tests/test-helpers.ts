@@ -101,7 +101,7 @@ export function nockUpdatePull(number: number) {
     nock('https://api.github.com').patch(`/repos/robvanderleek/create-issue-branch/pulls/${number}`).reply(200)
 }
 
-export function nockCommentCreated() {
+export function nockCreateComment() {
     nock('https://api.github.com')
         .post('/repos/robvanderleek/create-issue-branch/issues/1/comments')
         .reply(200)

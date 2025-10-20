@@ -19,18 +19,18 @@ test('do nothing if not configured', async () => {
 })
 
 test('prefix PR title', async () => {
-    nockConfig('conventionalPrTitles: true')
-    nockPulls('issue-44-New_issue', [{number: 45, title: 'New issue', labels: []}])
-    nockUpdatePull(45)
-    const updatePr = jest.fn()
+    nockConfig('conventionalPrTitles: true');
+    nockPulls('issue-44-New_issue', [{number: 45, title: 'New issue', labels: []}]);
+    nockUpdatePull(45);
+    const updatePr = jest.fn();
     // @ts-ignore
-    probot.state.octokit.pulls.update = updatePr
+    probot.state.octokit.pulls.update = updatePr;
 
-    await probot.receive({id: '', name: 'issues', payload: issueLabeledPayload as any})
+    await probot.receive({id: '', name: 'issues', payload: issueLabeledPayload as any});
 
     expect(updatePr).toHaveBeenCalledWith({
         pull_number: 45, title: 'fix: 🐛 New issue', owner: 'robvanderleek', repo: 'create-issue-branch'
-    })
+    });
 })
 
 test('prefix PR title semver-no-gitmoji style', async () => {
