@@ -3,21 +3,22 @@
 ### Overview
 | **Language** | **Files** | **Functions** | **Lines of Code** | **⚠** | **⛌** |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| TypeScript | 24 | 117 | 1297 | 3 | 0 |
+| TypeScript | 24 | 118 | 1314 | 4 | 0 |
 | JavaScript | 1 | 1 | 8 | 0 | 0 |
-| **Totals** | **25** | **118** | **1305** | **3** | **0** |
+| **Totals** | **25** | **119** | **1322** | **4** | **0** |
 
 ### Summary
 | **Easy / Verbose** | **Hard-to-maintain ⚠** | **Unmaintainable ⛌** |
 | ---: | ---: | ---: |
-| 91% | 9% | 0% |
+| 88% | 12% | 0% |
 
-✅ 91% of the functions are maintainable, no refactoring necessary.
+✅ 88% of the functions are maintainable, no refactoring necessary.
 
 ### Findings
 | **Function** | **Length** | **File** |
 | --- | ---: | --- |
 | ⚠ [setupEventHandlers](https://github.com/robvanderleek/create-issue-branch/blob/main/src/probot.ts#L33-L86) | 54 | src/probot.ts |
+| ⚠ [createPr](https://github.com/robvanderleek/create-issue-branch/blob/main/src/github.ts#L262-L300) | 39 | src/github.ts |
 | ⚠ [getConventionalPrTitlePrefix](https://github.com/robvanderleek/create-issue-branch/blob/main/src/config.ts#L135-L166) | 32 | src/config.ts |
 | ⚠ [getConventionalLabelMapping](https://github.com/robvanderleek/create-issue-branch/blob/main/src/config.ts#L172-L202) | 31 | src/config.ts |
 
