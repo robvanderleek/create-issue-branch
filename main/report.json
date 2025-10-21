@@ -1,7 +1,7 @@
 {
   "version": "0.20.2",
-  "uuid": "b5251a2f-8f32-43a1-b8da-3f5e82ee454c",
-  "timestamp": "2025-10-05T08:01:55+00:00",
+  "uuid": "bc8a8054-efe1-4477-82e9-aef06bd0a33e",
+  "timestamp": "2025-10-21T08:03:04+00:00",
   "root": "/github/workspace",
   "repository": {
     "owner": "robvanderleek",
@@ -12,9 +12,9 @@
     "totals": {
       "TypeScript": {
         "files": 24,
-        "lines_of_code": 1297,
-        "functions": 117,
-        "hard_to_maintain": 3,
+        "lines_of_code": 1314,
+        "functions": 118,
+        "hard_to_maintain": 4,
         "unmaintainable": 0
       },
       "JavaScript": {
@@ -32,7 +32,7 @@
           "next.config.js",
           "src/"
         ],
-        "profile": [698, 490, 117, 0]
+        "profile": [705, 461, 156, 0]
       },
       "src/": {
         "entries": [
@@ -51,7 +51,7 @@
           "entities/",
           "webhooks/"
         ],
-        "profile": [690, 490, 117, 0]
+        "profile": [697, 461, 156, 0]
       },
       "src/services/": {
         "entries": [
@@ -248,10 +248,10 @@
         ]
       },
       "src/github.ts": {
-        "checksum": "4aa13f2580ff6014697ddd6339aedc00",
+        "checksum": "1c6246b12b140bcebf968de27dee5316",
         "language": "TypeScript",
-        "loc": 389,
-        "profile": [231, 158, 0, 0],
+        "loc": 406,
+        "profile": [238, 129, 39, 0],
         "measurements": [
           {"unit_name": "createIssueBranch", "start": {"line": 36, "column": 23}, "end": {"line": 45, "column": 2}, "value": 10},
           {"unit_name": "getBranchNameFromIssue", "start": {"line": 47, "column": 23}, "end": {"line": 58, "column": 2}, "value": 10},
@@ -271,19 +271,20 @@
           {"unit_name": "getDefaultBranch", "start": {"line": 223, "column": 10}, "end": {"line": 225, "column": 2}, "value": 3},
           {"unit_name": "getBranchHeadSha", "start": {"line": 227, "column": 16}, "end": {"line": 237, "column": 2}, "value": 11},
           {"unit_name": "createBranch", "start": {"line": 239, "column": 23}, "end": {"line": 260, "column": 2}, "value": 22},
-          {"unit_name": "createPr", "start": {"line": 262, "column": 23}, "end": {"line": 290, "column": 2}, "value": 29},
-          {"unit_name": "createEmptyCommit", "start": {"line": 292, "column": 16}, "end": {"line": 313, "column": 2}, "value": 13},
-          {"unit_name": "getCommitText", "start": {"line": 315, "column": 10}, "end": {"line": 325, "column": 2}, "value": 11},
-          {"unit_name": "getPrBody", "start": {"line": 327, "column": 16}, "end": {"line": 348, "column": 2}, "value": 22},
-          {"unit_name": "getPullRequestTemplate", "start": {"line": 350, "column": 16}, "end": {"line": 364, "column": 2}, "value": 14},
-          {"unit_name": "copyIssueAttributesToPr", "start": {"line": 366, "column": 16}, "end": {"line": 388, "column": 2}, "value": 23},
-          {"unit_name": "copyIssueLabelsToPr", "start": {"line": 390, "column": 16}, "end": {"line": 397, "column": 2}, "value": 8},
-          {"unit_name": "copyIssueAssigneeToPr", "start": {"line": 399, "column": 16}, "end": {"line": 404, "column": 2}, "value": 6},
-          {"unit_name": "copyIssueMilestoneToPr", "start": {"line": 406, "column": 16}, "end": {"line": 413, "column": 2}, "value": 8},
-          {"unit_name": "copyIssueProjectsToPr", "start": {"line": 415, "column": 16}, "end": {"line": 428, "column": 2}, "value": 10},
-          {"unit_name": "queryProjectIdsForIssue", "start": {"line": 430, "column": 16}, "end": {"line": 460, "column": 2}, "value": 21},
-          {"unit_name": "updatePrTitle", "start": {"line": 462, "column": 23}, "end": {"line": 472, "column": 2}, "value": 11},
-          {"unit_name": "updatePrBody", "start": {"line": 474, "column": 23}, "end": {"line": 480, "column": 2}, "value": 7}
+          {"unit_name": "createPr", "start": {"line": 262, "column": 23}, "end": {"line": 300, "column": 2}, "value": 39},
+          {"unit_name": "createEmptyCommit", "start": {"line": 302, "column": 16}, "end": {"line": 323, "column": 2}, "value": 13},
+          {"unit_name": "getCommitText", "start": {"line": 325, "column": 10}, "end": {"line": 335, "column": 2}, "value": 11},
+          {"unit_name": "getPrBody", "start": {"line": 337, "column": 16}, "end": {"line": 358, "column": 2}, "value": 22},
+          {"unit_name": "getPullRequestTemplate", "start": {"line": 360, "column": 16}, "end": {"line": 374, "column": 2}, "value": 14},
+          {"unit_name": "copyIssueAttributesToPr", "start": {"line": 376, "column": 16}, "end": {"line": 398, "column": 2}, "value": 23},
+          {"unit_name": "copyIssueLabelsToPr", "start": {"line": 400, "column": 16}, "end": {"line": 407, "column": 2}, "value": 8},
+          {"unit_name": "copyIssueAssigneeToPr", "start": {"line": 409, "column": 16}, "end": {"line": 414, "column": 2}, "value": 6},
+          {"unit_name": "copyIssueMilestoneToPr", "start": {"line": 416, "column": 16}, "end": {"line": 423, "column": 2}, "value": 8},
+          {"unit_name": "copyIssueProjectsToPr", "start": {"line": 425, "column": 16}, "end": {"line": 438, "column": 2}, "value": 10},
+          {"unit_name": "queryProjectIdsForIssue", "start": {"line": 440, "column": 16}, "end": {"line": 470, "column": 2}, "value": 21},
+          {"unit_name": "createPrTitle", "start": {"line": 472, "column": 17}, "end": {"line": 479, "column": 2}, "value": 8},
+          {"unit_name": "updatePrTitle", "start": {"line": 481, "column": 23}, "end": {"line": 490, "column": 2}, "value": 10},
+          {"unit_name": "updatePrBody", "start": {"line": 492, "column": 23}, "end": {"line": 498, "column": 2}, "value": 7}
         ]
       },
       "src/services/MongoDbService.ts": {
