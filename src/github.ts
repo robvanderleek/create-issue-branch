@@ -263,9 +263,11 @@ export async function createPr(app: Probot, ctx: Context<any>, config: Config, u
     const owner = getRepoOwnerLogin(ctx);
     const repo = getRepoName(ctx);
     const base = getPrTargetBranch(ctx, config);
-    const title = getIssueTitle(ctx);
+    const issueTitle = getIssueTitle(ctx);
+    const issueLabels = getIssueLabels(ctx);
+    const prTitle = createPrTitle(config, issueTitle, issueLabels);
     const draft = config.openDraftPR;
-    const logContext: any = {owner, repo, branchName, base, title, draft, username};
+    const logContext: any = {owner, repo, branchName, base, prTitle, draft, username};
     try {
         const baseHeadSha = await getBranchHeadSha(ctx, base);
         logContext.baseHeadSha = baseHeadSha;
@@ -276,8 +278,16 @@ export async function createPr(app: Probot, ctx: Context<any>, config: Config, u
             logContext.emptyCommitResponse = await createEmptyCommit(ctx, branchName, getCommitText(ctx, config), String(branchHeadSha));
         }
         const {data: pr} = await ctx.octokit.pulls.create(
-            {owner, repo, head: branchName, base, title, body: await getPrBody(app, ctx, config), draft: draft})
-        app.log.info(`${draft ? 'Created draft' : 'Created'} pull request ${pr.number} for branch ${branchName}`)
+            {
+                owner,
+                repo,
+                head: branchName,
+                base,
+                title: prTitle,
+                body: await getPrBody(app, ctx, config),
+                draft: draft
+            });
+        app.log.info(`${draft ? 'Created draft' : 'Created'} pull request ${pr.number} for branch ${branchName}`);
         await copyIssueAttributesToPr(app, ctx, config, pr);
     } catch (e: any) {
         app.log.info(`Could not create PR (${e.message})`);
@@ -459,15 +469,23 @@ async function queryProjectIdsForIssue(ctx: Context<any>) {
     return result
 }
 
+export function createPrTitle(config: Config, issueTitle: string, labels: Array<string>) {
+    if (config.conventionalPrTitles) {
+        const conventionalPrefix = getConventionalPrTitlePrefix(config, labels);
+        return conventionalPrefix + ' ' + issueTitle;
+    } else {
+        return issueTitle;
+    }
+}
+
 export async function updatePrTitle(app: Probot, ctx: Context<any>, config: Config, pr: any, issueTitle: string, labels: Array<string>) {
-    const owner = getRepoOwnerLogin(ctx)
-    const repo = getRepoName(ctx)
-    const pullNumber = pr.number
-    const conventionalPrefix = getConventionalPrTitlePrefix(config, labels)
-    const updatedTitle = conventionalPrefix + ' ' + issueTitle
+    const updatedTitle = createPrTitle(config, issueTitle, labels);
     if (updatedTitle !== pr.title) {
-        app.log.info(`Updating prefix for PR #${pullNumber} in ${owner}/${repo} to: ${conventionalPrefix}`)
-        await ctx.octokit.pulls.update({owner: owner, repo: repo, pull_number: pullNumber, title: updatedTitle})
+        const owner = getRepoOwnerLogin(ctx);
+        const repo = getRepoName(ctx);
+        const pullNumber = pr.number;
+        app.log.info(`Updating title for PR #${pullNumber} in ${owner}/${repo} to: ${updatedTitle}`);
+        await ctx.octokit.pulls.update({owner: owner, repo: repo, pull_number: pullNumber, title: updatedTitle});
     }
 }
 

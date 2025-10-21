@@ -6,7 +6,7 @@ import {
     commentCreatedWithLabelsPayload,
     initNock,
     initProbot,
-    nockCommentCreated,
+    nockCreateComment,
     nockCommit,
     nockCommitTreeSha,
     nockConfig,
@@ -33,7 +33,7 @@ beforeEach(() => {
 
 test('creates a branch when a chatops command is given', async () => {
     nockNonExistingBranch('issue-1-Test_issue')
-    nockExistingBranch('master', '12345678')
+    nockExistingBranch('main', '12345678')
     nockConfig('mode: chatops')
     let createEndpointCalled = false
     let body = ''
@@ -60,7 +60,7 @@ test('creates a branch when a chatops command is given', async () => {
 
 test('creates a branch when a chatops command is given when issue is created', async () => {
     nockNonExistingBranch('issue-1-Test_issue')
-    nockExistingBranch('master', '12345678')
+    nockExistingBranch('main', '12345678')
     nockConfig('mode: chatops')
     let createEndpointCalled = false
     let body = ''
@@ -87,7 +87,7 @@ test('creates a branch when a chatops command is given when issue is created', a
 
 test('creates a branch when mode is immediate and an issue is created', async () => {
     nockNonExistingBranch('issue-1-Test_issue')
-    nockExistingBranch('master', '12345678')
+    nockExistingBranch('main', '12345678')
     nockConfig('mode: immediate')
     let createEndpointCalled = false
 
@@ -110,7 +110,7 @@ test('creates a branch when mode is immediate and an issue is created', async ()
 
 test('create branch anyway when a chatops command is given and mode is not chatops', async () => {
     nockNonExistingBranch('issue-1-Test_issue')
-    nockExistingBranch('master', '12345678')
+    nockExistingBranch('main', '12345678')
     nockConfig('mode: auto')
     let createEndpointCalled = false
 
@@ -133,7 +133,7 @@ test('create branch anyway when a chatops command is given and mode is not chato
 
 test('creates a branch when a chatops command is given, no comment', async () => {
     nockNonExistingBranch('issue-1-Test_issue')
-    nockExistingBranch('master', '12345678')
+    nockExistingBranch('main', '12345678')
     nockConfig('mode: chatops\nsilent: true')
     let createEndpointCalled = false
 
@@ -151,7 +151,7 @@ test('creates a branch when a chatops command is given, no comment', async () =>
 
 test('do not create a branch for issue labels that are configured to be skipped', async () => {
     nockNonExistingBranch('issue-1-Test_issue')
-    nockExistingBranch('master', '12345678')
+    nockExistingBranch('main', '12345678')
     const ymlConfig = `mode: chatops\nbranches:
   - label: question
     skip: true`
@@ -190,7 +190,7 @@ test('ignore chatops command if not at start of line', async () => {
 
 test('chatops command with title argument', async () => {
     nockNonExistingBranch('issue-1-Simple_NPE_fix')
-    nockExistingBranch('master', '12345678')
+    nockExistingBranch('main', '12345678')
     nockExistingBranch('issue-1-Test_issue', '87654321')
     nockConfig('mode: chatops\nexperimental:\n  branchNameArgument: true')
     let createEndpointCalled = false
@@ -220,7 +220,7 @@ test('chatops command with title argument', async () => {
 
 test('chatops command with title argument and custom branch name', async () => {
     nockNonExistingBranch('1-foo-Simple_NPE_fix')
-    nockExistingBranch('master', '12345678')
+    nockExistingBranch('main', '12345678')
     nockExistingBranch('issue-1-Test_issue', '87654321')
     nockConfig( // eslint-disable-next-line no-template-curly-in-string
         'branchName: \'${issue.number}-foo-${issue.title}\'\nmode: chatops\nexperimental:\n  branchNameArgument: true')
@@ -271,11 +271,11 @@ test('warn about existing branches', async () => {
 
 test('open a pull request when a chatops command is given', async () => {
     nockNonExistingBranch('issue-1-Test_issue')
-    nockExistingBranch('master', '12345678')
-    nockExistingBranch('master', '12345678')
+    nockExistingBranch('main', '12345678')
+    nockExistingBranch('main', '12345678')
     nockConfig('mode: chatops\nopenPR: true')
     nockCreateBranch()
-    nockCommentCreated()
+    nockCreateComment()
     nockExistingBranch('issue-1-Test_issue', '87654321')
     nockCommitTreeSha('87654321', '12344321')
     nockCommit()
@@ -287,7 +287,7 @@ test('open a pull request when a chatops command is given', async () => {
 
 test('open a pull request but do not create a branch for issue with release label', async () => {
     nockNonExistingBranch('issue-1-Test_issue')
-    nockExistingBranch('master', '12345678')
+    nockExistingBranch('main', '12345678')
     nockExistingBranch('release', '98765432')
     let config = ''
     config += 'mode: chatops\n'
@@ -298,7 +298,7 @@ test('open a pull request but do not create a branch for issue with release labe
     config += '  prTarget: release\n'
     config += '  skipBranch: true\n'
     nockConfig(config)
-    nockCommentCreated()
+    nockCreateComment()
     nockExistingBranch('develop', '87654321')
     nockCommitTreeSha('87654321', '12344321')
     nockCommit()
@@ -310,8 +310,8 @@ test('open a pull request but do not create a branch for issue with release labe
 
 test('open a pull request, copy labels and assignee from issue', async () => {
     nockNonExistingBranch('issue-1-Test_issue')
-    nockExistingBranch('master', '12345678')
-    nockExistingBranch('master', '12345678')
+    nockExistingBranch('main', '12345678')
+    nockExistingBranch('main', '12345678')
     nockConfig(`
     mode: chatops
     openPR: true
@@ -332,9 +332,9 @@ test('open a pull request, copy labels and assignee from issue', async () => {
 
 test('do not open a pull request when the branch already exists', async () => {
     nockExistingBranch('issue-1-Test_issue', '87654321')
-    nockExistingBranch('master', '12345678')
+    nockExistingBranch('main', '12345678')
     nockConfig('mode: chatops\nopenPR: true')
-    nockCommentCreated()
+    nockCreateComment()
 
     await probot.receive({id: '', name: 'issue_comment', payload: commentCreatedPayload as any})
 })
