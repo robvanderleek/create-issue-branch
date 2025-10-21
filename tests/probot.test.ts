@@ -6,7 +6,7 @@ import {
     initNock,
     initProbot,
     issueAssignedWithLabelsPayload,
-    nockCommentCreated,
+    nockCreateComment,
     nockCommit,
     nockCommitTreeSha,
     nockConfig,
@@ -32,9 +32,9 @@ beforeEach(() => {
 
 test('creates a branch when an issue is assigned', async () => {
     nockNonExistingBranch('issue-1-Test_issue');
-    nockExistingBranch('master', '12345678');
+    nockExistingBranch('main', '12345678');
     nockEmptyConfig();
-    nockCommentCreated();
+    nockCreateComment();
     let createEndpointCalled = false;
 
     nock('https://api.github.com')
@@ -85,9 +85,9 @@ test('do not warn about existing branches in auto mode', async () => {
 
 test('create short branch when configured that way', async () => {
     nockNonExistingBranch('issue-1')
-    nockExistingBranch('master', '12345678')
+    nockExistingBranch('main', '12345678')
     nockConfig('branchName: short')
-    nockCommentCreated()
+    nockCreateComment()
     let createEndpointCalled = false
     let branchRef = ''
 
@@ -107,9 +107,9 @@ test('create short branch when configured that way', async () => {
 
 test('source branch is default branch by, well, default', async () => {
     nockNonExistingBranch('issue-1-Test_issue')
-    nockExistingBranch('master', '12345678')
+    nockExistingBranch('main', '12345678')
     nockExistingBranch('dev', 'abcd1234')
-    nockCommentCreated()
+    nockCreateComment()
     nockEmptyConfig()
     let sourceSha = ''
 
@@ -127,8 +127,8 @@ test('source branch is default branch by, well, default', async () => {
 
 test('create branch with custom issue name', async () => {
     nockNonExistingBranch('foo-1-Test_issue')
-    nockExistingBranch('master', '12345678')
-    nockCommentCreated()
+    nockExistingBranch('main', '12345678')
+    nockCreateComment()
     // eslint-disable-next-line no-template-curly-in-string
     nockConfig('branchName: \'foo-${issue.number}-${issue.title}\'')
     let createEndpointCalled = false
@@ -150,8 +150,8 @@ test('create branch with custom issue name', async () => {
 
 test('create branch with custom name containing event initiator', async () => {
     nockNonExistingBranch('robvanderleek-1-Test_issue')
-    nockExistingBranch('master', '12345678')
-    nockCommentCreated()
+    nockExistingBranch('main', '12345678')
+    nockCreateComment()
     // eslint-disable-next-line no-template-curly-in-string
     nockConfig('branchName: \'${sender.login}-${issue.number}-${issue.title}\'')
     let createEndpointCalled = false
@@ -173,8 +173,8 @@ test('create branch with custom name containing event initiator', async () => {
 
 test('create branch with custom short issue name', async () => {
     nockNonExistingBranch('foo-1')
-    nockExistingBranch('master', '12345678')
-    nockCommentCreated()
+    nockExistingBranch('main', '12345678')
+    nockCreateComment()
     // eslint-disable-next-line no-template-curly-in-string
     nockConfig('branchName: \'foo-${issue.number}\'')
     let createEndpointCalled = false
@@ -196,8 +196,8 @@ test('create branch with custom short issue name', async () => {
 
 test('create branch with GitLab-like issue name', async () => {
     nockNonExistingBranch('1-Test_issue')
-    nockExistingBranch('master', '12345678')
-    nockCommentCreated()
+    nockExistingBranch('main', '12345678')
+    nockCreateComment()
     // eslint-disable-next-line no-template-curly-in-string
     nockConfig('branchName: \'${issue.number}-${issue.title}\'')
     let createEndpointCalled = false
@@ -259,8 +259,8 @@ test('do not close issue after PR close (without merge)', async () => {
 
 test('create branch with slash in branch name', async () => {
     nockNonExistingBranch('bug/1/Test_issue')
-    nockExistingBranch('master', '12345678')
-    nockCommentCreated()
+    nockExistingBranch('main', '12345678')
+    nockCreateComment()
     nockConfig(// eslint-disable-next-line no-template-curly-in-string
         'branchName: \'${issue.number}/${issue.title}\'\n' + //
         'branches:\n' + //
@@ -282,7 +282,7 @@ test('create branch with slash in branch name', async () => {
 
 test('custom message in comment', async () => {
     nockNonExistingBranch('issue-1-Test_issue')
-    nockExistingBranch('master', '12345678')
+    nockExistingBranch('main', '12345678')
     nockConfig('commentMessage: \'hello world\'')
     nockCreateBranch()
     let comment = ''
@@ -300,7 +300,7 @@ test('custom message in comment', async () => {
 
 test('custom message with placeholder substitution in comment', async () => {
     nockNonExistingBranch('issue-1-Test_issue')
-    nockExistingBranch('master', '12345678')
+    nockExistingBranch('main', '12345678')
     // eslint-disable-next-line no-template-curly-in-string
     nockConfig('commentMessage: \'hello branch for issue ${issue.number}\'')
     nockCreateBranch()
@@ -319,11 +319,11 @@ test('custom message with placeholder substitution in comment', async () => {
 
 test('open a pull request when mode is immediate', async () => {
     nockNonExistingBranch('issue-1-Test_issue')
-    nockExistingBranch('master', '12345678')
-    nockExistingBranch('master', '12345678')
+    nockExistingBranch('main', '12345678')
+    nockExistingBranch('main', '12345678')
     nockConfig('mode: immediate\nopenPR: true')
     nockCreateBranch()
-    nockCommentCreated()
+    nockCreateComment()
     nockExistingBranch('issue-1-Test_issue', '87654321')
     nockCommitTreeSha('87654321', '12344321')
     nockCommit()

@@ -181,12 +181,12 @@
         "forks": 4,
         "open_issues": 5,
         "watchers": 23,
-        "default_branch": "master"
+        "default_branch": "main"
       }
     },
     "base": {
-      "label": "robvanderleek:master",
-      "ref": "master",
+      "label": "robvanderleek:main",
+      "ref": "main",
       "sha": "c0b4ba3447f1eea92d5b1f64361973c81bfb7b97",
       "user": {
         "login": "robvanderleek",
@@ -306,7 +306,7 @@
         "forks": 4,
         "open_issues": 5,
         "watchers": 23,
-        "default_branch": "master"
+        "default_branch": "main"
       }
     },
     "_links": {
@@ -466,7 +466,7 @@
     "forks": 4,
     "open_issues": 5,
     "watchers": 23,
-    "default_branch": "master"
+    "default_branch": "main"
   },
   "sender": {
     "login": "robvanderleek",

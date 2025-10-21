@@ -1,4 +1,5 @@
 import * as github from "../src/github";
+import {createPrTitle} from "../src/github";
 import {formatAsExpandingMarkdown} from "../src/utils";
 import {getDefaultConfig} from "../src/entities/Config";
 import {getDefaultContext, initNock, initProbot} from "./test-helpers";
@@ -261,7 +262,7 @@ test('create (draft) PR', async () => {
         owner: 'robvanderleek',
         repo: 'create-issue-branch',
         draft: false,
-        base: 'master',
+        base: 'main',
         head: 'issue-1',
         body: 'closes #1',
         title: 'Hello world'
@@ -276,7 +277,7 @@ test('create (draft) PR', async () => {
         owner: 'robvanderleek',
         repo: 'create-issue-branch',
         draft: true,
-        base: 'master',
+        base: 'main',
         head: 'issue-1',
         body: 'closes #1',
         title: 'Hello world'
@@ -299,7 +300,7 @@ test('copy Issue description into PR', async () => {
         owner: 'robvanderleek',
         repo: 'create-issue-branch',
         head: 'issue-1',
-        base: 'master',
+        base: 'main',
         title: 'Hello world',
         body: formatAsExpandingMarkdown('Original issue description', 'This is the description') + '\ncloses #1',
         draft: false
@@ -321,7 +322,7 @@ test('Do not copy undefined Issue description into PR', async () => {
         owner: 'robvanderleek',
         repo: 'create-issue-branch',
         draft: false,
-        base: 'master',
+        base: 'main',
         head: 'issue-1',
         body: 'closes #1',
         title: 'Hello world'
@@ -346,7 +347,7 @@ test('copy pull-request template into PR', async () => {
         owner: 'robvanderleek',
         repo: 'create-issue-branch',
         head: 'issue-1',
-        base: 'master',
+        base: 'main',
         title: 'Hello world',
         body: 'file content' + '\ncloses #1',
         draft: false
@@ -371,7 +372,7 @@ test('pull-request template does not exist', async () => {
         owner: 'robvanderleek',
         repo: 'create-issue-branch',
         head: 'issue-1',
-        base: 'master',
+        base: 'main',
         title: 'Hello world',
         body: 'closes #1',
         draft: false
@@ -489,4 +490,19 @@ test('empty commit with skip CI text', async () => {
     await github.createPr(probot, ctx, config, 'robvanderleek', 'issue-1')
 
     expect(capturedCommitMessage).toBe('Create PR for #1\n[skip ci]')
+})
+
+
+test('get PR title prefix for issue label', () => {
+    const config = getDefaultConfig();
+
+    expect(createPrTitle(config, 'Test Issue...', ['bug'])).toBe('Test Issue...');
+
+    config.conventionalPrTitles = true;
+
+    expect(createPrTitle(config, 'Test Issue...', ['bug'])).toBe('fix: 🐛 Test Issue...');
+
+    config.conventionalLabels = {fix: {bug: ':ambulance:'}};
+
+    expect(createPrTitle(config, 'Test Issue...', ['bug'])).toBe('fix: :ambulance: Test Issue...');
 })
