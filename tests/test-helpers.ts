@@ -142,7 +142,7 @@ export function getDefaultContext(): any {
                     login: 'robvanderleek'
                 }, //
                 name: 'create-issue-branch', //
-                default_branch: 'master'
+                default_branch: 'main'
             }, //
             issue: {number: 1, title: 'Hello world', body: '', milestone: undefined, labels: []}
         }, //

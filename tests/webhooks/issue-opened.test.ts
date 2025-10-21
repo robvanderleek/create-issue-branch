@@ -2,12 +2,12 @@ import {Probot} from "probot";
 import issueOpenedPayload from "../test-fixtures/issues.opened.json";
 import {
     initNock,
-    initProbot, nockCreateComment,
-    nockConfig, nockCreateBranch,
+    initProbot,
+    nockConfig,
+    nockCreateBranch,
+    nockCreateComment,
     nockExistingBranch,
-    nockNonExistingBranch,
-    nockPulls,
-    nockUpdatePull
+    nockNonExistingBranch
 } from "../test-helpers";
 
 let probot: Probot
@@ -29,10 +29,10 @@ test('do nothing if configured to skip', async () => {
 test('conventional PR title', async () => {
     nockConfig('mode: immediate\nopenDraftPR: true\nconventionalPrTitles: true');
     nockNonExistingBranch('issue-1-Test_issue');
-    nockExistingBranch('master', '12345678');
+    nockExistingBranch('main', '12345678');
     nockCreateBranch();
     nockCreateComment();
-    nockExistingBranch('master', '12345678');
+    nockExistingBranch('main', '12345678');
     nockExistingBranch('issue-1-Test_issue', '87654321');
 
     const createPr = jest.fn();
@@ -46,13 +46,9 @@ test('conventional PR title', async () => {
         owner: 'robvanderleek',
         repo: 'create-issue-branch',
         head: 'issue-1-Test_issue',
-        base: 'master',
+        base: 'main',
         title: 'fix: 🐛 Test issue...',
         body: 'closes #1',
         draft: true
     });
-
-    // expect(updatePr).toHaveBeenCalledWith({
-    //     pull_number: 45, title: 'fix: 🐛 New issue', owner: 'robvanderleek', repo: 'create-issue-branch'
-    // })
 })
