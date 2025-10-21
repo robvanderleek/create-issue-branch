@@ -16,10 +16,12 @@ import {
     nockExistingBranch,
     nockNonExistingBranch,
     nockUpdateBranch
-} from "./test-helpers";
+} from "./test-helpers.ts";
+import {beforeAll, beforeEach, expect, test} from "vitest";
 
-const nock = require('nock')
-const utils = require('../src/utils')
+
+import nock from 'nock';
+
 let probot: Probot
 
 beforeAll(() => {

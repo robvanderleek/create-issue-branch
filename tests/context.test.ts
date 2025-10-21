@@ -10,6 +10,8 @@ import {
     getSender,
     isOrgRepo
 } from "../src/context.ts";
+import {expect, test} from "vitest";
+
 
 test('get owner', () => {
     const ctx = {payload: issueAssignedPayload}

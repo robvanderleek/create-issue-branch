@@ -1,6 +1,7 @@
 import {Probot} from "probot";
 import issueOpenedPayload from "../test-fixtures/issues.opened.json";
-import {initNock, initProbot, nockConfig, nockEmptyConfig, nockExistingBranch} from "../test-helpers";
+import {initNock, initProbot, nockConfig, nockEmptyConfig, nockExistingBranch} from "../test-helpers.ts";
+import {beforeAll, beforeEach, expect, test, vi} from "vitest";
 
 let probot: Probot
 
@@ -16,7 +17,7 @@ test('do nothing if not configured', async () => {
     nockEmptyConfig();
     const payload = issueOpenedPayload;
     payload.action = 'closed';
-    const deleteRef = jest.fn()
+    const deleteRef = vi.fn()
     // @ts-ignore
     probot.state.octokit.git.deleteRef = deleteRef
 
@@ -30,7 +31,7 @@ test('do delete branch', async () => {
     nockExistingBranch('issue-1-Test_issue', 'abcd1234');
     const payload = issueOpenedPayload;
     payload.action = 'closed';
-    const deleteRef = jest.fn()
+    const deleteRef = vi.fn()
     // @ts-ignore
     probot.state.octokit.git.deleteRef = deleteRef
 

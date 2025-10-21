@@ -1,9 +1,9 @@
 import nock from "nock";
 import issueAssignedPayload from "./test-fixtures/issues.assigned.json";
 import commentCreatedPayload from "./test-fixtures/issue_comment.created.json";
-import myProbotApp from "../src/probot";
+import myProbotApp from "../src/probot.ts";
 import {Probot, ProbotOctokit} from "probot";
-import {OctokitOptions} from "probot/lib/types";
+import {OctokitOptions} from "probot/lib/types.js";
 
 export function nockInstallation(installation: object) {
     nock('https://api.github.com')

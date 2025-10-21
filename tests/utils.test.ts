@@ -5,9 +5,11 @@ import {
     makeGitSafe,
     makePrefixGitSafe,
     trimStringToByteLength
-} from "../src/utils";
-import {gitDate, version} from "../src/version";
+} from "../src/utils.ts";
+import {gitDate, version} from "../src/version.ts";
+import {expect, test} from "vitest";
 import wildcardMatch = require("wildcard-match");
+
 
 test('git safe replacements', () => {
     expect(makePrefixGitSafe('feature/bug')).toBe('feature/bug')

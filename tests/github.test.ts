@@ -3,6 +3,8 @@ import {formatAsExpandingMarkdown} from "../src/utils.ts";
 import {getDefaultConfig} from "../src/entities/Config.ts";
 import {getDefaultContext, initNock, initProbot} from "./test-helpers.ts";
 import {Probot} from "probot";
+import {beforeAll, beforeEach, expect, test, vi} from "vitest";
+
 
 let probot: Probot
 
@@ -198,7 +200,7 @@ test('handle branch already exist, log message to info level', async () => {
     }
     const ctx = getDefaultContext()
     ctx.octokit.git.createRef = createRef
-    probot.log.info = jest.fn();
+    probot.log.info = vi.fn();
     const config = getDefaultConfig();
 
     await github.createBranch(probot, ctx, config, 'issue-1', '1234abcd');
@@ -207,7 +209,7 @@ test('handle branch already exist, log message to info level', async () => {
 })
 
 test('log branch create errors with error level', async () => {
-    const createComment = jest.fn();
+    const createComment = vi.fn();
     const createRef = () => {
         // eslint-disable-next-line no-throw-literal
         throw {message: 'Oops, something is wrong'}
@@ -225,7 +227,7 @@ test('log branch create errors with error level', async () => {
 
 test('Retry create comment when it fails', async () => {
     let hasBeenCalled = false;
-    const createComment = jest.fn().mockImplementation(() => {
+    const createComment = vi.fn().mockImplementation(() => {
         if (!hasBeenCalled) {
             hasBeenCalled = true
             throw new Error()
@@ -247,7 +249,7 @@ test('Retry create comment when it fails', async () => {
 })
 
 test('create (draft) PR', async () => {
-    const createPR = jest.fn()
+    const createPR = vi.fn()
     let capturedCommitMessage = ''
     const ctx = getDefaultContext()
     ctx.octokit.pulls.create = createPR
@@ -285,11 +287,11 @@ test('create (draft) PR', async () => {
 })
 
 test('copy Issue description into PR', async () => {
-    const createPR = jest.fn()
+    const createPR = vi.fn()
     const ctx = getDefaultContext()
     ctx.octokit.pulls.create = createPR
     ctx.payload.issue.body = 'This is the description'
-    ctx.octokit.graphql = jest.fn()
+    ctx.octokit.graphql = vi.fn()
     const config = getDefaultConfig();
     config.copyIssueDescriptionToPR = true;
 
@@ -308,11 +310,11 @@ test('copy Issue description into PR', async () => {
 
 
 test('Do not copy undefined Issue description into PR', async () => {
-    const createPR = jest.fn()
+    const createPR = vi.fn()
     const ctx = getDefaultContext()
     ctx.octokit.pulls.create = createPR
     ctx.payload.issue.body = null
-    ctx.octokit.graphql = jest.fn()
+    ctx.octokit.graphql = vi.fn()
     const config = getDefaultConfig();
     config.copyIssueDescriptionToPR = true;
 
@@ -329,10 +331,10 @@ test('Do not copy undefined Issue description into PR', async () => {
 })
 
 test('copy pull-request template into PR', async () => {
-    const createPR = jest.fn();
+    const createPR = vi.fn();
     const ctx = getDefaultContext();
     ctx.octokit.pulls.create = createPR;
-    ctx.octokit.graphql = jest.fn();
+    ctx.octokit.graphql = vi.fn();
     ctx.octokit.repos.getContent = async (args: { owner: string, repo: string, path: string }) => {
         expect(args.path).toBe('.github/pull_request_template.md');
         return {data: {type: 'file', content: Buffer.from('file content').toString('base64')}};
@@ -354,10 +356,10 @@ test('copy pull-request template into PR', async () => {
 })
 
 test('pull-request template does not exist', async () => {
-    const createPR = jest.fn();
+    const createPR = vi.fn();
     const ctx = getDefaultContext();
     ctx.octokit.pulls.create = createPR;
-    ctx.octokit.graphql = jest.fn();
+    ctx.octokit.graphql = vi.fn();
     ctx.octokit.repos.getContent = async (args: { owner: string, repo: string, path: string }) => {
         expect(args.path).toBe('.github/pull_request_template.md');
         throw {status: 404};
@@ -379,10 +381,10 @@ test('pull-request template does not exist', async () => {
 })
 
 test('use correct source branch', async () => {
-    const createPR = jest.fn()
+    const createPR = vi.fn()
     const ctx = getDefaultContext()
     ctx.octokit.pulls.create = createPR
-    ctx.octokit.graphql = jest.fn()
+    ctx.octokit.graphql = vi.fn()
     ctx.payload.issue.labels = [{name: 'enhancement'}];
     const config = getDefaultConfig();
     config.branches = [{label: 'enhancement', name: 'develop'}];
@@ -400,10 +402,10 @@ test('use correct source branch', async () => {
 })
 
 test('use configured target branch', async () => {
-    const createPR = jest.fn()
+    const createPR = vi.fn()
     const ctx = getDefaultContext()
     ctx.octokit.pulls.create = createPR
-    ctx.octokit.graphql = jest.fn()
+    ctx.octokit.graphql = vi.fn()
     ctx.payload.issue.labels = [{name: 'enhancement'}]
     const config = getDefaultConfig();
     config.branches = [{label: 'enhancement', prTarget: 'develop'}];
@@ -421,10 +423,10 @@ test('use configured target branch', async () => {
 })
 
 test('configured source and target branch', async () => {
-    const createPR = jest.fn()
+    const createPR = vi.fn()
     const ctx = getDefaultContext()
     ctx.octokit.pulls.create = createPR
-    ctx.octokit.graphql = jest.fn()
+    ctx.octokit.graphql = vi.fn()
     ctx.payload.issue.labels = [{name: 'hotfix'}]
     const config = getDefaultConfig();
     config.branches = [{label: 'hotfix', name: 'develop', prTarget: 'hotfix'}];
@@ -442,11 +444,11 @@ test('configured source and target branch', async () => {
 })
 
 test('copy Issue milestone into PR', async () => {
-    const updateIssue = jest.fn()
+    const updateIssue = vi.fn()
     const ctx = getDefaultContext()
     ctx.octokit.pulls.create = () => ({data: {number: 123}})
     ctx.octokit.issues.update = updateIssue
-    ctx.octokit.graphql = jest.fn()
+    ctx.octokit.graphql = vi.fn()
     ctx.payload.issue.body = 'This is the description'
     ctx.payload.issue.milestone = {number: 456};
     const config = getDefaultConfig();

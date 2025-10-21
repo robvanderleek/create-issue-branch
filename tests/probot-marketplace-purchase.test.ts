@@ -3,7 +3,9 @@ import marketplacePurchasePayload from "./test-fixtures/marketplace_purchase.jso
 import marketplaceCancellationPayload from "./test-fixtures/marketplace_cancellation.json";
 import marketplaceDowngradePayload from "./test-fixtures/marketplace_downgrade.json";
 import marketplacePendingChangePayload from "./test-fixtures/marketplace_pending_change.json";
-import {initNock, initProbot} from "./test-helpers";
+import {initNock, initProbot} from "./test-helpers.ts";
+import {beforeAll, beforeEach, test} from "vitest";
+
 
 let probot: Probot;
 

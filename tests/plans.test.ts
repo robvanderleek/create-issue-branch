@@ -2,8 +2,10 @@ import {Probot} from "probot";
 
 import issueAssignedPayload from "./test-fixtures/issues.assigned.json";
 import marketplaceProPlan from "./test-fixtures/marketplace_pro_plan.json";
-import {initNock, initProbot} from "./test-helpers";
-import {isFreePaidSubscription, isPaidPlan} from "../src/plans";
+import {initNock, initProbot} from "./test-helpers.ts";
+import {isFreePaidSubscription, isPaidPlan} from "../src/plans.ts";
+import {beforeAll, beforeEach, expect, test} from "vitest";
+
 
 let probot: Probot
 

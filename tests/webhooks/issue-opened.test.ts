@@ -1,6 +1,8 @@
 import {Probot} from "probot";
 import issueOpenedPayload from "../test-fixtures/issues.opened.json";
-import {initNock, initProbot, nockConfig} from "../test-helpers";
+import {initNock, initProbot, nockConfig} from "../test-helpers.ts";
+import {beforeAll, beforeEach, test} from "vitest";
+
 
 let probot: Probot
 

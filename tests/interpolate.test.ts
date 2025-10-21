@@ -1,5 +1,7 @@
 import issueAssignedPayload from "./test-fixtures/issues.assigned.json";
-import {interpolate} from "../src/interpolate";
+import {interpolate} from "../src/interpolate.ts";
+import {expect, test} from "vitest";
+
 
 test('interpolate string with object field expression', () => {
     const o = {hello: 'world'}

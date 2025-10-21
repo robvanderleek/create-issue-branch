@@ -1,6 +1,8 @@
 import {Probot} from "probot";
 import issueLabeledPayload from "../test-fixtures/issues.labeled.json";
-import {initNock, initProbot, nockConfig, nockEmptyConfig, nockPulls, nockUpdatePull} from "../test-helpers";
+import {initNock, initProbot, nockConfig, nockEmptyConfig, nockPulls, nockUpdatePull} from "../test-helpers.ts";
+import {beforeAll, beforeEach, expect, test, vi} from "vitest";
+
 
 let probot: Probot
 
@@ -22,7 +24,7 @@ test('prefix PR title', async () => {
     nockConfig('conventionalPrTitles: true')
     nockPulls('issue-44-New_issue', [{number: 45, title: 'New issue', labels: []}])
     nockUpdatePull(45)
-    const updatePr = jest.fn()
+    const updatePr = vi.fn()
     // @ts-ignore
     probot.state.octokit.pulls.update = updatePr
 
@@ -37,7 +39,7 @@ test('prefix PR title semver-no-gitmoji style', async () => {
     nockConfig('conventionalPrTitles: true\nconventionalStyle: semver-no-gitmoji')
     nockPulls('issue-44-New_issue', [{number: 45, title: 'New issue', labels: []}])
     nockUpdatePull(45)
-    const updatePr = jest.fn()
+    const updatePr = vi.fn()
     // @ts-ignore
     probot.state.octokit.pulls.update = updatePr
 
