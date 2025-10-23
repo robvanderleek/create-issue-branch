@@ -67,7 +67,7 @@
     "@types/node-fetch": "^2.6.10",
     "@types/react": "18.3.13",
     "esbuild": "^0.25.10",
-    "@vercel/node": "^5.3.24",
+    "@vercel/node": "^5.4.1",
     "jest": "^30.2.0",
     "mkver": "^4.3.0",
     "nock": "14.0.10",
