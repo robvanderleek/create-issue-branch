@@ -3130,10 +3130,17 @@ etag@1.8.1, etag@^1.8.1:
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
   integrity sha512-aIL5Fx7mawVa300al2BnEE4iNvo1qETxLrPI/o05L7z6go7fCw1J6EQmbK4FmJ2AS7kgVF/KEZWufBfdClMcPg==
 
-eventsource@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/eventsource/-/eventsource-2.0.2.tgz#76dfcc02930fb2ff339520b6d290da573a9e8508"
-  integrity sha512-IzUmBGPR3+oUG9dUeXynyNmf91/3zUSJg1lCktzKw47OXuhco54U3r9B7O4XX+Rb1Itm9OZ2b0RkTs10bICOxA==
+eventsource-parser@^3.0.1:
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/eventsource-parser/-/eventsource-parser-3.0.6.tgz#292e165e34cacbc936c3c92719ef326d4aeb4e90"
+  integrity sha512-Vo1ab+QXPzZ4tCa8SwIHJFaSzy4R6SHf7BY79rFBDf0idraZWAkYrDjDj8uWaSm3S2TK+hJ7/t1CEmZ7jXw+pg==
+
+eventsource@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/eventsource/-/eventsource-4.0.0.tgz#caf02d04143f663a61b09a993d0097e552e2b1d1"
+  integrity sha512-fvIkb9qZzdMxgZrEQDyll+9oJsyaVvY92I2Re+qK0qEJ+w5s0X3dtz+M0VAPOjP1gtU3iqWyjQ0G3nvd5CLZ2g==
+  dependencies:
+    eventsource-parser "^3.0.1"
 
 execa@^5.1.1:
   version "5.1.1"
@@ -5296,14 +5303,13 @@ slow-redact@^0.3.0:
   resolved "https://registry.yarnpkg.com/slow-redact/-/slow-redact-0.3.1.tgz#4cb9ad7011dcba97b8a4b58ce8a5d660243100f6"
   integrity sha512-NvFvl1GuLZNW4U046Tfi8b26zXo8aBzgCAS2f7yVJR/fArN93mOqSA99cB9uITm92ajSz01bsu1K7SCVVjIMpQ==
 
-smee-client@^2.0.1:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/smee-client/-/smee-client-2.0.4.tgz#796d44e30104d0d222140b8d38cedde89855da7b"
-  integrity sha512-RxXCs0mfaxpI8JF4SeTM51XtRiprzW5g20HVt4aTQ36EB+RaN0aj0m/4EbXLGdfPlqahQ09d3UnJYmALN2CbYw==
+smee-client@^4.4.1:
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/smee-client/-/smee-client-4.4.1.tgz#31b81c8b533ff29d8df1e840c8900cf48c5e3b2a"
+  integrity sha512-o2px88YVTmKWpaF3sg0Qpuk5MEVpM7BrImjNy/PYf3ENiD51dnPWtXnYHAM6h5/+06ug7z7BBu3werlIEwVkdw==
   dependencies:
-    commander "^12.0.0"
-    eventsource "^2.0.2"
-    validator "^13.11.0"
+    eventsource "^4.0.0"
+    undici "^7.0.0"
 
 sonic-boom@^4.0.1:
   version "4.2.0"
@@ -5714,6 +5720,11 @@ undici@^5.25.4:
   dependencies:
     "@fastify/busboy" "^2.0.0"
 
+undici@^7.0.0:
+  version "7.16.0"
+  resolved "https://registry.yarnpkg.com/undici/-/undici-7.16.0.tgz#cb2a1e957726d458b536e3f076bf51f066901c1a"
+  integrity sha512-QEg3HPMll0o3t2ourKwOeUAZ159Kn9mx5pnzHRQO8+Wixmh88YdZRiIwat0iNzNNXn0yoEtXJqFpyW7eM8BV7g==
+
 universal-github-app-jwt@^1.1.2:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/universal-github-app-jwt/-/universal-github-app-jwt-1.2.0.tgz#1314cf2b2aff69d7ae998e8bff90d55a651d2949"
@@ -5797,11 +5808,6 @@ v8-to-istanbul@^9.0.1:
     "@jridgewell/trace-mapping" "^0.3.12"
     "@types/istanbul-lib-coverage" "^2.0.1"
     convert-source-map "^2.0.0"
-
-validator@^13.11.0:
-  version "13.15.15"
-  resolved "https://registry.yarnpkg.com/validator/-/validator-13.15.15.tgz#246594be5671dc09daa35caec5689fcd18c6e7e4"
-  integrity sha512-BgWVbCI72aIQy937xbawcs+hrVaN/CZ2UwutgaJ36hGqRrLNM+f5LUT/YPRbo8IV/ASeFzXszezV+y2+rq3l8A==
 
 vary@^1.1.2:
   version "1.1.2"
