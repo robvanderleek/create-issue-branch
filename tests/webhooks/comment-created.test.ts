@@ -1,5 +1,5 @@
 import {Probot} from "probot";
-import commentCreatedPayload from "../test-fixtures/issue_comment.created.json";
+import commentCreatedPayload from "../test-fixtures/issue_comment.created.json" with {type: "json"};
 import {initNock, initProbot, nockConfig} from "../test-helpers.ts";
 import {beforeAll, beforeEach, test} from "vitest";
 

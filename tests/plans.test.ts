@@ -1,7 +1,7 @@
 import {Probot} from "probot";
 
-import issueAssignedPayload from "./test-fixtures/issues.assigned.json";
-import marketplaceProPlan from "./test-fixtures/marketplace_pro_plan.json";
+import issueAssignedPayload from "./test-fixtures/issues.assigned.json" with { type: "json" };
+import marketplaceProPlan from "./test-fixtures/marketplace_pro_plan.json" with { type: "json" };
 import {initNock, initProbot} from "./test-helpers.ts";
 import {isFreePaidSubscription, isPaidPlan} from "../src/plans.ts";
 import {beforeAll, beforeEach, expect, test} from "vitest";
@@ -20,7 +20,9 @@ beforeEach(() => {
 test('installed as marketplace pro (trial) plan', async () => {
     const ctx = {
         octokit: {
-            apps: {getSubscriptionPlanForAccount: () => ({data: marketplaceProPlan})}
+            rest: {
+                apps: {getSubscriptionPlanForAccount: () => ({data: marketplaceProPlan})}
+            }
         }, //
         payload: issueAssignedPayload
     }

@@ -34,7 +34,7 @@ async function updatePullRequestTitle(ctx: Context<any>, issueNumber: number, pr
     const owner = getRepoOwnerLogin(ctx)
     const repo = getRepoName(ctx)
     try {
-        const {data: issue} = await ctx.octokit.issues.get({owner: owner, repo: repo, issue_number: issueNumber})
+        const {data: issue} = await ctx.octokit.rest.issues.get({owner: owner, repo: repo, issue_number: issueNumber})
         if (issue) {
             // @ts-ignore
             const labels = issue.labels.concat(pr.labels).map(l => l.name);

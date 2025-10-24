@@ -1,5 +1,5 @@
 import {Probot} from "probot";
-import issueAssignedPayload from "../test-fixtures/issues.assigned.json";
+import issueAssignedPayload from "../test-fixtures/issues.assigned.json" with { type: "json" };
 import {initNock, initProbot, nockConfig} from "../test-helpers.ts";
 import {beforeAll, beforeEach, test} from "vitest";
 

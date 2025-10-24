@@ -1,5 +1,5 @@
 import app from "./probot.ts";
-import {run} from "probot";
+import {createNodeMiddleware, createProbot, run} from "probot";
 
-
+// const middleware = await createNodeMiddleware(app, {probot: createProbot()});
 run(app);

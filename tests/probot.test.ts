@@ -1,7 +1,7 @@
 import {Probot} from "probot";
-import issueOpenedPayload from "./test-fixtures/issues.opened.json";
-import issueAssignedPayload from "./test-fixtures/issues.assigned.json";
-import pullRequestClosedPayload from "./test-fixtures/pull_request.closed.json";
+import issueOpenedPayload from "./test-fixtures/issues.opened.json" with {type: "json"};
+import issueAssignedPayload from "./test-fixtures/issues.assigned.json" with {type: "json"};
+import pullRequestClosedPayload from "./test-fixtures/pull_request.closed.json" with {type: "json"};
 import {
     initNock,
     initProbot,

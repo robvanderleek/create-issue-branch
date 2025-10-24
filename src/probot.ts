@@ -1,5 +1,4 @@
-import {Probot} from "probot";
-import {ApplicationFunctionOptions} from "probot/lib/types.js";
+import {ApplicationFunctionOptions, Probot} from "probot";
 import express from "express";
 import {issueAssigned} from "./webhooks/issue-assigned.ts";
 import {issueLabeled} from "./webhooks/issue-labeled.ts";
@@ -20,11 +19,11 @@ import {issueClosed} from "./webhooks/issue-closed.ts";
 export default (app: Probot, {getRouter}: ApplicationFunctionOptions) => {
     const buildDate = gitDate.toISOString().substring(0, 10);
     app.log.info(`Create Issue Branch, version: ${version}, revison: ${gitSha.substring(0, 8)}, built on: ${buildDate}`);
-    if (getRouter) {
-        addPlansRoute(app, getRouter);
-    } else if (!isRunningInGitHubActions()) {
-        app.log.info('Custom routes not available!')
-    }
+    // if (getRouter) {
+    //     addPlansRoute(app, getRouter);
+    // } else if (!isRunningInGitHubActions()) {
+    //     app.log.info('Custom routes not available!')
+    // }
     configureSentry(app);
     logMemoryUsage(app);
     setupEventHandlers(app);

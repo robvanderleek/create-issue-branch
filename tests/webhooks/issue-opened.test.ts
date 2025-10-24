@@ -1,15 +1,16 @@
 import {Probot} from "probot";
-import issueOpenedPayload from "../test-fixtures/issues.opened.json";
+import issueOpenedPayload from "../test-fixtures/issues.opened.json" with {type: "json"};
 import {
     initNock,
     initProbot,
     nockConfig,
     nockCreateBranch,
     nockCreateComment,
+    nockCreatePR,
     nockExistingBranch,
     nockNonExistingBranch
 } from "../test-helpers.ts";
-import {beforeAll, beforeEach, expect, test, vi} from "vitest";
+import {beforeAll, beforeEach, expect, test} from "vitest";
 
 let probot: Probot
 
@@ -35,21 +36,9 @@ test('conventional PR title', async () => {
     nockCreateComment();
     nockExistingBranch('main', '12345678');
     nockExistingBranch('issue-1-Test_issue', '87654321');
-
-    const createPr = vi.fn();
-    createPr.mockResolvedValue({data: {number: 2}});
-    // @ts-ignore
-    probot.state.octokit.pulls.create = createPr;
+    const nockMock = nockCreatePR(2);
 
     await probot.receive({id: '', name: 'issues', payload: issueOpenedPayload as any})
 
-    expect(createPr).toHaveBeenCalledWith({
-        owner: 'robvanderleek',
-        repo: 'create-issue-branch',
-        head: 'issue-1-Test_issue',
-        base: 'main',
-        title: 'fix: 🐛 Test issue...',
-        body: 'closes #1',
-        draft: true
-    });
+    expect(nockMock.pendingMocks()).toHaveLength(0);
 })

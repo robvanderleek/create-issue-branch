@@ -147,12 +147,12 @@ export async function addComment(ctx: Context<any>, config: Config, comment: str
     if (!config.silent) {
         const params = ctx.issue({body: comment});
         try {
-            await ctx.octokit.issues.createComment(params);
+            await ctx.octokit.rest.issues.createComment(params);
         } catch (e) {
             console.info('Creating comment failed, retrying in 1 second');
             await sleep(1000);
             try {
-                await ctx.octokit.issues.createComment(params);
+                await ctx.octokit.rest.issues.createComment(params);
             } catch (e) {
                 console.info('Creating comment failed');
             }
@@ -164,7 +164,7 @@ export async function branchExists(ctx: Context<any>, branchName: string) {
     const owner = getRepoOwnerLogin(ctx)
     const repo = getRepoName(ctx)
     try {
-        await ctx.octokit.git.getRef({
+        await ctx.octokit.rest.git.getRef({
             owner: owner, repo: repo, ref: `heads/${branchName}`
         })
         return true
@@ -177,7 +177,7 @@ export async function deleteBranch(ctx: Context<any>, branchName: string) {
     const owner = getRepoOwnerLogin(ctx)
     const repo = getRepoName(ctx)
     try {
-        await ctx.octokit.git.deleteRef({
+        await ctx.octokit.rest.git.deleteRef({
             owner: owner, repo: repo, ref: `heads/${branchName}`
         })
         return true
@@ -226,7 +226,7 @@ function getDefaultBranch(ctx: Context<any>, config: Config) {
 
 async function getBranchHeadSha(ctx: Context<any>, branch: string) {
     try {
-        const res = await ctx.octokit.git.getRef({
+        const res = await ctx.octokit.rest.git.getRef({
             owner: getRepoOwnerLogin(ctx), repo: getRepoName(ctx), ref: `heads/${branch}`
         })
         const ref = res.data.object
@@ -240,7 +240,7 @@ export async function createBranch(app: Probot, ctx: Context<any>, config: Confi
     const owner = getRepoOwnerLogin(ctx);
     const repo = getRepoName(ctx);
     try {
-        const res = await ctx.octokit.git.createRef({
+        const res = await ctx.octokit.rest.git.createRef({
             owner: owner, repo: repo, ref: `refs/heads/${branchName}`, sha: sha
         });
         app.log.info(`Branch created: ${branchName}`);
@@ -277,7 +277,7 @@ export async function createPr(app: Probot, ctx: Context<any>, config: Config, u
             app.log.info('Branch and base heads are equal, creating empty commit for PR');
             logContext.emptyCommitResponse = await createEmptyCommit(ctx, branchName, getCommitText(ctx, config), String(branchHeadSha));
         }
-        const {data: pr} = await ctx.octokit.pulls.create(
+        const {data: pr} = await ctx.octokit.rest.pulls.create(
             {
                 owner,
                 repo,
@@ -359,7 +359,7 @@ async function getPrBody(app: Probot, ctx: Context<any>, config: Config) {
 
 async function getPullRequestTemplate(ctx: Context<any>): Promise<string | undefined> {
     try {
-        const {data} = await ctx.octokit.repos.getContent({
+        const {data} = await ctx.octokit.rest.repos.getContent({
             owner: getRepoOwnerLogin(ctx),
             repo: getRepoName(ctx),
             path: '.github/pull_request_template.md'
@@ -402,7 +402,7 @@ async function copyIssueLabelsToPr(ctx: Context<any>, pr: any) {
     const repo = getRepoName(ctx)
     const labels = getIssueLabels(ctx)
     if (labels.length > 0) {
-        await ctx.octokit.issues.addLabels({owner, repo, issue_number: pr.number, labels})
+        await ctx.octokit.rest.issues.addLabels({owner, repo, issue_number: pr.number, labels})
     }
 }
 
@@ -410,7 +410,7 @@ async function copyIssueAssigneeToPr(ctx: Context<any>, pr: any) {
     const owner = getRepoOwnerLogin(ctx)
     const repo = getRepoName(ctx)
     const assignee = getAssignee(ctx)
-    await ctx.octokit.issues.addAssignees({owner, repo, issue_number: pr.number, assignees: [assignee]})
+    await ctx.octokit.rest.issues.addAssignees({owner, repo, issue_number: pr.number, assignees: [assignee]})
 }
 
 async function copyIssueMilestoneToPr(ctx: Context<any>, pr: any) {
@@ -418,7 +418,7 @@ async function copyIssueMilestoneToPr(ctx: Context<any>, pr: any) {
     const repo = getRepoName(ctx)
     const number = getMilestoneNumber(ctx)
     if (number) {
-        await ctx.octokit.issues.update({owner, repo, issue_number: pr.number, milestone: number})
+        await ctx.octokit.rest.issues.update({owner, repo, issue_number: pr.number, milestone: number})
     }
 }
 
@@ -485,7 +485,7 @@ export async function updatePrTitle(app: Probot, ctx: Context<any>, config: Conf
         const repo = getRepoName(ctx);
         const pullNumber = pr.number;
         app.log.info(`Updating title for PR #${pullNumber} in ${owner}/${repo} to: ${updatedTitle}`);
-        await ctx.octokit.pulls.update({owner: owner, repo: repo, pull_number: pullNumber, title: updatedTitle});
+        await ctx.octokit.rest.pulls.update({owner: owner, repo: repo, pull_number: pullNumber, title: updatedTitle});
     }
 }
 
@@ -494,5 +494,5 @@ export async function updatePrBody(app: Probot, ctx: Context<any>, config: Confi
     const repo = getRepoName(ctx)
     const pullNumber = pr.number
     app.log.info(`Updating body for PR #${pullNumber} in ${owner}/${repo}`)
-    await ctx.octokit.pulls.update({owner: owner, repo: repo, pull_number: pullNumber, body: body})
+    await ctx.octokit.rest.pulls.update({owner: owner, repo: repo, pull_number: pullNumber, body: body})
 }

@@ -9,7 +9,7 @@ const issueTitle = 'Error in Create Issue Branch app configuration'
 
 async function findConfigurationErrorIssue(ctx: Context<any>) {
     const fullName = ctx.payload.repository.full_name
-    const result = await ctx.octokit.search.issuesAndPullRequests(
+    const result = await ctx.octokit.rest.search.issuesAndPullRequests(
         {q: `${issueTitle} repo:${fullName} in:title type:issue state:open`})
     return result.data.items
 }
@@ -25,7 +25,7 @@ async function createConfigurationErrorIssue(ctx: Context<any>, err: string) {
 `
     }
     try {
-        await ctx.octokit.issues.create(ctx.repo({
+        await ctx.octokit.rest.issues.create(ctx.repo({
             title: issueTitle, body: errorBody(err)
         }));
     } catch (e: any) {
@@ -91,10 +91,6 @@ export function shouldOpenPR(config: Config) {
 
 export function prSkipCI(config: Config) {
     return config.prSkipCI;
-}
-
-export function showFreePlanWarning(config: Config) {
-    return config.freePlanWarning;
 }
 
 export function isChatOpsCommand(s?: string) {

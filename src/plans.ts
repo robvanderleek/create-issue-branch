@@ -35,7 +35,7 @@ export async function isCommercialOrganizationPlan(app: Probot, ctx: Context<any
         const login = getRepoOwnerLogin(ctx);
         app.log.info(`Checking Marketplace for organization: https://github.com/${login} ...`);
         const id = getRepoOwnerId(ctx);
-        const res = await ctx.octokit.apps.getSubscriptionPlanForAccount({account_id: id});
+        const res = await ctx.octokit.rest.apps.getSubscriptionPlanForAccount({account_id: id});
         const purchase = res.data.marketplace_purchase;
         if (purchase.plan && purchase.plan.name === 'Commercial organization') {
             app.log.info('Found Commercial organization 💰 plan');
@@ -54,7 +54,7 @@ export async function isPaidPlan(app: Probot, ctx: Context<any>) {
         const login = getRepoOwnerLogin(ctx);
         app.log.info(`Checking Marketplace for organization: https://github.com/${login} ...`);
         const id = getRepoOwnerId(ctx);
-        const res = await ctx.octokit.apps.getSubscriptionPlanForAccount({account_id: id});
+        const res = await ctx.octokit.rest.apps.getSubscriptionPlanForAccount({account_id: id});
         const purchase = res.data.marketplace_purchase;
         if (purchase.plan && purchase.plan.price_model === 'FREE') {
             app.log.info('Found Free plan');

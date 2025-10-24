@@ -1,9 +1,9 @@
 import nock from "nock";
-import issueAssignedPayload from "./test-fixtures/issues.assigned.json";
-import commentCreatedPayload from "./test-fixtures/issue_comment.created.json";
+import issueAssignedPayload from "./test-fixtures/issues.assigned.json" with {type: "json"};
+import commentCreatedPayload from "./test-fixtures/issue_comment.created.json" with {type: "json"};
 import myProbotApp from "../src/probot.ts";
 import {Probot, ProbotOctokit} from "probot";
-import {OctokitOptions} from "probot/lib/types.js";
+import {OctokitOptions} from "probot/lib/types";
 
 export function nockInstallation(installation: object) {
     nock('https://api.github.com')
@@ -75,6 +75,12 @@ export function nockExistingBranch(name: string, sha: string) {
         .reply(200, {object: {sha: sha}})
 }
 
+export function nockDeleteBranch(name: string) {
+    return nock('https://api.github.com')
+        .delete(`/repos/robvanderleek/create-issue-branch/git/refs/heads%2F${encodeURIComponent(name)}`)
+        .reply(200)
+}
+
 export function nockPulls(branch: string, result: any) {
     nock('https://api.github.com')
         .get(`/repos/robvanderleek/create-issue-branch/pulls?head=robvanderleek%3A${encodeURIComponent(branch)}`)
@@ -98,7 +104,7 @@ export function nockUpdateBranch(name: string) {
 }
 
 export function nockUpdatePull(number: number) {
-    nock('https://api.github.com').patch(`/repos/robvanderleek/create-issue-branch/pulls/${number}`).reply(200)
+    return nock('https://api.github.com').patch(`/repos/robvanderleek/create-issue-branch/pulls/${number}`).reply(200)
 }
 
 export function nockCreateComment() {
@@ -122,8 +128,8 @@ export function nockCreateBranch() {
         .reply(200)
 }
 
-export function nockCreatePR() {
-    nock('https://api.github.com').post('/repos/robvanderleek/create-issue-branch/pulls').reply(200, {number: 123})
+export function nockCreatePR(number: number = 123) {
+    return nock('https://api.github.com').post('/repos/robvanderleek/create-issue-branch/pulls').reply(200, {number: 123})
 }
 
 export function nockIssueLabels() {
@@ -147,25 +153,27 @@ export function getDefaultContext(): any {
             issue: {number: 1, title: 'Hello world', body: '', milestone: undefined, labels: []}
         }, //
         octokit: {
-            pulls: {
-                create: () => {
-                }
-            }, //
-            git: {
-                getCommit: () => ({data: {tree: {sha: '1234abcd'}}}),
-                createCommit: () => ({data: {sha: 'abcd1234'}}),
-                createRef: () => {
+            rest: {
+                pulls: {
+                    create: () => {
+                    }
+                }, //
+                git: {
+                    getCommit: () => ({data: {tree: {sha: '1234abcd'}}}),
+                    createCommit: () => ({data: {sha: 'abcd1234'}}),
+                    createRef: () => {
+                    },
+                    updateRef: () => {
+                    }
+                }, //
+                issues: {
+                    createComment: () => {
+                    }
                 },
-                updateRef: () => {
-                }
+                repos: {},
             }, //
-            issues: {
-                createComment: () => {
-                }
-            },
-            repos: {},
             graphql: (_: any, {message}: { message: string }) => {
-            }
+            },
         }, //
         issue: () => {
         }

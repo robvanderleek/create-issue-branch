@@ -3,7 +3,7 @@
     "rootDirs": [
       "src"
     ],
-    "target": "es6",
+    "target": "es2017",
     "lib": [
       "dom",
       "dom.iterable",
@@ -14,8 +14,8 @@
     "esModuleInterop": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "node16",
-    "moduleResolution": "node16",
+    "module": "node20",
+    "moduleResolution": "nodenext",
     "resolveJsonModule": true,
     "rewriteRelativeImportExtensions": true,
     "isolatedModules": true,
