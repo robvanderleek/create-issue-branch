@@ -1,8 +1,8 @@
 import {Context, Probot} from "probot";
-import {getRepoOwnerId, getRepoOwnerLogin, isOrgRepo} from "./context";
-import {addComment} from "./github";
-import {Config} from "./entities/Config";
-import {isRunningInGitHubActions, isRunningInTestEnvironment} from "./utils";
+import {getRepoOwnerId, getRepoOwnerLogin, isOrgRepo} from "./context.ts";
+import {addComment} from "./github.ts";
+import {Config} from "./entities/Config.ts";
+import {isRunningInGitHubActions, isRunningInTestEnvironment} from "./utils.ts";
 
 export async function hasValidSubscription(app: Probot, ctx: Context<any>, config: Config) {
     if (isRunningInGitHubActions() || isRunningInTestEnvironment()) {
@@ -35,7 +35,7 @@ export async function isCommercialOrganizationPlan(app: Probot, ctx: Context<any
         const login = getRepoOwnerLogin(ctx);
         app.log.info(`Checking Marketplace for organization: https://github.com/${login} ...`);
         const id = getRepoOwnerId(ctx);
-        const res = await ctx.octokit.apps.getSubscriptionPlanForAccount({account_id: id});
+        const res = await ctx.octokit.rest.apps.getSubscriptionPlanForAccount({account_id: id});
         const purchase = res.data.marketplace_purchase;
         if (purchase.plan && purchase.plan.name === 'Commercial organization') {
             app.log.info('Found Commercial organization 💰 plan');
@@ -54,7 +54,7 @@ export async function isPaidPlan(app: Probot, ctx: Context<any>) {
         const login = getRepoOwnerLogin(ctx);
         app.log.info(`Checking Marketplace for organization: https://github.com/${login} ...`);
         const id = getRepoOwnerId(ctx);
-        const res = await ctx.octokit.apps.getSubscriptionPlanForAccount({account_id: id});
+        const res = await ctx.octokit.rest.apps.getSubscriptionPlanForAccount({account_id: id});
         const purchase = res.data.marketplace_purchase;
         if (purchase.plan && purchase.plan.price_model === 'FREE') {
             app.log.info('Found Free plan');

@@ -1,7 +1,7 @@
 import {createProbot} from "probot";
-import app from "../../probot";
-import {listAppSubscriptions} from "../../plans";
-import {message} from "../../discord";
+import app from "../../probot.ts";
+import {listAppSubscriptions} from "../../plans.ts";
+import {message} from "../../discord.ts";
 import {VercelRequest, VercelResponse} from "@vercel/node";
 
 const probot = createProbot();

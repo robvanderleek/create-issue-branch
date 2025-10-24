@@ -1,5 +1,5 @@
 import {MongoClient, MongoClientOptions} from "mongodb";
-import {WebhookEvent} from "../entities/WebhookEvent";
+import {WebhookEvent} from "../entities/WebhookEvent.ts";
 
 export class MongoDbService {
     connectionString: string;

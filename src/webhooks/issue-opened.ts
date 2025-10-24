@@ -1,10 +1,10 @@
 import {Context, Probot} from "probot";
-import {isChatOpsCommand, isModeImmediate, loadConfig, shouldOpenPR} from "../config";
+import {isChatOpsCommand, isModeImmediate, loadConfig, shouldOpenPR} from "../config.ts";
 import core from "@actions/core";
-import {Config} from "../entities/Config";
-import {chatOpsCommandGiven} from "./comment-created";
-import {isRunningInGitHubActions} from "../utils";
-import {getIssueTitle, getSender} from "../context";
+import {Config} from "../entities/Config.ts";
+import {chatOpsCommandGiven} from "./comment-created.ts";
+import {isRunningInGitHubActions} from "../utils.ts";
+import {getIssueTitle, getSender} from "../context.ts";
 import {
     branchExists,
     createIssueBranch,
@@ -13,7 +13,7 @@ import {
     getSourceBranch,
     skipBranchCreationForIssue,
     skipForIssue
-} from "../github";
+} from "../github.ts";
 
 export async function issueOpened(app: Probot, ctx: Context<any>, comment: string | null) {
     const config = await loadConfig(ctx);

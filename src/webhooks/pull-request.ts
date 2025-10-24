@@ -1,8 +1,8 @@
 import {Context, Probot} from "probot";
-import {loadConfig} from "../config";
-import {getRepoName, getRepoOwnerLogin} from "../context";
-import {getIssueNumberFromBranchName, updatePrBody, updatePrTitle} from "../github";
-import {Config} from "../entities/Config";
+import {loadConfig} from "../config.ts";
+import {getRepoName, getRepoOwnerLogin} from "../context.ts";
+import {getIssueNumberFromBranchName, updatePrBody, updatePrTitle} from "../github.ts";
+import {Config} from "../entities/Config.ts";
 
 
 export async function pullRequest(app: Probot, ctx: Context<any>) {
@@ -34,7 +34,7 @@ async function updatePullRequestTitle(ctx: Context<any>, issueNumber: number, pr
     const owner = getRepoOwnerLogin(ctx)
     const repo = getRepoName(ctx)
     try {
-        const {data: issue} = await ctx.octokit.issues.get({owner: owner, repo: repo, issue_number: issueNumber})
+        const {data: issue} = await ctx.octokit.rest.issues.get({owner: owner, repo: repo, issue_number: issueNumber})
         if (issue) {
             // @ts-ignore
             const labels = issue.labels.concat(pr.labels).map(l => l.name);

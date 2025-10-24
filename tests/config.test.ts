@@ -10,8 +10,10 @@ import {
     isModeChatOps,
     isModeImmediate,
     shouldOpenPR
-} from "../src/config";
-import {getDefaultConfig} from "../src/entities/Config";
+} from "../src/config.ts";
+import {getDefaultConfig} from "../src/entities/Config.ts";
+import {expect, test} from "vitest";
+
 
 test('is ChatOps command', () => {
     expect(isChatOpsCommand('/create-issue-branch')).toBeTruthy()

@@ -9,9 +9,11 @@ import {
     nockExistingBranch,
     nockGlobalConfig,
     nockNonExistingBranch
-} from "./test-helpers";
+} from "./test-helpers.ts";
 import {Probot} from "probot";
 import issueAssignedPayload from "./test-fixtures/issues.assigned.json";
+import {beforeAll, beforeEach, expect, test} from "vitest";
+
 
 let probot: Probot
 

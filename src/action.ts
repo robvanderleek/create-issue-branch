@@ -1,4 +1,4 @@
-import app from "./probot";
+import app from "./probot.ts";
 
 const {run} = require('@probot/adapter-github-actions');
 

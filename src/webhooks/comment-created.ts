@@ -1,5 +1,5 @@
 import {Context, Probot} from "probot";
-import {Config} from "../entities/Config";
+import {Config} from "../entities/Config.ts";
 import {
     getChatOpsCommandArgument,
     isChatOpsCommand,
@@ -7,19 +7,20 @@ import {
     isModeChatOps,
     loadConfig,
     shouldOpenPR
-} from "../config";
-import {logMemoryUsage} from "../utils";
-import {getIssueTitle, getSender} from "../context";
+} from "../config.ts";
+import {logMemoryUsage} from "../utils.ts";
+import {getIssueTitle, getSender} from "../context.ts";
 import {
     addComment,
     branchExists,
     createIssueBranch,
-    createPr, getBranchNameFromIssue,
+    createPr,
+    getBranchName as githubGetBranchName,
+    getBranchNameFromIssue,
     getSourceBranch,
     skipBranchCreationForIssue,
-    skipForIssue,
-    getBranchName as githubGetBranchName
-} from "../github";
+    skipForIssue
+} from "../github.ts";
 
 export async function commentCreated(app: Probot, ctx: Context<any>, comment: string) {
     if (isChatOpsCommand(comment)) {
