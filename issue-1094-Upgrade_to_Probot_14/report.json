@@ -1,7 +1,7 @@
 {
   "version": "0.21.0",
-  "uuid": "5ad1c035-760b-4bb7-bb70-86b650f47110",
-  "timestamp": "2025-10-21T20:58:36+00:00",
+  "uuid": "9fc94368-e12e-484a-aeef-437d5dc9628f",
+  "timestamp": "2025-10-24T20:03:32+00:00",
   "root": "/github/workspace",
   "repository": {
     "owner": "robvanderleek",
@@ -12,8 +12,8 @@
     "totals": {
       "TypeScript": {
         "files": 24,
-        "lines_of_code": 1314,
-        "functions": 118,
+        "lines_of_code": 1311,
+        "functions": 117,
         "hard_to_maintain": 4,
         "unmaintainable": 0
       },
@@ -32,7 +32,7 @@
           "next.config.js",
           "src/"
         ],
-        "profile": [705, 461, 156, 0]
+        "profile": [702, 461, 156, 0]
       },
       "src/": {
         "entries": [
@@ -51,7 +51,7 @@
           "entities/",
           "webhooks/"
         ],
-        "profile": [697, 461, 156, 0]
+        "profile": [694, 461, 156, 0]
       },
       "src/services/": {
         "entries": [
@@ -135,7 +135,7 @@
         ]
       },
       "src/server.ts": {
-        "checksum": "e0f4e85e8e83f35c95fa2a471a149fd2",
+        "checksum": "0c47fb395e5877d82d6434f3d31fb993",
         "language": "TypeScript",
         "loc": 0,
         "profile": [0, 0, 0, 0],
@@ -143,7 +143,7 @@
         ]
       },
       "src/plans.ts": {
-        "checksum": "82816070c8b67893fba6cc90a0b070d8",
+        "checksum": "a1e049dc68282224466df21e0dd3fb17",
         "language": "TypeScript",
         "loc": 133,
         "profile": [55, 78, 0, 0],
@@ -200,10 +200,10 @@
         ]
       },
       "src/config.ts": {
-        "checksum": "fe2ac1cc19b2af7fcb946d558332d3c4",
+        "checksum": "96f9784f2ac58a9819f4db54ddbbcf7c",
         "language": "TypeScript",
-        "loc": 172,
-        "profile": [86, 23, 63, 0],
+        "loc": 169,
+        "profile": [83, 23, 63, 0],
         "measurements": [
           {"unit_name": "findConfigurationErrorIssue", "start": {"line": 10, "column": 16}, "end": {"line": 15, "column": 2}, "value": 6},
           {"unit_name": "createConfigurationErrorIssue", "start": {"line": 17, "column": 16}, "end": {"line": 34, "column": 2}, "value": 9},
@@ -216,14 +216,13 @@
           {"unit_name": "isExperimentalBranchNameArgument", "start": {"line": 84, "column": 17}, "end": {"line": 86, "column": 2}, "value": 3},
           {"unit_name": "shouldOpenPR", "start": {"line": 88, "column": 17}, "end": {"line": 90, "column": 2}, "value": 3},
           {"unit_name": "prSkipCI", "start": {"line": 92, "column": 17}, "end": {"line": 94, "column": 2}, "value": 3},
-          {"unit_name": "showFreePlanWarning", "start": {"line": 96, "column": 17}, "end": {"line": 98, "column": 2}, "value": 3},
-          {"unit_name": "isChatOpsCommand", "start": {"line": 100, "column": 17}, "end": {"line": 107, "column": 2}, "value": 8},
-          {"unit_name": "getChatOpsCommandArgument", "start": {"line": 109, "column": 17}, "end": {"line": 116, "column": 2}, "value": 8},
-          {"unit_name": "getCommentMessage", "start": {"line": 118, "column": 17}, "end": {"line": 125, "column": 2}, "value": 7},
-          {"unit_name": "getDefaultBranch", "start": {"line": 127, "column": 17}, "end": {"line": 133, "column": 2}, "value": 7},
-          {"unit_name": "getConventionalPrTitlePrefix", "start": {"line": 135, "column": 17}, "end": {"line": 166, "column": 2}, "value": 32},
-          {"unit_name": "getConventionalLabelMapping", "start": {"line": 172, "column": 17}, "end": {"line": 202, "column": 2}, "value": 31},
-          {"unit_name": "isBreakingPr", "start": {"line": 204, "column": 10}, "end": {"line": 206, "column": 2}, "value": 3}
+          {"unit_name": "isChatOpsCommand", "start": {"line": 96, "column": 17}, "end": {"line": 103, "column": 2}, "value": 8},
+          {"unit_name": "getChatOpsCommandArgument", "start": {"line": 105, "column": 17}, "end": {"line": 112, "column": 2}, "value": 8},
+          {"unit_name": "getCommentMessage", "start": {"line": 114, "column": 17}, "end": {"line": 121, "column": 2}, "value": 7},
+          {"unit_name": "getDefaultBranch", "start": {"line": 123, "column": 17}, "end": {"line": 129, "column": 2}, "value": 7},
+          {"unit_name": "getConventionalPrTitlePrefix", "start": {"line": 131, "column": 17}, "end": {"line": 162, "column": 2}, "value": 32},
+          {"unit_name": "getConventionalLabelMapping", "start": {"line": 168, "column": 17}, "end": {"line": 198, "column": 2}, "value": 31},
+          {"unit_name": "isBreakingPr", "start": {"line": 200, "column": 10}, "end": {"line": 202, "column": 2}, "value": 3}
         ]
       },
       "src/discord.ts": {
@@ -236,19 +235,19 @@
         ]
       },
       "src/probot.ts": {
-        "checksum": "f18e9c240f6adf62a6e1deb7d68d2fbf",
+        "checksum": "6dc2e7909a6ae6bb10a911dba111c903",
         "language": "TypeScript",
         "loc": 91,
         "profile": [15, 22, 54, 0],
         "measurements": [
-          {"unit_name": "setupEventHandlers", "start": {"line": 33, "column": 10}, "end": {"line": 86, "column": 2}, "value": 54},
-          {"unit_name": "insertEventIntoDatabase", "start": {"line": 88, "column": 16}, "end": {"line": 109, "column": 2}, "value": 22},
-          {"unit_name": "addPlansRoute", "start": {"line": 111, "column": 16}, "end": {"line": 117, "column": 2}, "value": 7},
-          {"unit_name": "configureSentry", "start": {"line": 119, "column": 10}, "end": {"line": 126, "column": 2}, "value": 8}
+          {"unit_name": "setupEventHandlers", "start": {"line": 32, "column": 10}, "end": {"line": 85, "column": 2}, "value": 54},
+          {"unit_name": "insertEventIntoDatabase", "start": {"line": 87, "column": 16}, "end": {"line": 108, "column": 2}, "value": 22},
+          {"unit_name": "addPlansRoute", "start": {"line": 110, "column": 16}, "end": {"line": 116, "column": 2}, "value": 7},
+          {"unit_name": "configureSentry", "start": {"line": 118, "column": 10}, "end": {"line": 125, "column": 2}, "value": 8}
         ]
       },
       "src/github.ts": {
-        "checksum": "f482f65025a0ceb76aef12663c581fa9",
+        "checksum": "01ae16c57f362b5daf183c08fe1215e8",
         "language": "TypeScript",
         "loc": 406,
         "profile": [238, 129, 39, 0],
@@ -333,7 +332,7 @@
         ]
       },
       "src/webhooks/pull-request-closed.ts": {
-        "checksum": "bef8a8b002937886400c605965f4f349",
+        "checksum": "86cc3c2b3600bc455d5ae6c1fb66e7dd",
         "language": "TypeScript",
         "loc": 33,
         "profile": [14, 19, 0, 0],
@@ -343,7 +342,7 @@
         ]
       },
       "src/webhooks/issue-labeled.ts": {
-        "checksum": "34641c2d8e72ea907b38147839d7cfb0",
+        "checksum": "bfcfbbdf20f9cd39fa37f7d41572e59a",
         "language": "TypeScript",
         "loc": 16,
         "profile": [0, 16, 0, 0],
@@ -352,7 +351,7 @@
         ]
       },
       "src/webhooks/pull-request.ts": {
-        "checksum": "5f341d02001cffee4789901d2b5f627b",
+        "checksum": "a2e720209ee469ff4f594c167c45e6b6",
         "language": "TypeScript",
         "loc": 47,
         "profile": [23, 24, 0, 0],
