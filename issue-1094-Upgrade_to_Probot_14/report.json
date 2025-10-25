@@ -1,7 +1,7 @@
 {
   "version": "0.21.0",
-  "uuid": "9fc94368-e12e-484a-aeef-437d5dc9628f",
-  "timestamp": "2025-10-24T20:03:32+00:00",
+  "uuid": "cea12162-04bd-46af-be84-0e19c138b05e",
+  "timestamp": "2025-10-25T21:31:18+00:00",
   "root": "/github/workspace",
   "repository": {
     "owner": "robvanderleek",
@@ -11,17 +11,10 @@
   "codebase": {
     "totals": {
       "TypeScript": {
-        "files": 24,
-        "lines_of_code": 1311,
+        "files": 25,
+        "lines_of_code": 1312,
         "functions": 117,
         "hard_to_maintain": 4,
-        "unmaintainable": 0
-      },
-      "JavaScript": {
-        "files": 1,
-        "lines_of_code": 8,
-        "functions": 1,
-        "hard_to_maintain": 0,
         "unmaintainable": 0
       }
     },
@@ -29,10 +22,10 @@
       "./": {
         "entries": [
           "next-env.d.ts",
-          "next.config.js",
+          "next.config.ts",
           "src/"
         ],
-        "profile": [702, 461, 156, 0]
+        "profile": [695, 461, 156, 0]
       },
       "src/": {
         "entries": [
@@ -51,7 +44,7 @@
           "entities/",
           "webhooks/"
         ],
-        "profile": [694, 461, 156, 0]
+        "profile": [687, 461, 156, 0]
       },
       "src/services/": {
         "entries": [
@@ -95,16 +88,16 @@
     },
     "files": {
       "next-env.d.ts": {
-        "checksum": "cd8a0ae6ffaa12655296aeb2a08ba0bb",
+        "checksum": "77e25bc68d9218c91c2f0d3dfcc88118",
         "language": "TypeScript",
         "loc": 0,
         "profile": [0, 0, 0, 0],
         "measurements": [
         ]
       },
-      "next.config.js": {
+      "next.config.ts": {
         "checksum": "e6e268855af4f54f80411ec0ea08f55a",
-        "language": "JavaScript",
+        "language": "TypeScript",
         "loc": 8,
         "profile": [8, 0, 0, 0],
         "measurements": [
@@ -135,7 +128,7 @@
         ]
       },
       "src/server.ts": {
-        "checksum": "0c47fb395e5877d82d6434f3d31fb993",
+        "checksum": "e9aeebdc63c9f26eee91b44284f622d1",
         "language": "TypeScript",
         "loc": 0,
         "profile": [0, 0, 0, 0],
@@ -143,7 +136,7 @@
         ]
       },
       "src/plans.ts": {
-        "checksum": "a1e049dc68282224466df21e0dd3fb17",
+        "checksum": "de559a941f288d81b194f4176ea211b4",
         "language": "TypeScript",
         "loc": 133,
         "profile": [55, 78, 0, 0],
@@ -235,15 +228,14 @@
         ]
       },
       "src/probot.ts": {
-        "checksum": "6dc2e7909a6ae6bb10a911dba111c903",
+        "checksum": "2424d3245b6bf24a2332d135de437b9c",
         "language": "TypeScript",
-        "loc": 91,
-        "profile": [15, 22, 54, 0],
+        "loc": 84,
+        "profile": [8, 22, 54, 0],
         "measurements": [
-          {"unit_name": "setupEventHandlers", "start": {"line": 32, "column": 10}, "end": {"line": 85, "column": 2}, "value": 54},
-          {"unit_name": "insertEventIntoDatabase", "start": {"line": 87, "column": 16}, "end": {"line": 108, "column": 2}, "value": 22},
-          {"unit_name": "addPlansRoute", "start": {"line": 110, "column": 16}, "end": {"line": 116, "column": 2}, "value": 7},
-          {"unit_name": "configureSentry", "start": {"line": 118, "column": 10}, "end": {"line": 125, "column": 2}, "value": 8}
+          {"unit_name": "setupEventHandlers", "start": {"line": 25, "column": 10}, "end": {"line": 78, "column": 2}, "value": 54},
+          {"unit_name": "insertEventIntoDatabase", "start": {"line": 80, "column": 16}, "end": {"line": 101, "column": 2}, "value": 22},
+          {"unit_name": "configureSentry", "start": {"line": 103, "column": 10}, "end": {"line": 110, "column": 2}, "value": 8}
         ]
       },
       "src/github.ts": {
@@ -298,7 +290,7 @@
         ]
       },
       "src/pages/api/plans.ts": {
-        "checksum": "2ca6de1a6533e1a6836d448aca5c0040",
+        "checksum": "a91e1ba6b169d1c8e0e6bf75d341d2d0",
         "language": "TypeScript",
         "loc": 0,
         "profile": [0, 0, 0, 0],
