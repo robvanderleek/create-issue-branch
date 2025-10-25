@@ -3,9 +3,7 @@
 ### Overview
 | **Language** | **Files** | **Functions** | **Lines of Code** | **⚠** | **⛌** |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| TypeScript | 24 | 117 | 1311 | 4 | 0 |
-| JavaScript | 1 | 1 | 8 | 0 | 0 |
-| **Totals** | **25** | **118** | **1319** | **4** | **0** |
+| TypeScript | 25 | 117 | 1312 | 4 | 0 |
 
 ### Summary
 | **Easy / Verbose** | **Hard-to-maintain ⚠** | **Unmaintainable ⛌** |
@@ -17,7 +15,7 @@
 ### Findings
 | **Function** | **Length** | **File** |
 | --- | ---: | --- |
-| ⚠ [setupEventHandlers](https://github.com/robvanderleek/create-issue-branch/blob/issue-1094-Upgrade_to_Probot_14/src/probot.ts#L32-L85) | 54 | src/probot.ts |
+| ⚠ [setupEventHandlers](https://github.com/robvanderleek/create-issue-branch/blob/issue-1094-Upgrade_to_Probot_14/src/probot.ts#L25-L78) | 54 | src/probot.ts |
 | ⚠ [createPr](https://github.com/robvanderleek/create-issue-branch/blob/issue-1094-Upgrade_to_Probot_14/src/github.ts#L262-L300) | 39 | src/github.ts |
 | ⚠ [getConventionalPrTitlePrefix](https://github.com/robvanderleek/create-issue-branch/blob/issue-1094-Upgrade_to_Probot_14/src/config.ts#L131-L162) | 32 | src/config.ts |
 | ⚠ [getConventionalLabelMapping](https://github.com/robvanderleek/create-issue-branch/blob/issue-1094-Upgrade_to_Probot_14/src/config.ts#L168-L198) | 31 | src/config.ts |
