@@ -1,29 +1,22 @@
-import {ApplicationFunctionOptions, Probot} from "probot";
-import express from "express";
+import {Probot} from "probot";
 import {issueAssigned} from "./webhooks/issue-assigned.ts";
 import {issueLabeled} from "./webhooks/issue-labeled.ts";
 import {issueOpened} from "./webhooks/issue-opened.ts";
-import {listAppSubscriptions} from "./plans.ts";
 import * as Sentry from "@sentry/node";
 import {commentCreated} from "./webhooks/comment-created.ts";
 import {marketplacePurchase} from "./webhooks/marketplace-purchase.ts";
 import {pullRequest} from "./webhooks/pull-request.ts";
 import {pullRequestClosed} from "./webhooks/pull-request-closed.ts";
 import {gitDate, gitSha, version} from "./version.ts";
-import {isRunningInGitHubActions, logMemoryUsage} from "./utils.ts";
+import {logMemoryUsage} from "./utils.ts";
 import {MongoDbService} from "./services/MongoDbService.ts";
 import {WebhookEvent} from "./entities/WebhookEvent.ts";
 import {issueClosed} from "./webhooks/issue-closed.ts";
 
 
-export default (app: Probot, {getRouter}: ApplicationFunctionOptions) => {
+export default (app: Probot) => {
     const buildDate = gitDate.toISOString().substring(0, 10);
     app.log.info(`Create Issue Branch, version: ${version}, revison: ${gitSha.substring(0, 8)}, built on: ${buildDate}`);
-    // if (getRouter) {
-    //     addPlansRoute(app, getRouter);
-    // } else if (!isRunningInGitHubActions()) {
-    //     app.log.info('Custom routes not available!')
-    // }
     configureSentry(app);
     logMemoryUsage(app);
     setupEventHandlers(app);
@@ -105,14 +98,6 @@ async function insertEventIntoDatabase(app: Probot, ctx: any) {
         await dbService.storeEvent(webhookEvent);
         dbService.disconnect();
     }
-}
-
-async function addPlansRoute(app: Probot, getRouter: (path?: string) => express.Router) {
-    const router = getRouter('/probot')
-    router.get('/plans', async (_, res) => {
-        const subscriptions = listAppSubscriptions(app)
-        res.json(subscriptions)
-    })
 }
 
 function configureSentry(app: Probot) {
