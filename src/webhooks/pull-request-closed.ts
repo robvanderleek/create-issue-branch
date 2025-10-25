@@ -1,7 +1,7 @@
 import {Context, Probot} from "probot";
-import {loadConfig} from "../config";
-import {getRepoName, getRepoOwnerLogin} from "../context";
-import {getIssueNumberFromBranchName} from "../github";
+import {loadConfig} from "../config.ts";
+import {getRepoName, getRepoOwnerLogin} from "../context.ts";
+import {getIssueNumberFromBranchName} from "../github.ts";
 
 export async function pullRequestClosed(_: Probot, ctx: Context<any>) {
     if (ctx.payload.pull_request.merged === true) {
@@ -20,13 +20,13 @@ export async function pullRequestClosed(_: Probot, ctx: Context<any>) {
 
 async function closeIssue(ctx: Context<any>, owner: string, repo: string, issueNumber: number) {
     try {
-        const issueForBranch = await ctx.octokit.issues.get({
+        const issueForBranch = await ctx.octokit.rest.issues.get({
             owner: owner,
             repo: repo,
             issue_number: issueNumber
         });
         if (issueForBranch) {
-            await ctx.octokit.issues.update({
+            await ctx.octokit.rest.issues.update({
                 owner: owner,
                 repo: repo,
                 issue_number: issueNumber,

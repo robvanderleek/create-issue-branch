@@ -1,5 +1,5 @@
 import {Context, Probot} from "probot";
-import {message} from "../discord";
+import {message} from "../discord.ts";
 
 export async function marketplacePurchase(app: Probot, ctx: Context<any>) {
     const {

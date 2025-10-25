@@ -1,8 +1,8 @@
 import {Context, Probot} from "probot";
-import {loadConfig} from "../config";
-import {logMemoryUsage} from "../utils";
-import {Config} from "../entities/Config";
-import {branchExists, deleteBranch, getBranchNameFromIssue} from "../github";
+import {loadConfig} from "../config.ts";
+import {logMemoryUsage} from "../utils.ts";
+import {Config} from "../entities/Config.ts";
+import {branchExists, deleteBranch, getBranchNameFromIssue} from "../github.ts";
 
 export async function issueClosed(app: Probot, ctx: Context<any>) {
     const config = await loadConfig(ctx);

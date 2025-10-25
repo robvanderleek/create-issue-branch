@@ -1,7 +1,7 @@
 import {Context, Probot} from "probot";
-import {Config} from "../entities/Config";
-import {isModeAuto, loadConfig, shouldOpenPR} from "../config";
-import {getAssignee, getIssueTitle} from "../context";
+import {Config} from "../entities/Config.ts";
+import {isModeAuto, loadConfig, shouldOpenPR} from "../config.ts";
+import {getAssignee, getIssueTitle} from "../context.ts";
 import {
     branchExists,
     createIssueBranch,
@@ -10,8 +10,8 @@ import {
     getSourceBranch,
     skipBranchCreationForIssue,
     skipForIssue
-} from "../github";
-import {isRunningInGitHubActions, logMemoryUsage} from "../utils";
+} from "../github.ts";
+import {isRunningInGitHubActions, logMemoryUsage} from "../utils.ts";
 import {setOutput} from "@actions/core";
 
 export async function issueAssigned(app: Probot, ctx: Context<any>) {
