@@ -1,7 +1,7 @@
 {
   "version": "0.21.0",
-  "uuid": "47cbd566-129e-41b4-875d-f5fee27c1fa1",
-  "timestamp": "2025-11-11T12:32:24+00:00",
+  "uuid": "a4d76cae-fffd-46fa-a550-a478e606dc45",
+  "timestamp": "2025-11-11T15:02:37+00:00",
   "root": "/github/workspace",
   "repository": {
     "owner": "robvanderleek",
@@ -12,7 +12,7 @@
     "totals": {
       "TypeScript": {
         "files": 25,
-        "lines_of_code": 1312,
+        "lines_of_code": 1319,
         "functions": 117,
         "hard_to_maintain": 4,
         "unmaintainable": 0
@@ -25,7 +25,7 @@
           "next.config.ts",
           "src/"
         ],
-        "profile": [695, 461, 156, 0]
+        "profile": [702, 461, 156, 0]
       },
       "src/": {
         "entries": [
@@ -44,7 +44,7 @@
           "entities/",
           "webhooks/"
         ],
-        "profile": [687, 461, 156, 0]
+        "profile": [694, 461, 156, 0]
       },
       "src/services/": {
         "entries": [
@@ -228,14 +228,14 @@
         ]
       },
       "src/probot.ts": {
-        "checksum": "2424d3245b6bf24a2332d135de437b9c",
+        "checksum": "d97579e0999852168fedeab9ea605ca6",
         "language": "TypeScript",
-        "loc": 84,
-        "profile": [8, 22, 54, 0],
+        "loc": 91,
+        "profile": [15, 22, 54, 0],
         "measurements": [
           {"unit_name": "setupEventHandlers", "start": {"line": 25, "column": 10}, "end": {"line": 78, "column": 2}, "value": 54},
           {"unit_name": "insertEventIntoDatabase", "start": {"line": 80, "column": 16}, "end": {"line": 101, "column": 2}, "value": 22},
-          {"unit_name": "configureSentry", "start": {"line": 103, "column": 10}, "end": {"line": 110, "column": 2}, "value": 8}
+          {"unit_name": "configureSentry", "start": {"line": 103, "column": 10}, "end": {"line": 117, "column": 2}, "value": 15}
         ]
       },
       "src/github.ts": {
