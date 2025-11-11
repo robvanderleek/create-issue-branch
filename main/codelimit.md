@@ -3,7 +3,7 @@
 ### Overview
 | **Language** | **Files** | **Functions** | **Lines of Code** | **⚠** | **⛌** |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| TypeScript | 25 | 117 | 1312 | 4 | 0 |
+| TypeScript | 25 | 117 | 1319 | 4 | 0 |
 
 ### Summary
 | **Easy / Verbose** | **Hard-to-maintain ⚠** | **Unmaintainable ⛌** |
