@@ -7,5 +7,5 @@ outputs:
   branchName:
     description: 'Name of the branch that was created'
 runs:
-  using: 'node20'
+  using: 'node24'
   main: 'action-dist/index.js'

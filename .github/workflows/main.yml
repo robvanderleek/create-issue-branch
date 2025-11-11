@@ -1,4 +1,4 @@
-name: 'main'
+name: main
 concurrency: main_environment
 
 on: 
@@ -15,42 +15,42 @@ jobs:
     env:
       CI: true
     steps:
-    - name: 'Checkout sources'
-      uses: actions/checkout@v4
+    - name: Checkout sources
+      uses: actions/checkout@v5
 
-    - name: 'Setup NodeJS'
+    - name: Setup NodeJS
       uses: actions/setup-node@v4
       with:
-        node-version: '20.x'
+        node-version: '22.x'
 
-    - name: 'Install dependencies'
-      run: yarn install
+    - name: Install dependencies
+      run: npm install
 
-    - name: 'Build distribution'
-      run: yarn action:dist
+    - name: Build distribution
+      run: npm run action:dist
 
-    - name: 'Run unit-tests'
-      run: yarn test
+    - name: Run unit-tests
+      run: npm test
 
-    - name: 'Run code coverage'
-      run: yarn run coverage
+    - name: Run code coverage
+      run: npm run coverage
 
     - name: 'Upload code coverage report'
       run: bash <(curl -s https://codecov.io/bash) -t ${{secrets.CODECOV_SECRET_TOKEN }}
 
-    - name: 'Build action dist'
-      run: yarn action:dist
+    - name: Build action dist
+      run: npm run action:dist
 
-    - name: 'Build action docker image'
+    - name: Build action docker image
       run: docker build -f Dockerfile-action -t cib-action .
 
-    - name: 'Build server dist'
-      run: yarn server:dist
+    - name: Build server dist
+      run: npm run server:dist
 
-    - name: 'Build server docker image'
+    - name: Build server docker image
       run: docker build -t cib .
 
-    - name: 'Configure AWS credentials'
+    - name: Configure AWS credentials
       if: ${{ github.actor != 'dependabot[bot]' }}
       uses: aws-actions/configure-aws-credentials@v4
       with:

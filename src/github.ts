@@ -31,7 +31,7 @@ import {
     trimStringToByteLength,
     wildcardMatch
 } from "./utils.ts";
-import {GraphQlResponse} from "@octokit/graphql/dist-types/types.js";
+import {GraphQlResponse} from "@octokit/graphql/types";
 
 export async function createIssueBranch(app: Probot, ctx: Context<any>, branchName: string, config: Config) {
     if (await hasValidSubscription(app, ctx, config)) {
