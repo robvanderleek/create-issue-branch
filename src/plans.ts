@@ -1,8 +1,8 @@
-import {Context, Probot} from "probot";
-import {getRepoOwnerId, getRepoOwnerLogin, isOrgRepo} from "./context";
-import {addComment} from "./github";
-import {Config} from "./entities/Config";
-import {isRunningInGitHubActions, isRunningInTestEnvironment} from "./utils";
+import {Context, Probot, ProbotOctokit} from "probot";
+import {getRepoOwnerId, getRepoOwnerLogin, isOrgRepo} from "./context.ts";
+import {addComment} from "./github.ts";
+import {Config} from "./entities/Config.ts";
+import {isRunningInGitHubActions, isRunningInTestEnvironment} from "./utils.ts";
 
 export async function hasValidSubscription(app: Probot, ctx: Context<any>, config: Config) {
     if (isRunningInGitHubActions() || isRunningInTestEnvironment()) {
@@ -35,7 +35,7 @@ export async function isCommercialOrganizationPlan(app: Probot, ctx: Context<any
         const login = getRepoOwnerLogin(ctx);
         app.log.info(`Checking Marketplace for organization: https://github.com/${login} ...`);
         const id = getRepoOwnerId(ctx);
-        const res = await ctx.octokit.apps.getSubscriptionPlanForAccount({account_id: id});
+        const res = await ctx.octokit.rest.apps.getSubscriptionPlanForAccount({account_id: id});
         const purchase = res.data.marketplace_purchase;
         if (purchase.plan && purchase.plan.name === 'Commercial organization') {
             app.log.info('Found Commercial organization 💰 plan');
@@ -54,7 +54,7 @@ export async function isPaidPlan(app: Probot, ctx: Context<any>) {
         const login = getRepoOwnerLogin(ctx);
         app.log.info(`Checking Marketplace for organization: https://github.com/${login} ...`);
         const id = getRepoOwnerId(ctx);
-        const res = await ctx.octokit.apps.getSubscriptionPlanForAccount({account_id: id});
+        const res = await ctx.octokit.rest.apps.getSubscriptionPlanForAccount({account_id: id});
         const purchase = res.data.marketplace_purchase;
         if (purchase.plan && purchase.plan.price_model === 'FREE') {
             app.log.info('Found Free plan');
@@ -112,16 +112,16 @@ export function isFreePaidSubscription(app: Probot, ctx: Context<any>): boolean 
     }
 }
 
-export async function listAppSubscriptions(app: any) {
+export async function listAppSubscriptions(octokit: ProbotOctokit) {
     let result = ''
-    const plans = (await app.state.octokit.apps.listPlans()).data
+    const plans = (await octokit.rest.apps.listPlans()).data
     for (const plan of plans) {
         if (plan.price_model === 'FLAT_RATE') {
-            const accounts = await app.state.octokit.paginate(app.state.octokit.apps.listAccountsForPlan,
+            const accounts = await octokit.paginate(octokit.rest.apps.listAccountsForPlan,
                 {per_page: 100, plan_id: plan.id}, (response: any) => response.data)
             result += `Subscriptions for plan: ${plan.name}\n`
             result += '--------------------------------------------------\n'
-            result += listFreeTrialAccounts(app, accounts)
+            result += listFreeTrialAccounts(accounts)
             result += '--------------------------------------------------\n'
             result += `Total: ${accounts.length}\n`
         }
@@ -129,7 +129,7 @@ export async function listAppSubscriptions(app: any) {
     return result
 }
 
-function listFreeTrialAccounts(app: Probot, accounts: Array<any>) {
+function listFreeTrialAccounts(accounts: Array<any>) {
     let result = ''
     for (const account of accounts) {
         const purchase = account.marketplace_purchase

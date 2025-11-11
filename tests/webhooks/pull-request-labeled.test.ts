@@ -1,6 +1,8 @@
 import {Probot} from "probot";
-import pullRequestLabeledPayload from "../test-fixtures/pull_request.labeled.json";
-import {initNock, initProbot, nockConfig, nockEmptyConfig, nockIssue, nockUpdatePull} from "../test-helpers";
+import pullRequestLabeledPayload from "../test-fixtures/pull_request.labeled.json" with {type: "json"};
+import {initNock, initProbot, nockConfig, nockEmptyConfig, nockIssue, nockUpdatePull} from "../test-helpers.ts";
+import {beforeAll, beforeEach, test} from "vitest";
+
 
 let probot: Probot
 

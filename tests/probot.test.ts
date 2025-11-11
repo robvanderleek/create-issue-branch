@@ -1,7 +1,7 @@
 import {Probot} from "probot";
-import issueOpenedPayload from "./test-fixtures/issues.opened.json";
-import issueAssignedPayload from "./test-fixtures/issues.assigned.json";
-import pullRequestClosedPayload from "./test-fixtures/pull_request.closed.json";
+import issueOpenedPayload from "./test-fixtures/issues.opened.json" with {type: "json"};
+import issueAssignedPayload from "./test-fixtures/issues.assigned.json" with {type: "json"};
+import pullRequestClosedPayload from "./test-fixtures/pull_request.closed.json" with {type: "json"};
 import {
     initNock,
     initProbot,
@@ -16,10 +16,12 @@ import {
     nockExistingBranch,
     nockNonExistingBranch,
     nockUpdateBranch
-} from "./test-helpers";
+} from "./test-helpers.ts";
+import {beforeAll, beforeEach, expect, test} from "vitest";
 
-const nock = require('nock')
-const utils = require('../src/utils')
+
+import nock from 'nock';
+
 let probot: Probot
 
 beforeAll(() => {

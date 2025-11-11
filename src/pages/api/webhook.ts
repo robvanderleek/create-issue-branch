@@ -1,5 +1,5 @@
 import {createProbot} from "probot";
-import app from "../../probot";
+import app from "../../probot.ts";
 import {VercelRequest, VercelResponse} from "@vercel/node";
 
 const probot = createProbot()

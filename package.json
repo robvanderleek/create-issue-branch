@@ -12,6 +12,7 @@
     "github",
     "probot-app"
   ],
+  "type": "module",
   "release": {
     "repositoryUrl": "https://github.com/robvanderleek/create-issue-branch",
     "branches": [
@@ -40,12 +41,12 @@
     "dev": "next dev",
     "build": "next build",
     "compile": "tsc --noemit false",
-    "test": "jest",
-    "coverage": "jest --collect-coverage",
-    "probot:start": "yarn compile && NODE_OPTIONS='--max_old_space_size=490' probot run ./build/probot.js",
-    "server:start": "yarn compile && NODE_OPTIONS='--max_old_space_size=490' node ./build/server.js",
-    "action:dist": "yarn compile && esbuild build/action.js --bundle --platform=node --outfile=action-dist/index.js",
-    "server:dist": "yarn compile && esbuild build/server.js --bundle --platform=node --outfile=server-dist/index.js"
+    "test": "vitest",
+    "coverage": "vitest --coverage",
+    "probot:start": "npm run compile && NODE_OPTIONS='--max_old_space_size=490' probot run ./build/probot.js",
+    "server:start": "npm run compile && NODE_OPTIONS='--max_old_space_size=490' node ./build/server.js",
+    "action:dist": "npm run compile && esbuild build/action.js --bundle --platform=node --outfile=action-dist/index.js",
+    "server:dist": "npm run compile && esbuild build/server.js --bundle --platform=node --outfile=server-dist/index.js"
   },
   "dependencies": {
     "@actions/core": "^1.10.0",
@@ -56,28 +57,28 @@
     "mongodb": "^6.20.0",
     "next": "^15.5.4",
     "node-fetch": "^2.6.1",
-    "probot": "^13.4.1",
+    "probot": "^14.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "slice": "^1.0.0",
     "wildcard-match": "^5.1.3"
   },
   "devDependencies": {
-    "@types/jest": "^30.0.0",
     "@types/node-fetch": "^2.6.10",
     "@types/react": "18.3.13",
+    "@vercel/node": "^5.5.4",
+    "@vitest/coverage-v8": "3.2.4",
     "esbuild": "^0.25.10",
-    "@vercel/node": "^5.3.24",
-    "jest": "^30.2.0",
     "mkver": "^4.3.0",
     "nock": "14.0.10",
     "nodemon": "^3.1.5",
-    "smee-client": "^2.0.1",
-    "ts-jest": "^29.4.4",
-    "typescript": "^5.9.3"
+    "smee-client": "^4.3.1",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.11",
+    "vitest": "^3.2.4"
   },
   "engines": {
-    "node": ">= 20.x"
+    "node": ">= 22.x"
   },
   "nodemonConfig": {
     "exec": "npm start",
@@ -85,10 +86,5 @@
       ".env",
       "."
     ]
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node",
-    "testTimeout": 10000
   }
 }

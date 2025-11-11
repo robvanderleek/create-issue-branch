@@ -17,7 +17,9 @@ import {
     nockIssueLabels,
     nockNonExistingBranch,
     nockUpdateBranch
-} from "./test-helpers";
+} from "./test-helpers.ts";
+import {beforeAll, beforeEach, expect, test, vi} from "vitest";
+
 
 let probot: Probot
 

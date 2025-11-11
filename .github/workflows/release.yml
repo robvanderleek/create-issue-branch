@@ -9,30 +9,30 @@ jobs:
     permissions:
       contents: write
     steps:
-    - name: 'Checkout sources'
-      uses: actions/checkout@v4
+    - name: Checkout sources
+      uses: actions/checkout@v5
 
-    - name: 'Setup NodeJS'
+    - name: Setup NodeJS
       uses: actions/setup-node@v4
       with:
-        node-version: '20.x'
+        node-version: '22.x'
 
-    - name: 'Install dependencies'
-      run: yarn install
+    - name: Install dependencies
+      run: npm install
 
-    - name: 'Run unit-tests'
-      run: yarn test
+    - name: Run unit-tests
+      run: npm test
 
-    - name: 'Build GitHub Actions distribution'
-      run: yarn action:dist
+    - name: Build GitHub Actions distribution
+      run: npm run action:dist
 
-    - name: 'Commit GitHub Actions distribution'
+    - name: Commit GitHub Actions distribution
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
         commit_message: Build by GitHub Actions
         file_pattern: action-dist/index.js
 
-    - name: 'Semantic Release'
+    - name: Semantic Release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: npx semantic-release

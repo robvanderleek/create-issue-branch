@@ -1,9 +1,11 @@
 import {Probot} from "probot";
-import marketplacePurchasePayload from "./test-fixtures/marketplace_purchase.json";
-import marketplaceCancellationPayload from "./test-fixtures/marketplace_cancellation.json";
-import marketplaceDowngradePayload from "./test-fixtures/marketplace_downgrade.json";
-import marketplacePendingChangePayload from "./test-fixtures/marketplace_pending_change.json";
-import {initNock, initProbot} from "./test-helpers";
+import marketplacePurchasePayload from "./test-fixtures/marketplace_purchase.json" with {type: "json"};
+import marketplaceCancellationPayload from "./test-fixtures/marketplace_cancellation.json" with {type: "json"};
+import marketplaceDowngradePayload from "./test-fixtures/marketplace_downgrade.json" with {type: "json"};
+import marketplacePendingChangePayload from "./test-fixtures/marketplace_pending_change.json" with {type: "json"};
+import {initNock, initProbot} from "./test-helpers.ts";
+import {beforeAll, beforeEach, test} from "vitest";
+
 
 let probot: Probot;
 

@@ -8,10 +8,10 @@ jobs:
   log:
     runs-on: ubuntu-latest
     steps:
-      - name: 'Checkout sources'
-        uses: actions/checkout@v4
+      - name: Checkout sources
+        uses: actions/checkout@v5
 
-      - name: 'Collect stats'
+      - name: Collect stats
         uses: gr2m/app-stats-action@v1.x
         id: stats
         with:
