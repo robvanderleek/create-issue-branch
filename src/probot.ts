@@ -103,7 +103,14 @@ async function insertEventIntoDatabase(app: Probot, ctx: any) {
 function configureSentry(app: Probot) {
     if (process.env.SENTRY_DSN) {
         app.log.info('Setting up Sentry.io logging...')
-        Sentry.init({dsn: process.env.SENTRY_DSN, attachStacktrace: true});
+        Sentry.init({
+            dsn: process.env.SENTRY_DSN,
+            integrations: [
+                Sentry.consoleLoggingIntegration({levels: ["log", "warn", "error"]}),
+            ],
+            attachStacktrace: true,
+            enableLogs: true
+        });
     } else {
         app.log.info('Skipping Sentry.io setup')
     }
