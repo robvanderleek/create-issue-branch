@@ -45,8 +45,7 @@
     "coverage": "vitest --coverage",
     "probot:start": "npm run compile && NODE_OPTIONS='--max_old_space_size=490' probot run ./build/probot.js",
     "server:start": "npm run compile && NODE_OPTIONS='--max_old_space_size=490' node ./build/server.js",
-    "action:dist": "npm run compile && esbuild build/action.js --bundle --platform=node --outfile=action-dist/index.js",
-    "server:dist": "npm run compile && esbuild build/server.js --bundle --platform=node --outfile=server-dist/index.js"
+    "action:dist": "npm run compile && esbuild build/action.js --bundle --format=esm --platform=node --outfile=action-dist/index.js --banner:js=\"import { createRequire } from 'module'; const require = createRequire(import.meta.url);\""
   },
   "dependencies": {
     "@actions/core": "^1.10.0",
