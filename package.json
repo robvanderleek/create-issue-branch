@@ -71,7 +71,7 @@
     "esbuild": "^0.25.10",
     "mkver": "^4.3.0",
     "nock": "14.0.10",
-    "nodemon": "^3.1.5",
+    "nodemon": "^3.1.11",
     "smee-client": "^4.3.1",
     "typescript": "^5.9.3",
     "vite": "^7.1.11",
