@@ -54,7 +54,7 @@
     "@types/dlv": "^1.1.4",
     "is-plain-object": "^5.0.0",
     "js-tokens": "^9.0.0",
-    "mongodb": "^6.20.0",
+    "mongodb": "^7.0.0",
     "next": "^15.5.4",
     "node-fetch": "^2.6.1",
     "probot": "^14.2.1",
