@@ -48,7 +48,7 @@
     "action:dist": "npm run compile && esbuild build/action.js --bundle --format=esm --platform=node --outfile=action-dist/index.js --banner:js=\"import { createRequire } from 'module'; const require = createRequire(import.meta.url);\""
   },
   "dependencies": {
-    "@actions/core": "^1.10.0",
+    "@actions/core": "^3.0.0",
     "@probot/adapter-github-actions": "^4.0.0",
     "@sentry/node": "^10.27.0",
     "@types/dlv": "^1.1.4",
