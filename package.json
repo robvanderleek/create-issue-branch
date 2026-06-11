@@ -59,7 +59,7 @@
     "node-fetch": "^2.6.1",
     "probot": "^14.2.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react-dom": "^19.2.7",
     "slice": "^1.0.0",
     "wildcard-match": "^5.1.3"
   },
