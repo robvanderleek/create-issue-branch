@@ -836,7 +836,7 @@ if not give this App/Action a try.
 
 ## Star history
 
-[![Star History Chart](https://api.star-history.com/svg?repos=robvanderleek/create-issue-branch&type=Date)](https://star-history.com/#robvanderleek/create-issue-branch&Date)
+[![Star History Chart](https://star-history.dera.page/svg?repos=robvanderleek/create-issue-branch&type=Date)](https://star-history.dera.page/#robvanderleek/create-issue-branch&Date)
 
 ## Features under consideration
 
