@@ -1,7 +1,7 @@
 {
   "version": "0.21.0",
-  "uuid": "1025d22b-6c25-4333-a3d3-42e049bd7416",
-  "timestamp": "2026-09-16T13:24:01+00:00",
+  "uuid": "27287daf-b26b-40fa-bc43-e3a81d093caa",
+  "timestamp": "2026-09-16T13:39:49+00:00",
   "root": "/github/workspace",
   "repository": {
     "owner": "robvanderleek",
@@ -12,7 +12,7 @@
     "totals": {
       "TypeScript": {
         "files": 25,
-        "lines_of_code": 1348,
+        "lines_of_code": 1344,
         "functions": 119,
         "hard_to_maintain": 4,
         "unmaintainable": 0
@@ -25,7 +25,7 @@
           "next-env.d.ts",
           "src/"
         ],
-        "profile": [707, 485, 156, 0]
+        "profile": [703, 485, 156, 0]
       },
       "src/": {
         "entries": [
@@ -44,7 +44,7 @@
           "pages/",
           "webhooks/"
         ],
-        "profile": [699, 485, 156, 0]
+        "profile": [695, 485, 156, 0]
       },
       "src/services/": {
         "entries": [
@@ -216,10 +216,10 @@
         ]
       },
       "src/utils.ts": {
-        "checksum": "3af67b9cb1dcd900cd86ace1fd2543f8",
+        "checksum": "b4209306619793cdb35ed8504de5da78",
         "language": "TypeScript",
-        "loc": 56,
-        "profile": [56, 0, 0, 0],
+        "loc": 52,
+        "profile": [52, 0, 0, 0],
         "measurements": [
           {"unit_name": "makePrefixGitSafe", "start": {"line": 7, "column": 17}, "end": {"line": 7, "column": 69}, "value": 1},
           {"unit_name": "makeGitSafe", "start": {"line": 11, "column": 17}, "end": {"line": 11, "column": 82}, "value": 1},
@@ -230,9 +230,9 @@
           {"unit_name": "isRunningInTestEnvironment", "start": {"line": 42, "column": 17}, "end": {"line": 44, "column": 2}, "value": 3},
           {"unit_name": "getStringLengthInBytes", "start": {"line": 46, "column": 17}, "end": {"line": 48, "column": 2}, "value": 3},
           {"unit_name": "trimStringToByteLength", "start": {"line": 50, "column": 17}, "end": {"line": 60, "column": 2}, "value": 11},
-          {"unit_name": "logMemoryUsage", "start": {"line": 62, "column": 17}, "end": {"line": 69, "column": 2}, "value": 8},
-          {"unit_name": "formatAsExpandingMarkdown", "start": {"line": 71, "column": 17}, "end": {"line": 79, "column": 2}, "value": 9},
-          {"unit_name": "sleep", "start": {"line": 81, "column": 23}, "end": {"line": 83, "column": 2}, "value": 3}
+          {"unit_name": "logMemoryUsage", "start": {"line": 62, "column": 17}, "end": {"line": 65, "column": 2}, "value": 4},
+          {"unit_name": "formatAsExpandingMarkdown", "start": {"line": 67, "column": 17}, "end": {"line": 75, "column": 2}, "value": 9},
+          {"unit_name": "sleep", "start": {"line": 77, "column": 23}, "end": {"line": 79, "column": 2}, "value": 3}
         ]
       },
       "src/plans.ts": {
@@ -271,13 +271,13 @@
         ]
       },
       "src/server.ts": {
-        "checksum": "e8ff1e60751e93268bb688bd763e8b3c",
+        "checksum": "0f2a54de72a454b933b0ea218ad8156a",
         "language": "TypeScript",
         "loc": 29,
         "profile": [5, 24, 0, 0],
         "measurements": [
-          {"unit_name": "configureWebhook", "start": {"line": 11, "column": 16}, "end": {"line": 36, "column": 2}, "value": 24},
-          {"unit_name": "parseInt", "start": {"line": 42, "column": 33}, "end": {"line": 46, "column": 2}, "value": 5}
+          {"unit_name": "configureWebhook", "start": {"line": 14, "column": 16}, "end": {"line": 39, "column": 2}, "value": 24},
+          {"unit_name": "parseInt", "start": {"line": 45, "column": 33}, "end": {"line": 49, "column": 2}, "value": 5}
         ]
       },
       "src/services/MongoDbService.ts": {
