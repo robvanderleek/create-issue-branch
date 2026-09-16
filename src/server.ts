@@ -3,10 +3,13 @@ import {createNodeMiddleware, createProbot} from "probot";
 import app from "./probot.ts";
 import * as path from "node:path";
 import pino from "pino";
+import {existsSync} from "node:fs";
 
 const express = Express();
 
-process.loadEnvFile();
+if (existsSync('.env')) {
+    process.loadEnvFile();
+}
 
 async function configureWebhook() {
     const transport = pino.transport({

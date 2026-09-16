@@ -61,11 +61,7 @@ export function trimStringToByteLength(str: string, length: number) {
 
 export function logMemoryUsage(app: Probot) {
     const usage = Math.round(process.memoryUsage().rss / 1024 / 1024)
-    if (usage >= 150) {
-        app.log.info(`Total memory: ${usage} Mb`)
-    } else {
-        app.log.debug(`Total memory: ${usage} Mb`)
-    }
+    app.log.info(`Total memory used: ${usage} Mb`)
 }
 
 export function formatAsExpandingMarkdown(title: string, content: string) {
