@@ -6,6 +6,7 @@ COPY package-lock.json /app/package-lock.json
 COPY tsconfig.json /app/tsconfig.json
 COPY src /app/src
 COPY .git /app/.git
+COPY public /app/public
 WORKDIR /app
 RUN npm install
 RUN npm run compile
