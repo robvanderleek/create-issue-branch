@@ -1,7 +1,7 @@
 {
   "version": "0.21.0",
-  "uuid": "9351a24f-c249-4a01-b102-d787d161aec1",
-  "timestamp": "2026-09-05T20:39:52+00:00",
+  "uuid": "1025d22b-6c25-4333-a3d3-42e049bd7416",
+  "timestamp": "2026-09-16T13:24:01+00:00",
   "root": "/github/workspace",
   "repository": {
     "owner": "robvanderleek",
@@ -12,8 +12,8 @@
     "totals": {
       "TypeScript": {
         "files": 25,
-        "lines_of_code": 1319,
-        "functions": 117,
+        "lines_of_code": 1348,
+        "functions": 119,
         "hard_to_maintain": 4,
         "unmaintainable": 0
       }
@@ -25,7 +25,7 @@
           "next-env.d.ts",
           "src/"
         ],
-        "profile": [702, 461, 156, 0]
+        "profile": [707, 485, 156, 0]
       },
       "src/": {
         "entries": [
@@ -44,7 +44,7 @@
           "pages/",
           "webhooks/"
         ],
-        "profile": [694, 461, 156, 0]
+        "profile": [699, 485, 156, 0]
       },
       "src/services/": {
         "entries": [
@@ -271,11 +271,13 @@
         ]
       },
       "src/server.ts": {
-        "checksum": "e9aeebdc63c9f26eee91b44284f622d1",
+        "checksum": "e8ff1e60751e93268bb688bd763e8b3c",
         "language": "TypeScript",
-        "loc": 0,
-        "profile": [0, 0, 0, 0],
+        "loc": 29,
+        "profile": [5, 24, 0, 0],
         "measurements": [
+          {"unit_name": "configureWebhook", "start": {"line": 11, "column": 16}, "end": {"line": 36, "column": 2}, "value": 24},
+          {"unit_name": "parseInt", "start": {"line": 42, "column": 33}, "end": {"line": 46, "column": 2}, "value": 5}
         ]
       },
       "src/services/MongoDbService.ts": {
