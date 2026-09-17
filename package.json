@@ -63,7 +63,7 @@
   },
   "devDependencies": {
     "@types/node-fetch": "^2.6.10",
-    "@vitest/coverage-v8": "4.1.11",
+    "@vitest/coverage-v8": "5.0.0",
     "esbuild": "^0.25.10",
     "mkver": "^5.0.4",
     "nock": "14.0.17",
