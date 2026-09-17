@@ -1,7 +1,7 @@
 {
   "version": "0.21.0",
-  "uuid": "27287daf-b26b-40fa-bc43-e3a81d093caa",
-  "timestamp": "2026-09-16T13:39:49+00:00",
+  "uuid": "df9bb1d5-fcbf-42f4-9ece-d12e069cf931",
+  "timestamp": "2026-09-17T12:34:37+00:00",
   "root": "/github/workspace",
   "repository": {
     "owner": "robvanderleek",
@@ -11,9 +11,9 @@
   "codebase": {
     "totals": {
       "TypeScript": {
-        "files": 25,
-        "lines_of_code": 1344,
-        "functions": 119,
+        "files": 21,
+        "lines_of_code": 1315,
+        "functions": 118,
         "hard_to_maintain": 4,
         "unmaintainable": 0
       }
@@ -21,11 +21,9 @@
     "tree": {
       "./": {
         "entries": [
-          "next.config.ts",
-          "next-env.d.ts",
           "src/"
         ],
-        "profile": [703, 485, 156, 0]
+        "profile": [698, 461, 156, 0]
       },
       "src/": {
         "entries": [
@@ -41,10 +39,9 @@
           "server.ts",
           "services/",
           "entities/",
-          "pages/",
           "webhooks/"
         ],
-        "profile": [695, 485, 156, 0]
+        "profile": [698, 461, 156, 0]
       },
       "src/services/": {
         "entries": [
@@ -58,19 +55,6 @@
           "WebhookEvent.ts"
         ],
         "profile": [0, 29, 0, 0]
-      },
-      "src/pages/api/": {
-        "entries": [
-          "webhook.ts",
-          "plans.ts"
-        ],
-        "profile": [12, 0, 0, 0]
-      },
-      "src/pages/": {
-        "entries": [
-          "api/"
-        ],
-        "profile": [12, 0, 0, 0]
       },
       "src/webhooks/": {
         "entries": [
@@ -87,23 +71,6 @@
       }
     },
     "files": {
-      "next.config.ts": {
-        "checksum": "e6e268855af4f54f80411ec0ea08f55a",
-        "language": "TypeScript",
-        "loc": 8,
-        "profile": [8, 0, 0, 0],
-        "measurements": [
-          {"unit_name": "rewrites", "start": {"line": 4, "column": 9}, "end": {"line": 11, "column": 4}, "value": 8}
-        ]
-      },
-      "next-env.d.ts": {
-        "checksum": "77e25bc68d9218c91c2f0d3dfcc88118",
-        "language": "TypeScript",
-        "loc": 0,
-        "profile": [0, 0, 0, 0],
-        "measurements": [
-        ]
-      },
       "src/interpolate.ts": {
         "checksum": "3c0ece0af620dc6e53e2d7c238e01e6b",
         "language": "TypeScript",
@@ -271,13 +238,14 @@
         ]
       },
       "src/server.ts": {
-        "checksum": "0f2a54de72a454b933b0ea218ad8156a",
+        "checksum": "e3c7e495d9b7f9e5dfe0bd6664c8940d",
         "language": "TypeScript",
-        "loc": 29,
-        "profile": [5, 24, 0, 0],
+        "loc": 20,
+        "profile": [20, 0, 0, 0],
         "measurements": [
-          {"unit_name": "configureWebhook", "start": {"line": 14, "column": 16}, "end": {"line": 39, "column": 2}, "value": 24},
-          {"unit_name": "parseInt", "start": {"line": 45, "column": 33}, "end": {"line": 49, "column": 2}, "value": 5}
+          {"unit_name": "configureWebhook", "start": {"line": 36, "column": 16}, "end": {"line": 42, "column": 2}, "value": 7},
+          {"unit_name": "configurePlans", "start": {"line": 44, "column": 10}, "end": {"line": 51, "column": 2}, "value": 8},
+          {"unit_name": "parseInt", "start": {"line": 59, "column": 33}, "end": {"line": 63, "column": 2}, "value": 5}
         ]
       },
       "src/services/MongoDbService.ts": {
@@ -302,23 +270,6 @@
       },
       "src/entities/WebhookEvent.ts": {
         "checksum": "6f1ec2abd56064dc619bafd620bbdce1",
-        "language": "TypeScript",
-        "loc": 0,
-        "profile": [0, 0, 0, 0],
-        "measurements": [
-        ]
-      },
-      "src/pages/api/webhook.ts": {
-        "checksum": "fc64166d69e83e7fab33dfb087bb1628",
-        "language": "TypeScript",
-        "loc": 12,
-        "profile": [12, 0, 0, 0],
-        "measurements": [
-          {"unit_name": "getBody", "start": {"line": 8, "column": 10}, "end": {"line": 19, "column": 2}, "value": 12}
-        ]
-      },
-      "src/pages/api/plans.ts": {
-        "checksum": "a91e1ba6b169d1c8e0e6bf75d341d2d0",
         "language": "TypeScript",
         "loc": 0,
         "profile": [0, 0, 0, 0],
