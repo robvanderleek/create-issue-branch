@@ -63,7 +63,7 @@
   },
   "devDependencies": {
     "@types/node-fetch": "^2.6.10",
-    "esbuild": "^0.25.10",
+    "esbuild": "^0.28.2",
     "mkver": "^5.0.4",
     "nock": "14.0.17",
     "nodemon": "^3.1.5",
