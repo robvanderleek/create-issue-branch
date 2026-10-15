@@ -65,7 +65,7 @@
     "@types/node-fetch": "^2.6.10",
     "esbuild": "^0.25.10",
     "mkver": "^5.0.4",
-    "nock": "14.0.17",
+    "nock": "15.0.1",
     "nodemon": "^3.1.5",
     "smee-client": "^4.3.1",
     "typescript": "^5.9.3",
