@@ -57,7 +57,7 @@
     "js-tokens": "^9.0.0",
     "mongodb": "^7.6.0",
     "node-fetch": "^2.6.1",
-    "probot": "^14.3.2",
+    "probot": "^14.3.7",
     "slice": "^1.0.0",
     "wildcard-match": "^5.1.3"
   },
